@@ -84,6 +84,8 @@
                 </div>
             <?php endif; ?>
 
+            <?php echo $this->getLayout()->getBlock('shipping.estimate.form')->toHtml()?>
+
             <?php if ($_product->getShortDescription()):?>
                 <div class="short-description">
                     <h2><?php echo $this->__('Quick Overview') ?></h2>

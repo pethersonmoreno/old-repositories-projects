@@ -2102,5 +2102,5 @@ input.input-text:focus, select:focus, textarea:focus {
     color: #000000 !important;
 }
 .block-shipping-results, .block-shipping-results .price {
-    color: #ffffff;
+    color: #000000;
 }
