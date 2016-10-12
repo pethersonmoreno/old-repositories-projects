@@ -227,7 +227,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
             $columns = (int)Mage::getStoreConfig('custom_menu/columns/count');
             $htmlPopup[] = '<div class="block1">';
             $htmlPopup[] = $this->drawColumns($activeChildren, $columns);
-            $htmlPopup[] = '<div class="clearBoth"></div>';
+            //$htmlPopup[] = '<div class="clearBoth"></div>';
             $htmlPopup[] = '</div>';
         }
         // --- draw Custom User Block ---
@@ -269,6 +269,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
             $html.= '<div class="column' . $class . '">';
             $html.= $this->drawMenuItem($value, 1);
             $html.= '</div>';
+            $html.= '<div class="clearBoth"></div>';
             $i++;
         }
         return $html;
