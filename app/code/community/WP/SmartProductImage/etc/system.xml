@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <web_and_people translate="label" module="smartproductimage">
+            <label>Web-And-People</label>
+            <sort_order>150</sort_order>
+        </web_and_people>
+    </tabs>
+    <sections>
+        <smart_product_image translate="label" module="smartproductimage">
+            <label>Smart Product Image</label>
+            <tab>web_and_people</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>200</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <image_sizes translate="label comment">
+                            <label>Image Sizes</label>
+                            <comment>The height of the image is automatically calculated in proportion.</comment>
+                            <frontend_model>smartproductimage/system_config_form_field_imagesizes</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image_sizes>
+                        <version translate="label">
+                            <label>Extension Release</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                    </fields>
+                </general>
+            </groups>
+        </smart_product_image>
+    </sections>
+</config>

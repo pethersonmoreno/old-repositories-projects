@@ -1,0 +1,22 @@
+<div class="block-cart-top">
+    <?php $_cartQty = $this->getSummaryCount() ?>
+    <div class="block-content">
+        <div class="summary">
+            <?php if ($_cartQty==1): ?>
+                <p class="amount"><a href="<?php echo $this->getUrl('checkout/cart'); ?>" class="title"><?php echo $this->__('My Cart') ?></a> <span class="qty">1 </span> <?php echo $this->__('item') ?>: <?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?></p>
+            <?php else:
+                $_cartQty = $_cartQty ? $_cartQty : 0;
+            ?>
+                <p class="amount"><a href="<?php echo $this->getUrl('checkout/cart'); ?>" class="title"><?php echo $this->__('My Cart') ?></a> <span class="qty"><?php echo $_cartQty."</span> " . $this->__('items'); ?>: <?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?></p>
+            <?php endif ?>
+            <?php if($_cartQty) :?>
+            <p class="cart-link"><a href="<?php echo $this->getUrl('checkout/cart'); ?>"><?php echo $this->__('cart'); ?></a></p>
+            <?php endif; ?>
+        </div>
+    <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+    <div class="actions">
+        <button type="button" title="<?php echo $this->__('Checkout') ?>" class="button-small" onclick="setLocation('<?php echo $this->getCheckoutUrl() ?>')"><span><span><?php echo $this->__('Checkout') ?></span></span></button>
+    </div>
+    <?php endif ?>
+    </div>
+</div>

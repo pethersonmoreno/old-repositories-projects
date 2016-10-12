@@ -1,0 +1,90 @@
+<?php
+    Mage::helper('custommenu')->saveCurrentCategoryIdToSession();
+    $menuData = Mage::helper('custommenu')->getMenuData();
+    extract($menuData);
+    // ---
+    $txtLoading = '';
+    $txtMenu = $this->__('Menu');
+    $xRtl = $_rtl ? ' rtl' : '';
+    $styleInit = '';
+    if ($_menuPosition != WP_CustomMenu_Model_System_Config_Source_Position::POSITION_TOP && !$_topmenuStaticBlockId) {
+        $styleInit = 'display:none;';
+    }
+    $wpInitContent = <<<HTML
+    <div id="custommenu-loading" class="{$xRtl}" style="{$styleInit}">
+        <div class="menu">
+            <div class="parentMenu menu0 loading">
+                <a href="javascript:;">
+                    <span>{$txtLoading}</span>
+                </a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
+    <div id="custommenu" class="{$xRtl}" style="display:none;">
+        <div class="menu">
+            <div class="parentMenu menu0 loading">
+                <a href="javascript:;">
+                    <span>{$txtLoading}</span>
+                </a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
+    <div id="custommenu-mobile" class="{$xRtl}" style="display:none;">
+        <div id="menu-button" onclick="wpMenuButtonToggle()">
+            <a href="javascript:void(0);">
+                <span>{$txtMenu}</span>
+            </a>
+        </div>
+        <div id="menu-content" style="display:none;">
+            <div id="menu-mobile-loading" class="menu-mobile level0">
+                <div class="parentMenu loading">
+                    <a href="javascript:;">
+                        <span>{$txtLoading}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+HTML;
+?>
+<div class="nav-container" id="wp-nav-container"></div>
+<script type="text/javascript">
+//<![CDATA[
+var CUSTOMMENU_POPUP_DELAY_BEFORE_DISPLAYING    = <?php echo $_popupDelayBeforeDisplaying; ?>;
+var CUSTOMMENU_POPUP_DELAY_BEFORE_HIDING        = <?php echo $_popupDelayBeforeHiding; ?>;
+var CUSTOMMENU_RTL_MODE                 = <?php echo $_rtl; ?>;
+var CUSTOMMENU_POPUP_WIDTH              = <?php echo $_popupWidth; ?>;
+var CUSTOMMENU_POPUP_TOP_OFFSET         = <?php echo $_popupTopOffset; ?>;
+var CUSTOMMENU_POPUP_SB_WIDTH           = <?php echo $_sbPopupWidth; ?>;
+var CUSTOMMENU_POPUP_SB_HEIGHT          = <?php echo $_sbPopupHeight; ?>;
+var CUSTOMMENU_POPUP_SB_BOTTOM_OFFSET   = <?php echo $_sbPopupBottomOffset; ?>;
+var CUSTOMMENU_POPUP_SB_TYPE_FIXED      = '<?php echo WP_CustomMenu_Model_System_Config_Source_Popuptype::TYPE_FIXED; ?>';
+var CUSTOMMENU_POPUP_SB_TYPE_RELATIVE   = '<?php echo WP_CustomMenu_Model_System_Config_Source_Popuptype::TYPE_RELATIVE; ?>';
+var CUSTOMMENU_POSITION_TOP             = '<?php echo WP_CustomMenu_Model_System_Config_Source_Position::POSITION_TOP; ?>';
+var CUSTOMMENU_POSITION_LEFT            = '<?php echo WP_CustomMenu_Model_System_Config_Source_Position::POSITION_LEFT; ?>';
+var CUSTOMMENU_POSITION_RIGHT           = '<?php echo WP_CustomMenu_Model_System_Config_Source_Position::POSITION_RIGHT; ?>';
+var CUSTOMMENU_MOBILE_MENU_WIDTH_INIT   = 800;
+var wpCustommenuTimerShow       = {};
+var wpCustommenuTimerHide       = {};
+var wpActiveMenu                = null;
+var wpMenuPosition              = '<?php echo $_menuPosition; ?>';
+var wpPopupMenuSbType           = '<?php echo $_sbPopupType; ?>';
+var wpMobileMenuEnabled         = <?php echo $_mobileMenuEnabled; ?>;
+var wpMenuAjaxUrl               = '<?php echo $_menuAjaxUrl; ?>';
+var wpMoblieMenuAjaxUrl         = '<?php echo $_moblieMenuAjaxUrl; ?>';
+var wpPopupMenuContent          = '';
+var wpPopupMenuSidebarContent   = '';
+var wpMobileMenuContent         = '';
+var wpTopmenuStaticBlockId      = '<?php echo $_topmenuStaticBlockId; ?>';
+$('wp-nav-container').update(Base64.decode('<?php echo base64_encode($wpInitContent); ?>'));
+<?php if ($_menuAjaxUrl && $_menuPosition == WP_CustomMenu_Model_System_Config_Source_Position::POSITION_TOP) : ?>
+wpCustomMenuMobileToggle();
+Event.observe(window, 'resize', function() {
+    wpCustomMenuMobileToggle();
+});
+<?php endif; ?>
+//]]>
+</script>

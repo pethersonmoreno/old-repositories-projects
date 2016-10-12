@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <WP_SmartProductImage>
+            <active>true</active>
+            <codePool>community</codePool>
+        </WP_SmartProductImage>
+    </modules>
+</config>
