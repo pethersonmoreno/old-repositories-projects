@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+		<bassi_extensions>
+			<label>Bassiwebs Extensions</label>
+			<sort_order>195</sort_order>
+		</bassi_extensions>
+	</tabs>
+    <sections>
+        <imageslider translate="label" >
+            <label>Easy Banner Slider</label>
+            <tab>bassi_extensions</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>90</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+				<about translate="label">	
+					<label>Developer</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+					<expanded>1</expanded>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>					
+					<fields>
+						<info translate="label">
+							<frontend_model>imageslider/about</frontend_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</info>																
+					</fields>
+				</about>
+                <general translate="label">
+                    <label>Banner Slider Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+					<expanded>1</expanded>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+						
+						<style translate="label">
+                            <label>Image Style</label>							
+                            <frontend_type>select</frontend_type>
+                            <source_model>imageslider/style</source_model>                          
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </style>					
+						
+						<slidingtime translate="label">
+                            <label>Sliding Time</label>	
+							<comment><![CDATA[seconds between the end of the sliding effect and the start of the next one]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </slidingtime>
+						
+						<slidingeffecttime translate="label">
+                            <label>Sliding Effect Time</label>
+							<comment><![CDATA[length of the sliding effect in seconds]]></comment>							
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </slidingeffecttime>
+						
+						
+						<imagewidth translate="label">
+                            <label>Image width</label>
+							<comment><![CDATA[in pixels]]></comment>							
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imagewidth>
+						
+						<imageheight translate="label">
+                            <label>Image height</label>
+							<comment><![CDATA[in pixels]]></comment>							
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </imageheight>
+						
+						<description translate="label">
+                            <label>Description</label>	
+							<comment><![CDATA[show description in front of image]]></comment>													
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+							<sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </description>
+						
+						
+						<thumbnails translate="label">
+                            <label>Image Thumbnails</label>							
+                            <frontend_type>select</frontend_type>
+                            <source_model>imageslider/imagethumbnails</source_model>                          
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </thumbnails>
+						
+						<loader translate="label">
+                            <label>Loader</label>														
+                            <frontend_type>select</frontend_type> 
+							<source_model>imageslider/loader</source_model>                                                      
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </loader>
+						
+						<navigation translate="label">
+                            <label>Navigation</label>
+							<comment><![CDATA[navigation button (prev, next and play/stop buttons)]]></comment>														
+                            <frontend_type>select</frontend_type> 
+							<source_model>adminhtml/system_config_source_enabledisable</source_model>
+							<sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </navigation>
+											
+                    </fields>
+                </general>
+				
+				<style translate="label">	
+					<label>Style</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+					<expanded>1</expanded>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>					
+					<fields>
+						<navcolor translate="label">
+                            <label>Navigation Arrow backgorund Color</label>	
+							<comment><![CDATA[Navigation Arrow backgorund Color code with '#' for e.g. #FFFFFF]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </navcolor>
+						<paginationcolor translate="label">
+                            <label>Pagination/Thumbnail background Color</label>	
+							<comment><![CDATA[Pagination/Thumbnail background color code with '#' for e.g. #333333]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </paginationcolor>
+						<paginationdotcolor translate="label">
+                            <label>Pagination dot Color</label>	
+							<comment><![CDATA[Pagination dot color code with '#' for e.g. #434648]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </paginationdotcolor>
+						<captionbgcolor translate="label">
+                            <label>Caption background Color</label>	
+							<comment><![CDATA[Caption background color code with '#' for e.g. #333333]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </captionbgcolor>
+						
+						<captiontextcolor translate="label">
+                            <label>Caption Text Color</label>	
+							<comment><![CDATA[Caption text color code with '#' for e.g. #FFFFFF]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </captiontextcolor>
+						
+						<loaderColor translate="label">
+                            <label>Loader Bar Color</label>	
+							<comment><![CDATA[Loader Bar Color code with '#' for e.g. #FFFFFF]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </loaderColor>
+						
+						<loaderBgColor translate="label">
+                            <label>Loader Background Color</label>	
+							<comment><![CDATA[Loader Background Color code with '#' for e.g. #222222]]></comment>						
+                            <frontend_type>text</frontend_type>                                                      
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </loaderBgColor>
+						
+					</fields>
+				</style>
+				
+				
+            </groups>
+			
+        </imageslider>
+    </sections>
+</config>

@@ -1,0 +1,157 @@
+<?php
+/**
+ *
+ * Version			: 1.0.4
+ * Edition 			: Community 
+ * Compatible with 	: Magento 1.5.x to latest
+ * Developed By 	: Magebassi
+ * Email			: magebassi@gmail.com
+ * Web URL 			: www.magebassi.com
+ * Extension		: Magebassi Easy Banner slider
+ * 
+ */
+?>
+<?php
+	// Developers are invited to give a positive review.
+	// If you have any suggestions or find any issue than please let me know directly by email.
+	// thanks to all developers::happy coding
+	$enabled			=	 Mage::getStoreConfig('imageslider/general/enabled');
+	$style				=	 Mage::getStoreConfig('imageslider/general/style'); 
+	$imagewidth			=	 Mage::getStoreConfig('imageslider/general/imagewidth');
+	$imageheight		=	 Mage::getStoreConfig('imageslider/general/imageheight');
+	$description		=	 Mage::getStoreConfig('imageslider/general/description');
+	$slidingtime		=	 Mage::getStoreConfig('imageslider/general/slidingtime');
+	$slidingtime 		= 	($slidingtime*1000);
+	$slidingeffecttime	=	 Mage::getStoreConfig('imageslider/general/slidingeffecttime');
+	$slidingeffecttime 	= 	($slidingeffecttime*1000);
+	$loader				=	 Mage::getStoreConfig('imageslider/general/loader');
+	$navigation			=	 Mage::getStoreConfig('imageslider/general/navigation');
+	$thumbnails			=	 Mage::getStoreConfig('imageslider/general/thumbnails');
+	$autoAdvance		=	'true';
+	
+	
+	
+	//style
+	$navcolor			=	 Mage::getStoreConfig('imageslider/style/navcolor');
+	if(!$navcolor){$navcolor = 'none';}
+	
+	$paginationcolor	=	 Mage::getStoreConfig('imageslider/style/paginationcolor');
+	if(!$paginationcolor){$paginationcolor = 'none';}
+	
+	$paginationdotcolor	=	 Mage::getStoreConfig('imageslider/style/paginationdotcolor');
+	if(!$paginationdotcolor){$paginationdotcolor = 'none';}
+	
+	$captionbgcolor	=	 Mage::getStoreConfig('imageslider/style/captionbgcolor');
+	if(!$captionbgcolor){$captionbgcolor = 'none';}
+	
+	$captiontextcolor	=	 Mage::getStoreConfig('imageslider/style/captiontextcolor');
+	if(!$captiontextcolor){$captiontextcolor = 'none';}
+	
+	$loaderColor	=	 Mage::getStoreConfig('imageslider/style/loaderColor');
+	if(!$loaderColor){$loaderColor = 'none';}
+	
+	$loaderBgColor	=	 Mage::getStoreConfig('imageslider/style/loaderBgColor');
+	$loaderOpacity = .8;
+	if(!$loaderBgColor){
+		$loaderBgColor = 'none'; 
+		$loaderOpacity = 0;
+	}
+	
+	if($thumbnails=='thumbnail'){ $thumbsts = 'true'; $pagests = 'false'; }
+	elseif($thumbnails=='pagination'){ $thumbsts = 'true'; $pagests = 'true';}
+	else{ $thumbsts = 'false'; $pagests = 'false';}
+	if($imagewidth){ $width = $imagewidth."px";}else {$width = "100%";}
+	
+	// Get IMAGE COLLECTION
+	$imageCollection = $this->getImageCollection();	
+?>	
+<?php
+	if(count($imageCollection)==1){
+		$autoAdvance	=	'false';
+		$pagests		=	'false';
+		$navigation		=	'false';
+		$thumbsts		=	'false';
+		$description	=	false;
+	}
+?>
+<?php if($enabled){?>
+<?php if(count($imageCollection)){?>
+
+<!-- If jquery alredy loaded/conflicts then below jQuery file not required -->
+<script type="text/javascript" src="<?php echo $this->getJsUrl('bassi/imageslider/jquery.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('bassi/imageslider/jquery.easing.1.3.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getJsUrl('bassi/imageslider/camera.js') ?>"></script>     
+<script type="text/javascript">
+	var $ds = jQuery.noConflict();
+	$ds(function(){
+		$ds('#camera_wrap_1').camera({
+			thumbnails: <?php echo $thumbsts; ?>,
+			fx: '<?php echo $style; ?>',			
+			time: <?php echo $slidingtime; ?>,
+			transPeriod: <?php echo $slidingeffecttime; ?>,
+			loader: '<?php echo $loader; ?>',
+			navigation: <?php echo $navigation; ?>,
+			<?php if($imageheight){?>height: '<?php echo $imageheight; ?>px', <?php } ?>
+			opacityOnGrid: true,
+			pauseOnClick: false,
+			//playPause: <?php echo $navigation; ?>,			
+			pagination: <?php echo $pagests; ?>,
+			autoAdvance: <?php echo $autoAdvance; ?>,
+			loaderColor: '<?php echo $loaderColor; ?>',
+			loaderBgColor: '<?php echo $loaderBgColor; ?>',
+			loaderOpacity: <?php echo $loaderOpacity; ?>
+		});			
+	});
+</script>				
+<link rel='stylesheet' id='camera-css'  href="<?php echo $this->getSkinUrl('css/bassi/imageslider/camera.css');?>" type='text/css' media='all'>
+<style>
+	
+	#back_to_camera {
+		clear: both;
+		display: block;
+		height: 80px;
+		line-height: 40px;
+		padding: 20px;
+	}
+	.fluid_container {
+		margin: 0 auto;
+		width: <?php echo $width; ?>;
+	}
+	.camera_prev, .camera_next, .camera_commands {
+		background: <?php echo $navcolor; ?>;
+	}
+	.camera_thumbs_cont, .camera_wrap .camera_pag .camera_pag_ul li {
+		background: <?php echo $paginationcolor; ?>;
+	}
+	.camera_wrap .camera_pag .camera_pag_ul li.cameracurrent > span {
+		background: <?php echo $paginationdotcolor; ?>;
+	}
+	.camera_caption > div {
+		background: <?php echo $captionbgcolor; ?>;
+		opacity: 0.69;
+		font-size:14px;
+	}
+	.camera_caption {
+		color: <?php echo $captiontextcolor; ?>;
+	}
+	
+</style>
+<div class="fluid_container">    	
+	<div class="camera_wrap camera_coffee_skin" id="camera_wrap_1">
+	<?php foreach ($imageCollection as $banner): ?>
+		<div data-thumb="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."mbimages/thumbs/".$banner['filename']?>" data-src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$banner['filename']?>" <?php if(isset($banner['weblink'])){?>data-link="<?php echo $banner['weblink']; ?>" data-target="<?php echo $banner['linktarget']; ?>" <?php }?>>
+			<?php if($description && !empty($banner['content'])){?>
+			<div class="camera_caption fadeFromBottom">
+				<?php echo $banner['content']; ?>
+			</div>
+			<?php } ?>
+		</div>	
+	<?php endforeach; ?>	
+	</div>
+</div>
+    
+<div style="clear:both; display:block;"></div>
+<?php }else{
+	echo "<p><b>Magebassi Easy Banner Slider.</b></p><p>Please upload banner images.</p>";
+} ?>
+<?php }?>

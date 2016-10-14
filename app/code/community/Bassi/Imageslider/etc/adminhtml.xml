@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<imageslider module="imageslider">
+			<title>Bassiwebs Easy Banner Slider</title>
+			<sort_order>50</sort_order>               
+			<children>
+				<items module="imageslider">
+					<title>Banner Manager</title>
+					<sort_order>1</sort_order>
+					<action>adminhtml/imageslider</action>
+				</items>
+				<configitems module="imageslider">
+					<title>Configuration Settings</title>
+					<sort_order>2</sort_order>
+					<action>adminhtml/system_config/edit/section/imageslider</action>
+				</configitems>
+			</children>
+		</imageslider>
+	</menu>
+	
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+			<admin>
+				<children>
+					<Bassi_Imageslider>
+						<title>Imageslider Module</title>
+						<sort_order>10</sort_order>
+					</Bassi_Imageslider>
+					<system>
+						<children>
+							<config>
+								<children>
+									<imageslider translate="title" module="imageslider"> 
+										<title>Image Slider Settings</title>
+										<sort_order>50</sort_order>
+									</imageslider>
+								</children>							
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+		
+</config>
