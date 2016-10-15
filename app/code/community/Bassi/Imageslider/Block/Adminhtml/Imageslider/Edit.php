@@ -26,7 +26,7 @@ class Bassi_Imageslider_Block_Adminhtml_Imageslider_Edit extends Mage_Adminhtml_
         $this->_updateButton('delete', 'label', Mage::helper('imageslider')->__('Delete Banner'));
 		
         $this->_addButton('saveandcontinue', array(
-            'label'     => Mage::helper('adminhtml')->__('Save And Continue Edit'),
+            'label'     => Mage::helper('imageslider')->__('Save And Continue Edit'),
             'onclick'   => 'saveAndContinueEdit()',
             'class'     => 'save',
         ), -100);

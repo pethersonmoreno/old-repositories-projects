@@ -78,8 +78,8 @@ class Bassi_Imageslider_Block_Adminhtml_Imageslider_Grid extends Mage_Adminhtml_
           'index'     => 'status',
           'type'      => 'options',
           'options'   => array(
-              1 => 'Enabled',
-              2 => 'Disabled',
+              1 => Mage::helper('imageslider')->__('Enabled'),
+              2 => Mage::helper('imageslider')->__('Disabled'),
           ),
       ));
 	  

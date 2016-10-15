@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <config>
 	<menu>
-		<imageslider module="imageslider">
+		<imageslider module="imageslider" translate="title">
 			<title>Bassiwebs Easy Banner Slider</title>
 			<sort_order>50</sort_order>               
 			<children>
-				<items module="imageslider">
+				<items module="imageslider" translate="title">
 					<title>Banner Manager</title>
 					<sort_order>1</sort_order>
 					<action>adminhtml/imageslider</action>
 				</items>
-				<configitems module="imageslider">
+				<configitems module="imageslider" translate="title">
 					<title>Configuration Settings</title>
 					<sort_order>2</sort_order>
 					<action>adminhtml/system_config/edit/section/imageslider</action>
@@ -21,12 +21,12 @@
 	
 	<acl>
 		<resources>
-			<all>
+			<all translate="title">
 				<title>Allow Everything</title>
 			</all>
 			<admin>
 				<children>
-					<Bassi_Imageslider>
+					<Bassi_Imageslider translate="title">
 						<title>Imageslider Module</title>
 						<sort_order>10</sort_order>
 					</Bassi_Imageslider>

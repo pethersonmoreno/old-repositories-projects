@@ -89,6 +89,15 @@
                 </args>
             </imageslider>
         </routers>	
+		<translate>
+		    <modules>
+		        <Bassi_Imageslider>
+		            <files>
+		                <default>Bassi_Imageslider.csv</default>
+		            </files>
+		        </Bassi_Imageslider>
+		    </modules>
+		</translate>
     </frontend> 
 	
 	<admin>
@@ -111,6 +120,15 @@
 				</imageslider>
 			</updates>
 		</layout>
+		<translate>
+		    <modules>
+		        <Bassi_Imageslider>
+		            <files>
+		                <default>Bassi_Imageslider.csv</default>
+		            </files>
+		        </Bassi_Imageslider>
+		    </modules>
+		</translate>
     </adminhtml>
 	
 </config>

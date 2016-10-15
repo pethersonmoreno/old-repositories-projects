@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<tabs>
-		<bassi_extensions>
+		<bassi_extensions translate="label">
 			<label>Bassiwebs Extensions</label>
 			<sort_order>195</sort_order>
 		</bassi_extensions>
@@ -63,7 +63,7 @@
                             <show_in_store>1</show_in_store>
                         </style>					
 						
-						<slidingtime translate="label">
+						<slidingtime translate="label comment">
                             <label>Sliding Time</label>	
 							<comment><![CDATA[seconds between the end of the sliding effect and the start of the next one]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -73,7 +73,7 @@
                             <show_in_store>1</show_in_store>
                         </slidingtime>
 						
-						<slidingeffecttime translate="label">
+						<slidingeffecttime translate="label comment">
                             <label>Sliding Effect Time</label>
 							<comment><![CDATA[length of the sliding effect in seconds]]></comment>							
                             <frontend_type>text</frontend_type>                                                      
@@ -84,7 +84,7 @@
                         </slidingeffecttime>
 						
 						
-						<imagewidth translate="label">
+						<imagewidth translate="label comment">
                             <label>Image width</label>
 							<comment><![CDATA[in pixels]]></comment>							
                             <frontend_type>text</frontend_type>                                                      
@@ -94,7 +94,7 @@
                             <show_in_store>1</show_in_store>
                         </imagewidth>
 						
-						<imageheight translate="label">
+						<imageheight translate="label comment">
                             <label>Image height</label>
 							<comment><![CDATA[in pixels]]></comment>							
                             <frontend_type>text</frontend_type>                                                      
@@ -104,7 +104,7 @@
                             <show_in_store>1</show_in_store>
                         </imageheight>
 						
-						<description translate="label">
+						<description translate="label comment">
                             <label>Description</label>	
 							<comment><![CDATA[show description in front of image]]></comment>													
                             <frontend_type>select</frontend_type>
@@ -136,7 +136,7 @@
                             <show_in_store>1</show_in_store>
                         </loader>
 						
-						<navigation translate="label">
+						<navigation translate="label comment">
                             <label>Navigation</label>
 							<comment><![CDATA[navigation button (prev, next and play/stop buttons)]]></comment>														
                             <frontend_type>select</frontend_type> 
@@ -159,7 +159,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>					
 					<fields>
-						<navcolor translate="label">
+						<navcolor translate="label comment">
                             <label>Navigation Arrow backgorund Color</label>	
 							<comment><![CDATA[Navigation Arrow backgorund Color code with '#' for e.g. #FFFFFF]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -168,7 +168,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </navcolor>
-						<paginationcolor translate="label">
+						<paginationcolor translate="label comment">
                             <label>Pagination/Thumbnail background Color</label>	
 							<comment><![CDATA[Pagination/Thumbnail background color code with '#' for e.g. #333333]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -177,7 +177,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </paginationcolor>
-						<paginationdotcolor translate="label">
+						<paginationdotcolor translate="label comment">
                             <label>Pagination dot Color</label>	
 							<comment><![CDATA[Pagination dot color code with '#' for e.g. #434648]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -186,7 +186,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </paginationdotcolor>
-						<captionbgcolor translate="label">
+						<captionbgcolor translate="label comment">
                             <label>Caption background Color</label>	
 							<comment><![CDATA[Caption background color code with '#' for e.g. #333333]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -196,7 +196,7 @@
                             <show_in_store>1</show_in_store>
                         </captionbgcolor>
 						
-						<captiontextcolor translate="label">
+						<captiontextcolor translate="label comment">
                             <label>Caption Text Color</label>	
 							<comment><![CDATA[Caption text color code with '#' for e.g. #FFFFFF]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -206,7 +206,7 @@
                             <show_in_store>1</show_in_store>
                         </captiontextcolor>
 						
-						<loaderColor translate="label">
+						<loaderColor translate="label comment">
                             <label>Loader Bar Color</label>	
 							<comment><![CDATA[Loader Bar Color code with '#' for e.g. #FFFFFF]]></comment>						
                             <frontend_type>text</frontend_type>                                                      
@@ -216,7 +216,7 @@
                             <show_in_store>1</show_in_store>
                         </loaderColor>
 						
-						<loaderBgColor translate="label">
+						<loaderBgColor translate="label comment">
                             <label>Loader Background Color</label>	
 							<comment><![CDATA[Loader Background Color code with '#' for e.g. #222222]]></comment>						
                             <frontend_type>text</frontend_type>                                                      

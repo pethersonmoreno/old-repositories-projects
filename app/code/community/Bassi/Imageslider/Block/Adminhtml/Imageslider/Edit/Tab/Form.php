@@ -19,7 +19,7 @@ class Bassi_Imageslider_Block_Adminhtml_Imageslider_Edit_Tab_Form extends Mage_A
   {
       $form = new Varien_Data_Form();
       $this->setForm($form);
-      $fieldset = $form->addFieldset('imageslider_form', array('legend'=>Mage::helper('imageslider')->__('Banner information')));
+      $fieldset = $form->addFieldset('imageslider_form', array('legend'=>Mage::helper('imageslider')->__('Banner Information')));
      
       $fieldset->addField('title', 'text', array(
           'label'     => Mage::helper('imageslider')->__('Image Title'),
@@ -55,14 +55,14 @@ class Bassi_Imageslider_Block_Adminhtml_Imageslider_Edit_Tab_Form extends Mage_A
           'label'     => Mage::helper('imageslider')->__('Image Url'),
 		  'class'     => 'validate-url',
           'required'  => false,
-		  'after_element_html' => "<small>Image URL</small>",
+		  'after_element_html' => "<small>".Mage::helper('imageslider')->__('Image URL')."</small>",
           'name'      => 'weblink',
       ));
 	  
 	  $fieldset->addField('linktarget', 'select', array(
 				  'label'     => Mage::helper('imageslider')->__('Link Target'),
 				  'name'      => 'linktarget',
-				  'after_element_html' => "<small>New Tab: To open in new tab, Same Tab: To open in same tab</small>",
+				  'after_element_html' => "<small>".Mage::helper('imageslider')->__('New Tab: To open in new tab, Same Tab: To open in same tab')."</small>",
 				  'values'    => array(
 					  array(
 						  'value'     => '_self',
