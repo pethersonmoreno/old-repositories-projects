@@ -44,6 +44,7 @@
             <remove name="left.reports.product.viewed" />
         </reference>
         <reference name="footer">
+            <remove name="footer_links" />
             <remove name="copyright.blog.footer" />
             <block type="cms/block" name="page_footer_block" before="-">
                 <action method="setBlockId">
