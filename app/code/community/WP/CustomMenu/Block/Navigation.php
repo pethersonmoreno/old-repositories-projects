@@ -266,7 +266,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
             $htmlTop[] = '<a class="level' . $level . $active . '" href="'.$this->getCategoryUrl($category).'">';
         }
         $name = $this->_getFormatedCategoryName($category->getName());
-        $htmlTop[] = '<span>' . $name . 'tt</span>';
+        $htmlTop[] = '<span>' . $name . '</span>';
         $htmlTop[] = '</a>';
         $htmlTop[] = '</div>';
         $htmlTop[] = '</div>';
