@@ -90,8 +90,18 @@ HTML;
         // --- Menu Content ---
         $mobileMenuContent = '';
         $mobileMenuContentArray = array();
+	    $blockClassNameSpecialMenus = Mage::getConfig()->getBlockClassName('custommenu/specialmenus');
+	    $blockSpecialMenus = new $blockClassNameSpecialMenus();
+		$_arrMenuAddInicio = $blockSpecialMenus->getArrayMenuInicio();
+        foreach ($_arrMenuAddInicio as $_specialMenuItem) {
+			$mobileMenuContentArray[] = $_block->drawCustomSpecialMenuMobileItem($_specialMenuItem);
+        }
         foreach ($_categories as $_category) {
             $mobileMenuContentArray[] = $_block->drawCustomMenuMobileItem($_category);
+        }
+		$_arrMenuAddFim = $blockSpecialMenus->getArrayMenuFim();
+        foreach ($_arrMenuAddFim as $_specialMenuItem) {
+			$mobileMenuContentArray[] = $_block->drawCustomSpecialMenuMobileItem($_specialMenuItem);
         }
         if (count($mobileMenuContentArray)) {
             $mobileMenuContent = implode("\n", $mobileMenuContentArray);

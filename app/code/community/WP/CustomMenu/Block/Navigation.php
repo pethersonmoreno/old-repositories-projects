@@ -131,6 +131,37 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
         $html = implode("\n", $html);
         return $html;
     }
+    public function drawCustomSpecialMenuMobileItem($specialMenuItem, $level = 0)
+    {
+        if (!$specialMenuItem['ativo']) return '';
+        $html = array();
+        $id = $specialMenuItem['id'];
+        // --- Sub Categories ---
+        $activeChildren = $this->_getActiveChildrenSpecialMenu($specialMenuItem, $level);
+        // --- class for active category ---
+        $active = '';
+        $hasSubMenu = count($activeChildren);
+        $catUrl = $specialMenuItem['url'];
+        $html[] = '<div id="specialmenu-mobile-' . $id . '" class="menu-mobile level0' . $active . '">';
+        $html[] = '<div class="parentMenu">';
+        // --- Top Menu Item ---
+        $html[] = '<a href="' . Mage::getUrl($catUrl) .'">';
+        $html[] = '<span>' . $specialMenuItem['texto'] . '</span>';
+        $html[] = '</a>';
+        if ($hasSubMenu) {
+            $html[] = '<span class="button" rel="specialsubmenu-mobile-' . $id . '" onclick="wpSubMenuToggle(this, \'specialmenu-mobile-' . $id . '\', \'specialsubmenu-mobile-' . $id . '\');">&nbsp;</span>';
+        }
+        $html[] = '</div>';
+        if ($hasSubMenu) {
+            $html[] = '<div id="specialsubmenu-mobile-' . $id . '" rel="level' . $level . '" class="wp-custom-menu-submenu mobile" style="display: none;">';
+            $html[] = $this->drawMobileSpecialMenuItem($activeChildren);
+            $html[] = '<div class="clearBoth"></div>';
+            $html[] = '</div>';
+        }
+        $html[] = '</div>';
+        $html = implode("\n", $html);
+        return $html;
+    }
 
     public function drawMobileMenuItem($children, $level = 1)
     {
@@ -157,6 +188,34 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
                 if (count($activeChildren) > 0) {
                     $html.= '<div id="submenu-mobile-' . $id . '" rel="level' . $level . '" class="wp-custom-menu-submenu mobile level' . $level . '" style="display: none;">';
                     $html.= $this->drawMobileMenuItem($activeChildren, $level + 1);
+                    $html.= '<div class="clearBoth"></div>';
+                    $html.= '</div>';
+                }
+                $html.= '</div>';
+            }
+        }
+        return $html;
+    }
+
+    public function drawMobileSpecialMenuItem($children, $level = 1)
+    {
+        $html = '';
+        foreach ($children as $child) {
+            if ($child['ativo']) {
+                // --- class for active category ---
+                $active = '';
+                $id = $child['id'];
+                $activeChildren = $this->_getActiveChildrenSpecialMenu($child, $level);
+                $html.= '<div id="specialmenu-mobile-' . $id . '" class="itemMenu level' . $level . $active . '">';
+                $html.= '<div class="parentMenu">';
+                $html.= '<a class="itemMenuName level' . $level . '" href="' . Mage::getUrl($child['url']) . '"><span>' . $child['texto'] . '</span></a>';
+                if (count($activeChildren) > 0) {
+                    $html.= '<span class="button" rel="specialsubmenu-mobile-' . $id . '" onclick="wpSubMenuToggle(this, \'specialmenu-mobile-' . $id . '\', \'specialsubmenu-mobile-' . $id . '\');">&nbsp;</span>';
+                }
+                $html.= '</div>';
+                if (count($activeChildren) > 0) {
+                    $html.= '<div id="submenu-mobile-' . $id . '" rel="level' . $level . '" class="wp-custom-menu-submenu mobile level' . $level . '" style="display: none;">';
+                    $html.= $this->drawMobileSpecialMenuItem($activeChildren, $level + 1);
                     $html.= '<div class="clearBoth"></div>';
                     $html.= '</div>';
                 }
@@ -207,7 +266,7 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
             $htmlTop[] = '<a class="level' . $level . $active . '" href="'.$this->getCategoryUrl($category).'">';
         }
         $name = $this->_getFormatedCategoryName($category->getName());
-        $htmlTop[] = '<span>' . $name . '</span>';
+        $htmlTop[] = '<span>' . $name . 'tt</span>';
         $htmlTop[] = '</a>';
         $htmlTop[] = '</div>';
         $htmlTop[] = '</div>';
