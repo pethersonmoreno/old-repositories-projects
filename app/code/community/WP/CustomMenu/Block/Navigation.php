@@ -3,6 +3,7 @@
 class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
 {
     const CUSTOM_BLOCK_TEMPLATE = "wp_custom_menu_%d";
+    const CUSTOM_SPECIAL_BLOCK_TEMPLATE = "wp_custom_special_menu_%d";
 
     private $_productsCount     = null;
     private $_topMenu           = array();
@@ -217,6 +218,43 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
         }
     }
 
+    public function drawCustomSpecialMenuItem($specialMenuItem, $level = 0)
+    {
+        if (!$specialMenuItem["ativo"]) return;
+        $htmlTop = array();
+        $id = $specialMenuItem['id'];
+        // --- Static Block ---
+        list($blockId, $blockHtml) = $this->_getPopupStaticBlockHtmlBySpecialMenuId($id);
+        // --- Sub Categories ---
+        $activeChildren = $this->_getActiveChildrenSpecialMenu($specialMenuItem, $level);
+        // --- class for active category ---
+        $active = '';
+        $keyCurrent = $id;
+        // --- Popup functions for show ---
+        $drawPopup = ($blockHtml || count($activeChildren));
+        if ($drawPopup) {
+            $htmlTop[] = '<div id="specialmenu' . $id . '" class="menu" onmouseover="wpShowMenuPopup(this, event, \'specialpopup' . $id . '\');" onmouseout="wpHideMenuPopup(this, event, \'specialpopup' . $id . '\', \'specialmenu' . $id . '\')">';
+        } else {
+            $htmlTop[] = '<div id="specialmenu' . $id . '" class="menu">';
+        }
+        // --- Top Menu Item ---
+        $htmlTop[] = '<div class="parentMenu">';
+        if ($level == 0 && $drawPopup) {
+            $htmlTop[] = '<a class="level' . $level . $active . '" href="javascript:void(0);" rel="'.Mage::getUrl($specialMenuItem['url']).'">';
+        } else {
+            $htmlTop[] = '<a class="level' . $level . $active . '" href="'.Mage::getUrl($specialMenuItem['url']).'">';
+        }
+        $htmlTop[] = '<span>' . $specialMenuItem['texto'] . '</span>';
+        $htmlTop[] = '</a>';
+        $htmlTop[] = '</div>';
+        $htmlTop[] = '</div>';
+        $this->_topMenu[] = implode("\n", $htmlTop);
+        // --- Add Popup block (hidden) ---
+        if ($drawPopup) {
+            $this->_generateSpecialPopupHtml($id, $activeChildren, $blockId, $blockHtml);
+        }
+    }
+
     private function _generatePopupHtml($categoryId, $activeChildren, $blockId, $blockHtml)
     {
         $htmlPopup = array();
@@ -239,10 +277,43 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
         $htmlPopup[] = '</div>';
         $this->_popupMenu[] = implode("\n", $htmlPopup);
     }
+    private function _generateSpecialPopupHtml($specialMenuId, $activeChildren, $blockId, $blockHtml)
+    {
+        $htmlPopup = array();
+        // --- Popup function for hide ---
+        $htmlPopup[] = '<div id="specialpopup' . $specialMenuId . '" class="wp-custom-menu-popup" onmouseout="wpHideMenuPopup(this, event, \'specialpopup' . $specialMenuId . '\', \'specialmenu' . $specialMenuId . '\')" onmouseover="wpPopupOver(this, event, \'specialpopup' . $specialMenuId . '\', \'specialmenu' . $specialMenuId . '\')">';
+        // --- draw Sub Categories ---
+        if (count($activeChildren)) {
+            $columns = (int)Mage::getStoreConfig('custom_menu/columns/count');
+            $htmlPopup[] = '<div class="block1">';
+            $htmlPopup[] = $this->drawSpecialColumns($activeChildren, $columns);
+            //$htmlPopup[] = '<div class="clearBoth"></div>';
+            $htmlPopup[] = '</div>';
+        }
+        // --- draw Custom User Block ---
+        if ($blockHtml) {
+            $htmlPopup[] = '<div id="' . $blockId . '" class="block2">';
+            $htmlPopup[] = $blockHtml;
+            $htmlPopup[] = '</div>';
+        }
+        $htmlPopup[] = '</div>';
+        $this->_popupMenu[] = implode("\n", $htmlPopup);
+    }
 
     private function _getPopupStaticBlockHtmlByCategoryId($categoryId)
     {
         $blockId = sprintf(self::CUSTOM_BLOCK_TEMPLATE, $categoryId); // --- static block key
+        $collection = Mage::getModel('cms/block')->getCollection()
+            ->addFieldToFilter('identifier', array(array('like' => $blockId . '_w%'), array('eq' => $blockId)))
+            ->addFieldToFilter('is_active', 1);
+        $blockId = $collection->getFirstItem()->getIdentifier();
+        $blockHtml = Mage::app()->getLayout()->createBlock('cms/block')->setBlockId($blockId)->toHtml();
+        return array($blockId, $blockHtml);
+    }
+
+    private function _getPopupStaticBlockHtmlBySpecialMenuId($specialMenuId)
+    {
+        $blockId = sprintf(self::CUSTOM_SPECIAL_BLOCK_TEMPLATE, $specialMenuId); // --- static block key
         $collection = Mage::getModel('cms/block')->getCollection()
             ->addFieldToFilter('identifier', array(array('like' => $blockId . '_w%'), array('eq' => $blockId)))
             ->addFieldToFilter('is_active', 1);
@@ -275,6 +346,29 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
         return $html;
     }
 
+    public function drawSpecialColumns($children, $columns = 1)
+    {
+        $html = '';
+        // --- explode by columns ---
+        if ($columns < 1) $columns = 1;
+        // --- draw columns ---
+        $lastColumnNumber = count($children);
+        $i = 1;
+        foreach ($children as $key => $value) {
+            if (!count($value)) continue;
+            $class = '';
+            if ($i == 1) $class.= ' first';
+            if ($i == $lastColumnNumber) $class.= ' last';
+            if ($i % 2) $class.= ' odd'; else $class.= ' even';
+            $html.= '<div class="column' . $class . '">';
+            $html.= $this->drawSpecialMenuItem($value, 1);
+            $html.= '</div>';
+            $html.= '<div class="clearBoth"></div>';
+            $i++;
+        }
+        return $html;
+    }
+
     public function drawMenuItem($children, $level = 1)
     {
         $html = '<div class="itemMenu level' . $level . '">';
@@ -295,6 +389,23 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
                     $html.= $this->drawMenuItem($activeChildren, $level + 1);
                     $html.= '</div>';
                 }
+            }
+        }
+        $html.= '</div>';
+        return $html;
+    }
+    public function drawSpecialMenuItem($child, $level = 1)
+    {
+        $html = '<div class="itemMenu level' . $level . '">';
+        if ($child['ativo']) {
+            // --- class for active category ---
+            $active = '';
+            $html.= '<a class="itemMenuName level' . $level . $active . '" href="' . Mage::getUrl($child['url']) . '"><span>' . $child['texto'] . '</span></a>';
+            $activeChildren = $this->_getActiveChildrenSpecialMenu($child, $level);
+            if (count($activeChildren) > 0) {
+                $html.= '<div class="itemSubMenu level' . $level . '">';
+                $html.= $this->drawSpecialMenuItem($activeChildren, $level + 1);
+                $html.= '</div>';
             }
         }
         $html.= '</div>';
@@ -327,6 +438,26 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
         }
         return $activeChildren;
     }
+    protected function _getActiveChildrenSpecialMenu($parent, $level)
+    {
+        $activeChildren = array();
+        // --- check level ---
+        $maxLevel = (int)Mage::getStoreConfig('custom_menu/general/max_level');
+        if ($maxLevel > 0) {
+            if ($level >= ($maxLevel - 1)) return $activeChildren;
+        }
+        $children = $parent['children'];
+        $childrenCount = count($children);
+        $hasChildren = $children && $childrenCount;
+        if ($hasChildren) {
+            foreach ($children as $child) {
+                if ($this->_isSpecialMenuDisplayed($child)) {
+                    array_push($activeChildren, $child);
+                }
+            }
+        }
+        return $activeChildren;
+    }
 
     private function _getFormatedCategoryName($name)
     {
@@ -350,6 +481,11 @@ class WP_CustomMenu_Block_Navigation extends Mage_Catalog_Block_Navigation
             if (!isset($data[$id]) || !$data[$id]['product_count']) return false;
         }
         // === / check products count ===
+        return true;
+    }
+    private function _isSpecialMenuDisplayed(&$child)
+    {
+        if (!$child['ativo']) return false;
         return true;
     }
 

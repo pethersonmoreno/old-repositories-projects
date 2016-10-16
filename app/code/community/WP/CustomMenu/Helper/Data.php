@@ -160,8 +160,18 @@ HTML;
 HTML;
             }
             $menuContentArray = array();
+		    $blockClassNameSpecialMenus = Mage::getConfig()->getBlockClassName('custommenu/specialmenus');
+		    $blockSpecialMenus = new $blockClassNameSpecialMenus();
+			$_arrMenuAddInicio = $blockSpecialMenus->getArrayMenuInicio();
+            foreach ($_arrMenuAddInicio as $_specialMenuItem) {
+                $_block->drawCustomSpecialMenuItem($_specialMenuItem);
+            }
             foreach ($_categories as $_category) {
                 $_block->drawCustomMenuItem($_category);
+            }
+			$_arrMenuAddFim = $blockSpecialMenus->getArrayMenuFim();
+            foreach ($_arrMenuAddFim as $_specialMenuItem) {
+                $_block->drawCustomSpecialMenuItem($_specialMenuItem);
             }
             $topMenuArray = $_block->getTopMenuArray();
             $topMenuContent = '';

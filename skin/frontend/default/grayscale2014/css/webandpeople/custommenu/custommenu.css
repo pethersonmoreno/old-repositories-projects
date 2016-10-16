@@ -128,10 +128,8 @@ div.block2 {
 }
 /*column width - 4 columns*/
 #custommenu div.column {
-      margin: 0px 0px 0px 0px;
-		width: 23%;
-		float: left;
-padding: 0px 1%;
+    margin: 0px 0px 0px 0px;
+	padding: 0px 0;
 }
 /*buttons and links*/
 #custommenu div.menu a:link, #custommenu div.menu a:visited {
