@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
-	<buildpathentry kind="src" path="app/code/community/WP/BackToTopButton/Block"/>
-	<buildpathentry kind="src" path="app/code/community/WP/BackToTopButton/Helper"/>
-	<buildpathentry kind="src" path="app/code/community/WP/CustomMenu/Block"/>
-	<buildpathentry kind="src" path="app/code/community/WP/CustomMenu/controllers"/>
-	<buildpathentry kind="src" path="app/code/community/WP/CustomMenu/Helper"/>
-	<buildpathentry kind="src" path="app/code/community/WP/CustomMenu/Model"/>
-	<buildpathentry kind="src" path="app/code/community/WP/SmartCatalog/Block"/>
-	<buildpathentry kind="src" path="app/code/community/WP/SmartCatalog/Helper"/>
-	<buildpathentry kind="src" path="app/code/community/WP/SmartCatalog/Model"/>
-	<buildpathentry kind="src" path="app/code/community/WP/SmartProductImage/Block"/>
-	<buildpathentry kind="src" path="app/code/community/WP/SmartProductImage/Helper"/>
-	<buildpathentry kind="src" path="app/code/community/WP/ThemeGrayscale2014/Helper"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/default/template/webandpeople/backtotopbutton"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/default/template/webandpeople/custommenu"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/default/template/webandpeople/smartcatalog"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/default/template/webandpeople/smartproductimage"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/catalog/navigation"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/catalog/product"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/checkout/cart"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/checkout/onepage"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/customer/form"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/directory"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/easytabs"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/page/html"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/page/template"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/persistent/checkout/onepage"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/persistent/customer/form"/>
-	<buildpathentry kind="src" path="app/design/frontend/default/grayscale2014/template/webandpeople/smartcatalog"/>
+	<buildpathentry kind="src" path=""/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
 </buildpath>
