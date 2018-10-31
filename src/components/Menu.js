@@ -31,12 +31,12 @@ export default function Menu(){
           <ListItem component={Link} to="/productType/new" button>
             <ListItemText primary="Adicionar Tipo de Produto" />
           </ListItem>
-          <ListItem component={Link} to="/product" button>
+          {/* <ListItem component={Link} to="/product" button>
             <ListItemText primary="Lista de Produto" />
           </ListItem>
           <ListItem component={Link} to="/product/new" button>
             <ListItemText primary="Adicionar Produto" />
-          </ListItem>
+          </ListItem> */}
       </List>
       <Divider />
     </div>
