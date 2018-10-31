@@ -22,6 +22,9 @@ export const unidades = {
 export let marcas = [
   'Ninho', 
 ];
+export let categories = [
+  {id: 1, description: 'Bebidas'},
+];
 export let produtos = [
   
 ];

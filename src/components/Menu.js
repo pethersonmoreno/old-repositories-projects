@@ -19,6 +19,12 @@ export default function Menu(){
           <ListItem component={Link} to="/shipList/new" button>
             <ListItemText primary="Adicionar Lista" />
           </ListItem>
+          <ListItem component={Link} to="/category" button>
+            <ListItemText primary="Lista de Categorias" />
+          </ListItem>
+          <ListItem component={Link} to="/category/new" button>
+            <ListItemText primary="Adicionar Categoria" />
+          </ListItem>
           <ListItem component={Link} to="/product" button>
             <ListItemText primary="Lista de Produto" />
           </ListItem>
