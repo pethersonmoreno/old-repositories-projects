@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import App from './components/App';
 import reducers from './reducers';
 import ListCategories from './components/category/List';
@@ -14,6 +14,7 @@ import EditCategory from './components/category/Edit';
 import ListProductTypes from './components/productType/List';
 import AddProductType from './components/productType/Add';
 import EditProductType from './components/productType/Edit';
+import NotFound from './components/NotFound';
 
 
 import AddShipList from './components/shipList/AddShipList';
@@ -36,6 +37,7 @@ ReactDOM.render(
         <App>
         {/* <Route path="/" component={App}> */}
           <Switch>
+            <Route path="/" exact render={() => <Redirect to="/category" />} />
             <Route path="/category/new" component={AddCategory}/>
             <Route path="/category/:id" component={EditCategory}/>
             <Route path="/category" component={ListCategories}/>
@@ -45,6 +47,7 @@ ReactDOM.render(
             <Route path="/shipList/new" component={AddShipList}/>
             <Route path="/product/new" component={AddProduct}/>
             <Route path="/product" component={ListaProducts}/>
+            <Route component={NotFound} />
           </Switch>
         {/* </Route> */}
         </App>

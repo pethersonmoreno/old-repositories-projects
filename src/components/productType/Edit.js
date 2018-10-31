@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router'
+import Typography from '@material-ui/core/Typography';
 import AppContent from '../AppContent';
 import Form from './Form';
 import {productTypes, sizes, brands} from '../dataApp';
@@ -40,11 +41,17 @@ class Edit extends Component{
   
   render(){
     const productType = productTypes.find(productType=>productType.id === this.state.id);
-    return (
-      <AppContent titulo={"Controle de Compras - Tipo de Produto "+productType.description}>
+    let conteudo = (<Typography>Tipo de Produto não encontrado</Typography>);
+    if(productType !== undefined){
+      conteudo = (
         <Form productType={productType} 
           textoBotao="Alterar" 
           onSubmit={this.edit.bind(this)} />
+      );
+    }
+    return (
+      <AppContent titulo={"Controle de Compras - Tipo de Produto "+(productType?productType.description:'')}>
+        {conteudo}
       </AppContent>
     );
   }

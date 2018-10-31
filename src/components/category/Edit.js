@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router'
+import Typography from '@material-ui/core/Typography';
 import AppContent from '../AppContent';
 import Form from './Form';
 import {categories} from '../dataApp';
@@ -22,9 +23,17 @@ class Edit extends Component{
   
   render(){
     const category = categories.find(category=>category.id === this.state.id);
+    let conteudo = (<Typography>Categoria não encontrada</Typography>);
+    if(category !== undefined){
+      conteudo = (
+        <Form description={category.description} 
+          textoBotao="Alterar" 
+          onSubmit={this.editCategory.bind(this)} />
+      );
+    }
     return (
-      <AppContent titulo={"Controle de Compras - Categoria "+category.description}>
-        <Form description={category.description} textoBotao="Alterar" onSubmit={this.editCategory.bind(this)} />
+      <AppContent titulo={"Controle de Compras - Categoria "+(category?category.description:'')}>
+        {conteudo}
       </AppContent>
     );
   }

@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Menu from './Menu';
 import { menuWidth } from './appConfig.js';
-import {toggleMenu} from '../actions'
+import {toggleMenu, smUp} from '../actions'
 
 const styles = theme => ({
   drawer: {
@@ -31,9 +31,10 @@ class MenuResponsive extends React.Component {
   }
   
   updateSmUp(){
+    const {smUp, updateSmUp} = this.props;
     const newSmUp = (document.body.clientWidth >= 600);
-    if(newSmUp !== this.state.smUp){
-      this.setState({smUp: newSmUp});
+    if(newSmUp !== smUp){
+      updateSmUp(newSmUp);
     }
   }
   componentWillMount() {
@@ -50,7 +51,7 @@ class MenuResponsive extends React.Component {
     return (
       <nav className={classes.drawer}>
         {/* The implementation can be swap with js to avoid SEO duplication of links. */}
-        {!this.state.smUp && 
+        {!this.props.smUp && 
           <Drawer
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -66,7 +67,7 @@ class MenuResponsive extends React.Component {
             <Menu />
           </Drawer>
         }
-        {this.state.smUp && 
+        {this.props.smUp && 
           <Drawer
             classes={{
               paper: classes.drawerPaper,
@@ -90,13 +91,17 @@ MenuResponsive.propTypes = {
 };
 const mapStateToProps = state => {
   return {
-    menuOpen: state.menuOpen
+    menuOpen: state.menu.menuOpen,
+    smUp: state.menu.smUp
   }
 };
 const mapDispatchToProps = dispatch => {
   return {
     toggleMenu: () => {
       dispatch(toggleMenu())
+    },
+    updateSmUp: (newSmUp) => {
+      dispatch(smUp(newSmUp))
     }
   }
 };
