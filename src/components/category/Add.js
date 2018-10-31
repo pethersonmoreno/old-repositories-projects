@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router'
 import AppContent from '../AppContent';
-import FormCategory from './FormCategory';
+import Form from './Form';
 import {categories} from '../dataApp';
 
-class AddCategory extends Component{
+class Add extends Component{
   addCategory(event, valores){
     const { history } = this.props;
     event.preventDefault();
@@ -19,9 +19,9 @@ class AddCategory extends Component{
   render(){
     return (
       <AppContent titulo="Controle de Compras - Nova Categoria">
-        <FormCategory description="" textoBotao="Adicionar" onSubmit={this.addCategory.bind(this)} />
+        <Form description="" textoBotao="Adicionar" onSubmit={this.addCategory.bind(this)} />
       </AppContent>
     );
   }
 }
-export default withRouter(AddCategory);
+export default withRouter(Add);

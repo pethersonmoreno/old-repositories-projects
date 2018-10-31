@@ -8,9 +8,9 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import App from './components/App';
 import reducers from './reducers';
-import ListCategories from './components/category/ListCategories';
-import AddCategory from './components/category/AddCategory';
-import EditCategory from './components/category/EditCategory';
+import ListCategories from './components/category/List';
+import AddCategory from './components/category/Add';
+import EditCategory from './components/category/Edit';
 import ListProductTypes from './components/productType/List';
 import AddProductType from './components/productType/Add';
 import EditProductType from './components/productType/Edit';

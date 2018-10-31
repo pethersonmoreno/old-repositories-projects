@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { withRouter } from 'react-router'
 import {categories} from '../dataApp';
 
-class ListCategories extends Component{
+class List extends Component{
   editCategory(category){
     const { history } = this.props;
     history.push('/category/'+category.id);
@@ -51,4 +51,4 @@ class ListCategories extends Component{
     );
   }
 }
-export default withRouter(ListCategories);
+export default withRouter(List);

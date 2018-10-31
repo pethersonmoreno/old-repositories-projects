@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router'
 import AppContent from '../AppContent';
-import FormCategory from './FormCategory';
+import Form from './Form';
 import {categories} from '../dataApp';
 
-class EditCategory extends Component{
+class Edit extends Component{
   constructor(props){
     super(props);
     const { match } = props;
@@ -24,9 +24,9 @@ class EditCategory extends Component{
     const category = categories.find(category=>category.id === this.state.id);
     return (
       <AppContent titulo={"Controle de Compras - Categoria "+category.description}>
-        <FormCategory description={category.description} textoBotao="Alterar" onSubmit={this.editCategory.bind(this)} />
+        <Form description={category.description} textoBotao="Alterar" onSubmit={this.editCategory.bind(this)} />
       </AppContent>
     );
   }
 }
-export default withRouter(EditCategory);
+export default withRouter(Edit);
