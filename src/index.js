@@ -8,10 +8,15 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import App from './components/App';
 import reducers from './reducers';
-import AddShipList from './components/shipList/AddShipList';
 import ListCategories from './components/category/ListCategories';
 import AddCategory from './components/category/AddCategory';
 import EditCategory from './components/category/EditCategory';
+import ListProductTypes from './components/productType/List';
+import AddProductType from './components/productType/Add';
+import EditProductType from './components/productType/Edit';
+
+
+import AddShipList from './components/shipList/AddShipList';
 import AddProduct from './components/product/AddProduct';
 import ListaProducts from './components/product/ListaProducts';
 import './index.css';
@@ -31,10 +36,13 @@ ReactDOM.render(
         <App>
         {/* <Route path="/" component={App}> */}
           <Switch>
-            <Route path="/shipList/new" component={AddShipList}/>
             <Route path="/category/new" component={AddCategory}/>
             <Route path="/category/:id" component={EditCategory}/>
             <Route path="/category" component={ListCategories}/>
+            <Route path="/productType/new" component={AddProductType}/>
+            <Route path="/productType/:id" component={EditProductType}/>
+            <Route path="/productType" component={ListProductTypes}/>
+            <Route path="/shipList/new" component={AddShipList}/>
             <Route path="/product/new" component={AddProduct}/>
             <Route path="/product" component={ListaProducts}/>
           </Switch>

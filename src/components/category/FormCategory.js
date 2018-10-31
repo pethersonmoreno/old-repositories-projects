@@ -8,7 +8,6 @@ export default class FormCategory extends Component{
     this.state = {
       description: props.description,
     };
-    this.description = '';
   }
   onCallSubmit(event){
     const {onSubmit} = this.props;
