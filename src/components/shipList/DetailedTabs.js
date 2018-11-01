@@ -18,7 +18,7 @@ import LabelIcon from '@material-ui/icons/Label';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import AppContent from '../AppContent';
-import {shipLists, categories, products, productTypes, brands, sizes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../dataApp';
+import {shipLists, shipListItems, categories, products, productTypes, brands, sizes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../dataApp';
 
 const styles = theme => ({
   root:{
@@ -100,11 +100,15 @@ class ShipListItem extends Component{
     }
     return '?';
   }
+  edit=()=>{
+    const { history, item } = this.props;
+    history.push('/shipList/'+item.shipListId+'/item/'+item.id);
+  }
   render(){
     const {classes, item} = this.props;
     const description = item.qtd + ' UN ' + this.getDescriptionOfShipListItem(item);
     return (
-      <ListItem button className={classes.nested}>
+      <ListItem button className={classes.nested} onClick={this.edit}>
         <ListItemText inset primary={description} />
       </ListItem>
     );
@@ -115,21 +119,23 @@ class CategoryListItem extends Component{
     if(shipList === undefined){
       return [];
     }
-    return shipList.items.filter(item=>{
-      let productType;
-      if(item.selecao === SELECAO_DIRETA){
-        const product = products.find(product=>product.id === item.productId);
-        if(product !== undefined){
-          productType = productTypes.find(productType=>productType.id === product.productTypeId);
+    return shipListItems
+      .filter(item=>item.shipListId === shipList.id)
+      .filter(item=>{
+        let productType;
+        if(item.selecao === SELECAO_DIRETA){
+          const product = products.find(product=>product.id === item.productId);
+          if(product !== undefined){
+            productType = productTypes.find(productType=>productType.id === product.productTypeId);
+          }
+        } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
+          productType = productTypes.find(productType=>productType.id === item.productTypeId);
         }
-      } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
-        productType = productTypes.find(productType=>productType.id === item.productTypeId);
-      }
-      return (productType !== undefined && productType.categoryId === category.id);
-    });
+        return (productType !== undefined && productType.categoryId === category.id);
+      });
   }
   render(){
-    const {classes, category, shipList, isExpanded, toggleCollapse} = this.props;
+    const {history, classes, category, shipList, isExpanded, toggleCollapse} = this.props;
     const itemsOfCategory = this.getShipListItemsOfCategory(category, shipList);
     const expanded = isExpanded();
     if(itemsOfCategory.length > 0){
@@ -149,7 +155,7 @@ class CategoryListItem extends Component{
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {itemsOfCategory.map((item, index)=>(
-                  <ShipListItem key={index} classes={classes} item={item} />
+                  <ShipListItem key={index} history={history} classes={classes} item={item} />
               ))}
             </List>
           </Collapse>
@@ -163,11 +169,15 @@ class CategoryList extends Component{
   constructor(props){
     super(props);
     const {shipList} = props;
+    let categoriesCollapsed = [];
+    if(shipList !== undefined
+      && shipListItems.filter(item=>item.shipListId === shipList.id).length > 10)
+    {
+      categoriesCollapsed = categories.map(category=>category.id);
+    }
     this.state = {
-      categoriesCollapsed: (shipList !== undefined && shipList.items.length > 10
-        ?categories.map(category=>category.id)
-        :[]),
-      shipList: shipList,
+      categoriesCollapsed,
+      shipList,
     };
   }
   handleCategoryExpandable(category){
@@ -186,11 +196,11 @@ class CategoryList extends Component{
     return (categoriesCollapsed.find(categoryId => categoryId === category.id) === undefined);
   }
   render(){
-    const {classes, shipList} = this.props;
+    const {history, classes, shipList} = this.props;
     return (
       <div>
         {categories.map(category=>(
-            <CategoryListItem key={category.id} classes={classes} 
+            <CategoryListItem key={category.id} history={history} classes={classes} 
               toggleCollapse={this.handleCategoryExpandable.bind(this, category)}
               isExpanded={this.isCategoryExpanded.bind(this, category)}
               category={category} shipList={shipList} />
@@ -227,9 +237,16 @@ class DetailedTabs extends Component{
       history.push('/shipList/'+shipListSelected.id);
     }
   }
+  addItem(){
+    const { history } = this.props;
+    const {shipListSelected} = this.state;
+    if(shipListSelected !== undefined){
+      history.push('/shipList/'+shipListSelected.id+'/item/new');
+    }
+  }
   
   render(){
-    const { classes } = this.props;
+    const { history, classes } = this.props;
     const { shipListSelected } = this.state;
     let tabSelected = (shipListSelected !== undefined?shipListSelected.id:'new');
     return (
@@ -237,7 +254,7 @@ class DetailedTabs extends Component{
         <div className={classes.root}>
           <BarTabs classes={classes} shipLists={shipLists}
               tabSelected={tabSelected} handleTabChange={this.handleTabChange} />
-          <CategoryList classes={classes} 
+          <CategoryList history={history} classes={classes} 
             shipList={shipListSelected} />
           {shipListSelected && (
             <div className='fabContainer'>
@@ -245,7 +262,8 @@ class DetailedTabs extends Component{
                 onClick={this.edit.bind(this)}>
                 <EditIcon />
               </Button>
-              <Button variant="fab" className='fab' color='primary'>
+              <Button variant="fab" className='fab' color='primary'
+                onClick={this.addItem.bind(this)}>
                 <AddIcon />
               </Button>
             </div>

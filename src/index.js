@@ -20,6 +20,8 @@ import EditProduct from './components/product/Edit';
 import DetailedTabsShipList from './components/shipList/DetailedTabs';
 import AddShipList from './components/shipList/Add';
 import EditShipList from './components/shipList/Edit';
+import AddShipListItem from './components/shipListItem/Add';
+import EditShipListItem from './components/shipListItem/Edit';
 
 import NotFound from './components/NotFound';
 import './index.css';
@@ -50,6 +52,8 @@ ReactDOM.render(
             <Route path="/product/:id" component={EditProduct}/>
             <Route path="/product" component={ListaProducts}/>
             <Route path="/shipList/new" component={AddShipList}/>
+            <Route path="/shipList/:shipListId/item/new" component={AddShipListItem}/>
+            <Route path="/shipList/:shipListId/item/:id" component={EditShipListItem}/>
             <Route path="/shipList/:id" component={EditShipList}/>
             <Route path="/shipList" component={DetailedTabsShipList}/>
             <Route component={NotFound} />

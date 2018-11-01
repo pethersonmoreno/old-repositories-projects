@@ -33,23 +33,26 @@ export let shipLists = [
   {
     id: 1,
     description: 'Mercado',
-    items:[
-      {
-        qtd:1,
-        selecao: SELECAO_DIRETA,
-        productId: 1,
-      },
-      {
-        qtd:10,
-        selecao: SELECAO_POR_TIPO_TAMANHO,
-        productTypeId: 1,
-        sizeId: 1,
-      }
-    ]
   },
   {
     id: 2,
     description: 'Praia',
-    items:[],
+  }
+];
+export let shipListItems = [
+  {
+    id: 1,
+    shipListId: 1,
+    qtd:1,
+    selecao: SELECAO_DIRETA,
+    productId: 1,
+  },
+  {
+    id: 2,
+    shipListId: 1,
+    qtd:10,
+    selecao: SELECAO_POR_TIPO_TAMANHO,
+    productTypeId: 1,
+    sizeId: 1,
   }
 ];

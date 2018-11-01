@@ -2,36 +2,37 @@ import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import AppContent from '../AppContent';
 import Form from './Form';
-import {shipLists} from '../dataApp';
+import {shipListItems} from '../dataApp';
 
 class Edit extends Component{
   constructor(props){
     super(props);
     const { match } = props;
     this.state={
+      shipListId: parseInt(match.params.shipListId),
       id: parseInt(match.params.id)
     }
   }
   edit(event, valores){
     const { history } = this.props;
     event.preventDefault();
-    const shipList = shipLists.find(shipList=>shipList.id === this.state.id);
-    shipList.description = valores.description;
+    const shipListItem = shipListItems.find(shipListItem=>shipListItem.id === this.state.id);
+    Object.assign(shipListItem, valores);
     history.push('/shipList');
   }
   
   render(){
-    const shipList = shipLists.find(shipList=>shipList.id === this.state.id);
-    let conteudo = (<Typography>Lista não encontrado</Typography>);
-    if(shipList !== undefined){
+    const shipListItem = shipListItems.find(shipListItem=>shipListItem.id === this.state.id);
+    let conteudo = (<Typography>Item não encontrado</Typography>);
+    if(shipListItem !== undefined){
       conteudo = (
-        <Form shipList={shipList} 
+        <Form item={shipListItem} 
           textoBotao="Alterar" 
           onSubmit={this.edit.bind(this)} />
       );
     }
     return (
-      <AppContent titulo="Editar Lista">
+      <AppContent titulo="Editar Item">
         {conteudo}
       </AppContent>
     );

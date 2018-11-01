@@ -20,7 +20,7 @@ const brandsOptions = brands.map(brand => ({
   productTypeId: brand.productTypeId,
 }));
 
-export default class FormProduct extends Component{
+export default class Form extends Component{
   constructor(props){
     super(props);
     const product = (props.product?props.product:{productTypeId:null, sizeId: null, brandId: null, ean: ''});
