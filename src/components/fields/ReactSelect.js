@@ -191,7 +191,7 @@ class ReactSelect extends Component {
     const { 
       classes, theme, options, placeholder, 
       label, value, onChange, isMulti, 
-      selectRef, onKeyDown
+      selectRef, onKeyDown, autoFocus
     } = this.props;
 
     const selectStyles = {
@@ -233,6 +233,7 @@ class ReactSelect extends Component {
             onChange={this.onChangeUsed.bind(this, onChange)}
             placeholder={placeHolderUsed}
             isMulti={isMulti}
+            autoFocus={autoFocus}
             ref={selectRef}
             onKeyDown={onKeyDown}
           />

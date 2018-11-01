@@ -44,11 +44,6 @@ export default class Form extends Component{
       });
     }
   }
-  componentDidMount(){
-    setTimeout(()=>{
-      this.productTypeSelect.focus();
-    }, 50);
-  }
   render(){
     const {textoBotao} = this.props;
     const valueProductTypeSelected = productTypesOptions.find(option=>option.value === this.state.productTypeId);
@@ -60,7 +55,7 @@ export default class Form extends Component{
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <ReactSelect label="Tipo de Produto" value={valueProductTypeSelected}
-            selectRef={(select) => { this.productTypeSelect = select; }}
+            autoFocus={true}
             options={productTypesOptions}
             onChange={value => this.setState({productTypeId:(!!value?value.value:null)})} />
           <ReactSelect label="Marca" value={valueBrandSelected}

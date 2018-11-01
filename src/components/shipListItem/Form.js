@@ -43,9 +43,6 @@ export default class Form extends Component{
     event.preventDefault();
     onSubmit(event, Object.assign({}, this.state));
   }
-  componentDidMount(){
-    this.qtdInput.focus();
-  }
   render(){
     const {textoBotao} = this.props;
     const valueSelecaoProdutoSelected = selecoesProdutoOptions.find(option=>option.value === this.state.selecao);
@@ -57,7 +54,7 @@ export default class Form extends Component{
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <TextField label="Quantidade" value={this.state.qtd} 
-            inputRef={(input) => { this.qtdInput = input; }}
+            autoFocus={true}
             fullWidth
             onChange={event => this.setState({qtd:event.target.value})} />
           <ReactSelect label="Seleção do Produto" value={valueSelecaoProdutoSelected}
