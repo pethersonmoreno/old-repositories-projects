@@ -23,7 +23,9 @@ export default class FormCategory extends Component{
     return (
       <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
         <div>
-          <TextField label="Descrição" value={this.state.description} onChange={event => this.setState({description:event.target.value})} />
+          <TextField label="Descrição" value={this.state.description} 
+            fullWidth
+            onChange={event => this.setState({description:event.target.value})} />
         </div>
         <div>
           <Button type="submit" variant="contained">{textoBotao}</Button>

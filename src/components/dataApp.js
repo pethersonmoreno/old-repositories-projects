@@ -42,6 +42,12 @@ export let brands = [
   {id: 2, productTypeId: 1, description: 'Pepsi'},
   {id: 3, productTypeId: 1, description: 'Fanta'},
 ];
-export let produtos = [
-  
+export let products = [
+  {
+    id: 1,
+    productTypeId: 1, 
+    sizeId: 1, 
+    brandId: 1,
+    ean: '',
+  }
 ];

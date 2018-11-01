@@ -8,12 +8,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import {categories} from '../dataApp';
+import {products, productTypes, brands, sizes} from '../dataApp';
 
-class List extends Component{
-  editCategory(category){
+export default class List extends Component{
+  edit(productType){
     const { history } = this.props;
-    history.push('/category/'+category.id);
+    history.push('/product/'+productType.id);
   }
   render(){
     return (
@@ -24,21 +24,25 @@ class List extends Component{
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell numeric>ID</TableCell>
-                <TableCell>Descrição</TableCell>
+                <TableCell>Produto</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map(category => {
+              {products.map(product => {
+                const productType = productTypes.find(productType=>productType.id === product.productTypeId);
+                const brand = brands.find(brand=>brand.id === product.brandId);
+                const size = sizes.find(size=>size.id === product.sizeId);
+                const productDescription = productType.description+' '+brand.description+' '+size.description;
                 return (
-                  <TableRow key={category.id}>
+                  <TableRow key={product.id}>
                     <TableCell>
-                      <IconButton onClick={this.editCategory.bind(this, category)}>
+                      <IconButton onClick={this.edit.bind(this, product)}>
                         <EditIcon color="primary" />
                       </IconButton>
                     </TableCell>
-                    <TableCell numeric>{category.id}</TableCell>
+                    <TableCell numeric>{product.id}</TableCell>
                     <TableCell component="th" scope="row">
-                      {category.description}
+                      {productDescription}
                     </TableCell>
                   </TableRow>
                 );
@@ -50,4 +54,3 @@ class List extends Component{
     );
   }
 }
-export default List;

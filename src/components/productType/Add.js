@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import { withRouter } from 'react-router'
 import AppContent from '../AppContent';
 import Form from './Form';
 import {productTypes, sizes, brands} from '../dataApp';
 
 class Add extends Component{
-  addCategory(event, valores){
+  add(event, valores){
     const { history } = this.props;
     event.preventDefault();
     const productTypeId = productTypes.length+1;
@@ -14,9 +13,7 @@ class Add extends Component{
       {id:productTypeId},
       valores,
     ));
-    console.log(sizes);
     this.updateList(productTypeId, sizes, valores.sizes);
-    console.log(sizes);
     this.updateList(productTypeId, brands, valores.brands);
     history.push('/productType');
   }
@@ -41,9 +38,9 @@ class Add extends Component{
       <AppContent titulo="Novo Tipo de Produto">
         <Form 
           textoBotao="Adicionar" 
-          onSubmit={this.addCategory.bind(this)} />
+          onSubmit={this.add.bind(this)} />
       </AppContent>
     );
   }
 }
-export default withRouter(Add);
+export default Add;

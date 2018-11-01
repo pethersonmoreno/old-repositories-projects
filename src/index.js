@@ -14,12 +14,13 @@ import EditCategory from './components/category/Edit';
 import ListProductTypes from './components/productType/List';
 import AddProductType from './components/productType/Add';
 import EditProductType from './components/productType/Edit';
+import ListaProducts from './components/product/List';
+import AddProduct from './components/product/Add';
+import EditProduct from './components/product/Edit';
+
 import NotFound from './components/NotFound';
 
-
 import AddShipList from './components/shipList/AddShipList';
-import AddProduct from './components/product/AddProduct';
-import ListaProducts from './components/product/ListaProducts';
 import './index.css';
 
 const store = createStore(reducers)
@@ -44,9 +45,10 @@ ReactDOM.render(
             <Route path="/productType/new" component={AddProductType}/>
             <Route path="/productType/:id" component={EditProductType}/>
             <Route path="/productType" component={ListProductTypes}/>
-            <Route path="/shipList/new" component={AddShipList}/>
             <Route path="/product/new" component={AddProduct}/>
+            <Route path="/product/:id" component={EditProduct}/>
             <Route path="/product" component={ListaProducts}/>
+            <Route path="/shipList/new" component={AddShipList}/>
             <Route component={NotFound} />
           </Switch>
         {/* </Route> */}
