@@ -64,7 +64,7 @@ export default class Form extends Component{
             fullWidth
             onChange={event => this.setState({ean:event.target.value})} />
           <div className="formButtons">
-            <Button type="submit" variant="contained">{textoBotao}</Button>
+            <Button type="submit" variant="contained" color="primary">{textoBotao}</Button>
           </div>
         </form>
       </Paper>

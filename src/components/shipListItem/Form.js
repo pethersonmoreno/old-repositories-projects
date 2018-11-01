@@ -75,7 +75,7 @@ export default class Form extends Component{
             </div>
           )}
           <div className="formButtons">
-            <Button type="submit" variant="contained">{textoBotao}</Button>
+            <Button type="submit" variant="contained" color="primary">{textoBotao}</Button>
           </div>
         </form>
       </Paper>

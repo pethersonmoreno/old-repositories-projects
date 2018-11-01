@@ -31,7 +31,7 @@ export default class FormCategory extends Component{
               onChange={event => this.setState({description:event.target.value})} />
           </div>
           <div className="formButtons">
-            <Button type="submit" variant="contained">{textoBotao}</Button>
+            <Button type="submit" variant="contained" color="primary">{textoBotao}</Button>
           </div>
         </form>
       </Paper>
