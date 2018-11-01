@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import AppContent from '../AppContent';
 import Form from './Form';
-import {shipLists, productTypes, sizes, brands} from '../dataApp';
+import {shipLists} from '../dataApp';
 
 class Edit extends Component{
   constructor(props){

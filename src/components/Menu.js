@@ -25,20 +25,11 @@ class Menu extends Component{
             <ListItem component={Link} to="/category" onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Categorias" />
             </ListItem>
-            <ListItem component={Link} to="/category/new" onClick={this.toggleMenu} button>
-              <ListItemText primary="Adicionar Categoria" />
-            </ListItem>
             <ListItem component={Link} to="/productType" onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Tipos de Produto" />
             </ListItem>
-            <ListItem component={Link} to="/productType/new" onClick={this.toggleMenu} button>
-              <ListItemText primary="Adicionar Tipo de Produto" />
-            </ListItem>
             <ListItem component={Link} to="/product" onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Produtos" />
-            </ListItem>
-            <ListItem component={Link} to="/product/new" onClick={this.toggleMenu} button>
-              <ListItemText primary="Adicionar Produto" />
             </ListItem>
         </List>
         <Divider />

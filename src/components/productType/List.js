@@ -7,13 +7,19 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 import {productTypes} from '../dataApp';
 
 class List extends Component{
   edit(productType){
     const { history } = this.props;
     history.push('/productType/'+productType.id);
+  }
+  add(){
+    const { history } = this.props;
+    history.push('/productType/new');
   }
   render(){
     return (
@@ -46,6 +52,12 @@ class List extends Component{
             </TableBody>
           </Table>
         </Paper>
+        <div className='fabContainer'>
+          <Button variant="fab" className='fab' color='primary'
+            onClick={this.add.bind(this)}>
+            <AddIcon />
+          </Button>
+        </div>
       </AppContent>
     );
   }

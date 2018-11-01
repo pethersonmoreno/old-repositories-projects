@@ -32,3 +32,12 @@ form{
 .formButtons{
   margin-top:15px;
 }
+
+.fabContainer {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+.fabContainer .fab {
+  margin-left: 5px;
+}

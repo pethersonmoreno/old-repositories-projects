@@ -32,14 +32,6 @@ const styles = theme => ({
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
-  fabContainer: {
-    position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
-  },
-  fab: {
-    marginLeft: '5px',
-  },
   categoryItem: {
     paddingLeft: '3px',
     paddingRight: '3px',
@@ -248,12 +240,12 @@ class DetailedTabs extends Component{
           <CategoryList classes={classes} 
             shipList={shipListSelected} />
           {shipListSelected && (
-            <div className={classes.fabContainer}>
-              <Button variant="fab" className={classes.fab} color='primary'
+            <div className='fabContainer'>
+              <Button variant="fab" className='fab' color='primary'
                 onClick={this.edit.bind(this)}>
                 <EditIcon />
               </Button>
-              <Button variant="fab" className={classes.fab} color='primary'>
+              <Button variant="fab" className='fab' color='primary'>
                 <AddIcon />
               </Button>
             </div>
