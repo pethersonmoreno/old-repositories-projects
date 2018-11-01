@@ -38,7 +38,7 @@ class Add extends Component{
   
   render(){
     return (
-      <AppContent titulo="Controle de Compras - Novo Tipo de Produto">
+      <AppContent titulo="Novo Tipo de Produto">
         <Form 
           textoBotao="Adicionar" 
           onSubmit={this.addCategory.bind(this)} />

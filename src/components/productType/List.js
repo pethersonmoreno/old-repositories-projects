@@ -18,7 +18,7 @@ class ListProductTypes extends Component{
   }
   render(){
     return (
-      <AppContent titulo="Controle de Compras - Lista de Tipos de Produtos">
+      <AppContent titulo="Lista de Tipos de Produtos">
         <Paper>
           <Table>
             <TableHead>

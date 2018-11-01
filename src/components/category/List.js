@@ -18,7 +18,7 @@ class List extends Component{
   }
   render(){
     return (
-      <AppContent titulo="Controle de Compras - Lista de Produtos">
+      <AppContent titulo="Lista de Produtos">
         <Paper>
           <Table>
             <TableHead>

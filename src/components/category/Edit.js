@@ -32,7 +32,7 @@ class Edit extends Component{
       );
     }
     return (
-      <AppContent titulo={"Controle de Compras - Categoria "+(category?category.description:'')}>
+      <AppContent titulo={"Categoria "+(category?category.description:'')}>
         {conteudo}
       </AppContent>
     );

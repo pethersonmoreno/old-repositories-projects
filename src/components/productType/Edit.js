@@ -50,7 +50,7 @@ class Edit extends Component{
       );
     }
     return (
-      <AppContent titulo={"Controle de Compras - Tipo de Produto "+(productType?productType.description:'')}>
+      <AppContent titulo={"Tipo de Produto "+(productType?productType.description:'')}>
         {conteudo}
       </AppContent>
     );
