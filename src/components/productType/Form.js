@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -64,8 +65,8 @@ export default class Form extends Component{
     const {textoBotao} = this.props;
     const valueCategorySelected = categoriesOptions.find(option=>option.value === this.state.categoryId);
     return (
-      <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
-        <div>
+      <Paper>
+        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <TextField label="Descrição" value={this.state.description} 
             fullWidth
             onChange={event => this.setState({description:event.target.value})} />
@@ -97,11 +98,11 @@ export default class Form extends Component{
               ))}
             </div>
           </div>
-        </div>
-        <div>
-          <Button type="submit" variant="contained">{textoBotao}</Button>
-        </div>
-      </form>
+          <div className="formButtons">
+            <Button type="submit" variant="contained">{textoBotao}</Button>
+          </div>
+        </form>
+      </Paper>
     );
   }
 }

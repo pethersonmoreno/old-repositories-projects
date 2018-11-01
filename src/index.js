@@ -17,10 +17,11 @@ import EditProductType from './components/productType/Edit';
 import ListaProducts from './components/product/List';
 import AddProduct from './components/product/Add';
 import EditProduct from './components/product/Edit';
+import DetailedTabsShipList from './components/shipList/DetailedTabs';
+import AddShipList from './components/shipList/Add';
+import EditShipList from './components/shipList/Edit';
 
 import NotFound from './components/NotFound';
-
-import AddShipList from './components/shipList/AddShipList';
 import './index.css';
 
 const store = createStore(reducers)
@@ -38,7 +39,7 @@ ReactDOM.render(
         <App>
         {/* <Route path="/" component={App}> */}
           <Switch>
-            <Route path="/" exact render={() => <Redirect to="/category" />} />
+            <Route path="/" exact render={() => <Redirect to="/shipList" />} />
             <Route path="/category/new" component={AddCategory}/>
             <Route path="/category/:id" component={EditCategory}/>
             <Route path="/category" component={ListCategories}/>
@@ -49,6 +50,8 @@ ReactDOM.render(
             <Route path="/product/:id" component={EditProduct}/>
             <Route path="/product" component={ListaProducts}/>
             <Route path="/shipList/new" component={AddShipList}/>
+            <Route path="/shipList/:id" component={EditShipList}/>
+            <Route path="/shipList" component={DetailedTabsShipList}/>
             <Route component={NotFound} />
           </Switch>
         {/* </Route> */}

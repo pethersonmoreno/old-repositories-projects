@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {ReactSelect} from '../fields';
@@ -48,8 +49,8 @@ export default class FormProduct extends Component{
     const valueBrandSelected = brandsOptionsUsed.find(option=>option.value === this.state.brandId);
     const valueSizeSelected = sizesOptionsUsed.find(option=>option.value === this.state.sizeId);
     return (
-      <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
-        <div>
+      <Paper>
+        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <ReactSelect label="Tipo de Produto" value={valueProductTypeSelected}
             options={productTypesOptions}
             onChange={value => this.setState({productTypeId:(!!value?value.value:null)})} />
@@ -62,11 +63,11 @@ export default class FormProduct extends Component{
           <TextField label="EAN" value={this.state.ean} 
             fullWidth
             onChange={event => this.setState({ean:event.target.value})} />
-        </div>
-        <div>
-          <Button type="submit" variant="contained">{textoBotao}</Button>
-        </div>
-      </form>
+          <div className="formButtons">
+            <Button type="submit" variant="contained">{textoBotao}</Button>
+          </div>
+        </form>
+      </Paper>
     );
   }
 }

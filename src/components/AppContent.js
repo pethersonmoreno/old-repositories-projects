@@ -2,21 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
+import { menuWidth } from './appConfig.js';
 
 const styles = theme => ({
+  main:{
+    height: '100%',
+    [theme.breakpoints.only('xs')]: {
+      width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${menuWidth}px)`,
+    },
+  },
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
+    height: '100%',
+  },
+  contentPadding: {
     padding: theme.spacing.unit * 3,
   },
+  contentPage: {
+    height: '100%',
+  },
 });
-function AppContent({children, classes, titulo}){
+function AppContent({children, classes, titulo, removePadding}){
+  let classContent = classes.content;
+  if(!removePadding){
+    classContent += ' '+classes.contentPadding;
+  }
   return (
-    <main>
+    <main className={classes.main}>
       <AppBar>{titulo}</AppBar>
-      <div className={classes.content}>
+      <div className={classContent}>
         <div className={classes.toolbar} />
-        <div className="contentPage">
+        <div className={classes.contentPage}>
           {children}
         </div>
       </div>

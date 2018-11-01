@@ -6,8 +6,9 @@ import Button from '@material-ui/core/Button';
 export default class FormCategory extends Component{
   constructor(props){
     super(props);
+    const shipList = (props.shipList?props.shipList:{id:null, description: ''});
     this.state = {
-      description: props.description,
+      description: shipList.description,
     };
   }
   onCallSubmit(event){

@@ -19,9 +19,9 @@ class Menu extends Component{
       <div>
         <Divider />
         <List>
-            {/* <ListItem component={Link} to="/shipList/new" onClick={this.toggleMenu} button>
-              <ListItemText primary="Adicionar Lista" />
-            </ListItem> */}
+            <ListItem component={Link} to="/shipList" onClick={this.toggleMenu} button>
+              <ListItemText primary="Listas" />
+            </ListItem>
             <ListItem component={Link} to="/category" onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Categorias" />
             </ListItem>

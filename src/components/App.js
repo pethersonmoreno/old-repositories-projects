@@ -7,6 +7,7 @@ import MenuResponsive from './MenuResponsive';
 const styles = theme => ({
   root: {
     display: 'flex',
+    height: '100%',
   },
 });
 

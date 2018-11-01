@@ -1,27 +1,3 @@
-export const unidades = {
-  'UN': 'Unidade', 
-  'CX': 'Caixa',
-  'CT': 'Cartela',
-  'DZ': 'Duzia',
-  'PC': 'Peça',
-  'PT': 'Pacote',
-  //Comprimento
-  'm': 'Metro',
-  'cm': 'Centímetro',
-  //Área
-  'm²': 'Metro quadrado',
-  'c²': 'Centímetro quadrado',
-  //Volume
-  'l': 'Litro',
-  'm³': 'Metro cúbico',
-  'ml': 'Militro',
-  //Peso
-  'kg': 'Kilograma', 
-  'g': 'Grama', 
-};
-export let marcas = [
-  'Ninho', 
-];
 export let categories = [
   {id: 1, description: 'Bebidas'},
   {id: 2, description: 'Açougue'},
@@ -46,8 +22,34 @@ export let products = [
   {
     id: 1,
     productTypeId: 1, 
-    sizeId: 1, 
     brandId: 1,
+    sizeId: 1, 
     ean: '',
+  }
+];
+export const SELECAO_DIRETA = 'direta';
+export const SELECAO_POR_TIPO_TAMANHO = 'porTipoTamanho';
+export let shipLists = [
+  {
+    id: 1,
+    description: 'Mercado',
+    items:[
+      {
+        qtd:1,
+        selecao: SELECAO_DIRETA,
+        productId: 1,
+      },
+      {
+        qtd:10,
+        selecao: SELECAO_POR_TIPO_TAMANHO,
+        productTypeId: 1,
+        sizeId: 1,
+      }
+    ]
+  },
+  {
+    id: 2,
+    description: 'Praia',
+    items:[],
   }
 ];
