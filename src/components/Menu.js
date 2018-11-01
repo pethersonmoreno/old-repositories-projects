@@ -20,7 +20,7 @@ class Menu extends Component{
         <Divider />
         <List>
             <ListItem component={Link} to="/shipList" onClick={this.toggleMenu} button>
-              <ListItemText primary="Listas" />
+              <ListItemText primary="Listas de Compras" />
             </ListItem>
             <ListItem component={Link} to="/category" onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Categorias" />

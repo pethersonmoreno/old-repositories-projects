@@ -5,20 +5,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
-import Badge from '@material-ui/core/Badge';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import LabelIcon from '@material-ui/icons/Label';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import AppContent from '../AppContent';
-import {shipLists, shipListItems, categories, products, productTypes, brands, sizes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../dataApp';
+import CategoryList from './CategoryList';
+import {shipLists} from '../dataApp';
 
 const styles = theme => ({
   root:{
@@ -29,29 +21,11 @@ const styles = theme => ({
   tabsBar:{
     backgroundColor: theme.palette.background.paper,
   },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
-  categoryItem: {
-    paddingLeft: '3px',
-    paddingRight: '3px',
-  },
-  badgeRoot: {
-    flex: '1 1 auto',
-  },
-  badgeBadge: {
-    top: 1,
-    right: -2,
-    // The border color match the background color.
-    border: `0px solid ${
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[900]
-    }`,
-  },
 });
 function BarTabs(props){
-  const {classes, shipLists, tabSelected, handleTabChange} = props;
+  const {className, shipLists, tabSelected, handleTabChange} = props;
   return (
-    <AppBarMaterialUI position="static" color="default" className={classes.tabsBar}>
+    <AppBarMaterialUI position="static" color="default" className={className}>
       <Tabs
         value={tabSelected}
         onChange={handleTabChange}
@@ -68,147 +42,7 @@ function BarTabs(props){
     </AppBarMaterialUI>
   );
 }
-class ShipListItem extends Component{
-  getDescription(productTypeId, brandId, sizeId){
-    const productType = productTypes.find(productType=>productType.id === productTypeId);
-    const brand = brands.find(brand=>brand.id === brandId);
-    const size = sizes.find(size=>size.id === sizeId);
-    let description = '';
-    if(productType !== undefined){
-      description += productType.description + ' ';
-    }
-    if(brand !== undefined){
-      description += brand.description + ' ';
-    }
-    if(size !== undefined){
-      description += size.description + ' ';
-    }
-    return description;
-  }
-  getDescriptionOfProduct(productId){
-    const product = products.find(product=>product.id === productId);
-    if(product === undefined){
-      return '';
-    }
-    return this.getDescription(product.productTypeId, product.brandId, product.sizeId);
-  }
-  getDescriptionOfShipListItem(item){
-    if(item.selecao === SELECAO_DIRETA){
-      return this.getDescriptionOfProduct(item.productId);
-    } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
-      return this.getDescription(item.productTypeId, null, item.sizeId);
-    }
-    return '?';
-  }
-  edit=()=>{
-    const { history, item } = this.props;
-    history.push('/shipList/'+item.shipListId+'/item/'+item.id);
-  }
-  render(){
-    const {classes, item} = this.props;
-    const description = item.qtd + ' UN ' + this.getDescriptionOfShipListItem(item);
-    return (
-      <ListItem button className={classes.nested} onClick={this.edit}>
-        <ListItemText inset primary={description} />
-      </ListItem>
-    );
-  }
-}
-class CategoryListItem extends Component{
-  getShipListItemsOfCategory(category, shipList){
-    if(shipList === undefined){
-      return [];
-    }
-    return shipListItems
-      .filter(item=>item.shipListId === shipList.id)
-      .filter(item=>{
-        let productType;
-        if(item.selecao === SELECAO_DIRETA){
-          const product = products.find(product=>product.id === item.productId);
-          if(product !== undefined){
-            productType = productTypes.find(productType=>productType.id === product.productTypeId);
-          }
-        } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
-          productType = productTypes.find(productType=>productType.id === item.productTypeId);
-        }
-        return (productType !== undefined && productType.categoryId === category.id);
-      });
-  }
-  render(){
-    const {history, classes, category, shipList, isExpanded, toggleCollapse} = this.props;
-    const itemsOfCategory = this.getShipListItemsOfCategory(category, shipList);
-    const expanded = isExpanded();
-    if(itemsOfCategory.length > 0){
-      return (
-        <div>
-          <ListItem button 
-            className={classes.categoryItem}
-            onClick={toggleCollapse}>
-            <ListItemIcon>
-              <LabelIcon />
-            </ListItemIcon>
-            <Badge badgeContent={itemsOfCategory.length} color="primary" classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
-              <ListItemText inset primary={category.description} />
-            </Badge>
-            {expanded ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {itemsOfCategory.map((item, index)=>(
-                  <ShipListItem key={index} history={history} classes={classes} item={item} />
-              ))}
-            </List>
-          </Collapse>
-        </div>
-      );
-    }
-    return (<div></div>);
-  }
-}
-class CategoryList extends Component{
-  constructor(props){
-    super(props);
-    const {shipList} = props;
-    let categoriesCollapsed = [];
-    if(shipList !== undefined
-      && shipListItems.filter(item=>item.shipListId === shipList.id).length > 10)
-    {
-      categoriesCollapsed = categories.map(category=>category.id);
-    }
-    this.state = {
-      categoriesCollapsed,
-      shipList,
-    };
-  }
-  handleCategoryExpandable(category){
-    const {categoriesCollapsed} = this.state;
-    let newCategoriesCollapsed = categoriesCollapsed.concat();
-    const index = newCategoriesCollapsed.indexOf(category.id);
-    if(index === -1){
-      newCategoriesCollapsed.push(category.id);
-    } else {
-      newCategoriesCollapsed.splice(index, 1);
-    }
-    this.setState({ categoriesCollapsed: newCategoriesCollapsed });
-  }
-  isCategoryExpanded(category){
-    const {categoriesCollapsed} = this.state;
-    return (categoriesCollapsed.find(categoryId => categoryId === category.id) === undefined);
-  }
-  render(){
-    const {history, classes, shipList} = this.props;
-    return (
-      <div>
-        {categories.map(category=>(
-            <CategoryListItem key={category.id} history={history} classes={classes} 
-              toggleCollapse={this.handleCategoryExpandable.bind(this, category)}
-              isExpanded={this.isCategoryExpanded.bind(this, category)}
-              category={category} shipList={shipList} />
-        ))}
-      </div>
-    );
-  }
-}
+
 class DetailedTabs extends Component{
   constructor(props){
     super(props);
@@ -252,9 +86,9 @@ class DetailedTabs extends Component{
     return (
       <AppContent titulo="Não esqueça!" removePadding={true}>
         <div className={classes.root}>
-          <BarTabs classes={classes} shipLists={shipLists}
+          <BarTabs className={classes.tabsBar} shipLists={shipLists}
               tabSelected={tabSelected} handleTabChange={this.handleTabChange} />
-          <CategoryList history={history} classes={classes} 
+          <CategoryList history={history}
             shipList={shipListSelected} />
           {shipListSelected && (
             <div className='fabContainer'>
