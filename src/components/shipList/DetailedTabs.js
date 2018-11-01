@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
 import AppBarMaterialUI from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -10,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import AppContent from '../AppContent';
 import CategoryList from './CategoryList';
+import {updateShipListSelected} from '../../actions'
 import {shipLists} from '../dataApp';
 
 const styles = theme => ({
@@ -44,45 +47,39 @@ function BarTabs(props){
 }
 
 class DetailedTabs extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      shipListSelected: undefined,
-    };
-  }
   componentWillMount(){
-    if(shipLists.length > 0){
-      this.setState({ shipListSelected: shipLists[0]});
+    const {shipListIdSelected, updateShipListSelected} = this.props;
+    if(!shipListIdSelected && shipLists.length > 0){
+      updateShipListSelected(shipLists[0].id);
     }
   }
   handleTabChange = (event, tabSelected) => {
-    const {history} = this.props;
+    const {history, updateShipListSelected} = this.props;
     if(tabSelected === 'new'){
       history.push('/shipList/new');
     } else {
-      const shipListSelected = shipLists.find(shipList=>shipList.id === tabSelected);
-      this.setState({ shipListSelected});
+      updateShipListSelected(tabSelected);
     }
   }
   edit(){
-    const { history } = this.props;
-    const {shipListSelected} = this.state;
+    const { history, shipListIdSelected} = this.props;
+    const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
     if(shipListSelected !== undefined){
       history.push('/shipList/'+shipListSelected.id);
     }
   }
   addItem(){
-    const { history } = this.props;
-    const {shipListSelected} = this.state;
+    const { history, shipListIdSelected } = this.props;
+    const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
     if(shipListSelected !== undefined){
       history.push('/shipList/'+shipListSelected.id+'/item/new');
     }
   }
   
   render(){
-    const { history, classes } = this.props;
-    const { shipListSelected } = this.state;
-    let tabSelected = (shipListSelected !== undefined?shipListSelected.id:'new');
+    const { history, classes, shipListIdSelected } = this.props;
+    let tabSelected = (shipListIdSelected !== undefined?shipListIdSelected:'new');
+    const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
     return (
       <AppContent titulo="Não esqueça!" removePadding={true}>
         <div className={classes.root}>
@@ -90,7 +87,7 @@ class DetailedTabs extends Component{
               tabSelected={tabSelected} handleTabChange={this.handleTabChange} />
           <CategoryList history={history}
             shipList={shipListSelected} />
-          {shipListSelected && (
+          {shipListIdSelected && (
             <div className='fabContainer'>
               <Button variant="fab" className='fab' color='primary'
                 onClick={this.edit.bind(this)}>
@@ -107,4 +104,23 @@ class DetailedTabs extends Component{
     );
   }
 }
-export default withStyles(styles, { withTheme: true })(DetailedTabs);
+
+const mapStateToProps = state => {
+  return {
+    shipListIdSelected: state.shipList.shipListIdSelected
+  }
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    updateShipListSelected: (shipListIdSelected) => {
+      dispatch(updateShipListSelected(shipListIdSelected))
+    }
+  }
+};
+
+const VisibleDetailedTabs = compose(
+  connect(mapStateToProps,mapDispatchToProps),
+  withStyles(styles, { withTheme: true }),
+)(DetailedTabs)
+
+export default VisibleDetailedTabs;
