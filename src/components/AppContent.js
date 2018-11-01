@@ -45,7 +45,7 @@ function AppContent({children, classes, titulo, removePadding}){
 }
 
 AppContent.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
   classes: PropTypes.object.isRequired,
   titulo: PropTypes.string.isRequired,
 };

@@ -32,7 +32,7 @@ const sizesOptions = sizes.map(size => ({
 export default class Form extends Component{
   constructor(props){
     super(props);
-    const item = (props.item?props.item:{qtd:null, selecao:null, productId:null, productTypeId:null, sizeId: null});
+    const item = (props.item?props.item:{qtd:'', selecao:null, productId:null, productTypeId:null, sizeId: null});
     this.state = Object.assign(
       {},
       item
@@ -42,6 +42,9 @@ export default class Form extends Component{
     const {onSubmit} = this.props;
     event.preventDefault();
     onSubmit(event, Object.assign({}, this.state));
+  }
+  componentDidMount(){
+    this.qtdInput.focus();
   }
   render(){
     const {textoBotao} = this.props;
@@ -54,6 +57,7 @@ export default class Form extends Component{
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <TextField label="Quantidade" value={this.state.qtd} 
+            inputRef={(input) => { this.qtdInput = input; }}
             fullWidth
             onChange={event => this.setState({qtd:event.target.value})} />
           <ReactSelect label="Seleção do Produto" value={valueSelecaoProdutoSelected}

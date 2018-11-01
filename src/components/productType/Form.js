@@ -61,6 +61,9 @@ export default class Form extends Component{
       this.setState({brands:this.state.brands.filter(value=>value !== brand)});
     }
   }
+  componentDidMount(){
+    this.descriptionInput.focus();
+  }
   render(){
     const {textoBotao} = this.props;
     const valueCategorySelected = categoriesOptions.find(option=>option.value === this.state.categoryId);
@@ -68,6 +71,7 @@ export default class Form extends Component{
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <TextField label="Descrição" value={this.state.description} 
+            inputRef={(input) => { this.descriptionInput = input; }}
             fullWidth
             onChange={event => this.setState({description:event.target.value})} />
           <ReactSelect label="Categoria" value={valueCategorySelected} 

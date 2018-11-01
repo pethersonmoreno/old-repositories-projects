@@ -34,12 +34,20 @@ export default class Form extends Component{
   onCallSubmit(event){
     const {onSubmit} = this.props;
     event.preventDefault();
-    onSubmit(event, {
-      productTypeId: this.state.productTypeId, 
-      sizeId: this.state.sizeId, 
-      brandId: this.state.brandId,
-      ean: this.state.ean,
-    });
+    const {productTypeId, sizeId, brandId, ean} = this.state;
+    if(productTypeId && sizeId && brandId){
+      onSubmit(event, {
+        productTypeId, 
+        sizeId, 
+        brandId,
+        ean,
+      });
+    }
+  }
+  componentDidMount(){
+    setTimeout(()=>{
+      this.productTypeSelect.focus();
+    }, 50);
   }
   render(){
     const {textoBotao} = this.props;
@@ -52,6 +60,7 @@ export default class Form extends Component{
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <ReactSelect label="Tipo de Produto" value={valueProductTypeSelected}
+            selectRef={(select) => { this.productTypeSelect = select; }}
             options={productTypesOptions}
             onChange={value => this.setState({productTypeId:(!!value?value.value:null)})} />
           <ReactSelect label="Marca" value={valueBrandSelected}

@@ -19,6 +19,9 @@ export default class FormCategory extends Component{
     // this.setState({description:''});
     onSubmit(event, data);
   }
+  componentDidMount(){
+    this.descriptionInput.focus();
+  }
   render(){
     const {textoBotao} = this.props;
     return (
@@ -26,6 +29,7 @@ export default class FormCategory extends Component{
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <div>
             <TextField label="Descrição" value={this.state.description} 
+              inputRef={(input) => { this.descriptionInput = input; }}
               fullWidth
               onChange={event => this.setState({description:event.target.value})} />
           </div>
