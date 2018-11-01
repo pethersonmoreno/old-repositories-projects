@@ -8,10 +8,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import { withRouter } from 'react-router'
 import {productTypes} from '../dataApp';
 
-class ListProductTypes extends Component{
+class List extends Component{
   edit(productType){
     const { history } = this.props;
     history.push('/productType/'+productType.id);
@@ -51,4 +50,4 @@ class ListProductTypes extends Component{
     );
   }
 }
-export default withRouter(ListProductTypes);
+export default List;

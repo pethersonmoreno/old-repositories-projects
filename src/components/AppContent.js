@@ -12,15 +12,15 @@ const styles = theme => ({
 });
 function AppContent({children, classes, titulo}){
   return (
-    <div>
+    <main>
       <AppBar>{titulo}</AppBar>
-      <main className={classes.content}>
+      <div className={classes.content}>
         <div className={classes.toolbar} />
         <div className="contentPage">
           {children}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
 

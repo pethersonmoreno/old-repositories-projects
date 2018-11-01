@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { withRouter } from 'react-router'
 import Typography from '@material-ui/core/Typography';
 import AppContent from '../AppContent';
 import Form from './Form';
@@ -56,4 +55,4 @@ class Edit extends Component{
     );
   }
 }
-export default withRouter(Edit);
+export default Edit;

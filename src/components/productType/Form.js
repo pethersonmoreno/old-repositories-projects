@@ -66,10 +66,15 @@ export default class Form extends Component{
     return (
       <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
         <div>
-          <TextField label="Descrição" value={this.state.description} onChange={event => this.setState({description:event.target.value})} />
-          <ReactSelect label="Categoria" value={valueCategorySelected} options={categoriesOptions} onChange={value => this.setState({categoryId:(!!value?value.value:null)})} />
+          <TextField label="Descrição" value={this.state.description} 
+            fullWidth
+            onChange={event => this.setState({description:event.target.value})} />
+          <ReactSelect label="Categoria" value={valueCategorySelected} 
+            options={categoriesOptions} onChange={value => this.setState({categoryId:(!!value?value.value:null)})} />
           <div>
-            <TextField label="Novo Tamanho" onKeyPress={this.onKeyPressSize.bind(this)} />
+            <TextField label="Novo Tamanho" 
+              fullWidth
+              onKeyPress={this.onKeyPressSize.bind(this)} />
             <div>
               {this.state.sizes.map(size=>(
                 <Chip key={size}
@@ -80,7 +85,9 @@ export default class Form extends Component{
             </div>
           </div>
           <div>
-            <TextField label="Nova Marca" onKeyPress={this.onKeyPressBrand.bind(this)}  />
+            <TextField label="Nova Marca" 
+              fullWidth
+              onKeyPress={this.onKeyPressBrand.bind(this)}  />
             <div>
               {this.state.brands.map(marca=>(
                 <Chip key={marca}

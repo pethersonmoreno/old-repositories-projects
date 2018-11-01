@@ -1,24 +1,24 @@
 import React, {Component} from 'react';
 import AppContent from '../AppContent';
 import Form from './Form';
-import {categories} from '../dataApp';
+import {products} from '../dataApp';
 
 class Add extends Component{
   add(event, valores){
     const { history } = this.props;
     event.preventDefault();
-    categories.push(Object.assign(
+    products.push(Object.assign(
       {},
-      {id:categories.length+1},
+      {id:products.length+1},
       valores,
     ));
-    history.push('/category');
+    history.push('/product');
   }
   
   render(){
     return (
-      <AppContent titulo="Nova Categoria">
-        <Form description="" textoBotao="Adicionar" onSubmit={this.add.bind(this)} />
+      <AppContent titulo="Novo Produto">
+        <Form textoBotao="Adicionar" onSubmit={this.add.bind(this)} />
       </AppContent>
     );
   }
