@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import {ReactSelect} from '../fields';
+import {ReactSelect,InputList} from '../fields';
 import {categories, sizes, brands} from '../dataApp';
-
 
 const categoriesOptions = categories.map(category => ({
   value: category.id,
@@ -35,31 +33,11 @@ export default class Form extends Component{
     // this.setState({description:''});
     onSubmit(event, data);
   }
-  onKeyPressSize(event){
-    if(event.key === 'Enter'){
-      event.preventDefault();
-      this.setState({sizes:this.state.sizes.concat(event.target.value)});
-      event.target.value = '';
-    }
+  onUpdateSizes=(sizes)=>{
+    this.setState({sizes});
   }
-  onDeleteSize(size){
-    const indexSize = this.state.sizes.indexOf(size);
-    if(indexSize !== undefined){
-      this.setState({sizes:this.state.sizes.filter(value=>value !== size)});
-    }
-  }
-  onKeyPressBrand(event){
-    if(event.key === 'Enter'){
-      event.preventDefault();
-      this.setState({brands:this.state.brands.concat(event.target.value)});
-      event.target.value = '';
-    }
-  }
-  onDeleteBrand(brand){
-    const indexBrand = this.state.brands.indexOf(brand);
-    if(indexBrand !== undefined){
-      this.setState({brands:this.state.brands.filter(value=>value !== brand)});
-    }
+  onUpdateBrands=(brands)=>{
+    this.setState({brands});
   }
   render(){
     const {textoBotao} = this.props;
@@ -73,32 +51,12 @@ export default class Form extends Component{
             onChange={event => this.setState({description:event.target.value})} />
           <ReactSelect label="Categoria" value={valueCategorySelected} 
             options={categoriesOptions} onChange={value => this.setState({categoryId:(!!value?value.value:null)})} />
-          <div>
-            <TextField label="Novo Tamanho" 
-              fullWidth
-              onKeyPress={this.onKeyPressSize.bind(this)} />
-            <div>
-              {this.state.sizes.map(size=>(
-                <Chip key={size}
-                  label={size}
-                  onDelete={this.onDeleteSize.bind(this, size)}
-                />
-              ))}
-            </div>
-          </div>
-          <div>
-            <TextField label="Nova Marca" 
-              fullWidth
-              onKeyPress={this.onKeyPressBrand.bind(this)}  />
-            <div>
-              {this.state.brands.map(marca=>(
-                <Chip key={marca}
-                  label={marca}
-                  onDelete={this.onDeleteBrand.bind(this, marca)}
-                />
-              ))}
-            </div>
-          </div>
+          <InputList label="Novo Tamanho" fullWidth 
+            value={this.state.sizes}
+            onUpdateValue={this.onUpdateSizes} />
+          <InputList label="Nova Marca" fullWidth 
+            value={this.state.brands}
+            onUpdateValue={this.onUpdateBrands} />
           <div className="formButtons">
             <Button type="submit" variant="contained" color="primary">{textoBotao}</Button>
           </div>
