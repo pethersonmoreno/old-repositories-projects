@@ -49,12 +49,21 @@ const styles = theme => ({
   paper: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: 0,
     left: 0,
     right: 0,
   },
+  menuList:{
+    maxHeight: '300px',
+    overflowY: 'auto',
+    paddingBottom: '0px',
+    paddingTop: '0px',
+    position: 'relative',
+    WebkitOverflowScrolling: 'touch',
+    boxSizing: 'border-box',
+  },
   divider: {
-    height: theme.spacing.unit * 2,
+    height: theme.spacing.unit * 1,
   },
 });
 
@@ -153,10 +162,26 @@ function Menu(props) {
     </Paper>
   );
 }
+function MenuList(props) {
+  var children = props.children,
+      className = props.className,
+      cx = props.cx,
+      innerRef = props.innerRef;
+  const newClassName = cx(props.selectProps.classes.menuList, className);
+  console.log(newClassName);
+  return (
+    <div className={newClassName}
+      ref={innerRef}
+      {...props.innerProps}>
+      {children}
+    </div>
+  );
+}
 
 const components = {
   Control,
   Menu,
+  MenuList,
   MultiValue,
   NoOptionsMessage,
   Option,

@@ -20,6 +20,9 @@ const styles = theme => ({
     width: '36px',
     height: '36px',
   },
+  chip: {
+    margin: theme.spacing.unit / 4,
+  },
 });
 class InputList extends Component{
   constructor(props){
@@ -86,7 +89,7 @@ class InputList extends Component{
               label={item}
               onClick={this.removeItem.bind(this, item)}
               onDelete={this.removeItem.bind(this, item)}
-            />
+              className={classes.chip} />
           ))}
         </div>
       </div>
