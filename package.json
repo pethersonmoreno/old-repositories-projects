@@ -1,6 +1,7 @@
 {
-  "name": "controle-compras-web",
+  "name": "controle-compras-frontend-web",
   "version": "0.1.0",
+  "homepage" : "https://pethersonmoreno.github.io/controle-compras-frontend-web",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
