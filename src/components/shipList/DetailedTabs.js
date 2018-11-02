@@ -56,7 +56,7 @@ class DetailedTabs extends Component{
   handleTabChange = (event, tabSelected) => {
     const {history, updateShipListSelected} = this.props;
     if(tabSelected === 'new'){
-      history.push(`${process.env.PUBLIC_URL}/shipList/new`);
+      history.push(`/shipList/new`);
     } else {
       updateShipListSelected(tabSelected);
     }
@@ -65,14 +65,14 @@ class DetailedTabs extends Component{
     const { history, shipListIdSelected} = this.props;
     const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
     if(shipListSelected !== undefined){
-      history.push(`${process.env.PUBLIC_URL}/shipList/${shipListSelected.id}`);
+      history.push(`/shipList/${shipListSelected.id}`);
     }
   }
   addItem(){
     const { history, shipListIdSelected } = this.props;
     const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
     if(shipListSelected !== undefined){
-      history.push(`${process.env.PUBLIC_URL}/shipList/${shipListSelected.id}/item/new`);
+      history.push(`/shipList/${shipListSelected.id}/item/new`);
     }
   }
   

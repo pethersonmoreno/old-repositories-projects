@@ -17,7 +17,7 @@ class Edit extends Component{
     event.preventDefault();
     const category = categories.find(category=>category.id === this.state.id);
     category.description = valores.description;
-    history.push(`${process.env.PUBLIC_URL}/category`);
+    history.push(`/category`);
   }
   
   render(){

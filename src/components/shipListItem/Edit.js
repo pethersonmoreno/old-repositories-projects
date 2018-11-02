@@ -18,7 +18,7 @@ class Edit extends Component{
     event.preventDefault();
     const shipListItem = shipListItems.find(shipListItem=>shipListItem.id === this.state.id);
     Object.assign(shipListItem, valores);
-    history.push(`${process.env.PUBLIC_URL}/shipList`);
+    history.push(`/shipList`);
   }
   
   render(){

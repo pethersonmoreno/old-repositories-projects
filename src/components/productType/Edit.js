@@ -20,7 +20,7 @@ class Edit extends Component{
     productType.categoryId = valores.categoryId;
     this.updateList(productType.id, sizes, valores.sizes);
     this.updateList(productType.id, brands, valores.brands);
-    history.push(`${process.env.PUBLIC_URL}/productType`);
+    history.push(`/productType`);
   }
   updateList(productTypeId, baseList, newList){
     baseList

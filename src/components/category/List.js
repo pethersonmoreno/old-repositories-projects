@@ -15,11 +15,11 @@ import {categories} from '../dataApp';
 class List extends Component{
   editCategory(category){
     const { history } = this.props;
-    history.push(`${process.env.PUBLIC_URL}/category/${category.id}`);
+    history.push(`/category/${category.id}`);
   }
   add(){
     const { history } = this.props;
-    history.push(`${process.env.PUBLIC_URL}/category/new`);
+    history.push(`/category/new`);
   }
   render(){
     return (

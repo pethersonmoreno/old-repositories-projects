@@ -19,16 +19,16 @@ class Menu extends Component{
       <div>
         <Divider />
         <List>
-            <ListItem component={Link} to={`${process.env.PUBLIC_URL}/shipList`} onClick={this.toggleMenu} button>
+            <ListItem component={Link} to={`/shipList`} onClick={this.toggleMenu} button>
               <ListItemText primary="Listas de Compras" />
             </ListItem>
-            <ListItem component={Link} to={`${process.env.PUBLIC_URL}/category`} onClick={this.toggleMenu} button>
+            <ListItem component={Link} to={`/category`} onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Categorias" />
             </ListItem>
-            <ListItem component={Link} to={`${process.env.PUBLIC_URL}/productType`} onClick={this.toggleMenu} button>
+            <ListItem component={Link} to={`/productType`} onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Tipos de Produto" />
             </ListItem>
-            <ListItem component={Link} to={`${process.env.PUBLIC_URL}/product`} onClick={this.toggleMenu} button>
+            <ListItem component={Link} to={`/product`} onClick={this.toggleMenu} button>
               <ListItemText primary="Lista de Produtos" />
             </ListItem>
         </List>

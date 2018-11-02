@@ -37,7 +37,7 @@ export default class ItemInShipList extends Component{
   }
   edit=()=>{
     const { history, item } = this.props;
-    history.push(`${process.env.PUBLIC_URL}/shipList/${item.shipListId}/item/${item.id}`);
+    history.push(`/shipList/${item.shipListId}/item/${item.id}`);
   }
   render(){
     const {className, item} = this.props;

@@ -17,7 +17,7 @@ class Add extends Component{
       {items: []}
     ));
     updateShipListSelected(shipListId);
-    history.push(`${process.env.PUBLIC_URL}/shipList`);
+    history.push(`/shipList`);
   }
   
   render(){
