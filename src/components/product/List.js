@@ -28,8 +28,8 @@ export default class List extends Component{
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell numeric>ID</TableCell>
+                <TableCell className='colunaBotoes' padding="none"></TableCell>
+                <TableCell numeric padding="none">ID</TableCell>
                 <TableCell>Produto</TableCell>
               </TableRow>
             </TableHead>
@@ -41,12 +41,12 @@ export default class List extends Component{
                 const productDescription = productType.description+' '+brand.description+' '+size.description;
                 return (
                   <TableRow key={product.id}>
-                    <TableCell>
+                    <TableCell padding="none">
                       <IconButton onClick={this.edit.bind(this, product)}>
                         <EditIcon color="primary" />
                       </IconButton>
                     </TableCell>
-                    <TableCell numeric>{product.id}</TableCell>
+                    <TableCell numeric padding="none">{product.id}</TableCell>
                     <TableCell component="th" scope="row">
                       {productDescription}
                     </TableCell>

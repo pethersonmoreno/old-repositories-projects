@@ -14,7 +14,7 @@ import {shipListItems, categories, products, productTypes, SELECAO_DIRETA, SELEC
 
 const styles = theme => ({
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing.unit * 1,
   },
   categoryItem: {
     paddingLeft: '3px',
@@ -22,6 +22,11 @@ const styles = theme => ({
   },
   badgeRoot: {
     flex: '1 1 auto',
+  },
+  'badgeText': {
+    '&:first-child':{
+      paddingLeft: '10px',
+    },
   },
   badgeBadge: {
     top: 1,
@@ -66,8 +71,10 @@ class CategoryListItem extends Component{
             <ListItemIcon>
               <LabelIcon />
             </ListItemIcon>
-            <Badge badgeContent={itemsOfCategory.length} color="primary" classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
-              <ListItemText inset primary={category.description} />
+            <Badge badgeContent={itemsOfCategory.length} color="primary" 
+              classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
+              <ListItemText inset primary={category.description}
+                className={classes.badgeText} />
             </Badge>
             {expanded ? <ExpandLess /> : <ExpandMore />}
           </ListItem>

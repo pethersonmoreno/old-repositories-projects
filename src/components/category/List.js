@@ -23,13 +23,13 @@ class List extends Component{
   }
   render(){
     return (
-      <AppContent titulo="Lista de Produtos">
+      <AppContent titulo="Lista de Categorias">
         <Paper>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
-                <TableCell numeric>ID</TableCell>
+                <TableCell className='colunaBotoes' padding="none"></TableCell>
+                <TableCell numeric padding="none">ID</TableCell>
                 <TableCell>Descrição</TableCell>
               </TableRow>
             </TableHead>
@@ -37,12 +37,12 @@ class List extends Component{
               {categories.map(category => {
                 return (
                   <TableRow key={category.id}>
-                    <TableCell>
+                    <TableCell padding="none">
                       <IconButton onClick={this.editCategory.bind(this, category)}>
                         <EditIcon color="primary" />
                       </IconButton>
                     </TableCell>
-                    <TableCell numeric>{category.id}</TableCell>
+                    <TableCell numeric padding="none">{category.id}</TableCell>
                     <TableCell component="th" scope="row">
                       {category.description}
                     </TableCell>
