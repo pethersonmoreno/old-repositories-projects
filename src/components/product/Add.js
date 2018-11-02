@@ -12,7 +12,7 @@ class Add extends Component{
       {id:products.length+1},
       valores,
     ));
-    history.push('/product');
+    history.push(`${process.env.PUBLIC_URL}/product`);
   }
   
   render(){

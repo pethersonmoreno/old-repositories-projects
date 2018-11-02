@@ -20,7 +20,7 @@ class Edit extends Component{
     product.brandId = valores.brandId;
     product.sizeId = valores.sizeId;
     product.ean = valores.ean;
-    history.push('/product');
+    history.push(`${process.env.PUBLIC_URL}/product`);
   }
   
   render(){

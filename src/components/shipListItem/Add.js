@@ -20,7 +20,7 @@ class Add extends Component{
       {shipListId:this.state.shipListId},
       valores,
     ));
-    history.push('/shipList');
+    history.push(`${process.env.PUBLIC_URL}/shipList`);
   }
   
   render(){

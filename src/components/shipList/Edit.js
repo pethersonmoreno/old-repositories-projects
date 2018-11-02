@@ -17,7 +17,7 @@ class Edit extends Component{
     event.preventDefault();
     const shipList = shipLists.find(shipList=>shipList.id === this.state.id);
     shipList.description = valores.description;
-    history.push('/shipList');
+    history.push(`${process.env.PUBLIC_URL}/shipList`);
   }
   
   render(){

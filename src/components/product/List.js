@@ -15,11 +15,11 @@ import {products, productTypes, brands, sizes} from '../dataApp';
 export default class List extends Component{
   edit(productType){
     const { history } = this.props;
-    history.push('/product/'+productType.id);
+    history.push(`${process.env.PUBLIC_URL}/product/${productType.id}`);
   }
   add(){
     const { history } = this.props;
-    history.push('/product/new');
+    history.push(`${process.env.PUBLIC_URL}/product/new`);
   }
   render(){
     return (

@@ -15,7 +15,7 @@ class Add extends Component{
     ));
     this.updateList(productTypeId, sizes, valores.sizes);
     this.updateList(productTypeId, brands, valores.brands);
-    history.push('/productType');
+    history.push(`${process.env.PUBLIC_URL}/productType`);
   }
   updateList(productTypeId, baseList, newList){
     baseList

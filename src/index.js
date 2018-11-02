@@ -34,28 +34,30 @@ const theme = createMuiTheme({
     suppressDeprecationWarnings: true,
   },
 });
+console.log(process.env);
+const baseNameRouter = (process.env.NODE_ENV!=='development'?'/controle-compras-frontend-web':undefined);
+
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={baseNameRouter}>
         <App>
-        {/* <Route path="/" component={App}> */}
           <Switch>
-            <Route path="/" exact render={() => <Redirect to="/shipList" />} />
-            <Route path="/category/new" component={AddCategory}/>
-            <Route path="/category/:id" component={EditCategory}/>
-            <Route path="/category" component={ListCategories}/>
-            <Route path="/productType/new" component={AddProductType}/>
-            <Route path="/productType/:id" component={EditProductType}/>
-            <Route path="/productType" component={ListProductTypes}/>
-            <Route path="/product/new" component={AddProduct}/>
-            <Route path="/product/:id" component={EditProduct}/>
-            <Route path="/product" component={ListaProducts}/>
-            <Route path="/shipList/new" component={AddShipList}/>
-            <Route path="/shipList/:shipListId/item/new" component={AddShipListItem}/>
-            <Route path="/shipList/:shipListId/item/:id" component={EditShipListItem}/>
-            <Route path="/shipList/:id" component={EditShipList}/>
-            <Route path="/shipList" component={DetailedTabsShipList}/>
+            <Route path={`${process.env.PUBLIC_URL}/`} exact render={() => <Redirect to="/shipList" />} />
+            <Route path={`${process.env.PUBLIC_URL}/category/new`} component={AddCategory}/>
+            <Route path={`${process.env.PUBLIC_URL}/category/:id`} component={EditCategory}/>
+            <Route path={`${process.env.PUBLIC_URL}/category`} component={ListCategories}/>
+            <Route path={`${process.env.PUBLIC_URL}/productType/new`} component={AddProductType}/>
+            <Route path={`${process.env.PUBLIC_URL}/productType/:id`} component={EditProductType}/>
+            <Route path={`${process.env.PUBLIC_URL}/productType`} component={ListProductTypes}/>
+            <Route path={`${process.env.PUBLIC_URL}/product/new`} component={AddProduct}/>
+            <Route path={`${process.env.PUBLIC_URL}/product/:id`} component={EditProduct}/>
+            <Route path={`${process.env.PUBLIC_URL}/product`} component={ListaProducts}/>
+            <Route path={`${process.env.PUBLIC_URL}/shipList/new`} component={AddShipList}/>
+            <Route path={`${process.env.PUBLIC_URL}/shipList/:shipListId/item/new`} component={AddShipListItem}/>
+            <Route path={`${process.env.PUBLIC_URL}/shipList/:shipListId/item/:id`} component={EditShipListItem}/>
+            <Route path={`${process.env.PUBLIC_URL}/shipList/:id`} component={EditShipList}/>
+            <Route path={`${process.env.PUBLIC_URL}/shipList`} component={DetailedTabsShipList}/>
             <Route component={NotFound} />
           </Switch>
         {/* </Route> */}

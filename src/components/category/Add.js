@@ -12,7 +12,7 @@ class Add extends Component{
       {id:categories.length+1},
       valores,
     ));
-    history.push('/category');
+    history.push(`${process.env.PUBLIC_URL}/category`);
   }
   
   render(){
