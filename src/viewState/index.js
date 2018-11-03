@@ -5,25 +5,10 @@ import { Provider } from 'react-redux'
 import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter, HashRouter, Switch, Route, Redirect } from 'react-router-dom'
-import App from './components/App';
+import { BrowserRouter, HashRouter } from 'react-router-dom'
+import MainTemplate from './Templates/MainTemplate';
 import reducers from './reducers';
-import ListCategories from './components/category/List';
-import AddCategory from './components/category/Add';
-import EditCategory from './components/category/Edit';
-import ListProductTypes from './components/productType/List';
-import AddProductType from './components/productType/Add';
-import EditProductType from './components/productType/Edit';
-import ListaProducts from './components/product/List';
-import AddProduct from './components/product/Add';
-import EditProduct from './components/product/Edit';
-import DetailedTabsShipList from './components/shipList/DetailedTabs';
-import AddShipList from './components/shipList/Add';
-import EditShipList from './components/shipList/Edit';
-import AddShipListItem from './components/shipListItem/Add';
-import EditShipListItem from './components/shipListItem/Edit';
-
-import NotFound from './components/NotFound';
+import {route} from './Pages';
 import './index.css';
 
 const store = createStore(reducers)
@@ -37,31 +22,14 @@ const theme = createMuiTheme({
 console.log(process.env);
 const NavigationRouter = (process.env.NODE_ENV!=='development'?HashRouter:BrowserRouter);
 
+console.log(route);
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>
       <NavigationRouter basename={process.env.PUBLIC_URL}>
-        <App>
-          <Switch>
-            <Route path={`/`} exact render={() => <Redirect to="/shipList" />} />
-            <Route path={`/category/new`} component={AddCategory}/>
-            <Route path={`/category/:id`} component={EditCategory}/>
-            <Route path={`/category`} component={ListCategories}/>
-            <Route path={`/productType/new`} component={AddProductType}/>
-            <Route path={`/productType/:id`} component={EditProductType}/>
-            <Route path={`/productType`} component={ListProductTypes}/>
-            <Route path={`/product/new`} component={AddProduct}/>
-            <Route path={`/product/:id`} component={EditProduct}/>
-            <Route path={`/product`} component={ListaProducts}/>
-            <Route path={`/shipList/new`} component={AddShipList}/>
-            <Route path={`/shipList/:shipListId/item/new`} component={AddShipListItem}/>
-            <Route path={`/shipList/:shipListId/item/:id`} component={EditShipListItem}/>
-            <Route path={`/shipList/:id`} component={EditShipList}/>
-            <Route path={`/shipList`} component={DetailedTabsShipList}/>
-            <Route component={NotFound} />
-          </Switch>
-        {/* </Route> */}
-        </App>
+        <MainTemplate>
+          {route}
+        </MainTemplate>
       </NavigationRouter>
     </Provider>
   </MuiThemeProvider>, 
