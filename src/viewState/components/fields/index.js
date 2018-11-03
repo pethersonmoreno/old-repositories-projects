@@ -1,2 +1,2 @@
-export ReactSelect from './ReactSelect'
-export InputList from './InputList'
+export ReactSelect from '../../Atoms/ReactSelect'
+export InputList from '../../Atoms/InputList'
