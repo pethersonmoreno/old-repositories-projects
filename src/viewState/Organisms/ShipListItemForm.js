@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {ReactSelect} from '../../../Atoms';
-import {products, productTypes, sizes, brands, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../../../data';
+import {ReactSelect} from '../Atoms';
+import {products, productTypes, sizes, brands, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../data';
 
 
 const selecoesProdutoOptions = [

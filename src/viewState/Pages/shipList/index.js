@@ -1,2 +1,4 @@
 export route from './route';
-export {prefixRoute} from './constants'
+export * as constants  from './constants'
+export * as actions from './actions';
+export reducer from './reducer';

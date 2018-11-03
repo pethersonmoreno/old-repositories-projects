@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import {products, productTypes, brands, sizes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../../../data';
+import {products, productTypes, brands, sizes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../data';
 
 export default class ItemInShipList extends Component{
   getDescription(productTypeId, brandId, sizeId){

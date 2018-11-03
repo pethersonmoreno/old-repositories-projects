@@ -2,18 +2,19 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { route as routeShipListItem } from './item';
 import {route as routeNotFound} from '../notFound'
-import DetailedTabsShipList from './DetailedTabs';
-import AddShipList from './Add';
-import EditShipList from './Edit';
-import {prefixRoute} from './constants'
+import { route as routeAdd } from './Add';
+import { route as routeEdit } from './Edit';
+import ShipLists from './ShipLists';
+import {PREFIX_ROUTE} from './constants'
+
 const routes = [
-  <Route exact path={`${prefixRoute}/new`} component={AddShipList}/>,
   routeShipListItem,
-  <Route exact path={`${prefixRoute}/:id`} component={EditShipList}/>,
-  <Route exact path={`${prefixRoute}`} component={DetailedTabsShipList}/>,
+  routeAdd,
+  routeEdit,
+  <Route exact path={`${PREFIX_ROUTE}`} component={ShipLists}/>,
   routeNotFound,
 ];
-export default <Route path={prefixRoute} component={()=>(
+export default <Route path={PREFIX_ROUTE} component={()=>(
   <Switch>
     {routes}
   </Switch>

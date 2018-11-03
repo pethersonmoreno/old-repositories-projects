@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
-import {TOGGLE_MENU, UPDATE_SMUP, UPDATE_SHIPLIST_SELECTED} from '../actions'
+import {TOGGLE_MENU, UPDATE_SMUP} from '../actions'
+import * as shipList from '../Pages/shipList'
 export function menu(state = {menuOpen:false,smUp:false}, action){
   if(action.type === TOGGLE_MENU){
     return Object.assign(
@@ -17,17 +18,8 @@ export function menu(state = {menuOpen:false,smUp:false}, action){
   }
   return state;
 }
-export function shipList(state = {shipListIdSelected: undefined}, action){
-  if(action.type === UPDATE_SHIPLIST_SELECTED){
-    return Object.assign(
-      {},
-      state,
-      {shipListIdSelected:action.shipListIdSelected}
-    );
-  }
-  return state;
-}
+
 export default combineReducers({
   menu,
-  shipList
+  [shipList.constants.NAME]: shipList.reducer
 });

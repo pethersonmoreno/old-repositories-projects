@@ -25,7 +25,8 @@ module.exports = (webpackConfig, env, { paths }) => {
             && '.jsx'.match(oneOf.test)
           ){
             oneOf.options.plugins.push(
-              ["@babel/plugin-proposal-export-default-from"]
+              ["@babel/plugin-proposal-export-default-from"],
+              ["@babel/plugin-proposal-export-namespace-from"]
             );
           }
         })

@@ -9,8 +9,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ItemInShipList from './item/ItemInShipList';
-import {shipListItems, categories, products, productTypes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../../data';
+import ShipListItem from '../Molecules/ShipListItem';
+import {shipListItems, categories, products, productTypes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../data';
 
 const styles = theme => ({
   nested: {
@@ -38,7 +38,7 @@ const styles = theme => ({
   },
 });
 
-class CategoryListItem extends Component{
+class CategoryItem extends Component{
   getShipListItemsOfCategory(category, shipList){
     if(shipList === undefined){
       return [];
@@ -81,7 +81,7 @@ class CategoryListItem extends Component{
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {itemsOfCategory.map((item, index)=>(
-                  <ItemInShipList key={index} history={history} 
+                  <ShipListItem key={index} history={history} 
                      className={classes.nested} item={item} />
               ))}
             </List>
@@ -92,7 +92,7 @@ class CategoryListItem extends Component{
     return (<div></div>);
   }
 }
-class CategoryList extends Component{
+class CategoriesBox extends Component{
   constructor(props){
     super(props);
     const {shipList} = props;
@@ -127,7 +127,7 @@ class CategoryList extends Component{
     return (
       <div>
         {categories.map(category=>(
-            <CategoryListItem key={category.id} history={history} classes={classes} 
+            <CategoryItem key={category.id} history={history} classes={classes} 
               toggleCollapse={this.handleCategoryExpandable.bind(this, category)}
               isExpanded={this.isCategoryExpanded.bind(this, category)}
               category={category} shipList={shipList} />
@@ -136,4 +136,4 @@ class CategoryList extends Component{
     );
   }
 }
-export default withStyles(styles, { withTheme: true })(CategoryList);
+export default withStyles(styles, { withTheme: true })(CategoriesBox);

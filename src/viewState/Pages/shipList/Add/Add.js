@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
-import PageTemplate from '../../Templates/PageTemplate';
-import Form from './Form';
-import {updateShipListSelected} from '../../actions'
-import {shipLists} from '../../data';
+import PageTemplate from '../../../Templates/PageTemplate';
+import Form from '../../../Organisms/ShipListForm';
+import {updateShipListSelected} from '../actions'
+import {shipLists} from '../../../data';
 
 class Add extends Component{
   add(event, valores){

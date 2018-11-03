@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore} from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, HashRouter } from 'react-router-dom'
+import thunk from 'redux-thunk';
 import MainTemplate from './Templates/MainTemplate';
 import reducers from './reducers';
 import {route} from './Pages';
 import './index.css';
 
-const store = createStore(reducers)
+const store = createStore(reducers, applyMiddleware(thunk));
 
 const theme = createMuiTheme({
   typography: {

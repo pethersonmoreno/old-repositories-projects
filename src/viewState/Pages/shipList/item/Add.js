@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PageTemplate from '../../../Templates/PageTemplate';
-import Form from './Form';
+import Form from '../../../Organisms/ShipListItemForm';
 import {shipListItems} from '../../../data';
 
 class Add extends Component{

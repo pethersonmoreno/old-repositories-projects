@@ -3,15 +3,13 @@ import { Switch, Route } from 'react-router-dom'
 import {route as routeNotFound} from '../../notFound';
 import AddShipListItem from './Add';
 import EditShipListItem from './Edit';
-import {prefixRoute as prefixRouteDad} from '../constants';
-
-const prefixRoute = prefixRouteDad+'/:shipListId/item';
+import {PREFIX_ROUTE} from './constants';
 const routes = [
-  <Route path={`${prefixRoute}/new`} component={AddShipListItem}/>,
-  <Route path={`${prefixRoute}/:id`} component={EditShipListItem}/>,
+  <Route path={`${PREFIX_ROUTE}/new`} component={AddShipListItem}/>,
+  <Route path={`${PREFIX_ROUTE}/:id`} component={EditShipListItem}/>,
   routeNotFound,
 ];
-export default <Route path={prefixRoute} component={()=>(
+export default <Route path={PREFIX_ROUTE} component={()=>(
   <Switch>
     {routes}
   </Switch>
