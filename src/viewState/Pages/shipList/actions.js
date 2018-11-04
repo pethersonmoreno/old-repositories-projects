@@ -1,4 +1,8 @@
-import {UPDATE_SHIPLIST_SELECTED} from './actionTypes';
+import {START_SHIPLIST, UPDATE_SHIPLIST_SELECTED} from './actionTypes';
+export const startShiplist = 
+  startShiplist=>
+    dispatch=>
+      dispatch({ type: START_SHIPLIST});
 export const updateShipListSelected = 
   shipListIdSelected=>
     dispatch=>

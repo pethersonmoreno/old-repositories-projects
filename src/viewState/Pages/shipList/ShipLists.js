@@ -1,21 +1,19 @@
-import React, {Component} from 'react';
+import React from 'react';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
-import AppBarMaterialUI from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
 import {NAME} from './constants'
-import {updateShipListSelected} from './actions'
-import {shipLists} from '../../data';
+import {startShiplist, updateShipListSelected} from './actions'
+import {withNavigateTo} from '../../helpers';
+import BarTabs from '../../Molecules/BarTabs';
+import {ButtonFabContainer, ButtonFab} from '../../Atoms';
 
 const styles = theme => ({
   root:{
@@ -27,101 +25,56 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
   },
 });
-function BarTabs(props){
-  const {className, shipLists, tabSelected, handleTabChange} = props;
+
+const getShipListSelected = 
+  ({shipLists, shipListIdSelected}) => 
+    shipLists && shipLists.find(shipList=>shipList.id === shipListIdSelected);
+const isListOpen = 
+  props => (getShipListSelected(props) !== undefined);
+
+const ShipLists = props => {
+  const { navigateTo, classes, shipLists, shipListIdSelected} = props;
+  const { startShiplist, updateShipListSelected } = props;
+  if(!shipLists){
+    startShiplist();
+  }
+  const open = isListOpen(props);
+  const tabList = [{value:'new', label: 'Nova', icon: <AddCircleIcon />}];
+  if(shipLists){
+    tabList.push(...shipLists.map(shipList=>({value:shipList.id, label: shipList.description, icon: <FavoriteIcon />})));
+  }
   return (
-    <AppBarMaterialUI position="static" color="default" className={className}>
-      <Tabs
-        value={tabSelected}
-        onChange={handleTabChange}
-        scrollable
-        scrollButtons="on"
-        indicatorColor="primary"
-        textColor="primary"
-      >
-        <Tab value="new" label="Nova" icon={<AddCircleIcon />} />
-        {shipLists.map(shipList=>(
-          <Tab key={shipList.id} value={shipList.id} label={shipList.description} icon={<FavoriteIcon />} />
-        ))}
-      </Tabs>
-    </AppBarMaterialUI>
+    <PageTemplate titulo="Não esqueça!" removePadding={true}>
+      <div className={classes.root}>
+        <BarTabs className={classes.tabsBar} 
+            tabList={tabList}
+            value={open?shipListIdSelected:'new'} 
+            onChange={(event, tabSelected) => (tabSelected !== 'new'?updateShipListSelected(tabSelected):navigateTo(`/shipList/new`))} />
+        <ShipListCategoriesBox {...props} shipList={getShipListSelected(props)} />
+        {open && (
+          <ButtonFabContainer>
+            <ButtonFab onClick={()=>navigateTo(`/shipList/${shipListIdSelected}`)}><EditIcon /></ButtonFab>
+            <ButtonFab onClick={()=>navigateTo(`/shipList/${shipListIdSelected}/item/new`)}><AddIcon /></ButtonFab>
+          </ButtonFabContainer>
+        )}
+      </div>
+    </PageTemplate>
   );
 }
 
-class ShipLists extends Component{
-  componentWillMount(){
-    const {shipListIdSelected, updateShipListSelected} = this.props;
-    if(!shipListIdSelected && shipLists.length > 0){
-      updateShipListSelected(shipLists[0].id);
-    }
-  }
-  handleTabChange = (event, tabSelected) => {
-    const {history, updateShipListSelected} = this.props;
-    if(tabSelected === 'new'){
-      history.push(`/shipList/new`);
-    } else {
-      updateShipListSelected(tabSelected);
-    }
-  }
-  edit(){
-    const { history, shipListIdSelected} = this.props;
-    if(this.isListOpen()){
-      history.push(`/shipList/${shipListIdSelected}`);
-    }
-  }
-  addItem(){
-    const { history, shipListIdSelected } = this.props;
-    if(this.isListOpen()){
-      history.push(`/shipList/${shipListIdSelected}/item/new`);
-    }
-  }
-  isListOpen(){
-    const { shipListIdSelected } = this.props;
-    const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
-    return (shipListSelected !== undefined);
-  }
-  
-  render(){
-    const { history, classes, shipListIdSelected } = this.props;
-    let tabSelected = (shipListIdSelected !== undefined?shipListIdSelected:'new');
-    const shipListSelected = shipLists.find(shipList=>shipList.id === shipListIdSelected);
-    return (
-      <PageTemplate titulo="Não esqueça!" removePadding={true}>
-        <div className={classes.root}>
-          <BarTabs className={classes.tabsBar} shipLists={shipLists}
-              tabSelected={tabSelected} handleTabChange={this.handleTabChange} />
-          <ShipListCategoriesBox history={history}
-            shipList={shipListSelected} />
-          {shipListIdSelected && (
-            <div className='fabContainer'>
-              <Button variant="fab" className='fab' color='primary'
-                onClick={this.edit.bind(this)}>
-                <EditIcon />
-              </Button>
-              <Button variant="fab" className='fab' color='primary'
-                onClick={this.addItem.bind(this)}>
-                <AddIcon />
-              </Button>
-            </div>
-          )}
-        </div>
-      </PageTemplate>
-    );
-  }
-}
-
 const mapStateToProps = state => ({
-  shipListIdSelected: state[NAME].shipListIdSelected
+  ...state[NAME]
 });
 const mapDispatchToProps = dispatch => 
   bindActionCreators({
+    startShiplist,
     updateShipListSelected
-  }, dispatch)
-;
+  }, dispatch);
 
 const VisibleShipLists = compose(
   connect(mapStateToProps,mapDispatchToProps),
   withStyles(styles, { withTheme: true }),
+  withNavigateTo(),
 )(ShipLists)
 
 export default VisibleShipLists;

@@ -1,0 +1,1 @@
+export withNavigateTo from './withNavigateTo';
