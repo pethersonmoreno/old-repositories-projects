@@ -32,7 +32,7 @@ const getShipListSelected =
 const isListOpen = 
   props => (getShipListSelected(props) !== undefined);
 
-const ShipLists = props => {
+export const ShipLists = props => {
   const { navigateTo, classes, shipLists, shipListIdSelected} = props;
   const { startShiplist, updateShipListSelected } = props;
   if(!shipLists){
@@ -71,7 +71,7 @@ const mapDispatchToProps = dispatch =>
     updateShipListSelected
   }, dispatch);
 
-const VisibleShipLists = compose(
+export const VisibleShipLists = compose(
   connect(mapStateToProps,mapDispatchToProps),
   withStyles(styles, { withTheme: true }),
   withNavigateTo(),
