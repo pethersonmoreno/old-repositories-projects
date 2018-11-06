@@ -1,1 +1,1 @@
-export const NAME = 'menu';
+export const STATE_NAME = 'menu';

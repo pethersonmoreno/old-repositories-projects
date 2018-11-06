@@ -14,4 +14,4 @@ export const components = {
   ShipListForm,
   ShipListItemForm,
 }
-export const reducers = {[constantsMenuResponsive.NAME]:reducerMenuResponsive};
+export const reducers = {[constantsMenuResponsive.STATE_NAME]:reducerMenuResponsive};

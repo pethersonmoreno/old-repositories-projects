@@ -9,7 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
-import {NAME} from './constants'
+import {STATE_NAME} from './constants'
 import {startShiplist, updateShipListSelected} from './actions'
 import {withNavigateTo} from '../../helpers';
 import BarTabs from '../../Molecules/BarTabs';
@@ -63,7 +63,7 @@ export const ShipLists = props => {
 }
 
 const mapStateToProps = state => ({
-  ...state[NAME]
+  ...state[STATE_NAME]
 });
 const mapDispatchToProps = dispatch => 
   bindActionCreators({

@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Menu from '../../Molecules/Menu';
 import { menuWidth } from '../../config';
-import {NAME} from './constants'
+import {STATE_NAME} from './constants'
 import {toggleMenu, updateSmUp} from './actions'
 
 const styles = theme => ({
@@ -99,7 +99,7 @@ MenuResponsive.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  ...state[NAME]
+  ...state[STATE_NAME]
 });
 const mapDispatchToProps = dispatch => 
   bindActionCreators({
