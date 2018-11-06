@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
@@ -11,7 +12,6 @@ import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
 import {STATE_NAME} from './constants'
 import {startShiplist, updateShipListSelected} from './actions'
-import {withNavigateTo} from '../../helpers';
 import BarTabs from '../../Molecules/BarTabs';
 import {ButtonFabContainer, ButtonFab} from '../../Atoms';
 
@@ -33,7 +33,7 @@ const isListOpen =
   props => (getShipListSelected(props) !== undefined);
 
 export const ShipLists = props => {
-  const { navigateTo, classes, shipLists, shipListIdSelected} = props;
+  const { history, classes, shipLists, shipListIdSelected} = props;
   const { startShiplist, updateShipListSelected } = props;
   if(!shipLists){
     startShiplist();
@@ -49,18 +49,26 @@ export const ShipLists = props => {
         <BarTabs className={classes.tabsBar} 
             tabList={tabList}
             value={open?shipListIdSelected:'new'} 
-            onChange={(event, tabSelected) => (tabSelected !== 'new'?updateShipListSelected(tabSelected):navigateTo(`/shipList/new`))} />
+            onChange={(event, tabSelected) => (tabSelected !== 'new'?updateShipListSelected(tabSelected):history.push(`/shipList/new`))} />
         <ShipListCategoriesBox history={props.history} shipList={getShipListSelected(props)} />
         {open && (
           <ButtonFabContainer>
-            <ButtonFab onClick={()=>navigateTo(`/shipList/${shipListIdSelected}`)}><EditIcon /></ButtonFab>
-            <ButtonFab onClick={()=>navigateTo(`/shipList/${shipListIdSelected}/item/new`)}><AddIcon /></ButtonFab>
+            <ButtonFab onClick={()=>history.push(`/shipList/${shipListIdSelected}`)}><EditIcon /></ButtonFab>
+            <ButtonFab onClick={()=>history.push(`/shipList/${shipListIdSelected}/item/new`)}><AddIcon /></ButtonFab>
           </ButtonFabContainer>
         )}
       </div>
     </PageTemplate>
   );
 }
+ShipLists.propTypes = {
+  history: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  shipLists: PropTypes.array.isRequired,
+  shipListIdSelected: PropTypes.any.isRequired,
+  startShiplist: PropTypes.func.isRequired,
+  updateShipListSelected: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({
   ...state[STATE_NAME]
@@ -74,7 +82,6 @@ const mapDispatchToProps = dispatch =>
 export const VisibleShipLists = compose(
   connect(mapStateToProps,mapDispatchToProps),
   withStyles(styles, { withTheme: true }),
-  withNavigateTo(),
 )(ShipLists)
 
 export default VisibleShipLists;

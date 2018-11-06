@@ -56,20 +56,20 @@ export default class Form extends Component{
             onChange={event => this.setState({qtd:event.target.value})} />
           <ReactSelect label="Seleção do Produto" value={valueSelecaoProdutoSelected}
             options={selecoesProdutoOptions}
-            onChange={value => this.setState({selecao:(!!value?value.value:null)})} />
+            onChange={value => this.setState({selecao:(value?value.value:null)})} />
           {this.state.selecao === SELECAO_DIRETA && (
             <ReactSelect label="Produto" value={valueProductSelected}
               options={productsOptions}
-              onChange={value => this.setState({productId:(!!value?value.value:null)})} />
+              onChange={value => this.setState({productId:(value?value.value:null)})} />
           )}
           {this.state.selecao === SELECAO_POR_TIPO_TAMANHO && (
             <div>
               <ReactSelect label="Tipo de Produto" value={valueProductTypeSelected}
                 options={productTypesOptions}
-                onChange={value => this.setState({productTypeId:(!!value?value.value:null)})} />
+                onChange={value => this.setState({productTypeId:(value?value.value:null)})} />
               <ReactSelect label="Tamanho" value={valueSizeSelected}
                 options={sizesOptionsUsed}
-                onChange={value => this.setState({sizeId:(!!value?value.value:null)})} />  
+                onChange={value => this.setState({sizeId:(value?value.value:null)})} />  
             </div>
           )}
           <div className="formButtons">

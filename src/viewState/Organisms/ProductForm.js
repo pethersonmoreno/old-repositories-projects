@@ -47,13 +47,13 @@ export default class Form extends Component{
           <ReactSelect label="Tipo de Produto" value={valueProductTypeSelected}
             autoFocus={true}
             options={productTypesOptions}
-            onChange={value => this.setState({productTypeId:(!!value?value.value:null)})} />
+            onChange={value => this.setState({productTypeId:(value?value.value:null)})} />
           <ReactSelect label="Marca" value={valueBrandSelected}
             options={brandsOptionsUsed}
-            onChange={value => this.setState({brandId:(!!value?value.value:null)})} />
+            onChange={value => this.setState({brandId:(value?value.value:null)})} />
           <ReactSelect label="Tamanho" value={valueSizeSelected}
             options={sizesOptionsUsed}
-            onChange={value => this.setState({sizeId:(!!value?value.value:null)})} />  
+            onChange={value => this.setState({sizeId:(value?value.value:null)})} />  
           <TextField label="EAN" value={this.state.ean} 
             fullWidth
             onChange={event => this.setState({ean:event.target.value})} />

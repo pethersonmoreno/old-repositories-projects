@@ -20,7 +20,7 @@ const Add = ({ history, updateShipListSelected })=>(
   </PageTemplate>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = () => ({
 });
 const mapDispatchToProps = dispatch => 
   bindActionCreators({

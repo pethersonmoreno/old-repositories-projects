@@ -5,5 +5,7 @@ const navigateTo = (props, path) => {
 }
 
 export default () => 
-    Component => 
-      props => <Component {...props} navigateTo={navigateTo.bind(null, props)} />;
+    Component => {
+      const newComponent = props => <Component {...props} navigateTo={navigateTo.bind(null, props)} />;
+      return newComponent;
+    };

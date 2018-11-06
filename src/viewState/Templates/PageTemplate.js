@@ -54,7 +54,7 @@ AppContent.propTypes = {
   titulo: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = () => ({
 });
 const mapDispatchToProps = dispatch => 
   bindActionCreators({

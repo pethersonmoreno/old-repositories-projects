@@ -78,10 +78,18 @@ function NoOptionsMessage(props) {
     </Typography>
   );
 }
+NoOptionsMessage.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
 
 function inputComponent({ inputRef, ...props }) {
   return <div ref={inputRef} {...props} />;
 }
+Control.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
 
 function Control(props) {
   return (
@@ -100,6 +108,12 @@ function Control(props) {
     />
   );
 }
+Control.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+  innerRef: PropTypes.func.isRequired,
+};
 
 function Option(props) {
   return (
@@ -116,6 +130,14 @@ function Option(props) {
     </MenuItem>
   );
 }
+Option.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+  innerRef: PropTypes.func.isRequired,
+  isFocused: PropTypes.bool.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+};
 
 function Placeholder(props) {
   return (
@@ -128,6 +150,11 @@ function Placeholder(props) {
     </Typography>
   );
 }
+Placeholder.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
 
 function SingleValue(props) {
   return (
@@ -136,10 +163,19 @@ function SingleValue(props) {
     </Typography>
   );
 }
+SingleValue.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
 
 function ValueContainer(props) {
   return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
 }
+ValueContainer.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
 
 function MultiValue(props) {
   return (
@@ -154,6 +190,13 @@ function MultiValue(props) {
     />
   );
 }
+MultiValue.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+  removeProps: PropTypes.object.isRequired,
+  isFocused: PropTypes.bool.isRequired,
+};
 
 function Menu(props) {
   return (
@@ -162,6 +205,11 @@ function Menu(props) {
     </Paper>
   );
 }
+Menu.propTypes = {
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.object.isRequired,
+};
 function MenuList(props) {
   var children = props.children,
       className = props.className,
@@ -176,6 +224,14 @@ function MenuList(props) {
     </div>
   );
 }
+MenuList.propTypes = {
+  className: PropTypes.string,
+  cx: PropTypes.object.isRequired,
+  innerRef: PropTypes.func,
+  selectProps: PropTypes.object.isRequired,
+  innerProps: PropTypes.object.isRequired,
+  children: PropTypes.object.isRequired,
+};
 
 const components = {
   Control,
@@ -270,6 +326,15 @@ class ReactSelect extends Component {
 ReactSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  options: PropTypes.any,
+  placeholder: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.object,
+  onChange: PropTypes.func,
+  isMulti: PropTypes.bool,
+  selectRef: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  autoFocus: PropTypes.bool,
 };
 
 export default withStyles(styles, { withTheme: true })(ReactSelect);

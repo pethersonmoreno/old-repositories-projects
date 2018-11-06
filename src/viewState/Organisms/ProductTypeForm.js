@@ -42,7 +42,7 @@ export default class Form extends Component{
             fullWidth
             onChange={event => this.setState({description:event.target.value})} />
           <ReactSelect label="Categoria" value={valueCategorySelected} 
-            options={categoriesOptions} onChange={value => this.setState({categoryId:(!!value?value.value:null)})} />
+            options={categoriesOptions} onChange={value => this.setState({categoryId:(value?value.value:null)})} />
           <InputList label="Novo Tamanho" fullWidth 
             value={this.state.sizes}
             onUpdateValue={this.onUpdateSizes} />

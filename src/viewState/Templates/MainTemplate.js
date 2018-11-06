@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuResponsive from '../Organisms/MenuResponsive';
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     display: 'flex',
     height: '100%',

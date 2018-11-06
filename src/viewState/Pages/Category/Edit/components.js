@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/CategoryForm';
@@ -11,7 +12,7 @@ const editCategory = (categoryId, history, valores)=>{
 }
 
 const Edit = props =>{
-  const { history, match } = this.props;
+  const { history, match } = props;
   const categoryId = parseInt(match.params.id);
   const category = categories.find(category=>category.id === categoryId);
   let conteudo = (<Typography>Categoria não encontrada</Typography>);
@@ -28,4 +29,8 @@ const Edit = props =>{
     </PageTemplate>
   );
 }
+Edit.propTypes = {
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+};
 export default Edit;
