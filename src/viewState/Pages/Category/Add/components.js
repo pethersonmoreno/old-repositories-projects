@@ -4,11 +4,7 @@ import Form from '../../../Organisms/CategoryForm';
 import {categories} from '../../../data';
 
 const addCategory = (history, valores)=>{
-  categories.push(Object.assign(
-    {},
-    {id:categories.length+1},
-    valores,
-  ));
+  categories.push({id:categories.length+1, ...valores});
   history.push(`/category`);
 };
 const Add =({ history })=>(

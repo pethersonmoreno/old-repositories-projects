@@ -5,11 +5,7 @@ import {productTypes, sizes, brands} from '../../../data';
 
 const addProductType = (history, valores)=>{
   const productTypeId = productTypes.length+1;
-  productTypes.push(Object.assign(
-    {},
-    {id:productTypeId},
-    valores,
-  ));
+  productTypes.push({id:productTypeId, ...valores});
   updateList(productTypeId, sizes, valores.sizes);
   updateList(productTypeId, brands, valores.brands);
   history.push(`/productType`);

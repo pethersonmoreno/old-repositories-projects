@@ -8,12 +8,7 @@ import {shipLists} from '../../../data';
 
 const addShipList = (history, valores, updateShipListSelected)=>{
   const shipListId = shipLists.length+1;
-  shipLists.push(Object.assign(
-    {},
-    {id:shipListId},
-    valores,
-    {items: []}
-  ));
+  shipLists.push({id:shipListId, ...valores, items: []});
   updateShipListSelected(shipListId);
   history.push(`/shipList`);
 };

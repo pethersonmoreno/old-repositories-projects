@@ -8,15 +8,11 @@ export default (state = initialState, action)=>{
       if(shipLists.length > 0){
         newShipListIdSelected = shipLists[0].id;
       }
-      return {...state, ...{shipLists: shipLists, shipListIdSelected: newShipListIdSelected}};
+      return {...state, shipLists: shipLists, shipListIdSelected: newShipListIdSelected};
     }
   }
   if(action.type === UPDATE_SHIPLIST_SELECTED){
-    return Object.assign(
-      {},
-      state,
-      {shipListIdSelected:action.shipListIdSelected}
-    );
+    return {...state, shipListIdSelected:action.shipListIdSelected};
   }
   return state;
 }

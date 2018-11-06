@@ -4,11 +4,7 @@ import Form from '../../../Organisms/ProductForm';
 import {products} from '../../../data';
 
 const addProduct = (history, valores)=>{
-  products.push(Object.assign(
-    {},
-    {id:products.length+1},
-    valores,
-  ));
+  products.push({id:products.length+1, ...valores});
   history.push(`/product`);
 };
 const Add = ({history})=>(
