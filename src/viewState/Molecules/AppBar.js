@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
-import compose from 'recompose/compose';
 import AppBarMaterialUI from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +7,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { menuWidth } from '../config.js';
-import {toggleMenu} from '../actions'
 
 const styles = theme => ({
   appBar: {
@@ -25,7 +22,7 @@ const styles = theme => ({
   },
 });
 
-function AppBar(props){
+const AppBar = (props)=>{
   const {classes, children, toggleMenu} = props;
   return (
     <AppBarMaterialUI position="fixed" className={classes.appBar}>
@@ -52,20 +49,4 @@ AppBar.propTypes = {
   toggleMenu: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => {
-  return {
-  }
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleMenu: () => {
-      dispatch(toggleMenu())
-    }
-  }
-};
-
-const VisibleAppBar = compose(
-  connect(mapStateToProps,mapDispatchToProps),
-  withStyles(styles, { withTheme: true }),
-)(AppBar)
-export default VisibleAppBar;
+export default withStyles(styles, { withTheme: true })(AppBar);

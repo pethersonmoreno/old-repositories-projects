@@ -50,7 +50,7 @@ export const ShipLists = props => {
             tabList={tabList}
             value={open?shipListIdSelected:'new'} 
             onChange={(event, tabSelected) => (tabSelected !== 'new'?updateShipListSelected(tabSelected):navigateTo(`/shipList/new`))} />
-        <ShipListCategoriesBox {...props} shipList={getShipListSelected(props)} />
+        <ShipListCategoriesBox history={props.history} shipList={getShipListSelected(props)} />
         {open && (
           <ButtonFabContainer>
             <ButtonFab onClick={()=>navigateTo(`/shipList/${shipListIdSelected}`)}><EditIcon /></ButtonFab>

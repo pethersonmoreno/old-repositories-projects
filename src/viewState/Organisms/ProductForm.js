@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {ReactSelect} from '../../Atoms';
-import {productTypes, sizes, brands} from '../../data';
+import {ReactSelect} from '../Atoms';
+import {productTypes, sizes, brands} from '../data';
 
 const productTypesOptions = productTypes.map(productType => ({
   value: productType.id,

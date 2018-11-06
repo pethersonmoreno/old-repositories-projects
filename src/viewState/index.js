@@ -8,11 +8,11 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 import thunk from 'redux-thunk';
 import MainTemplate from './Templates/MainTemplate';
-import reducers from './reducers';
+import {getReducers} from './helpers';
 import {route} from './Pages';
 import './index.css';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+const store = createStore(getReducers(), applyMiddleware(thunk));
 
 const theme = createMuiTheme({
   typography: {
@@ -20,10 +20,8 @@ const theme = createMuiTheme({
     suppressDeprecationWarnings: true,
   },
 });
-console.log(process.env);
 const NavigationRouter = (process.env.NODE_ENV!=='development'?HashRouter:BrowserRouter);
 
-console.log(route);
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <Provider store={store}>

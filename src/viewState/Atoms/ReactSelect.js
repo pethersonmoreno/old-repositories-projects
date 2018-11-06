@@ -168,7 +168,6 @@ function MenuList(props) {
       cx = props.cx,
       innerRef = props.innerRef;
   const newClassName = cx(props.selectProps.classes.menuList, className);
-  console.log(newClassName);
   return (
     <div className={newClassName}
       ref={innerRef}

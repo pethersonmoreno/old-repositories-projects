@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Menu from '../Molecules/Menu';
-import { menuWidth } from '../config.js';
-import {toggleMenu, smUp} from '../actions'
+import Menu from '../../Molecules/Menu';
+import { menuWidth } from '../../config';
+import {NAME} from './constants'
+import {toggleMenu, updateSmUp} from './actions'
 
 const styles = theme => ({
   drawer: {
@@ -46,6 +48,12 @@ class MenuResponsive extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateSmUp);
   }
+  toggleInsideMenu=()=>{
+    const {smUp, menuOpen, toggleMenu} = this.props;
+    if(!smUp && menuOpen){
+      toggleMenu();
+    }
+  }
   render(){
     const { classes, theme, menuOpen, toggleMenu } = this.props;
     return (
@@ -64,7 +72,7 @@ class MenuResponsive extends React.Component {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <Menu />
+            <Menu toggleMenu={this.toggleInsideMenu} />
           </Drawer>
         }
         {this.props.smUp && 
@@ -75,7 +83,7 @@ class MenuResponsive extends React.Component {
             variant="permanent"
             open
           >
-            <Menu />
+            <Menu toggleMenu={this.toggleInsideMenu} />
           </Drawer>
         }
       </nav>
@@ -89,22 +97,15 @@ MenuResponsive.propTypes = {
   menuOpen: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
 };
-const mapStateToProps = state => {
-  return {
-    menuOpen: state.menu.menuOpen,
-    smUp: state.menu.smUp
-  }
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleMenu: () => {
-      dispatch(toggleMenu())
-    },
-    updateSmUp: (newSmUp) => {
-      dispatch(smUp(newSmUp))
-    }
-  }
-};
+
+const mapStateToProps = state => ({
+  ...state[NAME]
+});
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({
+    toggleMenu,
+    updateSmUp
+  }, dispatch);
 
 const VisibleMenuResponsive = compose(
   connect(mapStateToProps,mapDispatchToProps),

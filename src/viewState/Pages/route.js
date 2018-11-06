@@ -1,18 +1,17 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import {route as routeShipList} from './shipList'
-import {route as routeProduct} from './product'
-import {route as routeCategory} from './category'
-import {route as routeProductType} from './productType'
-import {route as routeNotFound} from './notFound'
+import {route as routeShipList} from './ShipList'
+import {route as routeProduct} from './Product'
+import {route as routeCategory} from './Category'
+import {route as routeProductType} from './ProductType'
+import {route as routeNotFound} from './NotFound'
 
-
-const routes = [
-  <Route path={`/`} exact render={() => <Redirect to="/shipList" />} />,
-  routeShipList,
-  routeCategory,
-  routeProductType,
-  routeProduct,
-  routeNotFound,
-];
-export default <Switch>{routes}</Switch>
+export default 
+  <Switch>
+    <Route path={`/`} exact render={() => <Redirect to="/shipList" />} />,
+    {routeShipList}
+    {routeCategory}
+    {routeProductType}
+    {routeProduct}
+    {routeNotFound}
+  </Switch>

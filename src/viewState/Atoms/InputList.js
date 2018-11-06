@@ -78,7 +78,7 @@ class InputList extends Component{
             onKeyPress={this.onKeyPress.bind(this)}
             onBlur={this.addItem} />
           <Button variant="fab" className={classes.button} color='primary'
-            tabindex="-1"
+            tabIndex="-1"
             onClick={this.addItemAndFocusInput}>
             <AddIcon />
           </Button>

@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '../Molecules/AppBar';
 import { menuWidth } from '../config.js';
+import {toggleMenu} from '../Organisms/MenuResponsive/actions'
 
 const styles = theme => ({
   main:{
@@ -26,14 +30,14 @@ const styles = theme => ({
     height: '100%',
   },
 });
-function AppContent({children, classes, titulo, removePadding}){
+function AppContent({toggleMenu, classes, children, titulo, removePadding}){
   let classContent = classes.content;
   if(!removePadding){
     classContent += ' '+classes.contentPadding;
   }
   return (
     <main className={classes.main}>
-      <AppBar>{titulo}</AppBar>
+      <AppBar toggleMenu={toggleMenu}>{titulo}</AppBar>
       <div className={classContent}>
         <div className={classes.toolbar} />
         <div className={classes.contentPage}>
@@ -49,4 +53,17 @@ AppContent.propTypes = {
   classes: PropTypes.object.isRequired,
   titulo: PropTypes.string.isRequired,
 };
-export default withStyles(styles, { withTheme: true })(AppContent);
+
+
+const mapStateToProps = state => ({
+});
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({
+    toggleMenu
+  }, dispatch);
+
+const VisibleAppContent = compose(
+  connect(mapStateToProps,mapDispatchToProps),
+  withStyles(styles, { withTheme: true }),
+)(AppContent)
+export default VisibleAppContent;

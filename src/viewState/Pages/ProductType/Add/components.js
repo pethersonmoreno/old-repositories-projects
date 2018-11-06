@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import PageTemplate from '../../Templates/PageTemplate';
-import Form from './Form';
-import {productTypes, sizes, brands} from '../../data';
+import PageTemplate from '../../../Templates/PageTemplate';
+import Form from '../../../Organisms/ProductTypeForm';
+import {productTypes, sizes, brands} from '../../../data';
 
 class Add extends Component{
   add(event, valores){

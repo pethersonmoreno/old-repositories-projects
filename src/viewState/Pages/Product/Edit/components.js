@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from '../../Templates/PageTemplate';
-import Form from './Form';
-import {products, productTypes, sizes, brands} from '../../data';
+import PageTemplate from '../../../Templates/PageTemplate';
+import Form from '../../../Organisms/ProductForm';
+import {products, productTypes, sizes, brands} from '../../../data';
 
 class Edit extends Component{
   constructor(props){
