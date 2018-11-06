@@ -24,24 +24,14 @@ export default class Form extends Component{
   constructor(props){
     super(props);
     const product = (props.product?props.product:{productTypeId:null, sizeId: null, brandId: null, ean: ''});
-    this.state = {
-      productTypeId: product.productTypeId, 
-      sizeId: product.sizeId, 
-      brandId: product.brandId,
-      ean: product.ean,
-    }
+    this.state = {...product}
   }
   onCallSubmit(event){
     const {onSubmit} = this.props;
     event.preventDefault();
-    const {productTypeId, sizeId, brandId, ean} = this.state;
+    const {productTypeId, sizeId, brandId} = this.state;
     if(productTypeId && sizeId && brandId){
-      onSubmit({
-        productTypeId, 
-        sizeId, 
-        brandId,
-        ean,
-      });
+      onSubmit({...this.state});
     }
   }
   render(){

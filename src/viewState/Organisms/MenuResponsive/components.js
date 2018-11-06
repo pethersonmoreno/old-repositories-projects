@@ -24,20 +24,10 @@ const styles = theme => ({
 
 
 class MenuResponsive extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      smUp: false,
-    };
-    this.updateSmUp = this.updateSmUp.bind(this);
-  }
-  
-  updateSmUp(){
-    const {smUp, updateSmUp} = this.props;
+  updateSmUp=()=>{
+    const {updateSmUp} = this.props;
     const newSmUp = (document.body.clientWidth >= 600);
-    if(newSmUp !== smUp){
-      updateSmUp(newSmUp);
-    }
+    updateSmUp(newSmUp);
   }
   componentWillMount() {
     this.updateSmUp();

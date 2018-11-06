@@ -30,7 +30,7 @@ const styles = theme => ({
     height: '100%',
   },
 });
-function AppContent({toggleMenu, classes, children, titulo, removePadding}){
+const AppContent = ({toggleMenu, classes, children, titulo, removePadding})=>{
   let classContent = classes.content;
   if(!removePadding){
     classContent += ' '+classes.contentPadding;
@@ -53,7 +53,6 @@ AppContent.propTypes = {
   classes: PropTypes.object.isRequired,
   titulo: PropTypes.string.isRequired,
 };
-
 
 const mapStateToProps = state => ({
 });

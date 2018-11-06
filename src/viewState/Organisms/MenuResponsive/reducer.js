@@ -9,11 +9,9 @@ export default (state = initialState, action)=>{
     );
   }
   if(action.type === UPDATE_SMUP){
-    return Object.assign(
-      {},
-      state,
-      {smUp:action.smUp}
-    );
+    if(state.smUp !== action.smUp){
+      return {...state, smUp:action.smUp};
+    }
   }
   return state;
 }

@@ -38,60 +38,58 @@ const styles = theme => ({
   },
 });
 
-class CategoryItem extends Component{
-  getShipListItemsOfCategory(category, shipList){
-    if(shipList === undefined){
-      return [];
-    }
-    return shipListItems
-      .filter(item=>item.shipListId === shipList.id)
-      .filter(item=>{
-        let productType;
-        if(item.selecao === SELECAO_DIRETA){
-          const product = products.find(product=>product.id === item.productId);
-          if(product !== undefined){
-            productType = productTypes.find(productType=>productType.id === product.productTypeId);
-          }
-        } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
-          productType = productTypes.find(productType=>productType.id === item.productTypeId);
+
+const getShipListItemsOfCategory=(category, shipList)=>{
+  if(shipList === undefined){
+    return [];
+  }
+  return shipListItems
+    .filter(item=>item.shipListId === shipList.id)
+    .filter(item=>{
+      let productType;
+      if(item.selecao === SELECAO_DIRETA){
+        const product = products.find(product=>product.id === item.productId);
+        if(product !== undefined){
+          productType = productTypes.find(productType=>productType.id === product.productTypeId);
         }
-        return (productType !== undefined && productType.categoryId === category.id);
-      });
+      } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
+        productType = productTypes.find(productType=>productType.id === item.productTypeId);
+      }
+      return (productType !== undefined && productType.categoryId === category.id);
+    });
+};
+const CategoryItem = ({history, classes, category, shipList, isExpanded, toggleCollapse})=>{
+  const itemsOfCategory = getShipListItemsOfCategory(category, shipList);
+  const expanded = isExpanded();
+  if(itemsOfCategory.length > 0){
+    return (
+      <div>
+        <ListItem button 
+          className={classes.categoryItem}
+          onClick={toggleCollapse}>
+          <ListItemIcon>
+            <LabelIcon />
+          </ListItemIcon>
+          <Badge badgeContent={itemsOfCategory.length} color="primary" 
+            classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
+            <ListItemText inset primary={category.description}
+              className={classes.badgeText} />
+          </Badge>
+          {expanded ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {itemsOfCategory.map((item, index)=>(
+                <ShipListItem key={index} history={history} 
+                   className={classes.nested} item={item} />
+            ))}
+          </List>
+        </Collapse>
+      </div>
+    );
   }
-  render(){
-    const {history, classes, category, shipList, isExpanded, toggleCollapse} = this.props;
-    const itemsOfCategory = this.getShipListItemsOfCategory(category, shipList);
-    const expanded = isExpanded();
-    if(itemsOfCategory.length > 0){
-      return (
-        <div>
-          <ListItem button 
-            className={classes.categoryItem}
-            onClick={toggleCollapse}>
-            <ListItemIcon>
-              <LabelIcon />
-            </ListItemIcon>
-            <Badge badgeContent={itemsOfCategory.length} color="primary" 
-              classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
-              <ListItemText inset primary={category.description}
-                className={classes.badgeText} />
-            </Badge>
-            {expanded ? <ExpandLess /> : <ExpandMore />}
-          </ListItem>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              {itemsOfCategory.map((item, index)=>(
-                  <ShipListItem key={index} history={history} 
-                     className={classes.nested} item={item} />
-              ))}
-            </List>
-          </Collapse>
-        </div>
-      );
-    }
-    return (<div></div>);
-  }
-}
+  return (<div></div>);
+};
 class CategoriesBox extends Component{
   constructor(props){
     super(props);

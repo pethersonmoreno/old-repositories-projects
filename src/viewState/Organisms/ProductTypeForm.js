@@ -15,22 +15,15 @@ export default class Form extends Component{
     super(props);
     const productType = (props.productType?props.productType:{id:null, categoryId: null, description: ''});
     this.state = {
-      description: productType.description,
-      categoryId: productType.categoryId,
-      sizes:sizes.filter(size=>size.productTypeId === productType.id).map(size=>size.description),
-      brands:brands.filter(brand=>brand.productTypeId === productType.id).map(brand=>brand.description),
+      ...productType,
+      sizes: sizes.filter(size=>size.productTypeId === productType.id).map(size=>size.description),
+      brands: brands.filter(brand=>brand.productTypeId === productType.id).map(brand=>brand.description),
     };
   }
   onCallSubmit(event){
     const {onSubmit} = this.props;
     event.preventDefault();
-    const data = {
-      description: this.state.description,
-      categoryId: this.state.categoryId,
-      sizes:this.state.sizes,
-      brands:this.state.brands,
-    };
-    onSubmit(data);
+    onSubmit({...this.state});
   }
   onUpdateSizes=(sizes)=>{
     this.setState({sizes});

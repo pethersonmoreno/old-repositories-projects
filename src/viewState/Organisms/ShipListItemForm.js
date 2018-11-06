@@ -33,10 +33,7 @@ export default class Form extends Component{
   constructor(props){
     super(props);
     const item = (props.item?props.item:{qtd:'', selecao:null, productId:null, productTypeId:null, sizeId: null});
-    this.state = Object.assign(
-      {},
-      item
-    )
+    this.state = {...item};
   }
   onCallSubmit(event){
     const {onSubmit} = this.props;

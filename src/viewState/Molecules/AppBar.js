@@ -22,26 +22,23 @@ const styles = theme => ({
   },
 });
 
-const AppBar = (props)=>{
-  const {classes, children, toggleMenu} = props;
-  return (
-    <AppBarMaterialUI position="fixed" className={classes.appBar}>
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="Mostrar Menu"
-          onClick={toggleMenu}
-          className={classes.menuButton}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" color="inherit" noWrap>
-          {children}
-        </Typography>
-      </Toolbar>
-    </AppBarMaterialUI>
-  );
-}
+const AppBar = ({classes, children, toggleMenu})=>(
+  <AppBarMaterialUI position="fixed" className={classes.appBar}>
+    <Toolbar>
+      <IconButton
+        color="inherit"
+        aria-label="Mostrar Menu"
+        onClick={toggleMenu}
+        className={classes.menuButton}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Typography variant="h6" color="inherit" noWrap>
+        {children}
+      </Typography>
+    </Toolbar>
+  </AppBarMaterialUI>
+);
 
 AppBar.propTypes = {
   classes: PropTypes.object.isRequired,

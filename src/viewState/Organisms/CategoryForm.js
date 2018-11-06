@@ -13,11 +13,7 @@ export default class FormCategory extends Component{
   onCallSubmit(event){
     const {onSubmit} = this.props;
     event.preventDefault();
-    const data = {
-      description: this.state.description,
-    };
-    // this.setState({description:''});
-    onSubmit(data);
+    onSubmit({...this.state});
   }
   render(){
     const {textoBotao} = this.props;
