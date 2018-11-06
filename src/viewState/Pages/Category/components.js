@@ -10,10 +10,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import PageTemplate from '../../Templates/PageTemplate';
 import {ButtonFabContainer, ButtonFab} from '../../Atoms';
-import {withNavigateTo} from '../../helpers';
 import {categories} from '../../data';
 
-const List = ({navigateTo})=>
+const List = ({history})=>
   (
     <PageTemplate titulo="Lista de Categorias">
       <Paper>
@@ -30,7 +29,7 @@ const List = ({navigateTo})=>
               return (
                 <TableRow key={category.id}>
                   <TableCell padding="none">
-                    <IconButton onClick={()=>navigateTo(`/category/${category.id}`)}>
+                    <IconButton onClick={()=>history.push(`/category/${category.id}`)}>
                       <EditIcon color="primary" />
                     </IconButton>
                   </TableCell>
@@ -45,8 +44,8 @@ const List = ({navigateTo})=>
         </Table>
       </Paper>
       <ButtonFabContainer>
-        <ButtonFab onClick={()=>navigateTo(`/category/new`)}><AddIcon /></ButtonFab>
+        <ButtonFab onClick={()=>history.push(`/category/new`)}><AddIcon /></ButtonFab>
       </ButtonFabContainer>
     </PageTemplate>
   );
-export default withNavigateTo()(List)
+export default List

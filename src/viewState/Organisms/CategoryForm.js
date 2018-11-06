@@ -17,7 +17,7 @@ export default class FormCategory extends Component{
       description: this.state.description,
     };
     // this.setState({description:''});
-    onSubmit(event, data);
+    onSubmit(data);
   }
   render(){
     const {textoBotao} = this.props;

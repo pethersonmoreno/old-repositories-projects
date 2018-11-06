@@ -1,47 +1,35 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ShipListForm';
 import {updateShipListSelected} from '../actions'
 import {shipLists} from '../../../data';
 
-class Add extends Component{
-  add(event, valores){
-    const { history, updateShipListSelected } = this.props;
-    event.preventDefault();
-    const shipListId = shipLists.length+1;
-    shipLists.push(Object.assign(
-      {},
-      {id:shipListId},
-      valores,
-      {items: []}
-    ));
-    updateShipListSelected(shipListId);
-    history.push(`/shipList`);
-  }
-  
-  render(){
-    return (
-      <PageTemplate titulo="Nova Lista">
-        <Form 
-          textoBotao="Adicionar" 
-          onSubmit={this.add.bind(this)} />
-      </PageTemplate>
-    );
-  }
-}
+const addShipList = (history, valores, updateShipListSelected)=>{
+  const shipListId = shipLists.length+1;
+  shipLists.push(Object.assign(
+    {},
+    {id:shipListId},
+    valores,
+    {items: []}
+  ));
+  updateShipListSelected(shipListId);
+  history.push(`/shipList`);
+};
+const Add = ({ history, updateShipListSelected })=>(
+  <PageTemplate titulo="Nova Lista">
+    <Form 
+      textoBotao="Adicionar" 
+      onSubmit={valores=>addShipList(history, valores, updateShipListSelected)} />
+  </PageTemplate>
+);
 
-const mapStateToProps = state => {
-  return {
-    shipListIdSelected: state.shipList.shipListIdSelected
-  }
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    updateShipListSelected: (shipListIdSelected) => {
-      dispatch(updateShipListSelected(shipListIdSelected))
-    }
-  }
-};
+const mapStateToProps = state => ({
+});
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({
+    updateShipListSelected
+  }, dispatch);
 
 export default connect(mapStateToProps,mapDispatchToProps)(Add);

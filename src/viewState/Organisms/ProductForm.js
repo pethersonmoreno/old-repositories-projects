@@ -36,7 +36,7 @@ export default class Form extends Component{
     event.preventDefault();
     const {productTypeId, sizeId, brandId, ean} = this.state;
     if(productTypeId && sizeId && brandId){
-      onSubmit(event, {
+      onSubmit({
         productTypeId, 
         sizeId, 
         brandId,

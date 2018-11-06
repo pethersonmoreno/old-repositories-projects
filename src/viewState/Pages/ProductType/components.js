@@ -10,10 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import {ButtonFabContainer, ButtonFab} from '../../Atoms';
-import {withNavigateTo} from '../../helpers';
 import {productTypes} from '../../data';
 
-const List = ({navigateTo}) =>
+const List = ({history}) =>
   (
     <PageTemplate titulo="Lista de Tipos de Produtos">
       <Paper>
@@ -30,7 +29,7 @@ const List = ({navigateTo}) =>
               return (
                 <TableRow key={productType.id}>
                   <TableCell padding="none">
-                    <IconButton onClick={()=>navigateTo(`/productType/${productType.id}`)}>
+                    <IconButton onClick={()=>history.push(`/productType/${productType.id}`)}>
                       <EditIcon color="primary" />
                     </IconButton>
                   </TableCell>
@@ -45,8 +44,8 @@ const List = ({navigateTo}) =>
         </Table>
       </Paper>
       <ButtonFabContainer>
-        <ButtonFab onClick={()=>navigateTo(`/productType/new`)}><AddIcon /></ButtonFab>
+        <ButtonFab onClick={()=>history.push(`/productType/new`)}><AddIcon /></ButtonFab>
       </ButtonFabContainer>
     </PageTemplate>
   );
-export default withNavigateTo()(List);
+export default List;

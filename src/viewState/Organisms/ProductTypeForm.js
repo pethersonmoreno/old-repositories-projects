@@ -30,8 +30,7 @@ export default class Form extends Component{
       sizes:this.state.sizes,
       brands:this.state.brands,
     };
-    // this.setState({description:''});
-    onSubmit(event, data);
+    onSubmit(data);
   }
   onUpdateSizes=(sizes)=>{
     this.setState({sizes});

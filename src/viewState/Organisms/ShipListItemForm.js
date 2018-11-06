@@ -41,7 +41,7 @@ export default class Form extends Component{
   onCallSubmit(event){
     const {onSubmit} = this.props;
     event.preventDefault();
-    onSubmit(event, Object.assign({}, this.state));
+    onSubmit({...this.state});
   }
   render(){
     const {textoBotao} = this.props;
