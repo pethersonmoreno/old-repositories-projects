@@ -1,5 +1,9 @@
-export route from './route';
-export * as constants  from './constants'
-export * as actions from './actions';
-export reducer from './reducer';
-export * as components from './components';
+import * as constants from './constants';
+import * as actions from './actions';
+import * as components from './components';
+
+export { default as route } from './route';
+export { constants };
+export { actions };
+export { default as reducer } from './reducer';
+export { components };

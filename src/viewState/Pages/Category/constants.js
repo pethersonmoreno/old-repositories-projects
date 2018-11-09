@@ -1,1 +1,1 @@
-export const PREFIX_ROUTE = '/category'
+export const PREFIX_ROUTE = '/category';

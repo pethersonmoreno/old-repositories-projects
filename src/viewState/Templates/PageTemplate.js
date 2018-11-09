@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '../Molecules/AppBar';
-import { menuWidth } from '../config.js';
-import {toggleMenu} from '../Organisms/MenuResponsive/actions'
+import { menuWidth } from '../config';
+import { toggleMenu as actionToogleMenu } from '../Organisms/MenuResponsive/actions';
 
 const styles = theme => ({
-  main:{
+  main: {
     height: '100%',
     [theme.breakpoints.only('xs')]: {
       width: '100%',
@@ -30,39 +30,48 @@ const styles = theme => ({
     height: '100%',
   },
 });
-const AppContent = ({toggleMenu, classes, children, titulo, removePadding})=>{
+const AppContent = ({
+  toggleMenu, classes, children, titulo, removePadding,
+}) => {
   let classContent = classes.content;
-  if(!removePadding){
-    classContent += ' '+classes.contentPadding;
+  if (!removePadding) {
+    classContent += ` ${classes.contentPadding}`;
   }
   return (
     <main className={classes.main}>
       <AppBar toggleMenu={toggleMenu}>{titulo}</AppBar>
       <div className={classContent}>
         <div className={classes.toolbar} />
-        <div className={classes.contentPage}>
-          {children}
-        </div>
+        <div className={classes.contentPage}>{children}</div>
       </div>
     </main>
   );
-}
-
-AppContent.propTypes = {
-  children: PropTypes.any.isRequired,
-  classes: PropTypes.object.isRequired,
-  titulo: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = () => ({
-});
-const mapDispatchToProps = dispatch => 
-  bindActionCreators({
-    toggleMenu
-  }, dispatch);
+AppContent.propTypes = {
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  titulo: PropTypes.string.isRequired,
+  toggleMenu: PropTypes.func.isRequired,
+  removePadding: PropTypes.bool,
+};
+AppContent.defaultProps = {
+  removePadding: false,
+};
+
+const mapStateToProps = () => ({});
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    toggleMenu: actionToogleMenu,
+  },
+  dispatch,
+);
 
 const VisibleAppContent = compose(
-  connect(mapStateToProps,mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
   withStyles(styles, { withTheme: true }),
-)(AppContent)
+)(AppContent);
 export default VisibleAppContent;

@@ -1,1 +1,1 @@
-export const PREFIX_ROUTE = '/product'
+export const PREFIX_ROUTE = '/product';

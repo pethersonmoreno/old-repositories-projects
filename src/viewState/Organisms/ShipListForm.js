@@ -1,36 +1,56 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-export default class FormCategory extends Component{
-  constructor(props){
+class FormCategory extends Component {
+  constructor(props) {
     super(props);
-    const shipList = (props.shipList?props.shipList:{description: ''});
-    this.state = {...shipList};
+    this.state = { ...props.shipList };
   }
-  onCallSubmit(event){
-    const {onSubmit} = this.props;
+
+  onCallSubmit(event) {
+    const { onSubmit } = this.props;
     event.preventDefault();
-    onSubmit({...this.state});
+    onSubmit({ ...this.state });
   }
-  render(){
-    const {textoBotao} = this.props;
+
+  render() {
+    const { textoBotao } = this.props;
+    const { description } = this.state;
     return (
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <div>
-            <TextField label="Descrição" value={this.state.description} 
-              autoFocus={true}
+            <TextField
+              label="Descrição"
+              value={description}
+              autoFocus
               fullWidth
-              onChange={event => this.setState({description:event.target.value})} />
+              onChange={event => this.setState({ description: event.target.value })}
+            />
           </div>
           <div className="formButtons">
-            <Button type="submit" variant="contained" color="primary">{textoBotao}</Button>
+            <Button type="submit" variant="contained" color="primary">
+              {textoBotao}
+            </Button>
           </div>
         </form>
       </Paper>
     );
   }
 }
-
+FormCategory.propTypes = {
+  textoBotao: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  shipList: PropTypes.shape({
+    description: PropTypes.string,
+  }),
+};
+FormCategory.defaultProps = {
+  shipList: {
+    description: '',
+  },
+};
+export default FormCategory;

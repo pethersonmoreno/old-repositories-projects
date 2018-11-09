@@ -1,3 +1,4 @@
-import {constants as constantsShipList, reducer as reducerShipList} from './ShipList'
-export route from './route'
-export const reducers = {[constantsShipList.STATE_NAME]:reducerShipList};
+import { constants as constantsShipList, reducer as reducerShipList } from './ShipList';
+
+export { default as route } from './route';
+export const reducers = { [constantsShipList.STATE_NAME]: reducerShipList };

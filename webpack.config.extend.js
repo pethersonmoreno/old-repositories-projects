@@ -14,30 +14,24 @@
  */
 
 module.exports = (webpackConfig, env, { paths }) => {
-    let indexRuleBabel = undefined;
-    // here you can extend your webpackConfig at will
-    webpackConfig.module.rules.forEach((rule, index)=>{
-      if(rule.oneOf !== undefined){
-        rule.oneOf.forEach(oneOf=>{
-          if(oneOf.options !== undefined 
-            && oneOf.options.plugins !== undefined
-            && oneOf.test !== undefined
-            && '.js'.match(oneOf.test)
-            && '.jsx'.match(oneOf.test)
-          ){
-            indexRuleBabel = index;
-            oneOf.options.plugins.push(
-              ["@babel/plugin-proposal-export-default-from"],
-              ["@babel/plugin-proposal-export-namespace-from"]
-            );
-          }
-        })
-      }
-    });
-    webpackConfig.module.rules.splice(indexRuleBabel, 0, {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      use: ['babel-loader', 'eslint-loader']
-    });
-    return webpackConfig
-}
+  // here you can extend your webpackConfig at will
+  webpackConfig.module.rules.forEach((rule, index) => {
+    if (rule.oneOf !== undefined) {
+      rule.oneOf.forEach((oneOf) => {
+        if (
+          oneOf.options !== undefined
+          && oneOf.options.plugins !== undefined
+          && oneOf.test !== undefined
+          && '.js'.match(oneOf.test)
+          && '.jsx'.match(oneOf.test)
+        ) {
+          oneOf.options.plugins.push(
+            ['@babel/plugin-proposal-export-default-from'],
+            ['@babel/plugin-proposal-export-namespace-from'],
+          );
+        }
+      });
+    }
+  });
+  return webpackConfig;
+};

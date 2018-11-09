@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -10,7 +11,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ShipListItem from '../Molecules/ShipListItem';
-import {shipListItems, categories, products, productTypes, SELECAO_DIRETA, SELECAO_POR_TIPO_TAMANHO} from '../data';
+import {
+  shipListItems,
+  categories,
+  products,
+  productTypes,
+  SELECAO_DIRETA,
+  SELECAO_POR_TIPO_TAMANHO,
+} from '../data';
 
 const styles = theme => ({
   nested: {
@@ -23,8 +31,8 @@ const styles = theme => ({
   badgeRoot: {
     flex: '1 1 auto',
   },
-  'badgeText': {
-    '&:first-child':{
+  badgeText: {
+    '&:first-child': {
       paddingLeft: '10px',
     },
   },
@@ -38,100 +46,138 @@ const styles = theme => ({
   },
 });
 
-
-const getShipListItemsOfCategory=(category, shipList)=>{
-  if(shipList === undefined){
+const getShipListItemsOfCategory = (category, shipList) => {
+  if (shipList === undefined) {
     return [];
   }
   return shipListItems
-    .filter(item=>item.shipListId === shipList.id)
-    .filter(item=>{
+    .filter(item => item.shipListId === shipList.id)
+    .filter((item) => {
       let productType;
-      if(item.selecao === SELECAO_DIRETA){
-        const product = products.find(product=>product.id === item.productId);
-        if(product !== undefined){
-          productType = productTypes.find(productType=>productType.id === product.productTypeId);
+      if (item.selecao === SELECAO_DIRETA) {
+        const product = products.find(productItem => productItem.id === item.productId);
+        if (product !== undefined) {
+          productType = productTypes.find(type => type.id === product.productTypeId);
         }
-      } else if(item.selecao === SELECAO_POR_TIPO_TAMANHO){
-        productType = productTypes.find(productType=>productType.id === item.productTypeId);
+      } else if (item.selecao === SELECAO_POR_TIPO_TAMANHO) {
+        productType = productTypes.find(type => type.id === item.productTypeId);
       }
-      return (productType !== undefined && productType.categoryId === category.id);
+      return productType !== undefined && productType.categoryId === category.id;
     });
 };
-const CategoryItem = ({history, classes, category, shipList, isExpanded, toggleCollapse})=>{
+const CategoryItem = (props) => {
+  const {
+    history, classes, category, shipList, isExpanded, toggleCollapse,
+  } = props;
   const itemsOfCategory = getShipListItemsOfCategory(category, shipList);
   const expanded = isExpanded();
-  if(itemsOfCategory.length > 0){
+  if (itemsOfCategory.length > 0) {
     return (
       <div>
-        <ListItem button 
-          className={classes.categoryItem}
-          onClick={toggleCollapse}>
+        <ListItem button className={classes.categoryItem} onClick={toggleCollapse}>
           <ListItemIcon>
             <LabelIcon />
           </ListItemIcon>
-          <Badge badgeContent={itemsOfCategory.length} color="primary" 
-            classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}>
-            <ListItemText inset primary={category.description}
-              className={classes.badgeText} />
+          <Badge
+            badgeContent={itemsOfCategory.length}
+            color="primary"
+            classes={{ root: classes.badgeRoot, badge: classes.badgeBadge }}
+          >
+            <ListItemText inset primary={category.description} className={classes.badgeText} />
           </Badge>
           {expanded ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {itemsOfCategory.map((item, index)=>(
-                <ShipListItem key={index} history={history} 
-                   className={classes.nested} item={item} />
+            {itemsOfCategory.map(item => (
+              <ShipListItem
+                key={item.id}
+                history={history}
+                className={classes.nested}
+                item={item}
+              />
             ))}
           </List>
         </Collapse>
       </div>
     );
   }
-  return (<div></div>);
+  return <div />;
 };
-class CategoriesBox extends Component{
-  constructor(props){
+CategoryItem.propTypes = {
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  category: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+  shipList: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  isExpanded: PropTypes.func.isRequired,
+  toggleCollapse: PropTypes.func.isRequired,
+};
+class CategoriesBox extends Component {
+  constructor(props) {
     super(props);
-    const {shipList} = props;
+    const { shipList } = props;
     let categoriesCollapsed = [];
-    if(shipList !== undefined
-      && shipListItems.filter(item=>item.shipListId === shipList.id).length > 10)
-    {
-      categoriesCollapsed = categories.map(category=>category.id);
+    if (
+      shipList !== undefined
+      && shipListItems.filter(item => item.shipListId === shipList.id).length > 10
+    ) {
+      categoriesCollapsed = categories.map(category => category.id);
     }
     this.state = {
       categoriesCollapsed,
-      shipList,
     };
   }
-  handleCategoryExpandable(category){
-    const {categoriesCollapsed} = this.state;
-    let newCategoriesCollapsed = categoriesCollapsed.concat();
+
+  handleCategoryExpandable = (category) => {
+    const { categoriesCollapsed } = this.state;
+    const newCategoriesCollapsed = categoriesCollapsed.concat();
     const index = newCategoriesCollapsed.indexOf(category.id);
-    if(index === -1){
+    if (index === -1) {
       newCategoriesCollapsed.push(category.id);
     } else {
       newCategoriesCollapsed.splice(index, 1);
     }
     this.setState({ categoriesCollapsed: newCategoriesCollapsed });
-  }
-  isCategoryExpanded(category){
-    const {categoriesCollapsed} = this.state;
-    return (categoriesCollapsed.find(categoryId => categoryId === category.id) === undefined);
-  }
-  render(){
-    const {history, classes, shipList} = this.props;
+  };
+
+  isCategoryExpanded = (category) => {
+    const { categoriesCollapsed } = this.state;
+    return categoriesCollapsed.find(categoryId => categoryId === category.id) === undefined;
+  };
+
+  render() {
+    const { history, classes, shipList } = this.props;
     return (
       <div>
-        {categories.map(category=>(
-            <CategoryItem key={category.id} history={history} classes={classes} 
-              toggleCollapse={this.handleCategoryExpandable.bind(this, category)}
-              isExpanded={this.isCategoryExpanded.bind(this, category)}
-              category={category} shipList={shipList} />
+        {categories.map(category => (
+          <CategoryItem
+            key={category.id}
+            history={history}
+            classes={classes}
+            toggleCollapse={() => this.handleCategoryExpandable(category)}
+            isExpanded={() => this.isCategoryExpanded(category)}
+            category={category}
+            shipList={shipList}
+          />
         ))}
       </div>
     );
   }
 }
+CategoriesBox.propTypes = {
+  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  category: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+  }).isRequired,
+  shipList: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+};
 export default withStyles(styles, { withTheme: true })(CategoriesBox);

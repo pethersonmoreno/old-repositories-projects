@@ -11,23 +11,21 @@ const styles = () => ({
   },
 });
 
-class App extends React.Component {
-  render() {
-    const { children, classes } = this.props;
+const App = (props) => {
+  const { children, classes } = props;
 
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <MenuResponsive />
-        {children}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <MenuResponsive />
+      {children}
+    </div>
+  );
+};
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles, { withTheme: true })(App);

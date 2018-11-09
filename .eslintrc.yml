@@ -1,26 +1,25 @@
----
-parserOptions:
-  sourceType: module
-
-env:
-  amd: true
-  browser: true
-  es6: true
-  jquery: true
-  node: true
-  jest: true
-
-extends:
- - airbnb
-
 parser: babel-eslint
 
+env:
+  browser: true
+  jest: true
+
+plugins:
+  - react
+  - jsx-a11y
+  - import
+
+extends:
+  - airbnb
+
 rules:
-  import/extensions:
-    - off
-    - never
   react/jsx-filename-extension:
-    - 1
+    - error
     - extensions:
-      - .js
-      - .jsx
+        - .js
+        - .jsx
+  global-require: off
+  import/prefer-default-export: off
+  no-unused-expressions:
+    - error
+    - allowTaggedTemplates: true
