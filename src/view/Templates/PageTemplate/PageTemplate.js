@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '../Molecules/AppBar';
-import { menuWidth } from '../config';
-import { operations } from '../../state/ducks/menu';
+import AppBar from '../../Molecules/AppBar';
+import { menuWidth } from '../../config';
 
 const styles = theme => ({
   main: {
@@ -29,7 +26,7 @@ const styles = theme => ({
     height: '100%',
   },
 });
-const AppContent = ({
+const PageTemplate = ({
   toggleMenu, classes, children, titulo, removePadding,
 }) => {
   let classContent = classes.content;
@@ -46,22 +43,14 @@ const AppContent = ({
     </main>
   );
 };
-
-AppContent.propTypes = {
+PageTemplate.propTypes = {
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   titulo: PropTypes.string.isRequired,
   toggleMenu: PropTypes.func.isRequired,
   removePadding: PropTypes.bool,
 };
-AppContent.defaultProps = {
+PageTemplate.defaultProps = {
   removePadding: false,
 };
-const VisibleAppContent = compose(
-  connect(
-    null,
-    { toggleMenu: operations.toggleMenu },
-  ),
-  withStyles(styles, { withTheme: true }),
-)(AppContent);
-export default VisibleAppContent;
+export default withStyles(styles, { withTheme: true })(PageTemplate);
