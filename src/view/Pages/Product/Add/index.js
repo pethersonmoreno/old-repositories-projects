@@ -1,4 +1,4 @@
-import * as components from './components';
+import Component from './ProductAdd';
 
 export { default as route } from './route';
-export { components };
+export default Component;

@@ -12,7 +12,8 @@ import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
 import { operations } from '../../../state/ducks/shipList';
 import BarTabs from '../../Molecules/BarTabs';
-import { ButtonFabContainer, ButtonFab } from '../../Atoms';
+import ButtonFabContainer from '../../Atoms/ButtonFabContainer';
+import ButtonFab from '../../Atoms/ButtonFab';
 
 const styles = theme => ({
   root: {
@@ -25,7 +26,7 @@ const styles = theme => ({
   },
 });
 
-export class ShipLists extends Component {
+class ShipLists extends Component {
   componentDidMount() {
     const { startShiplist } = this.props;
     startShiplist();
@@ -107,7 +108,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 
-export const VisibleShipLists = compose(
+const VisibleShipLists = compose(
   connect(
     mapStateToProps,
     mapDispatchToProps,
