@@ -143,10 +143,14 @@ Option.propTypes = {
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
-  innerRef: PropTypes.func.isRequired,
+  innerRef: PropTypes.func,
   isFocused: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
 };
+Option.defaultProps = {
+  innerRef: undefined,
+};
+
 
 function Placeholder(props) {
   const { children, innerProps, selectProps } = props;
@@ -158,8 +162,11 @@ function Placeholder(props) {
 }
 Placeholder.propTypes = {
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+Placeholder.defaultProps = {
+  innerProps: undefined,
 };
 
 function SingleValue(props) {
@@ -172,8 +179,11 @@ function SingleValue(props) {
 }
 SingleValue.propTypes = {
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+SingleValue.defaultProps = {
+  innerProps: undefined,
 };
 
 function ValueContainer(props) {
@@ -234,15 +244,17 @@ function MenuList(props) {
   );
 }
 MenuList.propTypes = {
-  className: PropTypes.string.isRequired,
-  cx: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  className: PropTypes.string,
+  cx: PropTypes.func.isRequired,
   innerRef: PropTypes.func,
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 MenuList.defaultProps = {
+  className: undefined,
   innerRef: undefined,
+  innerProps: undefined,
 };
 
 const components = {
@@ -271,7 +283,7 @@ class ReactSelect extends Component {
     };
   }
 
-  onChangeUse = (value) => {
+  onChangeUsed = (value) => {
     const { onChange } = this.props;
     this.setState({
       value,
@@ -308,7 +320,7 @@ class ReactSelect extends Component {
 
     let textFieldProps;
     let placeHolderUsed = placeholder;
-    let shrink;
+    let shrink = false;
     if (stateValue !== undefined && isObject(stateValue)) {
       shrink = stateValue.value !== undefined;
     }

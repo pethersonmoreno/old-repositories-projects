@@ -1,1 +1,1 @@
-require('./viewState');
+require('./view');

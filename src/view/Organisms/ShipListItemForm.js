@@ -125,7 +125,7 @@ Form.propTypes = {
 };
 Form.defaultProps = {
   item: {
-    qtd: '',
+    qtd: 1,
     selecao: null,
     productId: null,
     productTypeId: null,

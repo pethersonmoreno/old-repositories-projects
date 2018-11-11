@@ -172,10 +172,6 @@ class CategoriesBox extends Component {
 CategoriesBox.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  category: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
   shipList: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }).isRequired,

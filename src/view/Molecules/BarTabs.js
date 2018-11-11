@@ -26,12 +26,12 @@ BarTabs.propTypes = {
   className: PropTypes.string,
   tabList: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       label: PropTypes.string.isRequired,
       icon: PropTypes.element.isRequired,
     }),
   ).isRequired,
-  value: PropTypes.oneOf([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 BarTabs.defaultProps = {

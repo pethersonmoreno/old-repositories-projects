@@ -101,8 +101,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    actionToggleMenu,
-    actionUpdateSmUp,
+    toggleMenu: actionToggleMenu,
+    updateSmUp: actionUpdateSmUp,
   },
   dispatch,
 );
