@@ -1,7 +1,7 @@
 import React from 'react';
 
-const ButtonFabContainer = ({children, ...otherProps}) => (
-  <div className='fabContainer' {...otherProps}>
+const ButtonFabContainer = ({ children, ...otherProps }) => (
+  <div className="fabContainer" {...otherProps}>
     {children}
   </div>
 );

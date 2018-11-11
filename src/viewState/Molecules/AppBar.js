@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { menuWidth } from '../config.js';
+import { menuWidth } from '../config';
 
 const styles = theme => ({
   appBar: {
@@ -22,7 +22,7 @@ const styles = theme => ({
   },
 });
 
-const AppBar = ({classes, children, toggleMenu})=>(
+const AppBar = ({ classes, children, toggleMenu }) => (
   <AppBarMaterialUI position="fixed" className={classes.appBar}>
     <Toolbar>
       <IconButton
@@ -41,9 +41,9 @@ const AppBar = ({classes, children, toggleMenu})=>(
 );
 
 AppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   toggleMenu: PropTypes.func.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(AppBar);

@@ -53,7 +53,7 @@ const styles = theme => ({
     left: 0,
     right: 0,
   },
-  menuList:{
+  menuList: {
     maxHeight: '300px',
     overflowY: 'auto',
     paddingBottom: '0px',
@@ -68,169 +68,181 @@ const styles = theme => ({
 });
 
 function NoOptionsMessage(props) {
+  const {
+    selectProps, children, innerProps,
+  } = props;
   return (
     <Typography
       color="textSecondary"
-      className={props.selectProps.classes.noOptionsMessage}
-      {...props.innerProps}
+      className={selectProps.classes.noOptionsMessage}
+      {...innerProps}
     >
-      {props.children}
+      {children}
     </Typography>
   );
 }
 NoOptionsMessage.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 function inputComponent({ inputRef, ...props }) {
   return <div ref={inputRef} {...props} />;
 }
-Control.propTypes = {
+inputComponent.propTypes = {
   inputRef: PropTypes.func.isRequired,
 };
 
 function Control(props) {
+  const {
+    selectProps, innerRef, children, innerProps,
+  } = props;
   return (
     <TextField
       fullWidth
       InputProps={{
         inputComponent,
         inputProps: {
-          className: props.selectProps.classes.input,
-          inputRef: props.innerRef,
-          children: props.children,
-          ...props.innerProps,
+          className: selectProps.classes.input,
+          inputRef: innerRef,
+          children,
+          ...innerProps,
         },
       }}
-      {...props.selectProps.textFieldProps}
+      {...selectProps.textFieldProps}
     />
   );
 }
 Control.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   innerRef: PropTypes.func.isRequired,
 };
 
 function Option(props) {
+  const {
+    innerRef, children, innerProps, isFocused, isSelected,
+  } = props;
   return (
     <MenuItem
-      buttonRef={props.innerRef}
-      selected={props.isFocused}
+      buttonRef={innerRef}
+      selected={isFocused}
       component="div"
       style={{
-        fontWeight: props.isSelected ? 500 : 400,
+        fontWeight: isSelected ? 500 : 400,
       }}
-      {...props.innerProps}
+      {...innerProps}
     >
-      {props.children}
+      {children}
     </MenuItem>
   );
 }
 Option.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   innerRef: PropTypes.func.isRequired,
   isFocused: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool.isRequired,
 };
 
 function Placeholder(props) {
+  const { children, innerProps, selectProps } = props;
   return (
-    <Typography
-      color="textSecondary"
-      className={props.selectProps.classes.placeholder}
-      {...props.innerProps}
-    >
-      {props.children}
+    <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+      {children}
     </Typography>
   );
 }
 Placeholder.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 function SingleValue(props) {
+  const { children, innerProps, selectProps } = props;
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-      {props.children}
+    <Typography className={selectProps.classes.singleValue} {...innerProps}>
+      {children}
     </Typography>
   );
 }
 SingleValue.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  const { children, selectProps } = props;
+  return <div className={selectProps.classes.valueContainer}>{children}</div>;
 }
 ValueContainer.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 function MultiValue(props) {
+  const {
+    children, selectProps, removeProps, isFocused,
+  } = props;
   return (
     <Chip
       tabIndex={-1}
-      label={props.children}
-      className={classNames(props.selectProps.classes.chip, {
-        [props.selectProps.classes.chipFocused]: props.isFocused,
+      label={children}
+      className={classNames(selectProps.classes.chip, {
+        [selectProps.classes.chipFocused]: isFocused,
       })}
-      onDelete={props.removeProps.onClick}
-      deleteIcon={<CancelIcon {...props.removeProps} />}
+      onDelete={removeProps.onClick}
+      deleteIcon={<CancelIcon {...removeProps} />}
     />
   );
 }
 MultiValue.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.any.isRequired,
-  removeProps: PropTypes.object.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+  removeProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   isFocused: PropTypes.bool.isRequired,
 };
 
 function Menu(props) {
+  const { children, selectProps, innerProps } = props;
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
-      {props.children}
+    <Paper square className={selectProps.classes.paper} {...innerProps}>
+      {children}
     </Paper>
   );
 }
 Menu.propTypes = {
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 function MenuList(props) {
-  var children = props.children,
-      className = props.className,
-      cx = props.cx,
-      innerRef = props.innerRef;
-  const newClassName = cx(props.selectProps.classes.menuList, className);
+  const {
+    children, className, cx, innerRef, selectProps, innerProps,
+  } = props;
+  const newClassName = cx(selectProps.classes.menuList, className);
   return (
-    <div className={newClassName}
-      ref={innerRef}
-      {...props.innerProps}>
+    <div className={newClassName} ref={innerRef} {...innerProps}>
       {children}
     </div>
   );
 }
 MenuList.propTypes = {
-  className: PropTypes.string,
-  cx: PropTypes.object.isRequired,
+  className: PropTypes.string.isRequired,
+  cx: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   innerRef: PropTypes.func,
-  selectProps: PropTypes.object.isRequired,
-  innerProps: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+MenuList.defaultProps = {
+  innerRef: undefined,
 };
 
 const components = {
@@ -245,34 +257,44 @@ const components = {
   ValueContainer,
 };
 
+// const isArray = (a) => {
+//   return !!a && a.constructor === Array;
+// };
+
+const isObject = a => !!a && a.constructor === Object;
+
 class ReactSelect extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      value: props.value
+      value: props.value,
     };
   }
 
-  onChangeUsed(onChange, value){
+  onChangeUse = (value) => {
+    const { onChange } = this.props;
     this.setState({
-      value: value,
+      value,
     });
-    if(onChange !== undefined){
+    if (onChange !== undefined) {
       onChange(value);
     }
-  }
-  isArray(a) {
-    return (!!a) && (a.constructor === Array);
-  }
-  isObject(a) {
-    return (!!a) && (a.constructor === Object);
-  }
+  };
+
   render() {
-    const { 
-      classes, theme, options, placeholder, 
-      label, value, onChange, isMulti, 
-      selectRef, onKeyDown, autoFocus
+    const {
+      classes,
+      theme,
+      options,
+      placeholder,
+      label,
+      value,
+      isMulti,
+      selectRef,
+      onKeyDown,
+      autoFocus,
     } = this.props;
+    const { value: stateValue } = this.state;
 
     const selectStyles = {
       input: base => ({
@@ -284,17 +306,17 @@ class ReactSelect extends Component {
       }),
     };
 
-    let textFieldProps = undefined;
+    let textFieldProps;
     let placeHolderUsed = placeholder;
-    let shrink = undefined;
-    if(this.state.value !== undefined && this.isObject(this.state.value)){
-      shrink = (this.state.value.value !== undefined);
+    let shrink;
+    if (stateValue !== undefined && isObject(stateValue)) {
+      shrink = stateValue.value !== undefined;
     }
-    if(label !== undefined){
+    if (label !== undefined) {
       textFieldProps = {
-        label: label,
+        label,
         InputLabelProps: {
-          shrink: shrink,
+          shrink,
         },
       };
       placeHolderUsed = '';
@@ -309,8 +331,8 @@ class ReactSelect extends Component {
             textFieldProps={textFieldProps}
             components={components}
             value={value}
-            clearable={true}
-            onChange={this.onChangeUsed.bind(this, onChange)}
+            clearable
+            onChange={this.onChangeUsed}
             placeholder={placeHolderUsed}
             isMulti={isMulti}
             autoFocus={autoFocus}
@@ -324,17 +346,28 @@ class ReactSelect extends Component {
 }
 
 ReactSelect.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
-  options: PropTypes.any,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  options: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   placeholder: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.object,
+  value: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   onChange: PropTypes.func,
   isMulti: PropTypes.bool,
   selectRef: PropTypes.func,
   onKeyDown: PropTypes.func,
   autoFocus: PropTypes.bool,
+};
+ReactSelect.defaultProps = {
+  options: [],
+  placeholder: '',
+  label: '',
+  value: undefined,
+  onChange: undefined,
+  isMulti: false,
+  selectRef: undefined,
+  onKeyDown: undefined,
+  autoFocus: false,
 };
 
 export default withStyles(styles, { withTheme: true })(ReactSelect);
