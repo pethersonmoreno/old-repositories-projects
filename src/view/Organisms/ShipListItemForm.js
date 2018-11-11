@@ -11,7 +11,7 @@ import {
   brands,
   SELECAO_DIRETA,
   SELECAO_POR_TIPO_TAMANHO,
-} from '../data';
+} from '../../data';
 
 const selecoesProdutoOptions = [
   { value: SELECAO_DIRETA, label: 'Direta' },

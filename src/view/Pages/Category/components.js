@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import PageTemplate from '../../Templates/PageTemplate';
 import { ButtonFabContainer, ButtonFab } from '../../Atoms';
-import { categories } from '../../data';
+import { categories } from '../../../data';
 
 const List = ({ history }) => (
   <PageTemplate titulo="Lista de Categorias">

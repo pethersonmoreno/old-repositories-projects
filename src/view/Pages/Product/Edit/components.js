@@ -5,7 +5,7 @@ import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ProductForm';
 import {
   products, productTypes, sizes, brands,
-} from '../../../data';
+} from '../../../../data';
 
 const editProduct = (productId, history, valores) => {
   const product = products.find(item => item.id === productId);

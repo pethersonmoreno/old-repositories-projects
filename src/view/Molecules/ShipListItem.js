@@ -9,7 +9,7 @@ import {
   sizes,
   SELECAO_DIRETA,
   SELECAO_POR_TIPO_TAMANHO,
-} from '../data';
+} from '../../data';
 
 const getDescription = (productTypeId, brandId, sizeId) => {
   const productType = productTypes.find(type => type.id === productTypeId);

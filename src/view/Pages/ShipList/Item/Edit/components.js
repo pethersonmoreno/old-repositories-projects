@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from '../../../../Templates/PageTemplate';
 import Form from '../../../../Organisms/ShipListItemForm';
-import { shipListItems } from '../../../../data';
+import { shipListItems } from '../../../../../data';
 
 const editShipListItem = (shipListItemId, history, valores) => {
   const shipListItem = shipListItems.find(item => item.id === shipListItemId);

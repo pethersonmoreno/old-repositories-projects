@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PageTemplate from '../../../../Templates/PageTemplate';
 import Form from '../../../../Organisms/ShipListItemForm';
-import { shipListItems } from '../../../../data';
+import { shipListItems } from '../../../../../data';
 
 const addShipListItem = (shipListId, history, valores) => {
   shipListItems.push({ id: shipListItems.length + 1, shipListId, ...valores });

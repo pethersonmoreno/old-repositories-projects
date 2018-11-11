@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ProductForm';
-import { products } from '../../../data';
+import { products } from '../../../../data';
 
 const addProduct = (history, valores) => {
   products.push({ id: products.length + 1, ...valores });

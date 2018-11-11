@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { ReactSelect, InputList } from '../Atoms';
-import { categories, sizes as allSizes, brands as allBrands } from '../data';
+import { categories, sizes as allSizes, brands as allBrands } from '../../data';
 
 const categoriesOptions = categories.map(category => ({
   value: category.id,

@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '../Molecules/AppBar';
 import { menuWidth } from '../config';
-import { toggleMenu as actionToogleMenu } from '../Organisms/MenuResponsive/actions';
+import { operations } from '../../state/ducks/menu';
 
 const styles = theme => ({
   main: {
@@ -58,19 +57,10 @@ AppContent.propTypes = {
 AppContent.defaultProps = {
   removePadding: false,
 };
-
-const mapStateToProps = () => ({});
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    toggleMenu: actionToogleMenu,
-  },
-  dispatch,
-);
-
 const VisibleAppContent = compose(
   connect(
-    mapStateToProps,
-    mapDispatchToProps,
+    null,
+    { toggleMenu: operations.toggleMenu },
   ),
   withStyles(styles, { withTheme: true }),
 )(AppContent);

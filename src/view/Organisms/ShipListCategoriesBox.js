@@ -18,7 +18,7 @@ import {
   productTypes,
   SELECAO_DIRETA,
   SELECAO_POR_TIPO_TAMANHO,
-} from '../data';
+} from '../../data';
 
 const styles = theme => ({
   nested: {

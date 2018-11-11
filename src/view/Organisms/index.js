@@ -1,7 +1,4 @@
-import MenuResponsive, {
-  constants as constantsMenuResponsive,
-  reducer as reducerMenuResponsive,
-} from './MenuResponsive';
+import MenuResponsive from './MenuResponsive';
 import CategoryForm from './CategoryForm';
 import ProductForm from './ProductForm';
 import ProductTypeForm from './ProductTypeForm';
@@ -18,4 +15,3 @@ export const components = {
   ShipListForm,
   ShipListItemForm,
 };
-export const reducers = { [constantsMenuResponsive.STATE_NAME]: reducerMenuResponsive };

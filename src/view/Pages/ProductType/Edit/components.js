@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ProductTypeForm';
-import { productTypes, sizes, brands } from '../../../data';
+import { productTypes, sizes, brands } from '../../../../data';
 
 const updateList = (productTypeId, baseList, newList) => {
   baseList

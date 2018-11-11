@@ -13,7 +13,7 @@ import PageTemplate from '../../Templates/PageTemplate';
 import { ButtonFabContainer, ButtonFab } from '../../Atoms';
 import {
   products, productTypes, brands, sizes,
-} from '../../data';
+} from '../../../data';
 
 const List = ({ history }) => (
   <PageTemplate titulo="Lista de Produtos">

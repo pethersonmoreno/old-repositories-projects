@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Menu from '../../Molecules/Menu';
-import { menuWidth } from '../../config';
-import { STATE_NAME } from './constants';
-import { toggleMenu as actionToggleMenu, updateSmUp as actionUpdateSmUp } from './actions';
+import Menu from '../Molecules/Menu';
+import { menuWidth } from '../config';
+import { operations } from '../../state/ducks/menu';
 
 const styles = theme => ({
   drawer: {
@@ -96,21 +94,10 @@ MenuResponsive.propTypes = {
   smUp: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
-  ...state[STATE_NAME],
-});
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    toggleMenu: actionToggleMenu,
-    updateSmUp: actionUpdateSmUp,
-  },
-  dispatch,
-);
-
 const VisibleMenuResponsive = compose(
   connect(
-    mapStateToProps,
-    mapDispatchToProps,
+    state => ({ ...state.menu }),
+    { ...operations },
   ),
   withStyles(styles, { withTheme: true }),
 )(MenuResponsive);

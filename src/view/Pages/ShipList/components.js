@@ -10,11 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
-import { STATE_NAME } from './constants';
-import {
-  startShiplist as actionStartShiplist,
-  updateShipListSelected as actionUpdateShipListSelected,
-} from './actions';
+import { operations } from '../../../state/ducks/shipList';
 import BarTabs from '../../Molecules/BarTabs';
 import { ButtonFabContainer, ButtonFab } from '../../Atoms';
 
@@ -102,12 +98,11 @@ ShipLists.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  ...state[STATE_NAME],
+  ...state.shipList,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    startShiplist: actionStartShiplist,
-    updateShipListSelected: actionUpdateShipListSelected,
+    ...operations,
   },
   dispatch,
 );

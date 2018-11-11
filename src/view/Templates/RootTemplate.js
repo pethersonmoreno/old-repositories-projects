@@ -1,15 +1,12 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+import { Provider as ReduxProvider } from 'react-redux';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import MainTemplate from './MainTemplate';
-import { getReducers } from '../helpers';
+import store from '../../state/store';
 import { route } from '../Pages';
 import './RootTemplate.css';
 
-const store = createStore(getReducers(), applyMiddleware(thunk));
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
@@ -20,11 +17,11 @@ const NavigationRouter = process.env.NODE_ENV !== 'development' ? HashRouter : B
 
 const RootTemplate = () => (
   <MuiThemeProvider theme={theme}>
-    <Provider store={store}>
+    <ReduxProvider store={store}>
       <NavigationRouter basename={process.env.PUBLIC_URL}>
         <MainTemplate>{route}</MainTemplate>
       </NavigationRouter>
-    </Provider>
+    </ReduxProvider>
   </MuiThemeProvider>
 );
 

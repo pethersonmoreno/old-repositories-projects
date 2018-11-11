@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ShipListForm';
-import { updateShipListSelected as actionUpdateShipListSelected } from '../actions';
-import { shipLists } from '../../../data';
+import { shipLists } from '../../../../data';
+import { operations } from '../../../../state/ducks/shipList';
 
 const addShipList = (history, valores, updateShipListSelected) => {
   const shipListId = shipLists.length + 1;
@@ -26,15 +26,14 @@ Add.propTypes = {
   updateShipListSelected: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    updateShipListSelected: actionUpdateShipListSelected,
+    updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,
 );
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(Add);
