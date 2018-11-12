@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import PageTemplate from '../../../Templates/PageTemplate';
 import Form from '../../../Organisms/ShipListForm';
 import { shipLists } from '../../../../data';
-import { operations } from '../../../../state/ducks/shipList';
 
 const addShipList = (history, valores, updateShipListSelected) => {
   const shipListId = shipLists.length + 1;
@@ -26,14 +23,4 @@ Add.propTypes = {
   updateShipListSelected: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    updateShipListSelected: operations.updateShipListSelected,
-  },
-  dispatch,
-);
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Add);
+export default Add;

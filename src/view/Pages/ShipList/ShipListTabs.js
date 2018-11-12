@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -10,7 +7,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import PageTemplate from '../../Templates/PageTemplate';
 import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
-import { operations } from '../../../state/ducks/shipList';
 import BarTabs from '../../Molecules/BarTabs';
 import ButtonFabContainer from '../../Atoms/ButtonFabContainer';
 import ButtonFab from '../../Atoms/ButtonFab';
@@ -97,23 +93,4 @@ ShipLists.defaultProps = {
   shipLists: [],
   shipListIdSelected: undefined,
 };
-
-const mapStateToProps = state => ({
-  ...state.shipList,
-});
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    ...operations,
-  },
-  dispatch,
-);
-
-const VisibleShipLists = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-  withStyles(styles, { withTheme: true }),
-)(ShipLists);
-
-export default VisibleShipLists;
+export default withStyles(styles, { withTheme: true })(ShipLists);
