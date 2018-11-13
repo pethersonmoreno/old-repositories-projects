@@ -13,10 +13,13 @@ const styles = () => ({
 
 class MainTemplate extends Component {
   componentDidMount() {
-    const { loadInitialData, getCategories, getProductTypes } = this.props;
+    const {
+      loadInitialData, getCategories, getProductTypes, getProducts,
+    } = this.props;
     loadInitialData();
     getCategories();
     getProductTypes();
+    getProducts();
   }
 
   render() {
@@ -38,6 +41,7 @@ MainTemplate.propTypes = {
   loadInitialData: PropTypes.func.isRequired,
   getCategories: PropTypes.func.isRequired,
   getProductTypes: PropTypes.func.isRequired,
+  getProducts: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(MainTemplate);

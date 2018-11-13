@@ -6,59 +6,49 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
 
-class Form extends Component {
+class ProductForm extends Component {
   constructor(props) {
     super(props);
-    const product = props.product
-      ? props.product
-      : {
-        productTypeId: null,
-        sizeId: null,
-        brandId: null,
-        ean: '',
-      };
+    const { product } = props;
     this.state = { ...product };
   }
 
   onCallSubmit(event) {
     const { onSubmit } = this.props;
     event.preventDefault();
-    const { productTypeId, sizeId, brandId } = this.state;
-    if (productTypeId && sizeId && brandId) {
+    const { productTypeId, size, brand } = this.state;
+    if (productTypeId && size && brand) {
       onSubmit({ ...this.state });
     }
   }
 
   render() {
+    const { textoBotao, productTypes } = this.props;
     const {
-      textoBotao, productTypes, sizes, brands,
-    } = this.props;
-    const {
-      productTypeId, brandId, sizeId, ean,
+      productTypeId, brand: brandSelected, size: sizeSelected, ean,
     } = this.state;
     const productTypesOptions = productTypes.map(productType => ({
       value: productType.id,
       label: productType.description,
     }));
-    const sizesOptions = sizes.map(size => ({
-      value: size.id,
-      label: size.description,
-      productTypeId: size.productTypeId,
-    }));
-    const brandsOptions = brands.map(brand => ({
-      value: brand.id,
-      label: brand.description,
-      productTypeId: brand.productTypeId,
-    }));
+    let sizesOptions = [];
+    let brandsOptions = [];
+    const productTypeSelected = productTypes.find(productType => productType.id === productTypeId);
+    if (productTypeSelected) {
+      sizesOptions = productTypeSelected.sizes.map(size => ({
+        value: size,
+        label: size,
+      }));
+      brandsOptions = productTypeSelected.brands.map(brand => ({
+        value: brand,
+        label: brand,
+      }));
+    }
     const valueProductTypeSelected = productTypesOptions.find(
       option => option.value === productTypeId,
     );
-    const brandsOptionsUsed = brandsOptions.filter(
-      option => option.productTypeId === productTypeId,
-    );
-    const sizesOptionsUsed = sizesOptions.filter(option => option.productTypeId === productTypeId);
-    const valueBrandSelected = brandsOptionsUsed.find(option => option.value === brandId);
-    const valueSizeSelected = sizesOptionsUsed.find(option => option.value === sizeId);
+    const valueBrandSelected = brandsOptions.find(option => option.value === brandSelected);
+    const valueSizeSelected = sizesOptions.find(option => option.value === sizeSelected);
     return (
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
@@ -72,14 +62,14 @@ class Form extends Component {
           <ReactSelect
             label="Marca"
             value={valueBrandSelected}
-            options={brandsOptionsUsed}
-            onChange={value => this.setState({ brandId: value ? value.value : null })}
+            options={brandsOptions}
+            onChange={value => this.setState({ brand: value ? value.value : null })}
           />
           <ReactSelect
             label="Tamanho"
             value={valueSizeSelected}
-            options={sizesOptionsUsed}
-            onChange={value => this.setState({ sizeId: value ? value.value : null })}
+            options={sizesOptions}
+            onChange={value => this.setState({ size: value ? value.value : null })}
           />
           <TextField
             label="EAN"
@@ -97,28 +87,30 @@ class Form extends Component {
     );
   }
 }
-Form.propTypes = {
+ProductForm.propTypes = {
   textoBotao: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   product: PropTypes.shape({
     productTypeId: PropTypes.number,
-    sizeId: PropTypes.number,
-    brandId: PropTypes.number,
+    size: PropTypes.string,
+    brand: PropTypes.string,
     ean: PropTypes.string,
   }),
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-Form.defaultProps = {
+ProductForm.defaultProps = {
   product: {
     productTypeId: null,
-    sizeId: null,
-    brandId: null,
+    size: null,
+    brand: null,
     ean: '',
   },
 };
+const mapStateToProps = state => ({
+  productTypes: state.productTypes,
+});
+const mapDispatchToProps = null;
 export default connect(
-  state => ({ ...state.data }),
-  null,
-)(Form);
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProductForm);

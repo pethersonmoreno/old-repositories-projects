@@ -23,31 +23,32 @@ class Form extends Component {
   }
 
   render() {
+    const { textoBotao, products, productTypes } = this.props;
     const {
-      textoBotao, products, productTypes, brands, sizes,
-    } = this.props;
-    const {
-      qtd, selecaoDireta, productId, productTypeId, sizeId,
+      qtd, selecaoDireta, productId, productTypeId, size: sizeSelected,
     } = this.state;
 
     const productsOptions = products.map((product) => {
       const productType = productTypes.find(type => type.id === product.productTypeId);
-      const brand = brands.find(item => item.id === product.brandId);
-      const size = sizes.find(item => item.id === product.sizeId);
+      const brand = product ? product.brand : '';
+      const size = product ? product.size : '';
       return {
         value: product.id,
-        label: `${productType.description} ${brand.description} ${size.description}`,
+        label: `${productType && productType.description} ${brand} ${size}`,
       };
     });
     const productTypesOptions = productTypes.map(productType => ({
       value: productType.id,
       label: productType.description,
     }));
-    const sizesOptions = sizes.map(size => ({
-      value: size.id,
-      label: size.description,
-      productTypeId: size.productTypeId,
-    }));
+    let sizesOptions = [];
+    const productTypeSelected = productTypes.find(productType => productType.id === productTypeId);
+    if (productTypeSelected !== undefined) {
+      sizesOptions = productTypeSelected.sizes.map(size => ({
+        value: size,
+        label: size,
+      }));
+    }
     const valueSelecaoProdutoSelected = selecoesProdutoOptions.find(
       option => option.value === selecaoDireta,
     );
@@ -55,8 +56,7 @@ class Form extends Component {
     const valueProductTypeSelected = productTypesOptions.find(
       option => option.value === productTypeId,
     );
-    const sizesOptionsUsed = sizesOptions.filter(option => option.productTypeId === productTypeId);
-    const valueSizeSelected = sizesOptionsUsed.find(option => option.value === sizeId);
+    const valueSizeSelected = sizesOptions.find(option => option.value === sizeSelected);
     return (
       <Paper>
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
@@ -71,9 +71,9 @@ class Form extends Component {
             label="Seleção do Produto"
             value={valueSelecaoProdutoSelected}
             options={selecoesProdutoOptions}
-            onChange={value => this.setState({ selecao: value ? value.value : null })}
+            onChange={value => this.setState({ selecaoDireta: value ? value.value : null })}
           />
-          {selecaoDireta && (
+          {selecaoDireta === true && (
             <ReactSelect
               label="Produto"
               value={valueProductSelected}
@@ -81,7 +81,7 @@ class Form extends Component {
               onChange={value => this.setState({ productId: value ? value.value : null })}
             />
           )}
-          {!selecaoDireta && (
+          {selecaoDireta === false && (
             <div>
               <ReactSelect
                 label="Tipo de Produto"
@@ -92,8 +92,8 @@ class Form extends Component {
               <ReactSelect
                 label="Tamanho"
                 value={valueSizeSelected}
-                options={sizesOptionsUsed}
-                onChange={value => this.setState({ sizeId: value ? value.value : null })}
+                options={sizesOptions}
+                onChange={value => this.setState({ size: value ? value.value : null })}
               />
             </div>
           )}
@@ -119,8 +119,6 @@ Form.propTypes = {
   }),
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 Form.defaultProps = {
   item: {

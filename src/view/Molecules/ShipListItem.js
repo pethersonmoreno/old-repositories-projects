@@ -5,20 +5,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 class ShipListItem extends Component {
-  getDescription = (productTypeId, brandId, sizeId) => {
-    const { productTypes, brands, sizes } = this.props;
-    const productType = productTypes.find(type => type.id === productTypeId);
-    const brand = brands.find(item => item.id === brandId);
-    const size = sizes.find(item => item.id === sizeId);
+  getDescription = (productType, brand, size) => {
     let description = '';
     if (productType !== undefined) {
       description += `${productType.description} `;
     }
-    if (brand !== undefined) {
-      description += `${brand.description} `;
+    if (brand !== undefined && brand !== null) {
+      description += `${brand} `;
     }
-    if (size !== undefined) {
-      description += `${size.description} `;
+    if (size !== undefined && size !== null) {
+      description += `${size} `;
     }
     return description;
   };
@@ -29,14 +25,16 @@ class ShipListItem extends Component {
     if (product === undefined) {
       return '';
     }
-    return this.getDescription(product.productTypeId, product.brandId, product.sizeId);
+    return this.getDescription(product.productType, product.brand, product.size);
   };
 
   getDescriptionOfShipListItem = (item) => {
     if (item.selecaoDireta) {
       return this.getDescriptionOfProduct(item.productId);
     }
-    return this.getDescription(item.productTypeId, null, item.sizeId);
+    const { productTypes } = this.props;
+    const productType = productTypes.find(type => type.id === item.productTypeId);
+    return this.getDescription(productType, null, item.sizeId);
   };
 
   render() {
@@ -60,13 +58,17 @@ ShipListItem.propTypes = {
   }).isRequired,
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 ShipListItem.defaultProps = {
   className: '',
 };
+
+const mapStateToProps = state => ({
+  products: state.products,
+  productTypes: state.productTypes,
+});
+const mapDispatchToProps = null;
 export default connect(
-  state => ({ ...state.data }),
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(ShipListItem);

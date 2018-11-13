@@ -30,7 +30,11 @@ Edit.propTypes = {
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipListItems: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
+const mapStateToProps = state => ({
+  shipListItems: state.data.shipListItems,
+});
+const mapDispatchToProps = null;
 export default connect(
-  state => ({ ...state.data }),
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Edit);

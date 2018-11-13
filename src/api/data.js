@@ -28,8 +28,8 @@ export const products = [
   {
     id: 1,
     productTypeId: 1,
-    brandId: 1,
-    sizeId: 1,
+    brand: 'xCoca-Cola',
+    size: 'xLata 350ml',
     ean: '',
   },
 ];

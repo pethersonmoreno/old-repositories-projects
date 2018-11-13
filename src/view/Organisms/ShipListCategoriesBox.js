@@ -183,8 +183,17 @@ CategoriesBox.propTypes = {
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
+
+const mapStateToProps = state => ({
+  shipLists: state.data.shipLists,
+  shipListItems: state.data.shipListItems,
+  categories: state.categories,
+  products: state.products,
+  productTypes: state.productTypes,
+});
+const mapDispatchToProps = null;
 const CategoriesBoxContainer = connect(
-  state => ({ ...state.data }),
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withStyles(styles, { withTheme: true })(CategoriesBox));
 export default CategoriesBoxContainer;
