@@ -9,7 +9,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    ...operations,
+    startShiplistSelection: operations.startShiplistSelection,
+    updateShipListSelected: operations.updateShipListSelected,
+    removeShipList: operations.removeShipList,
   },
   dispatch,
 );
