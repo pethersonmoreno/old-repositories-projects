@@ -7,8 +7,26 @@ const addShipList = newShipList => (dispatch) => {
     dispatch(actions.updateShipListSelected(shipList.id));
   });
 };
-const removeShipList = id => (dispatch) => {
+const removeShipList = id => (dispatch, getState) => {
   shipListApi.remove(id).then(() => {
+    const getNextShipListIdToSelect = () => {
+      const {
+        shipLists: { shipLists },
+      } = getState();
+      const index = shipLists.indexOf(shipLists.find(s => s.id === id));
+      if (index >= 0) {
+        const newIndex = index + 1;
+        if (newIndex < shipLists.length) {
+          return shipLists[newIndex].id;
+        }
+      }
+      if (shipLists.length > 1) {
+        return shipLists[0].id;
+      }
+      return null;
+    };
+    const newShipListSelected = getNextShipListIdToSelect();
+    dispatch(actions.updateShipListSelected(newShipListSelected));
     dispatch(actions.removeShipList(id));
   });
 };

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import CardActions from '@material-ui/core/CardActions';
+import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
@@ -19,6 +22,11 @@ const styles = theme => ({
   },
   tabsBar: {
     backgroundColor: theme.palette.background.paper,
+  },
+  actions: {
+    display: 'block',
+    width: '100%',
+    textAlign: 'right',
   },
 });
 
@@ -43,7 +51,9 @@ class ShipLists extends Component {
 
   render() {
     const {
-      history, classes, shipLists, shipListIdSelected, updateShipListSelected,
+      history, classes, shipLists,
+      shipListIdSelected, updateShipListSelected,
+      removeShipList,
     } = this.props;
     const open = this.isListOpen();
     const tabList = [{ value: 'new', label: 'Nova', icon: <AddCircleIcon /> }];
@@ -69,13 +79,21 @@ class ShipLists extends Component {
             }
           />
           {open && (
+            <CardActions className={classes.actions} disableActionSpacing>
+
+              <IconButton aria-label="Edit ShipList" onClick={() => history.push(`/shipList/${shipListIdSelected}`)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="Delete ShipList" onClick={() => removeShipList(shipListIdSelected)}>
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          )}
+          {open && (
             <ShipListCategoriesBox history={history} shipList={this.getShipListSelected()} />
           )}
           {open && (
             <ButtonFabContainer>
-              <ButtonFab onClick={() => history.push(`/shipList/${shipListIdSelected}`)}>
-                <EditIcon />
-              </ButtonFab>
               <ButtonFab onClick={() => history.push(`/shipList/${shipListIdSelected}/item/new`)}>
                 <AddIcon />
               </ButtonFab>
@@ -93,6 +111,7 @@ ShipLists.propTypes = {
   shipListIdSelected: PropTypes.number,
   startShiplistSelection: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
+  removeShipList: PropTypes.func.isRequired,
 };
 ShipLists.defaultProps = {
   shipLists: [],
