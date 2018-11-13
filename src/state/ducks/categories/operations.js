@@ -1,23 +1,23 @@
-import * as api from 'api';
+import { category as categoryApi } from 'api';
 import actions from './actions';
 
 const addCategory = newCategory => (dispatch) => {
-  api.addCategory(newCategory).then((category) => {
+  categoryApi.add(newCategory).then((category) => {
     dispatch(actions.addCategory(category));
   });
 };
 const removeCategory = id => (dispatch) => {
-  api.removeCategory(id).then(() => {
+  categoryApi.remove(id).then(() => {
     dispatch(actions.removeCategory(id));
   });
 };
 const editCategory = (id, updates) => (dispatch) => {
-  api.editCategory(id, updates).then(() => {
+  categoryApi.edit(id, updates).then(() => {
     dispatch(actions.editCategory(id, updates));
   });
 };
 const getCategories = () => (dispatch) => {
-  api.getAllCategories().then((categories) => {
+  categoryApi.getAll().then((categories) => {
     dispatch(actions.getCategories(categories));
   });
 };

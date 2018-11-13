@@ -1,18 +1,16 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/CategoryForm';
-
-const editCategory = (categories, categoryId, history, valores) => {
-  const category = categories.find(item => item.id === categoryId);
-  category.description = valores.description;
-  history.push('/category');
-};
+import { operations } from 'state/ducks/categories';
 
 const Edit = (props) => {
-  const { history, match, categories } = props;
+  const {
+    history, match, categories, editCategory,
+  } = props;
   const categoryId = parseInt(match.params.id, 10);
   const category = categories.find(item => item.id === categoryId);
   let conteudo = <Typography>Categoria não encontrada</Typography>;
@@ -21,7 +19,10 @@ const Edit = (props) => {
       <Form
         description={category.description}
         textoBotao="Alterar"
-        onSubmit={data => editCategory(categories, categoryId, history, data)}
+        onSubmit={(data) => {
+          editCategory(categoryId, data);
+          history.push('/category');
+        }}
       />
     );
   }
@@ -35,8 +36,19 @@ Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  editCategory: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = state => ({
+  categories: state.categories,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    editCategory: operations.editCategory,
+  },
+  dispatch,
+);
 export default connect(
-  state => ({ ...state.data }),
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Edit);

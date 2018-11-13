@@ -1,7 +1,7 @@
 import {
   getAllShipLists,
   getAllShipListItems,
-  getAllCategories,
+  category,
   getAllProducts,
   getAllProductTypes,
   getAllSizes,
@@ -22,7 +22,7 @@ const loadInitialData = () => (dispatch) => {
   getAllProductTypes().then((productTypes) => {
     dispatch(actions.updateProductTypes({ productTypes }));
   });
-  getAllCategories().then((categories) => {
+  category.getAll().then((categories) => {
     dispatch(actions.updateCategories({ categories }));
   });
   getAllSizes().then((sizes) => {

@@ -5,7 +5,15 @@ export const categories = [
   { id: 4, description: 'Hortifruti' },
   { id: 5, description: 'Higiene' },
 ];
-export const productTypes = [{ id: 1, description: 'Refrigerante de Cola', categoryId: 1 }];
+export const productTypes = [
+  {
+    id: 1,
+    description: 'Refrigerante de Cola',
+    categoryId: 1,
+    sizes: ['xLata 350ml', 'Garrafa 1,5L', 'Garrafa 2L'],
+    brands: ['xCoca-Cola', 'Pepsi', 'Fanta'],
+  },
+];
 export const sizes = [
   { id: 1, productTypeId: 1, description: 'Lata 350ml' },
   { id: 2, productTypeId: 1, description: 'Garrafa 1,5L' },

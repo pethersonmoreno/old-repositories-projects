@@ -1,36 +1,38 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ProductTypeForm';
+import { operations } from 'state/ducks/productTypes';
 
-const updateList = (productTypeId, baseList, newList) => {
-  baseList
-    .filter(item => item.productTypeId === productTypeId)
-    .filter(item => newList.indexOf(item.description) === -1)
-    .forEach((item) => {
-      baseList.splice(baseList.indexOf(item), 1);
-    });
-  newList
-    .filter(description => baseList.find(item => item.description === description) === undefined)
-    .forEach(description => baseList.push({
-      id: baseList.length,
-      productTypeId,
-      description,
-    }));
-};
-const editProductType = ({ productTypes, sizes, brands }, productTypeId, history, valores) => {
-  const productType = productTypes.find(type => type.id === productTypeId);
-  productType.description = valores.description;
-  productType.categoryId = valores.categoryId;
-  updateList(productType.id, sizes, valores.sizes);
-  updateList(productType.id, brands, valores.brands);
-  history.push('/productType');
-};
+// const updateList = (productTypeId, baseList, newList) => {
+//   baseList
+//     .filter(item => item.productTypeId === productTypeId)
+//     .filter(item => newList.indexOf(item.description) === -1)
+//     .forEach((item) => {
+//       baseList.splice(baseList.indexOf(item), 1);
+//     });
+//   newList
+//     .filter(description => baseList.find(item => item.description === description) === undefined)
+//     .forEach(description => baseList.push({
+//       id: baseList.length,
+//       productTypeId,
+//       description,
+//     }));
+// };
+// const editProductType = ({ productTypes, sizes, brands }, productTypeId, history, valores) => {
+//   const productType = productTypes.find(type => type.id === productTypeId);
+//   productType.description = valores.description;
+//   productType.categoryId = valores.categoryId;
+//   updateList(productType.id, sizes, valores.sizes);
+//   updateList(productType.id, brands, valores.brands);
+//   history.push('/productType');
+// };
 const Edit = (props) => {
   const {
-    history, match, productTypes, sizes, brands,
+    history, match, productTypes, editProductType,
   } = props;
   const productTypeId = parseInt(match.params.id, 10);
   const productType = productTypes.find(type => type.id === productTypeId);
@@ -40,9 +42,9 @@ const Edit = (props) => {
       <Form
         productType={productType}
         textoBotao="Alterar"
-        onSubmit={(valores) => {
-          const propsToPass = { productTypes, sizes, brands };
-          editProductType(propsToPass, productTypeId, history, valores);
+        onSubmit={(data) => {
+          editProductType(productTypeId, data);
+          history.push('/productType');
         }}
       />
     );
@@ -56,11 +58,20 @@ const Edit = (props) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
-  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
-  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  editProductType: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = state => ({
+  productTypes: state.productTypes,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    editProductType: operations.editProductType,
+  },
+  dispatch,
+);
 export default connect(
-  state => ({ ...state.data }),
-  null,
+  mapStateToProps,
+  mapDispatchToProps,
 )(Edit);

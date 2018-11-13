@@ -6,10 +6,6 @@ import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/CategoryForm';
 import { operations } from 'state/ducks/categories';
 
-// const addCategory = (categories, history, valores) => {
-//   categories.push({ id: categories.length + 1, ...valores });
-//   history.push('/category');
-// };
 const Add = (props) => {
   const { history, addCategory } = props;
   return (
@@ -30,7 +26,7 @@ Add.propTypes = {
   addCategory: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ ...state.data });
+const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     addCategory: operations.addCategory,

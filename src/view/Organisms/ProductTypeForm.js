@@ -6,18 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
 import InputList from 'Atoms/InputList';
-import { selectors } from 'state/ducks/data';
 
 class Form extends Component {
   constructor(props) {
     super(props);
-    const { productType, sizes, brands } = props;
+    const { productType } = props;
     this.state = {
       ...productType,
-      sizes: selectors.filterByProductTypeId(sizes, productType.id)
-        .map(size => size.description),
-      brands: selectors.filterByProductTypeId(brands, productType.id)
-        .map(brand => brand.description),
     };
   }
 
@@ -90,10 +85,10 @@ Form.propTypes = {
     id: PropTypes.number,
     categoryId: PropTypes.number,
     description: PropTypes.string,
+    sizes: PropTypes.arrayOf(PropTypes.string),
+    brands: PropTypes.arrayOf(PropTypes.string),
   }),
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 Form.defaultProps = {
   productType: {
@@ -104,9 +99,7 @@ Form.defaultProps = {
 };
 export default connect(
   state => ({
-    categories: state.data.categories,
-    sizes: state.data.sizes,
-    brands: state.data.brands,
+    categories: state.categories,
   }),
   null,
 )(Form);

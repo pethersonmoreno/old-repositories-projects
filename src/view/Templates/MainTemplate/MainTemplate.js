@@ -13,8 +13,10 @@ const styles = () => ({
 
 class MainTemplate extends Component {
   componentDidMount() {
-    const { loadInitialData } = this.props;
+    const { loadInitialData, getCategories, getProductTypes } = this.props;
     loadInitialData();
+    getCategories();
+    getProductTypes();
   }
 
   render() {
@@ -34,6 +36,8 @@ MainTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   loadInitialData: PropTypes.func.isRequired,
+  getCategories: PropTypes.func.isRequired,
+  getProductTypes: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(MainTemplate);
