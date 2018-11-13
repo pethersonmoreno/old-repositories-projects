@@ -10,20 +10,27 @@ import {
 import actions from './actions';
 
 const loadInitialData = () => (dispatch) => {
-  const shipLists = getAllShipLists();
-  const shipListItems = getAllShipListItems();
-  const categories = getAllCategories();
-  const products = getAllProducts();
-  const productTypes = getAllProductTypes();
-  const sizes = getAllSizes();
-  const brands = getAllBrands();
-  dispatch(actions.updateShiplists({ shipLists }));
-  dispatch(actions.updateShiplistItems({ shipListItems }));
-  dispatch(actions.updateProducts({ products }));
-  dispatch(actions.updateProductTypes({ productTypes }));
-  dispatch(actions.updateCategories({ categories }));
-  dispatch(actions.updateSizes({ sizes }));
-  dispatch(actions.updateBrands({ brands }));
+  getAllShipLists().then((shipLists) => {
+    dispatch(actions.updateShiplists({ shipLists }));
+  });
+  getAllShipListItems().then((shipListItems) => {
+    dispatch(actions.updateShiplistItems({ shipListItems }));
+  });
+  getAllProducts().then((products) => {
+    dispatch(actions.updateProducts({ products }));
+  });
+  getAllProductTypes().then((productTypes) => {
+    dispatch(actions.updateProductTypes({ productTypes }));
+  });
+  getAllCategories().then((categories) => {
+    dispatch(actions.updateCategories({ categories }));
+  });
+  getAllSizes().then((sizes) => {
+    dispatch(actions.updateSizes({ sizes }));
+  });
+  getAllBrands().then((brands) => {
+    dispatch(actions.updateBrands({ brands }));
+  });
 };
 export default {
   loadInitialData,
