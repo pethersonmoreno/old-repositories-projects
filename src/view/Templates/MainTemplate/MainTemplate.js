@@ -14,12 +14,12 @@ const styles = () => ({
 class MainTemplate extends Component {
   componentDidMount() {
     const {
-      loadInitialData, getCategories, getProductTypes, getProducts,
+      getCategories, getProductTypes, getProducts, getShipLists,
     } = this.props;
-    loadInitialData();
     getCategories();
     getProductTypes();
     getProducts();
+    getShipLists();
   }
 
   render() {
@@ -38,10 +38,10 @@ class MainTemplate extends Component {
 MainTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
-  loadInitialData: PropTypes.func.isRequired,
   getCategories: PropTypes.func.isRequired,
   getProductTypes: PropTypes.func.isRequired,
   getProducts: PropTypes.func.isRequired,
+  getShipLists: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(MainTemplate);

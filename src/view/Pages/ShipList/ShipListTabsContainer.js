@@ -1,11 +1,11 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { operations } from 'state/ducks/shipList';
+import { operations } from 'state/ducks/shipLists';
 import ShipListTabs from './ShipListTabs';
 
 const mapStateToProps = state => ({
-  shipLists: state.data.shipLists,
-  shipListIdSelected: state.shipList.shipListIdSelected,
+  shipLists: state.shipLists.shipLists,
+  shipListIdSelected: state.shipLists.shipListIdSelected,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

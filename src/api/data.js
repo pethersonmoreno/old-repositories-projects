@@ -57,6 +57,6 @@ export const shipListItems = [
     qtd: 10,
     selecaoDireta: false,
     productTypeId: 1,
-    sizeId: 1,
+    size: 'xLata 350ml',
   },
 ];

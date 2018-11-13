@@ -13,8 +13,8 @@ const Add = (props) => {
       <Form
         description=""
         textoBotao="Adicionar"
-        onSubmit={(valores) => {
-          addCategory({ ...valores });
+        onSubmit={(data) => {
+          addCategory({ ...data });
           history.push('/category');
         }}
       />

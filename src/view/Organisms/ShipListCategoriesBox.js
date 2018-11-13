@@ -40,14 +40,14 @@ const styles = theme => ({
 });
 
 const getShipListItemsOfCategory = (
-  { shipListItems, products, productTypes },
+  { products, productTypes },
   category,
   shipList,
 ) => {
   if (shipList === undefined) {
     return [];
   }
-  return shipListItems
+  return shipList.items
     .filter(item => item.shipListId === shipList.id)
     .filter((item) => {
       let productType;
@@ -117,11 +117,11 @@ CategoryItem.propTypes = {
 class CategoriesBox extends Component {
   constructor(props) {
     super(props);
-    const { shipList, shipListItems, categories } = props;
+    const { shipList, categories } = props;
     let categoriesCollapsed = [];
     if (
       shipList !== undefined
-      && shipListItems.filter(item => item.shipListId === shipList.id).length > 10
+      && shipList.items.length > 10
     ) {
       categoriesCollapsed = categories.map(category => category.id);
     }
@@ -150,7 +150,7 @@ class CategoriesBox extends Component {
   render() {
     const {
       history, classes, shipList, categories,
-      shipListItems, products, productTypes,
+      products, productTypes,
     } = this.props;
     return (
       <div>
@@ -163,7 +163,6 @@ class CategoriesBox extends Component {
             isExpanded={() => this.isCategoryExpanded(category)}
             category={category}
             shipList={shipList}
-            shipListItems={shipListItems}
             products={products}
             productTypes={productTypes}
           />
@@ -177,16 +176,15 @@ CategoriesBox.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipList: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    items: PropTypes.array.isRequired,
   }).isRequired,
-  shipListItems: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 const mapStateToProps = state => ({
-  shipLists: state.data.shipLists,
-  shipListItems: state.data.shipListItems,
+  shipLists: state.shipLists.shipLists,
   categories: state.categories,
   products: state.products,
   productTypes: state.productTypes,

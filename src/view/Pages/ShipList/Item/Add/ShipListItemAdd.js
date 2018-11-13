@@ -1,30 +1,40 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ShipListItemForm';
+import { operations } from 'state/ducks/shipLists';
 
-const addShipListItem = (shipListItems, shipListId, history, valores) => {
-  shipListItems.push({ id: shipListItems.length + 1, shipListId, ...valores });
-  history.push('/shipList');
-};
-const Add = ({ history, match, shipListItems }) => {
+const ShipListItemAdd = ({ history, match, addShipListItem }) => {
   const shipListId = parseInt(match.params.shipListId, 10);
   return (
     <PageTemplate titulo="Novo Item">
       <Form
         textoBotao="Adicionar"
-        onSubmit={valores => addShipListItem(shipListItems, shipListId, history, valores)}
+        onSubmit={(data) => {
+          addShipListItem(shipListId, data);
+          history.push('/shipList');
+        }}
       />
     </PageTemplate>
   );
 };
-Add.propTypes = {
+ShipListItemAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  shipListItems: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  addShipListItem: PropTypes.func.isRequired,
 };
+const mapStateToProps = state => ({
+  shipLists: state.shipLists.shipLists,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    addShipListItem: operations.addShipListItem,
+  },
+  dispatch,
+);
 export default connect(
-  state => ({ ...state.data }),
-  null,
-)(Add);
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShipListItemAdd);

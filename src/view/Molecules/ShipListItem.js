@@ -34,7 +34,7 @@ class ShipListItem extends Component {
     }
     const { productTypes } = this.props;
     const productType = productTypes.find(type => type.id === item.productTypeId);
-    return this.getDescription(productType, null, item.sizeId);
+    return this.getDescription(productType, null, item.size);
   };
 
   render() {

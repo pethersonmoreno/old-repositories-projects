@@ -65,7 +65,7 @@ class Form extends Component {
             value={qtd}
             autoFocus
             fullWidth
-            onChange={event => this.setState({ qtd: event.target.value })}
+            onChange={event => this.setState({ qtd: parseInt(event.target.value, 10) })}
           />
           <ReactSelect
             label="Seleção do Produto"

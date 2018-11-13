@@ -1,14 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { operations } from 'state/ducks/shipList';
+import { operations } from 'state/ducks/shipLists';
 import ShipListAdd from './ShipListAdd';
 
-const mapStateToProps = state => ({
-  shipLists: state.data.shipLists,
-});
+const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    updateShipListSelected: operations.updateShipListSelected,
+    addShipList: operations.addShipList,
   },
   dispatch,
 );
