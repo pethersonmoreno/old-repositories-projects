@@ -23,3 +23,8 @@ rules:
   no-unused-expressions:
     - error
     - allowTaggedTemplates: true
+
+settings:
+  import/resolver:
+    webpack:
+      config: config/webpack.config.resolve.alias.js
