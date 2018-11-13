@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { operations } from '../../../state/ducks/menu';
+import { operations } from 'state/ducks/menu';
 import PageTemplate from './PageTemplate';
 
 const PageTemplateContainer = compose(

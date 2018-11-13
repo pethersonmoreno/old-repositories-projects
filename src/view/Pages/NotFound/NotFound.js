@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from '../../Templates/PageTemplate';
+import PageTemplate from 'Templates/PageTemplate';
 
 export default function NotFound() {
   return (

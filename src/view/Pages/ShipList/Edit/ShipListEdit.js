@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from '../../../Templates/PageTemplate';
-import Form from '../../../Organisms/ShipListForm';
+import PageTemplate from 'Templates/PageTemplate';
+import Form from 'Organisms/ShipListForm';
 import { shipLists } from '../../../../data';
 
 const editShipList = (shipListId, history, valores) => {

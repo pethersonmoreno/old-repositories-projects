@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '../../Molecules/AppBar';
+import AppBar from 'Molecules/AppBar';
 import { menuWidth } from '../../config';
 
 const styles = theme => ({

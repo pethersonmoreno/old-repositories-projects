@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PageTemplate from '../../../Templates/PageTemplate';
-import Form from '../../../Organisms/ShipListForm';
+import PageTemplate from 'Templates/PageTemplate';
+import Form from 'Organisms/ShipListForm';
 import { shipLists } from '../../../../data';
 
 const addShipList = (history, valores, updateShipListSelected) => {

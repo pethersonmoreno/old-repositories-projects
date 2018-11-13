@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Menu from '../../Molecules/Menu';
+import Menu from 'Molecules/Menu';
 import { menuWidth } from '../../config';
 
 const styles = theme => ({

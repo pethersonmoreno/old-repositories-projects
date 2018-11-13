@@ -9,9 +9,9 @@ import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-import PageTemplate from '../../Templates/PageTemplate';
-import ButtonFabContainer from '../../Atoms/ButtonFabContainer';
-import ButtonFab from '../../Atoms/ButtonFab';
+import PageTemplate from 'Templates/PageTemplate';
+import ButtonFabContainer from 'Atoms/ButtonFabContainer';
+import ButtonFab from 'Atoms/ButtonFab';
 import {
   products, productTypes, brands, sizes,
 } from '../../../data';

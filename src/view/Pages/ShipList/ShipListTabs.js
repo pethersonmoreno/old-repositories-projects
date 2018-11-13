@@ -5,11 +5,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import PageTemplate from '../../Templates/PageTemplate';
-import ShipListCategoriesBox from '../../Organisms/ShipListCategoriesBox';
-import BarTabs from '../../Molecules/BarTabs';
-import ButtonFabContainer from '../../Atoms/ButtonFabContainer';
-import ButtonFab from '../../Atoms/ButtonFab';
+import PageTemplate from 'Templates/PageTemplate';
+import ButtonFabContainer from 'Atoms/ButtonFabContainer';
+import ButtonFab from 'Atoms/ButtonFab';
+import ShipListCategoriesBox from 'Organisms/ShipListCategoriesBox';
+import BarTabs from 'Molecules/BarTabs';
 
 const styles = theme => ({
   root: {
