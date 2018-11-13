@@ -5,9 +5,7 @@ export const categories = [
   { id: 4, description: 'Hortifruti' },
   { id: 5, description: 'Higiene' },
 ];
-export const productTypes = [
-  { id: 1, description: 'Refrigerante de Cola', categoryId: 1 },
-];
+export const productTypes = [{ id: 1, description: 'Refrigerante de Cola', categoryId: 1 }];
 export const sizes = [
   { id: 1, productTypeId: 1, description: 'Lata 350ml' },
   { id: 2, productTypeId: 1, description: 'Garrafa 1,5L' },
@@ -27,8 +25,6 @@ export const products = [
     ean: '',
   },
 ];
-export const SELECAO_DIRETA = 'direta';
-export const SELECAO_POR_TIPO_TAMANHO = 'porTipoTamanho';
 export const shipLists = [
   {
     id: 1,
@@ -44,14 +40,14 @@ export const shipListItems = [
     id: 1,
     shipListId: 1,
     qtd: 1,
-    selecao: SELECAO_DIRETA,
+    selecaoDireta: true,
     productId: 1,
   },
   {
     id: 2,
     shipListId: 1,
     qtd: 10,
-    selecao: SELECAO_POR_TIPO_TAMANHO,
+    selecaoDireta: false,
     productTypeId: 1,
     sizeId: 1,
   },

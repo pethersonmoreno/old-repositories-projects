@@ -10,7 +10,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 const ShipListAddContainer = connect(
-  null,
+  state => ({ ...state.data }),
   mapDispatchToProps,
 )(ShipListAdd);
 export default ShipListAddContainer;

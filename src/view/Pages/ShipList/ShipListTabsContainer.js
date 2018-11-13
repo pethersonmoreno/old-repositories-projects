@@ -4,7 +4,8 @@ import { operations } from 'state/ducks/shipList';
 import ShipListTabs from './ShipListTabs';
 
 const mapStateToProps = state => ({
-  ...state.shipList,
+  shipLists: state.data.shipLists,
+  shipListIdSelected: state.shipList.shipListIdSelected,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

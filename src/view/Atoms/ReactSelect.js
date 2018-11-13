@@ -83,8 +83,11 @@ function NoOptionsMessage(props) {
 }
 NoOptionsMessage.propTypes = {
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  innerProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  innerProps: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+NoOptionsMessage.defaultProps = {
+  innerProps: undefined,
 };
 
 function inputComponent({ inputRef, ...props }) {

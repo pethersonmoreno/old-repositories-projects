@@ -1,9 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ProductTypeForm';
-import { productTypes, sizes, brands } from '../../../../data';
 
 const updateList = (productTypeId, baseList, newList) => {
   baseList
@@ -20,7 +20,7 @@ const updateList = (productTypeId, baseList, newList) => {
       description,
     }));
 };
-const editProductType = (productTypeId, history, valores) => {
+const editProductType = ({ productTypes, sizes, brands }, productTypeId, history, valores) => {
   const productType = productTypes.find(type => type.id === productTypeId);
   productType.description = valores.description;
   productType.categoryId = valores.categoryId;
@@ -28,7 +28,10 @@ const editProductType = (productTypeId, history, valores) => {
   updateList(productType.id, brands, valores.brands);
   history.push('/productType');
 };
-const Edit = ({ history, match }) => {
+const Edit = (props) => {
+  const {
+    history, match, productTypes, sizes, brands,
+  } = props;
   const productTypeId = parseInt(match.params.id, 10);
   const productType = productTypes.find(type => type.id === productTypeId);
   let conteudo = <Typography>Tipo de Produto não encontrado</Typography>;
@@ -37,7 +40,10 @@ const Edit = ({ history, match }) => {
       <Form
         productType={productType}
         textoBotao="Alterar"
-        onSubmit={valores => editProductType(productTypeId, history, valores)}
+        onSubmit={(valores) => {
+          const propsToPass = { productTypes, sizes, brands };
+          editProductType(propsToPass, productTypeId, history, valores);
+        }}
       />
     );
   }
@@ -50,5 +56,11 @@ const Edit = ({ history, match }) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default Edit;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(Edit);

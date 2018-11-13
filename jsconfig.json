@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "api/*": ["src/api/*"],
       "state/*": ["src/state/*"],
       "Atoms/*": ["src/view/Atoms/*"],
       "Molecules/*": ["src/view/Molecules/*"],

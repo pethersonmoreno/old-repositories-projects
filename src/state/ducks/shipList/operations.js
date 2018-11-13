@@ -1,12 +1,11 @@
 import actions from './actions';
-import { shipLists } from '../../../data';
 
-const startShiplist = () => (dispatch, getState) => {
+const startShiplistSelection = () => (dispatch, getState) => {
   const {
-    shipList: { shipLists: stateShipLists },
+    data: { shipLists },
+    shipList: { shipListIdSelected: stateShipListIdSelected },
   } = getState();
-  if (stateShipLists === null) {
-    dispatch(actions.updateShiplist(shipLists));
+  if (stateShipListIdSelected === null) {
     if (shipLists.length > 0) {
       dispatch(actions.updateShipListSelected(shipLists[0].id));
     }
@@ -16,6 +15,6 @@ const updateShipListSelected = shipListIdSelected => (dispatch) => {
   dispatch(actions.updateShipListSelected(shipListIdSelected));
 };
 export default {
-  startShiplist,
+  startShiplistSelection,
   updateShipListSelected,
 };

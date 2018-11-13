@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,9 +13,8 @@ import AddIcon from '@material-ui/icons/Add';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { productTypes } from '../../../data';
 
-const List = ({ history }) => (
+const List = ({ history, productTypes }) => (
   <PageTemplate titulo="Lista de Tipos de Produtos">
     <Paper>
       <Table>
@@ -55,5 +55,9 @@ const List = ({ history }) => (
 );
 List.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default List;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(List);

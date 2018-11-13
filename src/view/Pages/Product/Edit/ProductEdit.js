@@ -1,13 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ProductForm';
-import {
-  products, productTypes, sizes, brands,
-} from '../../../../data';
 
-const editProduct = (productId, history, valores) => {
+const editProduct = (products, productId, history, valores) => {
   const product = products.find(item => item.id === productId);
   product.productTypeId = valores.productTypeId;
   product.brandId = valores.brandId;
@@ -15,7 +13,9 @@ const editProduct = (productId, history, valores) => {
   product.ean = valores.ean;
   history.push('/product');
 };
-const Edit = ({ history, match }) => {
+const Edit = ({
+  history, match, products, productTypes, brands, sizes,
+}) => {
   const productId = parseInt(match.params.id, 10);
   const product = products.find(item => item.id === productId);
   let conteudo = <Typography>Produto não encontrado</Typography>;
@@ -29,7 +29,7 @@ const Edit = ({ history, match }) => {
       <Form
         product={product}
         textoBotao="Alterar"
-        onSubmit={valores => editProduct(productId, history, valores)}
+        onSubmit={valores => editProduct(products, productId, history, valores)}
       />
     );
   }
@@ -38,5 +38,12 @@ const Edit = ({ history, match }) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default Edit;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(Edit);

@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
 import InputList from 'Atoms/InputList';
-import { categories, sizes as allSizes, brands as allBrands } from '../../data';
-
-const categoriesOptions = categories.map(category => ({
-  value: category.id,
-  label: category.description,
-}));
+import { selectors } from 'state/ducks/data';
 
 class Form extends Component {
   constructor(props) {
     super(props);
-    const { productType } = props;
+    const { productType, sizes, brands } = props;
     this.state = {
       ...productType,
-      sizes: allSizes
-        .filter(size => size.productTypeId === productType.id)
+      sizes: selectors.filterByProductTypeId(sizes, productType.id)
         .map(size => size.description),
-      brands: allBrands
-        .filter(brand => brand.productTypeId === productType.id)
+      brands: selectors.filterByProductTypeId(brands, productType.id)
         .map(brand => brand.description),
     };
   }
@@ -42,10 +36,14 @@ class Form extends Component {
   };
 
   render() {
-    const { textoBotao } = this.props;
+    const { textoBotao, categories } = this.props;
     const {
       categoryId, description, sizes, brands,
     } = this.state;
+    const categoriesOptions = categories.map(category => ({
+      value: category.id,
+      label: category.description,
+    }));
     const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
     return (
       <Paper>
@@ -93,12 +91,22 @@ Form.propTypes = {
     categoryId: PropTypes.number,
     description: PropTypes.string,
   }),
+  categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 Form.defaultProps = {
-  productType: PropTypes.shape({
+  productType: {
     id: null,
     categoryId: null,
     description: '',
-  }),
+  },
 };
-export default Form;
+export default connect(
+  state => ({
+    categories: state.data.categories,
+    sizes: state.data.sizes,
+    brands: state.data.brands,
+  }),
+  null,
+)(Form);

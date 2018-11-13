@@ -24,8 +24,13 @@ const styles = theme => ({
 
 class ShipLists extends Component {
   componentDidMount() {
-    const { startShiplist } = this.props;
-    startShiplist();
+    const { startShiplistSelection } = this.props;
+    startShiplistSelection();
+  }
+
+  componentDidUpdate() {
+    const { startShiplistSelection } = this.props;
+    startShiplistSelection();
   }
 
   getShipListSelected = () => {
@@ -86,7 +91,7 @@ ShipLists.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipLists: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   shipListIdSelected: PropTypes.number,
-  startShiplist: PropTypes.func.isRequired,
+  startShiplistSelection: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
 };
 ShipLists.defaultProps = {

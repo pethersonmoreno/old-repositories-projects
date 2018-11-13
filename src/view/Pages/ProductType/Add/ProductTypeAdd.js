@@ -1,8 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ProductTypeForm';
-import { productTypes, sizes, brands } from '../../../../data';
 
 const updateList = (productTypeId, baseList, newList) => {
   baseList
@@ -20,7 +20,7 @@ const updateList = (productTypeId, baseList, newList) => {
     }));
 };
 
-const addProductType = (history, valores) => {
+const addProductType = ({ productTypes, sizes, brands }, history, valores) => {
   const productTypeId = productTypes.length + 1;
   productTypes.push({ id: productTypeId, ...valores });
   updateList(productTypeId, sizes, valores.sizes);
@@ -28,12 +28,26 @@ const addProductType = (history, valores) => {
   history.push('/productType');
 };
 
-const Add = ({ history }) => (
-  <PageTemplate titulo="Novo Tipo de Produto">
-    <Form textoBotao="Adicionar" onSubmit={valores => addProductType(history, valores)} />
-  </PageTemplate>
-);
+const Add = (props) => {
+  const {
+    history, productTypes, sizes, brands,
+  } = props;
+  return (
+    <PageTemplate titulo="Novo Tipo de Produto">
+      <Form
+        textoBotao="Adicionar"
+        onSubmit={valores => addProductType({ productTypes, sizes, brands }, history, valores)}
+      />
+    </PageTemplate>
+  );
+};
 Add.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default Add;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(Add);

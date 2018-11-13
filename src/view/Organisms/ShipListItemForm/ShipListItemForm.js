@@ -4,37 +4,11 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
-import {
-  products,
-  productTypes,
-  sizes,
-  brands,
-  SELECAO_DIRETA,
-  SELECAO_POR_TIPO_TAMANHO,
-} from '../../data';
 
 const selecoesProdutoOptions = [
-  { value: SELECAO_DIRETA, label: 'Direta' },
-  { value: SELECAO_POR_TIPO_TAMANHO, label: 'Por Tipo e Tamanho' },
+  { value: true, label: 'Direta' },
+  { value: false, label: 'Por Tipo e Tamanho' },
 ];
-const productsOptions = products.map((product) => {
-  const productType = productTypes.find(type => type.id === product.productTypeId);
-  const brand = brands.find(item => item.id === product.brandId);
-  const size = sizes.find(item => item.id === product.sizeId);
-  return {
-    value: product.id,
-    label: `${productType.description} ${brand.description} ${size.description}`,
-  };
-});
-const productTypesOptions = productTypes.map(productType => ({
-  value: productType.id,
-  label: productType.description,
-}));
-const sizesOptions = sizes.map(size => ({
-  value: size.id,
-  label: size.description,
-  productTypeId: size.productTypeId,
-}));
 
 class Form extends Component {
   constructor(props) {
@@ -49,12 +23,33 @@ class Form extends Component {
   }
 
   render() {
-    const { textoBotao } = this.props;
     const {
-      qtd, selecao, productId, productTypeId, sizeId,
+      textoBotao, products, productTypes, brands, sizes,
+    } = this.props;
+    const {
+      qtd, selecaoDireta, productId, productTypeId, sizeId,
     } = this.state;
+
+    const productsOptions = products.map((product) => {
+      const productType = productTypes.find(type => type.id === product.productTypeId);
+      const brand = brands.find(item => item.id === product.brandId);
+      const size = sizes.find(item => item.id === product.sizeId);
+      return {
+        value: product.id,
+        label: `${productType.description} ${brand.description} ${size.description}`,
+      };
+    });
+    const productTypesOptions = productTypes.map(productType => ({
+      value: productType.id,
+      label: productType.description,
+    }));
+    const sizesOptions = sizes.map(size => ({
+      value: size.id,
+      label: size.description,
+      productTypeId: size.productTypeId,
+    }));
     const valueSelecaoProdutoSelected = selecoesProdutoOptions.find(
-      option => option.value === selecao,
+      option => option.value === selecaoDireta,
     );
     const valueProductSelected = productsOptions.find(option => option.value === productId);
     const valueProductTypeSelected = productTypesOptions.find(
@@ -78,7 +73,7 @@ class Form extends Component {
             options={selecoesProdutoOptions}
             onChange={value => this.setState({ selecao: value ? value.value : null })}
           />
-          {selecao === SELECAO_DIRETA && (
+          {selecaoDireta && (
             <ReactSelect
               label="Produto"
               value={valueProductSelected}
@@ -86,7 +81,7 @@ class Form extends Component {
               onChange={value => this.setState({ productId: value ? value.value : null })}
             />
           )}
-          {selecao === SELECAO_POR_TIPO_TAMANHO && (
+          {!selecaoDireta && (
             <div>
               <ReactSelect
                 label="Tipo de Produto"
@@ -122,6 +117,10 @@ Form.propTypes = {
     productTypeId: PropTypes.number,
     sizeId: PropTypes.number,
   }),
+  products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 Form.defaultProps = {
   item: {

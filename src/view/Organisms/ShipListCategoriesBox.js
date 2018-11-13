@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
@@ -11,14 +12,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ShipListItem from 'Molecules/ShipListItem';
-import {
-  shipListItems,
-  categories,
-  products,
-  productTypes,
-  SELECAO_DIRETA,
-  SELECAO_POR_TIPO_TAMANHO,
-} from '../../data';
 
 const styles = theme => ({
   nested: {
@@ -46,7 +39,11 @@ const styles = theme => ({
   },
 });
 
-const getShipListItemsOfCategory = (category, shipList) => {
+const getShipListItemsOfCategory = (
+  { shipListItems, products, productTypes },
+  category,
+  shipList,
+) => {
   if (shipList === undefined) {
     return [];
   }
@@ -54,12 +51,12 @@ const getShipListItemsOfCategory = (category, shipList) => {
     .filter(item => item.shipListId === shipList.id)
     .filter((item) => {
       let productType;
-      if (item.selecao === SELECAO_DIRETA) {
+      if (item.selecaoDireta) {
         const product = products.find(productItem => productItem.id === item.productId);
         if (product !== undefined) {
           productType = productTypes.find(type => type.id === product.productTypeId);
         }
-      } else if (item.selecao === SELECAO_POR_TIPO_TAMANHO) {
+      } else {
         productType = productTypes.find(type => type.id === item.productTypeId);
       }
       return productType !== undefined && productType.categoryId === category.id;
@@ -69,7 +66,7 @@ const CategoryItem = (props) => {
   const {
     history, classes, category, shipList, isExpanded, toggleCollapse,
   } = props;
-  const itemsOfCategory = getShipListItemsOfCategory(category, shipList);
+  const itemsOfCategory = getShipListItemsOfCategory(props, category, shipList);
   const expanded = isExpanded();
   if (itemsOfCategory.length > 0) {
     return (
@@ -120,7 +117,7 @@ CategoryItem.propTypes = {
 class CategoriesBox extends Component {
   constructor(props) {
     super(props);
-    const { shipList } = props;
+    const { shipList, shipListItems, categories } = props;
     let categoriesCollapsed = [];
     if (
       shipList !== undefined
@@ -151,7 +148,10 @@ class CategoriesBox extends Component {
   };
 
   render() {
-    const { history, classes, shipList } = this.props;
+    const {
+      history, classes, shipList, categories,
+      shipListItems, products, productTypes,
+    } = this.props;
     return (
       <div>
         {categories.map(category => (
@@ -163,6 +163,9 @@ class CategoriesBox extends Component {
             isExpanded={() => this.isCategoryExpanded(category)}
             category={category}
             shipList={shipList}
+            shipListItems={shipListItems}
+            products={products}
+            productTypes={productTypes}
           />
         ))}
       </div>
@@ -175,5 +178,13 @@ CategoriesBox.propTypes = {
   shipList: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }).isRequired,
+  shipListItems: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default withStyles(styles, { withTheme: true })(CategoriesBox);
+const CategoriesBoxContainer = connect(
+  state => ({ ...state.data }),
+  null,
+)(withStyles(styles, { withTheme: true })(CategoriesBox));
+export default CategoriesBoxContainer;

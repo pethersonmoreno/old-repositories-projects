@@ -1,16 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ShipListItemForm';
-import { shipListItems } from '../../../../../data';
 
-const editShipListItem = (shipListItemId, history, valores) => {
+const editShipListItem = (shipListItems, shipListItemId, history, valores) => {
   const shipListItem = shipListItems.find(item => item.id === shipListItemId);
   Object.assign(shipListItem, valores);
   history.push('/shipList');
 };
-const Edit = ({ history, match }) => {
+const Edit = ({ history, match, shipListItems }) => {
   const shipListItemId = parseInt(match.params.id, 10);
   const shipListItem = shipListItems.find(item => item.id === shipListItemId);
   let conteudo = <Typography>Item não encontrado</Typography>;
@@ -19,7 +19,7 @@ const Edit = ({ history, match }) => {
       <Form
         item={shipListItem}
         textoBotao="Alterar"
-        onSubmit={valores => editShipListItem(shipListItemId, history, valores)}
+        onSubmit={valores => editShipListItem(shipListItems, shipListItemId, history, valores)}
       />
     );
   }
@@ -28,5 +28,9 @@ const Edit = ({ history, match }) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  shipListItems: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-export default Edit;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(Edit);

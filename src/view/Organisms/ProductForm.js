@@ -1,25 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
-import { productTypes, sizes, brands } from '../../data';
-
-const productTypesOptions = productTypes.map(productType => ({
-  value: productType.id,
-  label: productType.description,
-}));
-const sizesOptions = sizes.map(size => ({
-  value: size.id,
-  label: size.description,
-  productTypeId: size.productTypeId,
-}));
-const brandsOptions = brands.map(brand => ({
-  value: brand.id,
-  label: brand.description,
-  productTypeId: brand.productTypeId,
-}));
 
 class Form extends Component {
   constructor(props) {
@@ -45,10 +30,26 @@ class Form extends Component {
   }
 
   render() {
-    const { textoBotao } = this.props;
+    const {
+      textoBotao, productTypes, sizes, brands,
+    } = this.props;
     const {
       productTypeId, brandId, sizeId, ean,
     } = this.state;
+    const productTypesOptions = productTypes.map(productType => ({
+      value: productType.id,
+      label: productType.description,
+    }));
+    const sizesOptions = sizes.map(size => ({
+      value: size.id,
+      label: size.description,
+      productTypeId: size.productTypeId,
+    }));
+    const brandsOptions = brands.map(brand => ({
+      value: brand.id,
+      label: brand.description,
+      productTypeId: brand.productTypeId,
+    }));
     const valueProductTypeSelected = productTypesOptions.find(
       option => option.value === productTypeId,
     );
@@ -105,13 +106,19 @@ Form.propTypes = {
     brandId: PropTypes.number,
     ean: PropTypes.string,
   }),
+  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  sizes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  brands: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 Form.defaultProps = {
-  product: PropTypes.shape({
+  product: {
     productTypeId: null,
     sizeId: null,
     brandId: null,
     ean: '',
-  }),
+  },
 };
-export default Form;
+export default connect(
+  state => ({ ...state.data }),
+  null,
+)(Form);
