@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "state/*": ["src/state/*"],
+      "Atoms/*": ["src/view/Atoms/*"],
+      "Molecules/*": ["src/view/Molecules/*"],
+      "Organisms/*": ["src/view/Organisms/*"],
+      "Pages/*": ["src/view/Pages/*"],
+      "Templates/*": ["src/view/Templates/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
