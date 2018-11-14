@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/ProductForm';
 import { operations } from 'state/ducks/products';
+import Form from '../ProductForm';
 
 const Add = ({ history, addProduct }) => (
   <PageTemplate titulo="Novo Produto">

@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/CategoryForm';
 import { operations } from 'state/ducks/categories';
+import Form from '../CategoryForm';
 
 const Add = (props) => {
   const { history, addCategory } = props;

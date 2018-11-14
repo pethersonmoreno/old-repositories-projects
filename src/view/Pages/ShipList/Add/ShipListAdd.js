@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { operations } from 'state/ducks/shipLists';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/ShipListForm';
+import Form from '../ShipListForm';
 
 const ShipListAdd = ({ history, addShipList }) => (
   <PageTemplate titulo="Nova Lista">

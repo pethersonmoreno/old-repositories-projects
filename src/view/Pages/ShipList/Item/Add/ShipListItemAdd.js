@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/ShipListItemForm';
 import { operations } from 'state/ducks/shipLists';
+import Form from '../ShipListItemForm';
 
 const ShipListItemAdd = ({ history, match, addShipListItem }) => {
   const shipListId = parseInt(match.params.shipListId, 10);

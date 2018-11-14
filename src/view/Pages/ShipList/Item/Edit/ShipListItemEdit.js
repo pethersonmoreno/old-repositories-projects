@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/ShipListItemForm';
 import { operations } from 'state/ducks/shipLists';
+import Form from '../ShipListItemForm';
 
 const ShipListItemEdit = ({
   history, match, shipLists, editShipListItem,

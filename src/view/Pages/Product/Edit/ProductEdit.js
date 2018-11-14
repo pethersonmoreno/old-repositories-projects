@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
-import Form from 'Organisms/ProductForm';
 import { operations } from 'state/ducks/products';
+import Form from '../ProductForm';
 
 const ProductEdit = ({
   history, match, products, editProduct,
