@@ -26,9 +26,6 @@ const ProductList = (props) => {
           <TableHead>
             <TableRow>
               <TableCell className="colunaBotoes" padding="none" />
-              <TableCell numeric padding="none">
-                ID
-              </TableCell>
               <TableCell>Produto</TableCell>
             </TableRow>
           </TableHead>
@@ -47,9 +44,6 @@ const ProductList = (props) => {
                     <IconButton onClick={() => removeProduct(product.id)}>
                       <DeleteIcon color="primary" />
                     </IconButton>
-                  </TableCell>
-                  <TableCell numeric padding="none">
-                    {product.id}
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {productDescription}

@@ -7,10 +7,15 @@ import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/products';
 import Form from '../ProductForm';
 
-const ProductEdit = ({
-  history, match, products, editProduct,
-}) => {
-  const productId = parseInt(match.params.id, 10);
+const ProductEdit = (props) => {
+  const {
+    history,
+    match: {
+      params: { id: productId },
+    },
+    products,
+    editProduct,
+  } = props;
   const product = products.find(item => item.id === productId);
   let conteudo = <Typography>Produto não encontrado</Typography>;
   let productDescription = '';
