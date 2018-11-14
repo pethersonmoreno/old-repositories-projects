@@ -2,13 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "api/*": ["src/api/*"],
-      "state/*": ["src/state/*"],
-      "Atoms/*": ["src/view/Atoms/*"],
-      "Molecules/*": ["src/view/Molecules/*"],
-      "Organisms/*": ["src/view/Organisms/*"],
-      "Pages/*": ["src/view/Pages/*"],
-      "Templates/*": ["src/view/Templates/*"]
+      "Atoms/*": ["src/Atoms/*"],
+      "Molecules/*": ["src/Molecules/*"],
+      "Organisms/*": ["src/Organisms/*"],
+      "Pages/*": ["src/Pages/*"],
+      "Templates/*": ["src/Templates/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
