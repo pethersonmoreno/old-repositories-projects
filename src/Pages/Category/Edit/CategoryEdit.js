@@ -11,7 +11,7 @@ const Edit = (props) => {
   const {
     history, match, categories, editCategory,
   } = props;
-  const categoryId = parseInt(match.params.id, 10);
+  const categoryId = match.params.id;
   const category = categories.find(item => item.id === categoryId);
   let conteudo = <Typography>Categoria não encontrada</Typography>;
   if (category !== undefined) {

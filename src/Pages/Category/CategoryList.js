@@ -26,9 +26,6 @@ const CategoryList = (props) => {
           <TableHead>
             <TableRow>
               <TableCell className="colunaBotoes" padding="none" />
-              <TableCell numeric padding="none">
-                ID
-              </TableCell>
               <TableCell>Descrição</TableCell>
             </TableRow>
           </TableHead>
@@ -42,9 +39,6 @@ const CategoryList = (props) => {
                   <IconButton onClick={() => removeCategory(category.id)}>
                     <DeleteIcon color="primary" />
                   </IconButton>
-                </TableCell>
-                <TableCell numeric padding="none">
-                  {category.id}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {category.description}

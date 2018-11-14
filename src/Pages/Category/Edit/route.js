@@ -3,4 +3,4 @@ import { Route } from 'react-router-dom';
 import Component from './CategoryEdit';
 import { PREFIX_ROUTE } from '../constants';
 
-export default <Route exact path={`${PREFIX_ROUTE}/:id(\\d+)`} component={Component} />;
+export default <Route exact path={`${PREFIX_ROUTE}/:id`} component={Component} />;
