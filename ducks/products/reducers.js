@@ -1,4 +1,4 @@
-import types from './types';
+import types from "./types";
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -7,11 +7,11 @@ export default (state = [], action) => {
     case types.REMOVE_PRODUCT:
       return state.filter(({ id }) => id !== action.id);
     case types.EDIT_PRODUCT:
-      return state.map((product) => {
+      return state.map(product => {
         if (product.id === action.id) {
           return {
             ...product,
-            ...action.updates,
+            ...action.updates
           };
         }
         return product;

@@ -19,7 +19,7 @@ const editProductType = (id, updates) => dispatch => {
     // dispatch(actions.editProductType(id, updates));
   });
 };
-const getProductTypes = () => dispatch => {
+const getProductTypes = () => (dispatch, getState) => {
   productTypeApi.listenChanges(productTypes => {
     dispatch(actions.getProductTypes(productTypes));
   });

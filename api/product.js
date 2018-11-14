@@ -1,35 +1,54 @@
-import * as data from './data';
+import { database } from "./firebase";
+import { mapObjectToList } from "./utils";
+const databaseProducts = database.ref("/products");
 
-export const add = product => new Promise((resolve) => {
-  const id = data.products.length + 1;
-  const newProduct = { ...product, id };
-  data.products.push(newProduct);
-  resolve(newProduct);
-});
-export const remove = id => new Promise((resolve) => {
-  const product = data.products.find(item => item.id === id);
-  if (product !== undefined) {
-    data.products.splice(data.products.indexOf(product), 1);
-  }
-  resolve(id);
-});
-export const edit = (id, updates) => new Promise((resolve) => {
-  const product = data.products.find(item => item.id === id);
-  if (product !== undefined) {
-    data.products.splice(data.products.indexOf(product), 1, {
-      ...product,
-      updates,
-    });
-  }
-  resolve({ id, updates });
-});
-export const getAll = () => new Promise((resolve) => {
-  resolve(
-    data.products.map(product => ({
-      ...product,
-      productType: data.productTypes.find(
-        productType => productType.id === product.productTypeId,
-      ),
-    })),
-  );
-});
+export const remove = id =>
+  new Promise((resolve, reject) => {
+    databaseProducts
+      .child(id)
+      .remove()
+      .then(() => {
+        resolve(id);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+export const edit = (id, updates) =>
+  new Promise((resolve, reject) => {
+    const { id: idField, ...otherFields } = updates;
+    databaseProducts
+      .child(id)
+      .set({
+        ...otherFields
+      })
+      .then(() => {
+        resolve({ id, updates: otherFields });
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+export const add = product =>
+  new Promise((resolve, reject) => {
+    const id = databaseProducts.push().key;
+    edit(id, product)
+      .then(({ id, updates }) => resolve({ ...updates, id }))
+      .catch(error => reject(error));
+  });
+export const getAll = () =>
+  new Promise((resolve, reject) => {
+    databaseProducts
+      .once("value")
+      .then(snapshot => {
+        resolve(mapObjectToList(snapshot.val(), "id"));
+      })
+      .catch(error => reject(error));
+  });
+export const listenChanges = listenCallBack => {
+  databaseProducts.on("value", snapshot => {
+    if (listenCallBack) {
+      listenCallBack(mapObjectToList(snapshot.val(), "id"));
+    }
+  });
+};

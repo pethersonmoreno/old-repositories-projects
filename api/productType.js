@@ -47,8 +47,9 @@ export const getAll = () =>
   });
 export const listenChanges = listenCallBack => {
   databaseProductTypes.on("value", snapshot => {
+    const productTypes = mapObjectToList(snapshot.val(), "id");
     if (listenCallBack) {
-      listenCallBack(mapObjectToList(snapshot.val(), "id"));
+      listenCallBack(productTypes);
     }
   });
 };
