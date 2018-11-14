@@ -2,9 +2,12 @@ import { category as categoryApi } from "../../api";
 import actions from "./actions";
 
 const addCategory = newCategory => dispatch => {
-  categoryApi.add(newCategory).then(category => {
-    dispatch(actions.addCategory(category));
-  });
+  categoryApi
+    .add(newCategory)
+    .then(category => {
+      // dispatch(actions.addCategory(category));
+    })
+    .catch(error => console.log("error na action: ", error));
 };
 const removeCategory = id => dispatch => {
   categoryApi.remove(id).then(() => {
@@ -16,10 +19,14 @@ const editCategory = (id, updates) => dispatch => {
     dispatch(actions.editCategory(id, updates));
   });
 };
+
 const getCategories = () => dispatch => {
-  categoryApi.getAll().then(categories => {
+  categoryApi.listenChanges(categories => {
     dispatch(actions.getCategories(categories));
   });
+  // categoryApi.getAll().then(categories => {
+  //   dispatch(actions.getCategories(categories));
+  // });
 };
 export default {
   addCategory,
