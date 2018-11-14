@@ -1,0 +1,12 @@
+{
+  "name": "controle-compras-frontend-redux",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pethersonmoreno/controle-compras-frontend-redux.git",
+  "author": "Petherson Moreno <pethermoreno@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "4.0.1",
+    "redux-thunk": "2.3.0"
+  }
+}
