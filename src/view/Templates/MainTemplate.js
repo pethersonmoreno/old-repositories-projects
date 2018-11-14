@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuResponsive from 'Organisms/MenuResponsive';
-import { operations as operationsCategories } from 'state/ducks/categories';
-import { operations as operationsProductTypes } from 'state/ducks/productTypes';
-import { operations as operationsProducts } from 'state/ducks/products';
-import { operations as operationsShipLists } from 'state/ducks/shipLists';
+import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
+import { operations as operationsProductTypes } from 'controle-compras-frontend-redux/ducks/productTypes';
+import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
+import { operations as operationsShipLists } from 'controle-compras-frontend-redux/ducks/shipLists';
 
 const styles = () => ({
   root: {

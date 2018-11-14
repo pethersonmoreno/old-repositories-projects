@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageTemplate from 'Templates/PageTemplate';
-import { operations } from 'state/ducks/shipLists';
+import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListForm';
 
 const Edit = ({

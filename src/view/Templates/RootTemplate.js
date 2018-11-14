@@ -3,7 +3,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { route } from 'Pages';
-import store from 'state/store';
+import store from 'controle-compras-frontend-redux/store';
 import MainTemplate from './MainTemplate';
 import './RootTemplate.css';
 

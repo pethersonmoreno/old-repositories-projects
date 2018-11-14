@@ -15,7 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { operations } from 'state/ducks/categories';
+import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 
 const CategoryList = (props) => {
   const { history, categories, removeCategory } = props;

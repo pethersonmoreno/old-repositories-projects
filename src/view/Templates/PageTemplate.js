@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from 'Molecules/AppBar';
-import { operations } from 'state/ducks/menu';
+import { operations } from 'controle-compras-frontend-redux/ducks/menu';
 import { menuWidth } from '../config';
 
 const styles = theme => ({

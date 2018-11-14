@@ -15,7 +15,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import BarTabs from 'Molecules/BarTabs';
-import { operations } from 'state/ducks/shipLists';
+import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import ShipListCategoriesBox from './ShipListCategoriesBox';
 
 const styles = theme => ({

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
-import { operations } from 'state/ducks/products';
+import { operations } from 'controle-compras-frontend-redux/ducks/products';
 import Form from '../ProductForm';
 
 const Add = ({ history, addProduct }) => (

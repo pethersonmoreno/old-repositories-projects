@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PageTemplate from 'Templates/PageTemplate';
-import { operations } from 'state/ducks/productTypes';
+import { operations } from 'controle-compras-frontend-redux/ducks/productTypes';
 import Form from '../ProductTypeForm';
 
 // const updateList = (productTypeId, baseList, newList) => {

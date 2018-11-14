@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { operations } from 'state/ducks/shipLists';
+import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from '../ShipListForm';
 

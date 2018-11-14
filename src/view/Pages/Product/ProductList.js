@@ -15,7 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { operations } from 'state/ducks/products';
+import { operations } from 'controle-compras-frontend-redux/ducks/products';
 
 const ProductList = (props) => {
   const { history, products, removeProduct } = props;
@@ -37,9 +37,7 @@ const ProductList = (props) => {
               const { productType } = product;
               const brand = product && product.brand;
               const size = product && product.size;
-              const productDescription = `${productType.description} ${brand} ${
-                size
-              }`;
+              const productDescription = `${productType.description} ${brand} ${size}`;
               return (
                 <TableRow key={product.id}>
                   <TableCell padding="none">
