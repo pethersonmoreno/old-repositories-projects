@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +11,7 @@ const selecoesProdutoOptions = [
   { value: false, label: 'Por Tipo e Tamanho' },
 ];
 
-class Form extends Component {
+class ShipListItemForm extends Component {
   constructor(props) {
     super(props);
     this.state = { ...props.item };
@@ -107,7 +108,7 @@ class Form extends Component {
     );
   }
 }
-Form.propTypes = {
+ShipListItemForm.propTypes = {
   textoBotao: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   item: PropTypes.shape({
@@ -120,7 +121,7 @@ Form.propTypes = {
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
-Form.defaultProps = {
+ShipListItemForm.defaultProps = {
   item: {
     qtd: 1,
     selecao: null,
@@ -129,4 +130,12 @@ Form.defaultProps = {
     sizeId: null,
   },
 };
-export default Form;
+const mapStateToProps = state => ({
+  productTypes: state.productTypes,
+  products: state.products,
+});
+const mapDispatchToProps = null;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShipListItemForm);

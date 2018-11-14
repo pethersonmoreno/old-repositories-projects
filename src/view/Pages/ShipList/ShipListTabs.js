@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
@@ -13,6 +16,7 @@ import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import ShipListCategoriesBox from 'Organisms/ShipListCategoriesBox';
 import BarTabs from 'Molecules/BarTabs';
+import { operations } from 'state/ducks/shipLists';
 
 const styles = theme => ({
   root: {
@@ -117,4 +121,24 @@ ShipLists.defaultProps = {
   shipLists: [],
   shipListIdSelected: undefined,
 };
-export default withStyles(styles, { withTheme: true })(ShipLists);
+
+const mapStateToProps = state => ({
+  shipLists: state.shipLists.shipLists,
+  shipListIdSelected: state.shipLists.shipListIdSelected,
+});
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    startShiplistSelection: operations.startShiplistSelection,
+    updateShipListSelected: operations.updateShipListSelected,
+    removeShipList: operations.removeShipList,
+  },
+  dispatch,
+);
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withStyles(styles, { withTheme: true }),
+)(ShipLists);

@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { operations } from 'state/ducks/shipLists';
 import PageTemplate from 'Templates/PageTemplate';
 import Form from 'Organisms/ShipListForm';
 
-const Add = ({ history, addShipList }) => (
+const ShipListAdd = ({ history, addShipList }) => (
   <PageTemplate titulo="Nova Lista">
     <Form
       textoBotao="Adicionar"
@@ -14,9 +17,18 @@ const Add = ({ history, addShipList }) => (
     />
   </PageTemplate>
 );
-Add.propTypes = {
+ShipListAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   addShipList: PropTypes.func.isRequired,
 };
-
-export default Add;
+const mapStateToProps = null;
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    addShipList: operations.addShipList,
+  },
+  dispatch,
+);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShipListAdd);

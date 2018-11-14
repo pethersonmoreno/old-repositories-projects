@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Menu from 'Molecules/Menu';
-import { menuWidth } from '../../config';
+import { operations } from 'state/ducks/menu';
+import { menuWidth } from '../config';
 
 const styles = theme => ({
   drawer: {
@@ -91,4 +94,10 @@ MenuResponsive.propTypes = {
   smUp: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MenuResponsive);
+export default compose(
+  connect(
+    state => ({ ...state.menu }),
+    { ...operations },
+  ),
+  withStyles(styles, { withTheme: true }),
+)(MenuResponsive);

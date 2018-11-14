@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from 'Molecules/AppBar';
-import { menuWidth } from '../../config';
+import { operations } from 'state/ducks/menu';
+import { menuWidth } from '../config';
 
 const styles = theme => ({
   main: {
@@ -53,4 +56,10 @@ PageTemplate.propTypes = {
 PageTemplate.defaultProps = {
   removePadding: false,
 };
-export default withStyles(styles, { withTheme: true })(PageTemplate);
+export default compose(
+  connect(
+    null,
+    { toggleMenu: operations.toggleMenu },
+  ),
+  withStyles(styles, { withTheme: true }),
+)(PageTemplate);
