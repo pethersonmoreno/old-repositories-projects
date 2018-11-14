@@ -3,21 +3,24 @@ import actions from "./actions";
 
 const addProductType = newProductType => dispatch => {
   productTypeApi.add(newProductType).then(productType => {
-    dispatch(actions.addProductType(productType));
+    // Removed because is is using listenChanges
+    // dispatch(actions.addProductType(productType));
   });
 };
 const removeProductType = id => dispatch => {
   productTypeApi.remove(id).then(() => {
-    dispatch(actions.removeProductType(id));
+    // Removed because is is using listenChanges
+    // dispatch(actions.removeProductType(id));
   });
 };
 const editProductType = (id, updates) => dispatch => {
   productTypeApi.edit(id, updates).then(() => {
-    dispatch(actions.editProductType(id, updates));
+    // Removed because is is using listenChanges
+    // dispatch(actions.editProductType(id, updates));
   });
 };
 const getProductTypes = () => dispatch => {
-  productTypeApi.getAll().then(productTypes => {
+  productTypeApi.listenChanges(productTypes => {
     dispatch(actions.getProductTypes(productTypes));
   });
 };

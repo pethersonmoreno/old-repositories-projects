@@ -1,28 +1,54 @@
-import * as data from './data';
+import { database } from "./firebase";
+import { mapObjectToList } from "./utils";
+const databaseProductTypes = database.ref("/productTypes");
 
-export const add = productType => new Promise((resolve) => {
-  const id = data.productTypes.length + 1;
-  const newProductType = { ...productType, id };
-  data.productTypes.push(newProductType);
-  resolve(newProductType);
-});
-export const remove = id => new Promise((resolve) => {
-  const productType = data.productTypes.find(item => item.id === id);
-  if (productType !== undefined) {
-    data.productTypes.splice(data.productTypes.indexOf(productType), 1);
-  }
-  resolve(id);
-});
-export const edit = (id, updates) => new Promise((resolve) => {
-  const productType = data.productTypes.find(item => item.id === id);
-  if (productType !== undefined) {
-    data.productTypes.splice(data.productTypes.indexOf(productType), 1, {
-      ...productType,
-      updates,
-    });
-  }
-  resolve({ id, updates });
-});
-export const getAll = () => new Promise((resolve) => {
-  resolve(data.productTypes.map(c => c));
-});
+export const remove = id =>
+  new Promise((resolve, reject) => {
+    databaseProductTypes
+      .child(id)
+      .remove()
+      .then(() => {
+        resolve(id);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+export const edit = (id, updates) =>
+  new Promise((resolve, reject) => {
+    const { id: idField, ...otherFields } = updates;
+    databaseProductTypes
+      .child(id)
+      .set({
+        ...otherFields
+      })
+      .then(() => {
+        resolve({ id, updates: otherFields });
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+export const add = productType =>
+  new Promise((resolve, reject) => {
+    const id = databaseProductTypes.push().key;
+    edit(id, productType)
+      .then(({ id, updates }) => resolve({ ...updates, id }))
+      .catch(error => reject(error));
+  });
+export const getAll = () =>
+  new Promise((resolve, reject) => {
+    databaseProductTypes
+      .once("value")
+      .then(snapshot => {
+        resolve(mapObjectToList(snapshot.val(), "id"));
+      })
+      .catch(error => reject(error));
+  });
+export const listenChanges = listenCallBack => {
+  databaseProductTypes.on("value", snapshot => {
+    if (listenCallBack) {
+      listenCallBack(mapObjectToList(snapshot.val(), "id"));
+    }
+  });
+};
