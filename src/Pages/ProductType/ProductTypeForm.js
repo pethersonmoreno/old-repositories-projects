@@ -82,8 +82,8 @@ Form.propTypes = {
   textoBotao: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   productType: PropTypes.shape({
-    id: PropTypes.number,
-    categoryId: PropTypes.number,
+    id: PropTypes.string,
+    categoryId: PropTypes.string,
     description: PropTypes.string,
     sizes: PropTypes.arrayOf(PropTypes.string),
     brands: PropTypes.arrayOf(PropTypes.string),

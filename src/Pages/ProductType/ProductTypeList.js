@@ -26,9 +26,6 @@ const List = (props) => {
           <TableHead>
             <TableRow>
               <TableCell className="colunaBotoes" padding="none" />
-              <TableCell numeric padding="none">
-                ID
-              </TableCell>
               <TableCell>Descrição</TableCell>
             </TableRow>
           </TableHead>
@@ -42,9 +39,6 @@ const List = (props) => {
                   <IconButton onClick={() => removeProductType(productType.id)}>
                     <DeleteIcon color="primary" />
                   </IconButton>
-                </TableCell>
-                <TableCell numeric padding="none">
-                  {productType.id}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {productType.description}
