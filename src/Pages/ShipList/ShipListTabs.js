@@ -34,7 +34,7 @@ const styles = theme => ({
   },
 });
 
-class ShipLists extends Component {
+class ShipListTabs extends Component {
   componentDidMount() {
     const { startShiplistSelection } = this.props;
     startShiplistSelection();
@@ -108,18 +108,18 @@ class ShipLists extends Component {
     );
   }
 }
-ShipLists.propTypes = {
+ShipListTabs.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipLists: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  shipListIdSelected: PropTypes.number,
+  shipListIdSelected: PropTypes.string,
   startShiplistSelection: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
   removeShipList: PropTypes.func.isRequired,
 };
-ShipLists.defaultProps = {
+ShipListTabs.defaultProps = {
   shipLists: [],
-  shipListIdSelected: undefined,
+  shipListIdSelected: null,
 };
 
 const mapStateToProps = state => ({
@@ -141,4 +141,4 @@ export default compose(
     mapDispatchToProps,
   ),
   withStyles(styles, { withTheme: true }),
-)(ShipLists);
+)(ShipListTabs);

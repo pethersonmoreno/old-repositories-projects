@@ -39,28 +39,22 @@ const styles = theme => ({
   },
 });
 
-const getShipListItemsOfCategory = (
-  { products, productTypes },
-  category,
-  shipList,
-) => {
-  if (shipList === undefined) {
+const getShipListItemsOfCategory = ({ products, productTypes }, category, shipList) => {
+  if (!shipList || !shipList.items) {
     return [];
   }
-  return shipList.items
-    .filter(item => item.shipListId === shipList.id)
-    .filter((item) => {
-      let productType;
-      if (item.selecaoDireta) {
-        const product = products.find(productItem => productItem.id === item.productId);
-        if (product !== undefined) {
-          productType = productTypes.find(type => type.id === product.productTypeId);
-        }
-      } else {
-        productType = productTypes.find(type => type.id === item.productTypeId);
+  return shipList.items.filter((item) => {
+    let productType;
+    if (item.selecaoDireta) {
+      const product = products.find(productItem => productItem.id === item.productId);
+      if (product !== undefined) {
+        productType = productTypes.find(type => type.id === product.productTypeId);
       }
-      return productType !== undefined && productType.categoryId === category.id;
-    });
+    } else {
+      productType = productTypes.find(type => type.id === item.productTypeId);
+    }
+    return productType !== undefined && productType.categoryId === category.id;
+  });
 };
 const CategoryItem = (props) => {
   const {
@@ -91,6 +85,7 @@ const CategoryItem = (props) => {
                 key={item.id}
                 history={history}
                 className={classes.nested}
+                shipListId={shipList.id}
                 item={item}
               />
             ))}
@@ -105,11 +100,11 @@ CategoryItem.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   category: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,
   shipList: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
   isExpanded: PropTypes.func.isRequired,
   toggleCollapse: PropTypes.func.isRequired,
@@ -119,10 +114,7 @@ class CategoriesBox extends Component {
     super(props);
     const { shipList, categories } = props;
     let categoriesCollapsed = [];
-    if (
-      shipList !== undefined
-      && shipList.items.length > 10
-    ) {
+    if (shipList && shipList.items && shipList.items.length > 10) {
       categoriesCollapsed = categories.map(category => category.id);
     }
     this.state = {
@@ -149,8 +141,7 @@ class CategoriesBox extends Component {
 
   render() {
     const {
-      history, classes, shipList, categories,
-      products, productTypes,
+      history, classes, shipList, categories, products, productTypes,
     } = this.props;
     return (
       <div>
@@ -175,8 +166,8 @@ CategoriesBox.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipList: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    items: PropTypes.array.isRequired,
+    id: PropTypes.string.isRequired,
+    items: PropTypes.array,
   }).isRequired,
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types

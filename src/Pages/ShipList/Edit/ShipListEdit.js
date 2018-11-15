@@ -7,10 +7,15 @@ import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListForm';
 
-const Edit = ({
-  history, match, shipLists, editShipList,
-}) => {
-  const shipListId = parseInt(match.params.id, 10);
+const Edit = (props) => {
+  const {
+    history,
+    match: {
+      params: { id: shipListId },
+    },
+    shipLists,
+    editShipList,
+  } = props;
   const shipList = shipLists.find(list => list.id === shipListId);
   let conteudo = <Typography>Lista não encontrado</Typography>;
   if (shipList !== undefined) {

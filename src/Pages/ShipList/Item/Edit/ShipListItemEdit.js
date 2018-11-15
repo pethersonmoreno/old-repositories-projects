@@ -10,11 +10,12 @@ import Form from '../ShipListItemForm';
 const ShipListItemEdit = ({
   history, match, shipLists, editShipListItem,
 }) => {
-  const shipListId = parseInt(match.params.shipListId, 10);
-  const shipListItemId = parseInt(match.params.id, 10);
+  const {
+    params: { shipListId, id: shipListItemId },
+  } = match;
   const shipList = shipLists.find(i => i.id === shipListId);
   let shipListItem;
-  if (shipList) {
+  if (shipList && shipList.items) {
     shipListItem = shipList.items.find(item => item.id === shipListItemId);
   }
   let conteudo = <Typography>Item não encontrado</Typography>;

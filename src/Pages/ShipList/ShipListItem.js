@@ -38,12 +38,14 @@ class ShipListItem extends Component {
   };
 
   render() {
-    const { history, className, item } = this.props;
+    const {
+      history, className, shipListId, item,
+    } = this.props;
     return (
       <ListItem
         button
         className={className}
-        onClick={() => history.push(`/shipList/${item.shipListId}/item/${item.id}`)}
+        onClick={() => history.push(`/shipList/${shipListId}/item/${item.id}`)}
       >
         <ListItemText inset primary={`${item.qtd} UN ${this.getDescriptionOfShipListItem(item)}`} />
       </ListItem>
@@ -53,8 +55,9 @@ class ShipListItem extends Component {
 ShipListItem.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   className: PropTypes.string,
+  shipListId: PropTypes.string.isRequired,
   item: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types

@@ -7,7 +7,9 @@ import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
 const ShipListItemAdd = ({ history, match, addShipListItem }) => {
-  const shipListId = parseInt(match.params.shipListId, 10);
+  const {
+    params: { shipListId },
+  } = match;
   return (
     <PageTemplate titulo="Novo Item">
       <Form

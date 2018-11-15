@@ -23,6 +23,11 @@ class ShipListItemForm extends Component {
     onSubmit({ ...this.state });
   }
 
+  onChangeQtd = (event) => {
+    const qtd = parseInt(event.target.value, 10);
+    this.setState({ qtd: qtd || '' });
+  };
+
   render() {
     const { textoBotao, products, productTypes } = this.props;
     const {
@@ -66,7 +71,7 @@ class ShipListItemForm extends Component {
             value={qtd}
             autoFocus
             fullWidth
-            onChange={event => this.setState({ qtd: parseInt(event.target.value, 10) })}
+            onChange={this.onChangeQtd}
           />
           <ReactSelect
             label="Seleção do Produto"
@@ -114,8 +119,8 @@ ShipListItemForm.propTypes = {
   item: PropTypes.shape({
     qtd: PropTypes.number,
     selecao: PropTypes.string,
-    productId: PropTypes.number,
-    productTypeId: PropTypes.number,
+    productId: PropTypes.string,
+    productTypeId: PropTypes.string,
     sizeId: PropTypes.number,
   }),
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
