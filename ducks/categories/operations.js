@@ -21,6 +21,9 @@ const editCategory = (id, updates) => dispatch => {
 };
 
 const getCategories = () => dispatch => {
+  // categoryApi.getAll().then(categories => {
+  //   dispatch(actions.getCategories(categories));
+  // });
   categoryApi.listenChanges(categories => {
     dispatch(actions.getCategories(categories));
   });
