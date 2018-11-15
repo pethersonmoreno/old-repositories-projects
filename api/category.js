@@ -3,48 +3,26 @@ import { mapObjectToList } from "./utils";
 const databaseCategories = database.ref("/categories");
 
 export const remove = id =>
-  new Promise((resolve, reject) => {
-    databaseCategories
-      .child(id)
-      .remove()
-      .then(() => {
-        resolve(id);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-export const edit = (id, updates) =>
-  new Promise((resolve, reject) => {
-    const { id: idField, ...otherFields } = updates;
-    databaseCategories
-      .child(id)
-      .set({
-        ...otherFields
-      })
-      .then(() => {
-        resolve({ id, updates: otherFields });
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  databaseCategories
+    .child(id)
+    .remove()
+    .then(() => id);
+export const edit = (id, { id: idField, ...otherFields }) =>
+  databaseCategories
+    .child(id)
+    .set({
+      ...otherFields
+    })
+    .then(() => ({ id, updates: otherFields }));
 export const add = category =>
-  new Promise((resolve, reject) => {
-    const id = databaseCategories.push().key;
-    edit(id, category)
-      .then(({ id, updates }) => resolve({ ...updates, id }))
-      .catch(error => reject(error));
-  });
+  edit(databaseCategories.push().key, category).then(({ id, updates }) => ({
+    ...updates,
+    id
+  }));
 export const getAll = () =>
-  new Promise((resolve, reject) => {
-    databaseCategories
-      .once("value")
-      .then(snapshot => {
-        resolve(mapObjectToList(snapshot.val(), "id"));
-      })
-      .catch(error => reject(error));
-  });
+  databaseCategories
+    .once("value")
+    .then(snapshot => mapObjectToList(snapshot.val(), "id"));
 export const listenChanges = listenCallBack => {
   databaseCategories.on("value", snapshot => {
     if (listenCallBack) {

@@ -37,7 +37,7 @@ const editShipList = (id, updates) => dispatch => {
   });
 };
 const getShipLists = () => dispatch => {
-  shipListApi.getAll().then(shipLists => {
+  shipListApi.listenChanges(shipLists => {
     dispatch(actions.getShipLists(shipLists));
   });
 };
