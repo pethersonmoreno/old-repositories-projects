@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import withNotification from 'HOC/withNotification';
 
 class FormCategory extends Component {
   constructor(props) {
@@ -10,10 +11,17 @@ class FormCategory extends Component {
     this.state = { ...props.shipList };
   }
 
-  onCallSubmit(event) {
-    const { onSubmit } = this.props;
+  async onCallSubmit(event) {
+    const { save, onSaved, notification } = this.props;
+    const { description } = this.state;
     event.preventDefault();
-    onSubmit({ ...this.state });
+    try {
+      const result = await save({ ...this.state });
+      notification.success(`Sucesso ao salvar Lista de Compras ${description}`);
+      onSaved(result);
+    } catch (error) {
+      notification.error(`Erro ao salvar Lista de Compras ${description}`, error);
+    }
   }
 
   render() {
@@ -43,14 +51,19 @@ class FormCategory extends Component {
 }
 FormCategory.propTypes = {
   textoBotao: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  onSaved: PropTypes.func.isRequired,
   shipList: PropTypes.shape({
     description: PropTypes.string,
   }),
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 FormCategory.defaultProps = {
   shipList: {
     description: '',
   },
 };
-export default FormCategory;
+export default withNotification()(FormCategory);

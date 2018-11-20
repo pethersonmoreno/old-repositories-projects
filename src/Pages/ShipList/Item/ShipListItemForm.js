@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
+import withNotification from 'HOC/withNotification';
 
 const selecoesProdutoOptions = [
   { value: true, label: 'Direta' },
@@ -17,10 +19,16 @@ class ShipListItemForm extends Component {
     this.state = { ...props.item };
   }
 
-  onCallSubmit(event) {
-    const { onSubmit } = this.props;
+  async onCallSubmit(event) {
+    const { save, onSaved, notification } = this.props;
     event.preventDefault();
-    onSubmit({ ...this.state });
+    try {
+      const result = await save({ ...this.state });
+      notification.success('Sucesso ao salvar Item da Lista de Compras');
+      onSaved(result);
+    } catch (error) {
+      notification.error('Erro ao salvar Item da Lista de Compras', error);
+    }
   }
 
   onChangeQtd = (event) => {
@@ -115,7 +123,8 @@ class ShipListItemForm extends Component {
 }
 ShipListItemForm.propTypes = {
   textoBotao: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  onSaved: PropTypes.func.isRequired,
   item: PropTypes.shape({
     qtd: PropTypes.number,
     selecao: PropTypes.string,
@@ -125,6 +134,10 @@ ShipListItemForm.propTypes = {
   }),
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 ShipListItemForm.defaultProps = {
   item: {
@@ -140,7 +153,10 @@ const mapStateToProps = state => ({
   products: state.products,
 });
 const mapDispatchToProps = null;
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withNotification(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(ShipListItemForm);

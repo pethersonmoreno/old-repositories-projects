@@ -25,17 +25,28 @@ const styles = () => ({
 class MainTemplate extends Component {
   componentDidMount() {
     const {
-      startListenCategories, getProductTypes, getProducts, getShipLists,
+      startListenCategories,
+      startListenProductTypes,
+      startListenProducts,
+      startListenShipLists,
     } = this.props;
     startListenCategories();
-    getProductTypes();
-    getProducts();
-    getShipLists();
+    startListenProductTypes();
+    startListenProducts();
+    startListenShipLists();
   }
 
   componentWillUnmount() {
-    const { stopListenCategories } = this.props;
+    const {
+      stopListenCategories,
+      stopListenProductTypes,
+      stopListenProducts,
+      stopListenShipLists,
+    } = this.props;
     stopListenCategories();
+    stopListenProductTypes();
+    stopListenProducts();
+    stopListenShipLists();
   }
 
   render() {
@@ -61,18 +72,24 @@ MainTemplate.propTypes = {
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   startListenCategories: PropTypes.func.isRequired,
   stopListenCategories: PropTypes.func.isRequired,
-  getProductTypes: PropTypes.func.isRequired,
-  getProducts: PropTypes.func.isRequired,
-  getShipLists: PropTypes.func.isRequired,
+  startListenProductTypes: PropTypes.func.isRequired,
+  stopListenProductTypes: PropTypes.func.isRequired,
+  startListenProducts: PropTypes.func.isRequired,
+  stopListenProducts: PropTypes.func.isRequired,
+  startListenShipLists: PropTypes.func.isRequired,
+  stopListenShipLists: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     startListenCategories: operationsCategories.startListenChanges,
     stopListenCategories: operationsCategories.stopListenChanges,
-    getProductTypes: operationsProductTypes.getProductTypes,
-    getProducts: operationsProducts.getProducts,
-    getShipLists: operationsShipLists.getShipLists,
+    startListenProductTypes: operationsProductTypes.startListenChanges,
+    stopListenProductTypes: operationsProductTypes.stopListenChanges,
+    startListenProducts: operationsProducts.startListenChanges,
+    stopListenProducts: operationsProducts.stopListenChanges,
+    startListenShipLists: operationsShipLists.startListenChanges,
+    stopListenShipLists: operationsShipLists.stopListenChanges,
   },
   dispatch,
 );

@@ -16,16 +16,17 @@ class ShipListItem extends Component {
     if (size !== undefined && size !== null) {
       description += `${size} `;
     }
-    return description;
+    return `${description}-testando`;
   };
 
   getDescriptionOfProduct = (productId) => {
-    const { products } = this.props;
+    const { products, productTypes } = this.props;
     const product = products.find(item => item.id === productId);
     if (product === undefined) {
       return '';
     }
-    return this.getDescription(product.productType, product.brand, product.size);
+    const productType = productTypes.find(item => item.id === product.productTypeId);
+    return this.getDescription(productType, product.brand, product.size);
   };
 
   getDescriptionOfShipListItem = (item) => {

@@ -22,7 +22,7 @@ import Form from '../ProductTypeForm';
 //     }));
 // };
 
-// const addProductType = ({ productTypes, sizes, brands }, history, valores) => {
+// const add = ({ productTypes, sizes, brands }, history, valores) => {
 //   const productTypeId = productTypes.length + 1;
 //   productTypes.push({ id: productTypeId, ...valores });
 //   updateList(productTypeId, sizes, valores.sizes);
@@ -31,27 +31,21 @@ import Form from '../ProductTypeForm';
 // };
 
 const Add = (props) => {
-  const { history, addProductType } = props;
+  const { history, add } = props;
   return (
     <PageTemplate titulo="Novo Tipo de Produto">
-      <Form
-        textoBotao="Adicionar"
-        onSubmit={(valores) => {
-          addProductType({ ...valores });
-          history.push('/productType');
-        }}
-      />
+      <Form textoBotao="Adicionar" save={add} onSaved={() => history.push('/productType')} />
     </PageTemplate>
   );
 };
 Add.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  addProductType: PropTypes.func.isRequired,
+  add: PropTypes.func.isRequired,
 };
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    addProductType: operations.addProductType,
+    add: operations.add,
   },
   dispatch,
 );

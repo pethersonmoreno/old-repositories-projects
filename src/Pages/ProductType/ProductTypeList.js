@@ -1,6 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -15,10 +16,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
+import withNotification from 'HOC/withNotification';
 import { operations } from 'controle-compras-frontend-redux/ducks/productTypes';
 
 const List = (props) => {
-  const { history, productTypes, removeProductType } = props;
+  const {
+    history, productTypes, remove, notification,
+  } = props;
   return (
     <PageTemplate titulo="Lista de Tipos de Produtos">
       <Paper>
@@ -36,7 +40,17 @@ const List = (props) => {
                   <IconButton onClick={() => history.push(`/productType/${productType.id}`)}>
                     <EditIcon color="primary" />
                   </IconButton>
-                  <IconButton onClick={() => removeProductType(productType.id)}>
+                  <IconButton
+                    onClick={() => remove(productType.id)
+                      .then(() => notification.success(
+                        `Sucesso ao remover Tipo de Produto ${productType.description}`,
+                      ))
+                      .catch(error => notification.error(
+                        `Erro ao remover Tipo de Produto ${productType.description}`,
+                        error,
+                      ))
+                    }
+                  >
                     <DeleteIcon color="primary" />
                   </IconButton>
                 </TableCell>
@@ -59,18 +73,25 @@ const List = (props) => {
 List.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  removeProductType: PropTypes.func.isRequired, // eslint-disable-line react/forbid-prop-types
+  remove: PropTypes.func.isRequired, // eslint-disable-line react/forbid-prop-types
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 const mapStateToProps = state => ({
   productTypes: state.productTypes,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    removeProductType: operations.removeProductType,
+    remove: operations.remove,
   },
   dispatch,
 );
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withNotification(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(List);

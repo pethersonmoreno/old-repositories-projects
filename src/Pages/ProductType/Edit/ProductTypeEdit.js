@@ -14,7 +14,7 @@ const Edit = (props) => {
       params: { id: productTypeId },
     },
     productTypes,
-    editProductType,
+    edit,
   } = props;
   const productType = productTypes.find(type => type.id === productTypeId);
   let conteudo = <Typography>Tipo de Produto não encontrado</Typography>;
@@ -23,10 +23,8 @@ const Edit = (props) => {
       <Form
         productType={productType}
         textoBotao="Alterar"
-        onSubmit={(data) => {
-          editProductType(productTypeId, data);
-          history.push('/productType');
-        }}
+        save={data => edit(productTypeId, data)}
+        onSaved={() => history.push('/productType')}
       />
     );
   }
@@ -40,7 +38,7 @@ Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  editProductType: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -48,7 +46,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    editProductType: operations.editProductType,
+    edit: operations.edit,
   },
   dispatch,
 );

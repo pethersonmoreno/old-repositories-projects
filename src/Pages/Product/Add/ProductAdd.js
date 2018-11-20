@@ -6,25 +6,19 @@ import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/products';
 import Form from '../ProductForm';
 
-const Add = ({ history, addProduct }) => (
+const Add = ({ history, add }) => (
   <PageTemplate titulo="Novo Produto">
-    <Form
-      textoBotao="Adicionar"
-      onSubmit={(data) => {
-        addProduct({ ...data });
-        history.push('/product');
-      }}
-    />
+    <Form textoBotao="Adicionar" save={add} onSaved={() => history.push('/product')} />
   </PageTemplate>
 );
 Add.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  addProduct: PropTypes.func.isRequired,
+  add: PropTypes.func.isRequired,
 };
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    addProduct: operations.addProduct,
+    add: operations.add,
   },
   dispatch,
 );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
@@ -15,6 +15,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import BarTabs from 'Molecules/BarTabs';
+import withNotification from 'HOC/withNotification';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import ShipListCategoriesBox from './ShipListCategoriesBox';
 
@@ -56,8 +57,9 @@ class ShipListTabs extends Component {
   render() {
     const {
       history, classes, shipLists,
-      shipListIdSelected, updateShipListSelected,
-      removeShipList,
+      shipListIdSelected,
+      updateShipListSelected, updateShipListSelectedByIndex,
+      remove, notification,
     } = this.props;
     const open = this.isListOpen();
     const tabList = [{ value: 'new', label: 'Nova', icon: <AddCircleIcon /> }];
@@ -70,6 +72,8 @@ class ShipListTabs extends Component {
         })),
       );
     }
+    const shipListSelected = this.getShipListSelected();
+    const shipListSelectedIndex = shipLists.indexOf(shipListSelected);
     return (
       <PageTemplate titulo="Não esqueça!" removePadding>
         <div className={classes.root}>
@@ -88,13 +92,27 @@ class ShipListTabs extends Component {
               <IconButton aria-label="Edit ShipList" onClick={() => history.push(`/shipList/${shipListIdSelected}`)}>
                 <EditIcon />
               </IconButton>
-              <IconButton aria-label="Delete ShipList" onClick={() => removeShipList(shipListIdSelected)}>
+              <IconButton
+                aria-label="Delete ShipList"
+                onClick={() => remove(shipListSelected.id)
+                  .then(() => {
+                    notification.success(
+                      `Sucesso ao remover Lista de Compras ${shipListSelected.description}`,
+                    );
+                    updateShipListSelectedByIndex(shipListSelectedIndex);
+                  })
+                  .catch(error => notification.error(
+                    `Erro ao remover Lista de Compras ${shipListSelected.description}`,
+                    error,
+                  ))
+                }
+              >
                 <DeleteIcon />
               </IconButton>
             </CardActions>
           )}
           {open && (
-            <ShipListCategoriesBox history={history} shipList={this.getShipListSelected()} />
+            <ShipListCategoriesBox history={history} shipList={shipListSelected} />
           )}
           {open && (
             <ButtonFabContainer>
@@ -115,7 +133,12 @@ ShipListTabs.propTypes = {
   shipListIdSelected: PropTypes.string,
   startShiplistSelection: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
-  removeShipList: PropTypes.func.isRequired,
+  updateShipListSelectedByIndex: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 ShipListTabs.defaultProps = {
   shipLists: [],
@@ -130,12 +153,14 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   {
     startShiplistSelection: operations.startShiplistSelection,
     updateShipListSelected: operations.updateShipListSelected,
-    removeShipList: operations.removeShipList,
+    updateShipListSelectedByIndex: operations.updateShipListSelectedByIndex,
+    remove: operations.remove,
   },
   dispatch,
 );
 
 export default compose(
+  withNotification(),
   connect(
     mapStateToProps,
     mapDispatchToProps,

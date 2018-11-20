@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
 import InputList from 'Atoms/InputList';
+import withNotification from 'HOC/withNotification';
 
 class Form extends Component {
   constructor(props) {
@@ -16,10 +18,17 @@ class Form extends Component {
     };
   }
 
-  onCallSubmit(event) {
-    const { onSubmit } = this.props;
+  async onCallSubmit(event) {
+    const { save, onSaved, notification } = this.props;
+    const { description } = this.state;
     event.preventDefault();
-    onSubmit({ ...this.state });
+    try {
+      const result = await save({ ...this.state });
+      notification.success(`Sucesso ao salvar tipo de produto ${description}`);
+      onSaved(result);
+    } catch (error) {
+      notification.error(`Erro ao salvar tipo de produto ${description}`, error);
+    }
   }
 
   onUpdateSizes = (sizes) => {
@@ -80,7 +89,8 @@ class Form extends Component {
 }
 Form.propTypes = {
   textoBotao: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  onSaved: PropTypes.func.isRequired,
   productType: PropTypes.shape({
     id: PropTypes.string,
     categoryId: PropTypes.string,
@@ -89,6 +99,10 @@ Form.propTypes = {
     brands: PropTypes.arrayOf(PropTypes.string),
   }),
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 Form.defaultProps = {
   productType: {
@@ -97,9 +111,14 @@ Form.defaultProps = {
     description: '',
   },
 };
-export default connect(
-  state => ({
-    categories: state.categories,
-  }),
-  null,
+const mapStateToProps = state => ({
+  categories: state.categories,
+});
+const mapDispatchToProps = null;
+export default compose(
+  withNotification(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Form);

@@ -6,7 +6,9 @@ import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
-const ShipListItemAdd = ({ history, match, addShipListItem }) => {
+const ShipListItemAdd = ({
+  history, match, addItem, updateShipListSelected,
+}) => {
   const {
     params: { shipListId },
   } = match;
@@ -14,8 +16,9 @@ const ShipListItemAdd = ({ history, match, addShipListItem }) => {
     <PageTemplate titulo="Novo Item">
       <Form
         textoBotao="Adicionar"
-        onSubmit={(data) => {
-          addShipListItem(shipListId, data);
+        save={data => addItem(shipListId, data)}
+        onSaved={() => {
+          updateShipListSelected(shipListId);
           history.push('/shipList');
         }}
       />
@@ -25,14 +28,16 @@ const ShipListItemAdd = ({ history, match, addShipListItem }) => {
 ShipListItemAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  addShipListItem: PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
+  updateShipListSelected: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   shipLists: state.shipLists.shipLists,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    addShipListItem: operations.addShipListItem,
+    addItem: operations.addItem,
+    updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,
 );

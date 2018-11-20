@@ -8,7 +8,7 @@ import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
 const ShipListItemEdit = ({
-  history, match, shipLists, editShipListItem,
+  history, match, shipLists, editItem, updateShipListSelected,
 }) => {
   const {
     params: { shipListId, id: shipListItemId },
@@ -24,8 +24,9 @@ const ShipListItemEdit = ({
       <Form
         item={shipListItem}
         textoBotao="Alterar"
-        onSubmit={(data) => {
-          editShipListItem(shipListId, shipListItemId, data);
+        save={data => editItem(shipListId, shipListItemId, data)}
+        onSaved={() => {
+          updateShipListSelected(shipListId);
           history.push('/shipList');
         }}
       />
@@ -37,14 +38,16 @@ ShipListItemEdit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  editShipListItem: PropTypes.func.isRequired,
+  editItem: PropTypes.func.isRequired,
+  updateShipListSelected: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   shipLists: state.shipLists.shipLists,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    editShipListItem: operations.editShipListItem,
+    editItem: operations.editItem,
+    updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,
 );

@@ -14,7 +14,8 @@ const Edit = (props) => {
       params: { id: shipListId },
     },
     shipLists,
-    editShipList,
+    edit,
+    updateShipListSelected,
   } = props;
   const shipList = shipLists.find(list => list.id === shipListId);
   let conteudo = <Typography>Lista não encontrado</Typography>;
@@ -23,8 +24,9 @@ const Edit = (props) => {
       <Form
         shipList={shipList}
         textoBotao="Alterar"
-        onSubmit={(data) => {
-          editShipList(shipListId, data);
+        save={data => edit(shipListId, data)}
+        onSaved={() => {
+          updateShipListSelected(shipListId);
           history.push('/shipList');
         }}
       />
@@ -36,7 +38,8 @@ Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  editShipList: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
+  updateShipListSelected: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -44,7 +47,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    editShipList: operations.editShipList,
+    edit: operations.edit,
+    updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,
 );
