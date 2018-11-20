@@ -4,65 +4,31 @@ import {
 } from "../../api";
 import actions from "./actions";
 
-const sameProductWithProductTypeUpdated = (product, productTypes) => {
-  return {
-    ...product,
-    productType: productTypes.find(
-      productType => productType.id === product.productTypeId
-    )
-  };
+const add = newCategory =>
+  actions.add(productApi.add(productApi.newId(), newCategory));
+const remove = id => actions.remove(productApi.remove(id));
+const edit = (id, updates) => actions.edit(productApi.edit(id, updates));
+const getAll = () => actions.getAll(productApi.getAll());
+let listenChangesCallback = null;
+const startListenChanges = () => dispatch => {
+  if (!listenChangesCallback) {
+    listenChangesCallback = products => {
+      dispatch(actions.getAllFulfilled(products));
+    };
+    productApi.startListenChanges(listenChangesCallback);
+  }
 };
-const addProduct = newProduct => (dispatch, getState) => {
-  productApi.add(productApi.newId(), newProduct).then(product => {
-    // Removed because is is using listenChanges
-    // const { productTypes } = getState();
-    // dispatch(
-    //   actions.addProduct(
-    //     sameProductWithProductTypeUpdated(product, productTypes)
-    //   )
-    // );
-  });
-};
-const removeProduct = id => dispatch => {
-  productApi.remove(id).then(() => {
-    // Removed because is is using listenChanges
-    // dispatch(actions.removeProduct(id));
-  });
-};
-const editProduct = (id, updates) => (dispatch, getState) => {
-  productApi.edit(id, updates).then(() => {
-    // Removed because is is using listenChanges
-    // const { productTypes } = getState();
-    // dispatch(
-    //   actions.editProduct(
-    //     id,
-    //     sameProductWithProductTypeUpdated(updates, productTypes)
-    //   )
-    // );
-  });
-};
-const updateProductsState = (dispatch, products, productTypes) => {
-  dispatch(
-    actions.getProducts(
-      products.map(product =>
-        sameProductWithProductTypeUpdated(product, productTypes)
-      )
-    )
-  );
-};
-const getProducts = () => (dispatch, getState) => {
-  productApi.startListenChanges(products => {
-    const { productTypes } = getState();
-    updateProductsState(dispatch, products, productTypes);
-  });
-  productTypeApi.startListenChanges(productTypes => {
-    const { products } = getState();
-    updateProductsState(dispatch, products, productTypes);
-  }, "to-products-update");
+const stopListenChanges = () => () => {
+  if (listenChangesCallback) {
+    productApi.stopListenChanges(listenChangesCallback);
+    listenChangesCallback = null;
+  }
 };
 export default {
-  addProduct,
-  removeProduct,
-  editProduct,
-  getProducts
+  add,
+  remove,
+  edit,
+  getAll,
+  startListenChanges,
+  stopListenChanges
 };

@@ -43,7 +43,7 @@ export const stopListenChanges = listenCallBack => {
 };
 const getDatabaseItems = shipListId =>
   databaseShipLists.child(shipListId).child("items");
-export const newIdItem = () => getDatabaseItems().push().key;
+export const newIdItem = shipListId => getDatabaseItems(shipListId).push().key;
 const setItem = (shipListId, idItem, values) =>
   getDatabaseItems(shipListId)
     .child(idItem)
@@ -51,7 +51,7 @@ const setItem = (shipListId, idItem, values) =>
 export const addItem = (shipListId, idItem, item) =>
   setItem(shipListId, idItem, item).then(() => ({
     ...item,
-    id
+    id: idItem
   }));
 export const editItem = (shipListId, idItem, { id: idField, ...otherFields }) =>
   setItem(shipListId, idItem, otherFields).then(() => ({

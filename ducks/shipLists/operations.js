@@ -1,46 +1,36 @@
 import { shipList as shipListApi } from "../../api";
 import actions from "./actions";
 
-const addShipList = newShipList => dispatch => {
-  shipListApi.add(shipListApi.newId, newShipList).then(shipList => {
-    dispatch(actions.addShipList(shipList));
-    dispatch(actions.updateShipListSelected(shipList.id));
-  });
-};
-const removeShipList = id => (dispatch, getState) => {
-  shipListApi.remove(id).then(() => {
-    const getNextShipListIdToSelect = () => {
-      const {
-        shipLists: { shipLists }
-      } = getState();
-      const index = shipLists.indexOf(shipLists.find(s => s.id === id));
-      if (index >= 0) {
-        const newIndex = index + 1;
-        if (newIndex < shipLists.length) {
-          return shipLists[newIndex].id;
-        }
-      }
-      if (shipLists.length > 1) {
-        return shipLists[0].id;
-      }
-      return null;
+const add = newShipList =>
+  actions.add(shipListApi.add(shipListApi.newId(), newShipList));
+const remove = id => actions.remove(shipListApi.remove(id));
+const edit = (id, updates) => actions.edit(shipListApi.edit(id, updates));
+const getAll = () => actions.getAll(shipListApi.getAll());
+let listenChangesCallback = null;
+const startListenChanges = () => dispatch => {
+  if (!listenChangesCallback) {
+    listenChangesCallback = categories => {
+      dispatch(actions.getAllFulfilled(categories));
     };
-    const newShipListSelected = getNextShipListIdToSelect();
-    dispatch(actions.updateShipListSelected(newShipListSelected));
-    dispatch(actions.removeShipList(id));
-  });
+    shipListApi.startListenChanges(listenChangesCallback);
+  }
 };
-const editShipList = (id, updates) => dispatch => {
-  shipListApi.edit(id, updates).then(() => {
-    dispatch(actions.editShipList(id, updates));
-    dispatch(actions.updateShipListSelected(id));
-  });
+const stopListenChanges = () => () => {
+  if (listenChangesCallback) {
+    shipListApi.stopListenChanges(listenChangesCallback);
+    listenChangesCallback = null;
+  }
 };
-const getShipLists = () => dispatch => {
-  shipListApi.startListenChanges(shipLists => {
-    dispatch(actions.getShipLists(shipLists));
-  });
-};
+const addItem = (shipListId, item) =>
+  actions.addItem(
+    { shipListId },
+    shipListApi.addItem(shipListId, shipListApi.newIdItem(shipListId), item)
+  );
+const editItem = (shipListId, idItem, item) =>
+  actions.editItem(
+    { shipListId, idItem },
+    shipListApi.editItem(shipListId, idItem, item)
+  );
 const startShiplistSelection = () => (dispatch, getState) => {
   const {
     shipLists: { shipLists, shipListIdSelected }
@@ -54,25 +44,33 @@ const startShiplistSelection = () => (dispatch, getState) => {
 const updateShipListSelected = shipListIdSelected => dispatch => {
   dispatch(actions.updateShipListSelected(shipListIdSelected));
 };
-const addShipListItem = (shipListId, item) => dispatch => {
-  shipListApi.addItem(shipListId, item).then(({ id, shipList }) => {
-    dispatch(actions.editShipList(shipListId, { items: shipList.items }));
-    dispatch(actions.updateShipListSelected(id));
-  });
-};
-const editShipListItem = (shipListId, idItem, updates) => dispatch => {
-  shipListApi.editItem(shipListId, idItem, updates).then(({ id, shipList }) => {
-    dispatch(actions.editShipList(shipListId, { items: shipList.items }));
-    dispatch(actions.updateShipListSelected(id));
-  });
+const updateShipListSelectedByIndex = shipListIndexSelected => (
+  dispatch,
+  getState
+) => {
+  const {
+    shipLists: { shipLists }
+  } = getState();
+  let newShipListIdSelected = null;
+  if (shipListIndexSelected > 0 && shipListIndexSelected < shipLists.length) {
+    newShipListIdSelected = shipLists[shipListIndexSelected].id;
+  } else if (shipLists.length > 0) {
+    newShipListIdSelected = shipLists[0].id;
+  }
+  if (newShipListIdSelected) {
+    dispatch(actions.updateShipListSelected(newShipListIdSelected));
+  }
 };
 export default {
-  addShipList,
-  removeShipList,
-  editShipList,
-  getShipLists,
+  add,
+  remove,
+  edit,
+  getAll,
+  startListenChanges,
+  stopListenChanges,
+  addItem,
+  editItem,
   startShiplistSelection,
   updateShipListSelected,
-  addShipListItem,
-  editShipListItem
+  updateShipListSelectedByIndex
 };

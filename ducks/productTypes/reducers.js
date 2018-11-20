@@ -1,24 +1,35 @@
-import types from './types';
+import { FULFILLED } from "redux-promise-middleware";
+import typeToReducer from "type-to-reducer";
+import types from "./types";
 
-export default (state = [], action) => {
-  switch (action.type) {
-    case types.ADD_PRODUCT_TYPE:
-      return [...state, action.productType];
-    case types.REMOVE_PRODUCT_TYPE:
-      return state.filter(({ id }) => id !== action.id);
-    case types.EDIT_PRODUCT_TYPE:
-      return state.map((productType) => {
-        if (productType.id === action.id) {
-          return {
-            ...productType,
-            ...action.updates,
-          };
+export default typeToReducer(
+  {
+    [types.ADD_PRODUCT_TYPE]: {
+      [FULFILLED]: (state, action) => {
+        if (!state.find(({ id }) => id === action.payload.id)) {
+          return [...state, action.payload];
         }
-        return productType;
-      });
-    case types.GET_PRODUCT_TYPES:
-      return action.productTypes;
-    default:
-      return state;
-  }
-};
+        return state;
+      }
+    },
+    [types.REMOVE_PRODUCT_TYPE]: {
+      [FULFILLED]: (state, action) =>
+        state.filter(({ id }) => id !== action.payload.id)
+    },
+    [types.EDIT_PRODUCT_TYPE]: {
+      [FULFILLED]: (state, action) =>
+        state.map(productType =>
+          productType.id === action.payload.id
+            ? {
+                ...productType,
+                ...action.payload.updates
+              }
+            : productType
+        )
+    },
+    [types.GET_PRODUCT_TYPES]: {
+      [FULFILLED]: (state, action) => action.payload
+    }
+  },
+  []
+);

@@ -1,30 +1,47 @@
-import types from './types';
+import { FULFILLED } from "redux-promise-middleware";
+import types from "./types";
 
-const addShipList = shipList => ({
+const add = payload => ({
   type: types.ADD_SHIPLIST,
-  shipList,
+  payload
 });
-const removeShipList = id => ({
+const remove = payload => ({
   type: types.REMOVE_SHIPLIST,
-  id,
+  payload
 });
-const editShipList = (id, updates) => ({
+const edit = payload => ({
   type: types.EDIT_SHIPLIST,
-  id,
-  updates,
+  payload
 });
-const getShipLists = shipLists => ({
+const getAll = payload => ({
   type: types.GET_SHIPLISTS,
-  shipLists,
+  payload
+});
+const getAllFulfilled = payload => ({
+  type: types.GET_SHIPLISTS + "_" + FULFILLED,
+  payload
+});
+const addItem = (meta, payload) => ({
+  type: types.ADD_SHIPLIST_ITEM,
+  meta,
+  payload
+});
+const editItem = (meta, payload) => ({
+  type: types.EDIT_SHIPLIST_ITEM,
+  meta,
+  payload
 });
 const updateShipListSelected = shipListIdSelected => ({
   type: types.UPDATE_SHIPLIST_SELECTED,
-  shipListIdSelected,
+  shipListIdSelected
 });
 export default {
-  addShipList,
-  removeShipList,
-  editShipList,
-  getShipLists,
-  updateShipListSelected,
+  add,
+  remove,
+  edit,
+  getAll,
+  getAllFulfilled,
+  addItem,
+  editItem,
+  updateShipListSelected
 };

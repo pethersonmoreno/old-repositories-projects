@@ -1,25 +1,30 @@
-import types from './types';
+import { FULFILLED } from "redux-promise-middleware";
+import types from "./types";
 
-const addProduct = product => ({
+const add = payload => ({
   type: types.ADD_PRODUCT,
-  product,
+  payload
 });
-const removeProduct = id => ({
+const remove = payload => ({
   type: types.REMOVE_PRODUCT,
-  id,
+  payload
 });
-const editProduct = (id, updates) => ({
+const edit = payload => ({
   type: types.EDIT_PRODUCT,
-  id,
-  updates,
+  payload
 });
-const getProducts = products => ({
+const getAll = payload => ({
   type: types.GET_PRODUCTS,
-  products,
+  payload
+});
+const getAllFulfilled = payload => ({
+  type: types.GET_PRODUCTS + "_" + FULFILLED,
+  payload
 });
 export default {
-  addProduct,
-  removeProduct,
-  editProduct,
-  getProducts,
+  add,
+  remove,
+  edit,
+  getAll,
+  getAllFulfilled
 };
