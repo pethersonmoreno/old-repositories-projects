@@ -2,7 +2,7 @@ import { shipList as shipListApi } from "../../api";
 import actions from "./actions";
 
 const addShipList = newShipList => dispatch => {
-  shipListApi.add(newShipList).then(shipList => {
+  shipListApi.add(shipListApi.newId, newShipList).then(shipList => {
     dispatch(actions.addShipList(shipList));
     dispatch(actions.updateShipListSelected(shipList.id));
   });
@@ -37,7 +37,7 @@ const editShipList = (id, updates) => dispatch => {
   });
 };
 const getShipLists = () => dispatch => {
-  shipListApi.listenChanges(shipLists => {
+  shipListApi.startListenChanges(shipLists => {
     dispatch(actions.getShipLists(shipLists));
   });
 };

@@ -5,12 +5,9 @@ const databaseCategories = database.ref("/categories");
 export const newId = () => databaseCategories.push().key;
 const set = (id, values) => databaseCategories.child(id).set(values);
 export const add = (id, category) =>
-  set(id, category).then(() => ({
-    ...category,
-    id
-  }));
+  set(id, category).then(() => ({ ...category, id }));
 export const edit = (id, { id: idField, ...otherFields }) =>
-  set(id, otherFields).then(() => ({ id, updates: otherFields }));
+  set(id, otherFields).then(() => ({ updates: otherFields, id }));
 export const remove = id =>
   databaseCategories
     .child(id)
@@ -23,18 +20,18 @@ export const getAll = () =>
 let dicListenChanges = {};
 export const startListenChanges = listenCallBack => {
   if (!dicListenChanges[listenCallBack]) {
-    const listenChange = snapshot => {
+    const listenChanges = snapshot => {
       if (listenCallBack) {
         listenCallBack(mapObjectToList(snapshot.val(), "id"));
       }
     };
-    dicListenChanges[listenCallBack] = listenChange;
-    databaseCategories.on("value", listenChange);
+    dicListenChanges[listenCallBack] = listenChanges;
+    databaseCategories.on("value", listenChanges);
   }
 };
 export const stopListenChanges = listenCallBack => {
   if (dicListenChanges[listenCallBack]) {
-    const listenChange = dicListenChanges[listenCallBack];
-    databaseCategories.off("value", listenChange);
+    const listenChanges = dicListenChanges[listenCallBack];
+    databaseCategories.off("value", listenChanges);
   }
 };

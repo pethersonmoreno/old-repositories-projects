@@ -2,10 +2,12 @@ import { productType as productTypeApi } from "../../api";
 import actions from "./actions";
 
 const addProductType = newProductType => dispatch => {
-  productTypeApi.add(newProductType).then(productType => {
-    // Removed because is is using listenChanges
-    // dispatch(actions.addProductType(productType));
-  });
+  productTypeApi
+    .add(productTypeApi.newId(), newProductType)
+    .then(productType => {
+      // Removed because is is using listenChanges
+      // dispatch(actions.addProductType(productType));
+    });
 };
 const removeProductType = id => dispatch => {
   productTypeApi.remove(id).then(() => {
@@ -20,7 +22,7 @@ const editProductType = (id, updates) => dispatch => {
   });
 };
 const getProductTypes = () => (dispatch, getState) => {
-  productTypeApi.listenChanges(productTypes => {
+  productTypeApi.startListenChanges(productTypes => {
     dispatch(actions.getProductTypes(productTypes));
   });
 };

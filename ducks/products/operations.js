@@ -13,7 +13,7 @@ const sameProductWithProductTypeUpdated = (product, productTypes) => {
   };
 };
 const addProduct = newProduct => (dispatch, getState) => {
-  productApi.add(newProduct).then(product => {
+  productApi.add(productApi.newId(), newProduct).then(product => {
     // Removed because is is using listenChanges
     // const { productTypes } = getState();
     // dispatch(
@@ -51,11 +51,11 @@ const updateProductsState = (dispatch, products, productTypes) => {
   );
 };
 const getProducts = () => (dispatch, getState) => {
-  productApi.listenChanges(products => {
+  productApi.startListenChanges(products => {
     const { productTypes } = getState();
     updateProductsState(dispatch, products, productTypes);
   });
-  productTypeApi.listenChanges(productTypes => {
+  productTypeApi.startListenChanges(productTypes => {
     const { products } = getState();
     updateProductsState(dispatch, products, productTypes);
   }, "to-products-update");
