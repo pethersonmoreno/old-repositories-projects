@@ -23,10 +23,7 @@ class FormCategory extends Component {
       notification.success(`Sucesso ao salvar Categoria ${description}`);
       onSaved(result);
     } catch (error) {
-      notification.error(
-        'Erro ao salvar categoria',
-        error && error.message ? error.message : error,
-      );
+      notification.error('Erro ao salvar categoria', error);
     }
   }
 

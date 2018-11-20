@@ -1,6 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -15,10 +16,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
+import withNotification from 'HOC/withNotification';
 import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 
 const CategoryList = (props) => {
-  const { history, categories, remove } = props;
+  const {
+    history, categories, remove, notification,
+  } = props;
   return (
     <PageTemplate titulo="Lista de Categorias">
       <Paper>
@@ -36,7 +40,12 @@ const CategoryList = (props) => {
                   <IconButton onClick={() => history.push(`/category/${category.id}`)}>
                     <EditIcon color="primary" />
                   </IconButton>
-                  <IconButton onClick={() => remove(category.id)}>
+                  <IconButton
+                    onClick={() => remove(category.id)
+                      .then(() => notification.success(`Sucesso ao remover Categoria ${category.description}`))
+                      .catch(error => notification.error(`Erro ao remover Categoria ${category.description}`, error))
+                    }
+                  >
                     <DeleteIcon color="primary" />
                   </IconButton>
                 </TableCell>
@@ -60,6 +69,10 @@ CategoryList.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   remove: PropTypes.func.isRequired,
+  notification: PropTypes.shape({
+    success: PropTypes.func.isRequired,
+    error: PropTypes.func.isRequired,
+  }).isRequired,
 };
 const mapStateToProps = state => ({
   categories: state.categories,
@@ -70,7 +83,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   },
   dispatch,
 );
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  withNotification(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(CategoryList);

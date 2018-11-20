@@ -5,7 +5,11 @@ const notification = {
   success: (title, message = null) => {
     notificationSystem.addNotification({ title, message, level: 'success' });
   },
-  error: (title, message = null) => {
+  error: (title, error = null) => {
+    let message = null;
+    if (error) {
+      message = error && error.message ? error.message : error;
+    }
     notificationSystem.addNotification({ title, message, level: 'error' });
   },
   warning: (title, message = null) => {
