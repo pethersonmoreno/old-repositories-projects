@@ -10,6 +10,7 @@ import { menuWidth } from '../config';
 const styles = theme => ({
   main: {
     height: '100%',
+    overflowY: 'auto',
     [theme.breakpoints.only('xs')]: {
       width: '100%',
     },
@@ -25,9 +26,7 @@ const styles = theme => ({
   contentPadding: {
     padding: theme.spacing.unit * 3,
   },
-  contentPage: {
-    height: '100%',
-  },
+  contentPage: {},
 });
 const PageTemplate = ({
   toggleMenu, classes, children, titulo, removePadding,
