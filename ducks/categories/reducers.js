@@ -27,7 +27,9 @@ export default typeToReducer(
             : category
         )
     },
-    [types.GET_CATEGORIES]: (state, action) => action.payload
+    [types.GET_CATEGORIES]: {
+      [FULFILLED]: (state, action) => action.payload
+    }
   },
   []
 );

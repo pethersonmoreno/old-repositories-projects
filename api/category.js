@@ -2,24 +2,20 @@ import { database } from "./firebase";
 import { mapObjectToList } from "./utils";
 const databaseCategories = database.ref("/categories");
 
+export const newId = () => databaseCategories.push().key;
+const set = (id, values) => databaseCategories.child(id).set(values);
+export const add = (id, category) =>
+  set(id, category).then(() => ({
+    ...category,
+    id
+  }));
+export const edit = (id, { id: idField, ...otherFields }) =>
+  set(id, otherFields).then(() => ({ id, updates: otherFields }));
 export const remove = id =>
   databaseCategories
     .child(id)
     .remove()
-    .then(() => id);
-export const edit = (id, { id: idField, ...otherFields }) =>
-  databaseCategories
-    .child(id)
-    .set({
-      ...otherFields
-    })
-    .then(() => ({ id, updates: otherFields }));
-export const newId = () => databaseCategories.push().key;
-export const add = (id, category) =>
-  edit(id, category).then(({ id, updates }) => ({
-    ...updates,
-    id
-  }));
+    .then(() => ({ id }));
 export const getAll = () =>
   databaseCategories
     .once("value")
