@@ -9,7 +9,7 @@ import Form from '../CategoryForm';
 
 const Edit = (props) => {
   const {
-    history, match, categories, editCategory,
+    history, match, categories, edit,
   } = props;
   const categoryId = match.params.id;
   const category = categories.find(item => item.id === categoryId);
@@ -19,10 +19,8 @@ const Edit = (props) => {
       <Form
         description={category.description}
         textoBotao="Alterar"
-        onSubmit={(data) => {
-          editCategory(categoryId, data);
-          history.push('/category');
-        }}
+        save={data => edit(categoryId, data)}
+        onSaved={() => history.push('/category')}
       />
     );
   }
@@ -36,7 +34,7 @@ Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  editCategory: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -44,7 +42,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    editCategory: operations.editCategory,
+    edit: operations.edit,
   },
   dispatch,
 );

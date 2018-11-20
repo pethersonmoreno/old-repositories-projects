@@ -18,7 +18,7 @@ import ButtonFab from 'Atoms/ButtonFab';
 import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 
 const CategoryList = (props) => {
-  const { history, categories, removeCategory } = props;
+  const { history, categories, remove } = props;
   return (
     <PageTemplate titulo="Lista de Categorias">
       <Paper>
@@ -36,7 +36,7 @@ const CategoryList = (props) => {
                   <IconButton onClick={() => history.push(`/category/${category.id}`)}>
                     <EditIcon color="primary" />
                   </IconButton>
-                  <IconButton onClick={() => removeCategory(category.id)}>
+                  <IconButton onClick={() => remove(category.id)}>
                     <DeleteIcon color="primary" />
                   </IconButton>
                 </TableCell>
@@ -59,14 +59,14 @@ const CategoryList = (props) => {
 CategoryList.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  removeCategory: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   categories: state.categories,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    removeCategory: operations.removeCategory,
+    remove: operations.remove,
   },
   dispatch,
 );

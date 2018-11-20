@@ -7,29 +7,27 @@ import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 import Form from '../CategoryForm';
 
 const Add = (props) => {
-  const { history, addCategory } = props;
+  const { history, add } = props;
   return (
     <PageTemplate titulo="Nova Categoria">
       <Form
         description=""
         textoBotao="Adicionar"
-        onSubmit={(data) => {
-          addCategory({ ...data });
-          history.push('/category');
-        }}
+        save={add}
+        onSaved={() => history.push('/category')}
       />
     </PageTemplate>
   );
 };
 Add.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  addCategory: PropTypes.func.isRequired,
+  add: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    addCategory: operations.addCategory,
+    add: operations.add,
   },
   dispatch,
 );

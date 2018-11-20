@@ -6,7 +6,10 @@ import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import NotificationSystem from 'react-notification-system';
 import MenuResponsive from 'Organisms/MenuResponsive';
+import { setNotificationSystem } from 'HOC/withNotification';
+
 import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
 import { operations as operationsProductTypes } from 'controle-compras-frontend-redux/ducks/productTypes';
 import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
@@ -22,12 +25,17 @@ const styles = () => ({
 class MainTemplate extends Component {
   componentDidMount() {
     const {
-      getCategories, getProductTypes, getProducts, getShipLists,
+      startListenCategories, getProductTypes, getProducts, getShipLists,
     } = this.props;
-    getCategories();
+    startListenCategories();
     getProductTypes();
     getProducts();
     getShipLists();
+  }
+
+  componentWillUnmount() {
+    const { stopListenCategories } = this.props;
+    stopListenCategories();
   }
 
   render() {
@@ -38,6 +46,11 @@ class MainTemplate extends Component {
         <CssBaseline />
         <MenuResponsive />
         {children}
+        <NotificationSystem
+          ref={(ref) => {
+            setNotificationSystem(ref);
+          }}
+        />
       </div>
     );
   }
@@ -46,7 +59,8 @@ class MainTemplate extends Component {
 MainTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
-  getCategories: PropTypes.func.isRequired,
+  startListenCategories: PropTypes.func.isRequired,
+  stopListenCategories: PropTypes.func.isRequired,
   getProductTypes: PropTypes.func.isRequired,
   getProducts: PropTypes.func.isRequired,
   getShipLists: PropTypes.func.isRequired,
@@ -54,7 +68,8 @@ MainTemplate.propTypes = {
 
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    getCategories: operationsCategories.getCategories,
+    startListenCategories: operationsCategories.startListenChanges,
+    stopListenCategories: operationsCategories.stopListenChanges,
     getProductTypes: operationsProductTypes.getProductTypes,
     getProducts: operationsProducts.getProducts,
     getShipLists: operationsShipLists.getShipLists,
