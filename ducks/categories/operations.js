@@ -1,36 +1,39 @@
 import { category as categoryApi } from "../../api";
 import actions from "./actions";
 
-const addCategory = newCategory => dispatch => {
-  categoryApi.add(newCategory).then(category => {
-    // Removed because is is using listenChanges
-    // dispatch(actions.addCategory(category));
-  });
-};
-const removeCategory = id => dispatch => {
-  categoryApi.remove(id).then(() => {
-    // Removed because is is using listenChanges
-    // dispatch(actions.removeCategory(id));
-  });
-};
-const editCategory = (id, updates) => dispatch => {
-  categoryApi.edit(id, updates).then(() => {
-    // Removed because is is using listenChanges
-    // dispatch(actions.editCategory(id, updates));
-  });
-};
+const add = newCategory =>
+  actions.add(
+    categoryApi.add(categoryApi.newId(), newCategory).then(() => {
+      throw new Error("Erro de teste");
+    })
+  );
+const remove = id =>
+  actions.remove(categoryApi.remove(id).then(id => ({ id })));
 
-const getCategories = () => dispatch => {
-  // categoryApi.getAll().then(categories => {
-  //   dispatch(actions.getCategories(categories));
-  // });
-  categoryApi.listenChanges(categories => {
-    dispatch(actions.getCategories(categories));
-  });
+const edit = (id, updates) => actions.edit(categoryApi.edit(id, updates));
+const getAll = () => {
+  actions.getAll(categoryApi.getAll());
+};
+let listenChangesCallback = null;
+const startListenChanges = () => dispatch => {
+  if (!listenChangesCallback) {
+    listenChangesCallback = categories => {
+      dispatch(actions.getAll(categories));
+    };
+    categoryApi.startListenChanges(listenChangesCallback);
+  }
+};
+const stopListenChanges = () => () => {
+  if (listenChangesCallback) {
+    categoryApi.stopListenChanges(listenChangesCallback);
+    listenChangesCallback = null;
+  }
 };
 export default {
-  addCategory,
-  removeCategory,
-  editCategory,
-  getCategories
+  add,
+  remove,
+  edit,
+  getAll,
+  startListenChanges,
+  stopListenChanges
 };

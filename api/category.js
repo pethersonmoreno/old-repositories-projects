@@ -14,8 +14,9 @@ export const edit = (id, { id: idField, ...otherFields }) =>
       ...otherFields
     })
     .then(() => ({ id, updates: otherFields }));
-export const add = category =>
-  edit(databaseCategories.push().key, category).then(({ id, updates }) => ({
+export const newId = () => databaseCategories.push().key;
+export const add = (id, category) =>
+  edit(id, category).then(({ id, updates }) => ({
     ...updates,
     id
   }));
@@ -23,10 +24,21 @@ export const getAll = () =>
   databaseCategories
     .once("value")
     .then(snapshot => mapObjectToList(snapshot.val(), "id"));
-export const listenChanges = listenCallBack => {
-  databaseCategories.on("value", snapshot => {
-    if (listenCallBack) {
-      listenCallBack(mapObjectToList(snapshot.val(), "id"));
-    }
-  });
+let dicListenChanges = {};
+export const startListenChanges = listenCallBack => {
+  if (!dicListenChanges[listenCallBack]) {
+    const listenChange = snapshot => {
+      if (listenCallBack) {
+        listenCallBack(mapObjectToList(snapshot.val(), "id"));
+      }
+    };
+    dicListenChanges[listenCallBack] = listenChange;
+    databaseCategories.on("value", listenChange);
+  }
+};
+export const stopListenChanges = listenCallBack => {
+  if (dicListenChanges[listenCallBack]) {
+    const listenChange = dicListenChanges[listenCallBack];
+    databaseCategories.off("value", listenChange);
+  }
 };

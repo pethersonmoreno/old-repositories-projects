@@ -1,25 +1,24 @@
-import types from './types';
+import types from "./types";
 
-const addCategory = category => ({
+const add = category => ({
   type: types.ADD_CATEGORY,
-  category,
+  payload: category
 });
-const removeCategory = id => ({
+const remove = id => ({
   type: types.REMOVE_CATEGORY,
-  id,
+  payload: { id }
 });
-const editCategory = (id, updates) => ({
+const edit = ({ id, updates }) => ({
   type: types.EDIT_CATEGORY,
-  id,
-  updates,
+  payload: { id, updates }
 });
-const getCategories = categories => ({
+const getAll = categories => ({
   type: types.GET_CATEGORIES,
-  categories,
+  payload: categories
 });
 export default {
-  addCategory,
-  removeCategory,
-  editCategory,
-  getCategories,
+  add,
+  remove,
+  edit,
+  getAll
 };

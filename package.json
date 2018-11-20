@@ -8,6 +8,8 @@
   "dependencies": {
     "firebase": "^5.5.8",
     "redux": "4.0.1",
-    "redux-thunk": "2.3.0"
+    "redux-promise-middleware": "^5.1.1",
+    "redux-thunk": "2.3.0",
+    "type-to-reducer": "^1.1.0"
   }
 }
