@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import AppBarMaterialUI from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import AccountMenu from './AccountMenu';
 import { menuWidth } from '../config';
 
 const styles = theme => ({
@@ -19,6 +20,10 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
+  },
+  accountMenu: {
+    position: 'absolute',
+    right: '0px',
   },
 });
 
@@ -36,6 +41,7 @@ const AppBar = ({ classes, children, toggleMenu }) => (
       <Typography variant="h6" color="inherit" noWrap>
         {children}
       </Typography>
+      <AccountMenu className={classes.accountMenu} />
     </Toolbar>
   </AppBarMaterialUI>
 );
@@ -45,5 +51,4 @@ AppBar.propTypes = {
   toggleMenu: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
 };
-
 export default withStyles(styles, { withTheme: true })(AppBar);

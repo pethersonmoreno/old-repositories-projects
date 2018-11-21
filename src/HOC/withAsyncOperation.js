@@ -51,7 +51,7 @@ export const withLoading = () => WrappedComponent => class extends React.Compone
       loading,
     };
 
-    componentDidMount() {
+    componentWillMount() {
       callbacksChangeLoading.push(this.changeLoading);
     }
 

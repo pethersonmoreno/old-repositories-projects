@@ -6,15 +6,13 @@ import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import NotificationSystem from 'react-notification-system';
 import MenuResponsive from 'Organisms/MenuResponsive';
-import { setNotificationSystem } from 'HOC/withNotification';
-import Loader from 'Molecules/Loader';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
 import { operations as operationsProductTypes } from 'controle-compras-frontend-redux/ducks/productTypes';
 import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
 import { operations as operationsShipLists } from 'controle-compras-frontend-redux/ducks/shipLists';
+import withAuthorization from 'HOC/withAuthorization';
 
 const styles = () => ({
   root: {
@@ -24,7 +22,7 @@ const styles = () => ({
   },
 });
 
-class MainTemplate extends Component {
+class MainAuthenticatedTemplate extends Component {
   componentDidMount() {
     const {
       startListenCategories,
@@ -63,18 +61,12 @@ class MainTemplate extends Component {
         <MenuResponsive />
         <CssBaseline />
         {children}
-        <NotificationSystem
-          ref={(ref) => {
-            setNotificationSystem(ref);
-          }}
-        />
-        <Loader />
       </div>
     );
   }
 }
 
-MainTemplate.propTypes = {
+MainAuthenticatedTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   startListenCategories: PropTypes.func.isRequired,
@@ -101,10 +93,11 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 export default compose(
+  withAuthorization(true, '/signin'),
   withRouter,
   connect(
     null,
     mapDispatchToProps,
   ),
   withStyles(styles, { withTheme: true }),
-)(MainTemplate);
+)(MainAuthenticatedTemplate);

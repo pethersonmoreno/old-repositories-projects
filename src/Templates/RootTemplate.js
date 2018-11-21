@@ -1,10 +1,17 @@
-import React from 'react';
-import { Provider as ReduxProvider } from 'react-redux';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import { bindActionCreators } from 'redux';
+import { connect, Provider as ReduxProvider } from 'react-redux';
+import { createMuiTheme, MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import { BrowserRouter, HashRouter, withRouter } from 'react-router-dom';
 import { route } from 'Pages';
 import store from 'controle-compras-frontend-redux/store';
-import MainTemplate from './MainTemplate';
+import NotificationSystem from 'react-notification-system';
+import { setNotificationSystem } from 'HOC/withNotification';
+import Loader from 'Molecules/Loader';
+import { asyncOperation } from 'HOC/withAsyncOperation';
+import { operations } from 'controle-compras-frontend-redux/ducks/auth';
 import './RootTemplate.css';
 
 const theme = createMuiTheme({
@@ -14,12 +21,65 @@ const theme = createMuiTheme({
   },
 });
 const NavigationRouter = process.env.NODE_ENV !== 'development' ? HashRouter : BrowserRouter;
+const styles = () => ({
+  root: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+  },
+});
+class ContainerRoutes extends Component {
+  componentDidMount() {
+    const { startListenAuthChanges } = this.props;
+    asyncOperation(() => startListenAuthChanges());
+  }
 
+  componentWillUnmount() {
+    const { stopListenAuthChanges } = this.props;
+    stopListenAuthChanges();
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        {route}
+        <NotificationSystem
+          ref={(ref) => {
+            setNotificationSystem(ref);
+          }}
+        />
+        <Loader />
+      </div>
+    );
+  }
+}
+ContainerRoutes.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  startListenAuthChanges: PropTypes.func.isRequired,
+  stopListenAuthChanges: PropTypes.func.isRequired,
+};
+const mapStateToProps = null;
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    startListenAuthChanges: operations.startListenAuthChanges,
+    stopListenAuthChanges: operations.stopListenAuthChanges,
+  },
+  dispatch,
+);
+const ContainerRoutesStylezed = compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withStyles(styles, { withTheme: true }),
+)(ContainerRoutes);
 const RootTemplate = () => (
   <MuiThemeProvider theme={theme}>
     <ReduxProvider store={store}>
       <NavigationRouter basename={process.env.PUBLIC_URL}>
-        <MainTemplate>{route}</MainTemplate>
+        <ContainerRoutesStylezed />
       </NavigationRouter>
     </ReduxProvider>
   </MuiThemeProvider>
