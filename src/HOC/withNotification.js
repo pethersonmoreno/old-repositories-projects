@@ -1,7 +1,7 @@
 import React from 'react';
 
 let notificationSystem = null;
-const notification = {
+export const notification = {
   success: (title, message = null) => {
     notificationSystem.addNotification({ title, message, level: 'success' });
   },
@@ -24,6 +24,6 @@ export function setNotificationSystem(pNotificationSystem) {
   notificationSystem = pNotificationSystem;
 }
 const withNotification = () => WrappedComponent => props => (
-  <WrappedComponent notification={notification} {...props} />
+  <WrappedComponent {...props} notification={notification} />
 );
 export default withNotification;

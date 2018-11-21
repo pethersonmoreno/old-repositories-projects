@@ -16,13 +16,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import withNotification from 'HOC/withNotification';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 import { operations } from 'controle-compras-frontend-redux/ducks/productTypes';
 
 const List = (props) => {
-  const {
-    history, productTypes, remove, notification,
-  } = props;
+  const { history, productTypes, remove } = props;
   return (
     <PageTemplate titulo="Lista de Tipos de Produtos">
       <Paper>
@@ -41,14 +39,12 @@ const List = (props) => {
                     <EditIcon color="primary" />
                   </IconButton>
                   <IconButton
-                    onClick={() => remove(productType.id)
-                      .then(() => notification.success(
-                        `Sucesso ao remover Tipo de Produto ${productType.description}`,
-                      ))
-                      .catch(error => notification.error(
-                        `Erro ao remover Tipo de Produto ${productType.description}`,
-                        error,
-                      ))
+                    onClick={() => asyncOperation(() => remove(productType.id), {
+                      successMessage: `Sucesso ao remover Tipo de Produto ${
+                        productType.description
+                      }`,
+                      errorMessage: `Erro ao remover Tipo de Produto ${productType.description}`,
+                    })
                     }
                   >
                     <DeleteIcon color="primary" />
@@ -74,10 +70,6 @@ List.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   remove: PropTypes.func.isRequired, // eslint-disable-line react/forbid-prop-types
-  notification: PropTypes.shape({
-    success: PropTypes.func.isRequired,
-    error: PropTypes.func.isRequired,
-  }).isRequired,
 };
 const mapStateToProps = state => ({
   productTypes: state.productTypes,
@@ -89,7 +81,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 export default compose(
-  withNotification(),
   connect(
     mapStateToProps,
     mapDispatchToProps,

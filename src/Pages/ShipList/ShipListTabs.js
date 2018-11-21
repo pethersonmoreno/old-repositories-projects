@@ -15,7 +15,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import BarTabs from 'Molecules/BarTabs';
-import withNotification from 'HOC/withNotification';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import ShipListCategoriesBox from './ShipListCategoriesBox';
 
@@ -59,7 +59,7 @@ class ShipListTabs extends Component {
       history, classes, shipLists,
       shipListIdSelected,
       updateShipListSelected, updateShipListSelectedByIndex,
-      remove, notification,
+      remove,
     } = this.props;
     const open = this.isListOpen();
     const tabList = [{ value: 'new', label: 'Nova', icon: <AddCircleIcon /> }];
@@ -94,17 +94,11 @@ class ShipListTabs extends Component {
               </IconButton>
               <IconButton
                 aria-label="Delete ShipList"
-                onClick={() => remove(shipListSelected.id)
-                  .then(() => {
-                    notification.success(
-                      `Sucesso ao remover Lista de Compras ${shipListSelected.description}`,
-                    );
-                    updateShipListSelectedByIndex(shipListSelectedIndex);
-                  })
-                  .catch(error => notification.error(
-                    `Erro ao remover Lista de Compras ${shipListSelected.description}`,
-                    error,
-                  ))
+                onClick={() => asyncOperation(() => remove(shipListSelected.id), {
+                  successMessage: `Sucesso ao remover Lista de Compras ${shipListSelected.description}`,
+                  successCallback: () => updateShipListSelectedByIndex(shipListSelectedIndex),
+                  errorMessage: `Erro ao remover Lista de Compras ${shipListSelected.description}`,
+                })
                 }
               >
                 <DeleteIcon />
@@ -135,10 +129,6 @@ ShipListTabs.propTypes = {
   updateShipListSelected: PropTypes.func.isRequired,
   updateShipListSelectedByIndex: PropTypes.func.isRequired,
   remove: PropTypes.func.isRequired,
-  notification: PropTypes.shape({
-    success: PropTypes.func.isRequired,
-    error: PropTypes.func.isRequired,
-  }).isRequired,
 };
 ShipListTabs.defaultProps = {
   shipLists: [],
@@ -160,7 +150,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 );
 
 export default compose(
-  withNotification(),
   connect(
     mapStateToProps,
     mapDispatchToProps,

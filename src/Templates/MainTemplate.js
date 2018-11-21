@@ -9,7 +9,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import NotificationSystem from 'react-notification-system';
 import MenuResponsive from 'Organisms/MenuResponsive';
 import { setNotificationSystem } from 'HOC/withNotification';
-
+import Loader from 'Molecules/Loader';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
 import { operations as operationsProductTypes } from 'controle-compras-frontend-redux/ducks/productTypes';
 import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
@@ -18,6 +19,7 @@ import { operations as operationsShipLists } from 'controle-compras-frontend-red
 const styles = () => ({
   root: {
     display: 'flex',
+    width: '100%',
     height: '100%',
   },
 });
@@ -30,10 +32,14 @@ class MainTemplate extends Component {
       startListenProducts,
       startListenShipLists,
     } = this.props;
-    startListenCategories();
-    startListenProductTypes();
-    startListenProducts();
-    startListenShipLists();
+    asyncOperation(
+      Promise.all([
+        startListenCategories(),
+        startListenProductTypes(),
+        startListenProducts(),
+        startListenShipLists(),
+      ]),
+    );
   }
 
   componentWillUnmount() {
@@ -54,14 +60,15 @@ class MainTemplate extends Component {
 
     return (
       <div className={classes.root}>
-        <CssBaseline />
         <MenuResponsive />
+        <CssBaseline />
         {children}
         <NotificationSystem
           ref={(ref) => {
             setNotificationSystem(ref);
           }}
         />
+        <Loader />
       </div>
     );
   }

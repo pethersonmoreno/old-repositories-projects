@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
-import withNotification from 'HOC/withNotification';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 
 const selecoesProdutoOptions = [
   { value: true, label: 'Direta' },
@@ -20,15 +20,13 @@ class ShipListItemForm extends Component {
   }
 
   async onCallSubmit(event) {
-    const { save, onSaved, notification } = this.props;
+    const { save, onSaved } = this.props;
     event.preventDefault();
-    try {
-      const result = await save({ ...this.state });
-      notification.success('Sucesso ao salvar Item da Lista de Compras');
-      onSaved(result);
-    } catch (error) {
-      notification.error('Erro ao salvar Item da Lista de Compras', error);
-    }
+    asyncOperation(() => save({ ...this.state }), {
+      successMessage: 'Sucesso ao salvar Item da Lista de Compras',
+      successCallback: onSaved,
+      errorMessage: 'Erro ao salvar Item da Lista de Compras',
+    });
   }
 
   onChangeQtd = (event) => {
@@ -134,10 +132,6 @@ ShipListItemForm.propTypes = {
   }),
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  notification: PropTypes.shape({
-    success: PropTypes.func.isRequired,
-    error: PropTypes.func.isRequired,
-  }).isRequired,
 };
 ShipListItemForm.defaultProps = {
   item: {
@@ -154,7 +148,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = null;
 export default compose(
-  withNotification(),
   connect(
     mapStateToProps,
     mapDispatchToProps,

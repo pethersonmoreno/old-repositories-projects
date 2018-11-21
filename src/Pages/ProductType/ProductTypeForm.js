@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ReactSelect from 'Atoms/ReactSelect';
 import InputList from 'Atoms/InputList';
-import withNotification from 'HOC/withNotification';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 
 class Form extends Component {
   constructor(props) {
@@ -19,16 +19,14 @@ class Form extends Component {
   }
 
   async onCallSubmit(event) {
-    const { save, onSaved, notification } = this.props;
+    const { save, onSaved } = this.props;
     const { description } = this.state;
     event.preventDefault();
-    try {
-      const result = await save({ ...this.state });
-      notification.success(`Sucesso ao salvar tipo de produto ${description}`);
-      onSaved(result);
-    } catch (error) {
-      notification.error(`Erro ao salvar tipo de produto ${description}`, error);
-    }
+    asyncOperation(() => save({ ...this.state }), {
+      successMessage: `Sucesso ao salvar tipo de produto ${description}`,
+      successCallback: onSaved,
+      errorMessage: `Erro ao salvar tipo de produto ${description}`,
+    });
   }
 
   onUpdateSizes = (sizes) => {
@@ -99,10 +97,6 @@ Form.propTypes = {
     brands: PropTypes.arrayOf(PropTypes.string),
   }),
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  notification: PropTypes.shape({
-    success: PropTypes.func.isRequired,
-    error: PropTypes.func.isRequired,
-  }).isRequired,
 };
 Form.defaultProps = {
   productType: {
@@ -116,7 +110,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = null;
 export default compose(
-  withNotification(),
   connect(
     mapStateToProps,
     mapDispatchToProps,
