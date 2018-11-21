@@ -9,11 +9,16 @@ const getAll = () => actions.getAll(shipListApi.getAll());
 let listenChangesCallback = null;
 const startListenChanges = () => dispatch => {
   if (!listenChangesCallback) {
-    listenChangesCallback = categories => {
-      dispatch(actions.getAllFulfilled(categories));
+    listenChangesCallback = shipLists => {
+      dispatch(actions.getAllFulfilled(shipLists));
     };
-    shipListApi.startListenChanges(listenChangesCallback);
+    return shipListApi.getAll().then(shipLists => {
+      listenChangesCallback(shipLists);
+      shipListApi.startListenChanges(listenChangesCallback);
+      return shipLists;
+    });
   }
+  return Promise.reject("Listen alread started");
 };
 const stopListenChanges = () => () => {
   if (listenChangesCallback) {

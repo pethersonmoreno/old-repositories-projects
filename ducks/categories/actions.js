@@ -1,4 +1,4 @@
-import { FULFILLED } from "redux-promise-middleware";
+import { FULFILLED, REJECTED } from "redux-promise-middleware";
 import types from "./types";
 
 const add = payload => ({
@@ -21,10 +21,15 @@ const getAllFulfilled = payload => ({
   type: types.GET_CATEGORIES + "_" + FULFILLED,
   payload
 });
+const getAllRejected = payload => ({
+  type: types.GET_CATEGORIES + "_" + REJECTED,
+  payload
+});
 export default {
   add,
   remove,
   edit,
   getAll,
-  getAllFulfilled
+  getAllFulfilled,
+  getAllRejected
 };

@@ -6,7 +6,7 @@ import * as reducers from "./ducks";
 
 const rootReducer = combineReducers(reducers);
 
-let middlewares = [thunkMiddleware, promiseMiddleware()];
+let middlewares = [promiseMiddleware(), thunkMiddleware];
 if (process.env.NODE_ENV === "development") {
   middlewares.push(logger);
 }

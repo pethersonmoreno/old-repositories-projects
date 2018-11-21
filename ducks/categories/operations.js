@@ -12,8 +12,13 @@ const startListenChanges = () => dispatch => {
     listenChangesCallback = categories => {
       dispatch(actions.getAllFulfilled(categories));
     };
-    categoryApi.startListenChanges(listenChangesCallback);
+    return categoryApi.getAll().then(categories => {
+      listenChangesCallback(categories);
+      categoryApi.startListenChanges(listenChangesCallback);
+      return categories;
+    });
   }
+  return Promise.reject("Listen alread started");
 };
 const stopListenChanges = () => () => {
   if (listenChangesCallback) {

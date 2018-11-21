@@ -15,8 +15,13 @@ const startListenChanges = () => dispatch => {
     listenChangesCallback = products => {
       dispatch(actions.getAllFulfilled(products));
     };
-    productApi.startListenChanges(listenChangesCallback);
+    return productApi.getAll().then(products => {
+      listenChangesCallback(products);
+      productApi.startListenChanges(listenChangesCallback);
+      return products;
+    });
   }
+  return Promise.reject("Listen alread started");
 };
 const stopListenChanges = () => () => {
   if (listenChangesCallback) {
