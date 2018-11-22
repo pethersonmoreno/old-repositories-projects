@@ -39,7 +39,7 @@ const withAuthorization = (loggedState, pathToGoIfDifferent) => (WrappedComponen
     },
   };
   const mapStateToProps = state => ({
-    auth: state.auth,
+    auth: state.user.auth,
   });
   const mapDispatchToProps = null;
   return compose(

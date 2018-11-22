@@ -11,7 +11,7 @@ import NotificationSystem from 'react-notification-system';
 import { setNotificationSystem } from 'HOC/withNotification';
 import Loader from 'Molecules/Loader';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations } from 'controle-compras-frontend-redux/ducks/auth';
+import { operations } from 'controle-compras-frontend-redux/ducks/user/auth';
 import './RootTemplate.css';
 
 const theme = createMuiTheme({
@@ -31,10 +31,7 @@ const styles = () => ({
 class ContainerRoutes extends Component {
   componentDidMount() {
     const { startListenAuthChanges, startListenUserReloads } = this.props;
-    asyncOperation(Promise.all([
-      startListenAuthChanges(),
-      startListenUserReloads(),
-    ]));
+    asyncOperation(Promise.all([startListenAuthChanges(), startListenUserReloads()]));
   }
 
   componentWillUnmount() {

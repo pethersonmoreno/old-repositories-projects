@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations } from 'controle-compras-frontend-redux/ducks/auth';
+import { operations } from 'controle-compras-frontend-redux/ducks/user/auth';
 
 class AccountMenu extends Component {
   state = {
@@ -91,7 +91,7 @@ AccountMenu.defaultProps = {
   },
 };
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.user.auth,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

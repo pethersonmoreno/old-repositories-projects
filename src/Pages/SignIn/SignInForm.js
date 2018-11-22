@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { operations } from 'controle-compras-frontend-redux/ducks/auth';
+import { operations } from 'controle-compras-frontend-redux/ducks/user/auth';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import FormPageTemplate from 'Templates/FormPageTemplate';
 import withAuthorization from 'HOC/withAuthorization';
@@ -96,5 +96,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 );
 export default compose(
   withAuthorization(false, '/shipList'),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(SignInForm);
