@@ -25,11 +25,15 @@ const signOut = payload => ({
   type: types.SIGN_OUT,
   payload
 });
+const loginInvalidated = () => ({
+  type: types.LOGIN_INVALIDATED
+});
 export default {
   signUpUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signIn,
   signInFulfilled,
   signInRejected,
-  signOut
+  signOut,
+  loginInvalidated
 };

@@ -1,14 +1,14 @@
-import { auth as authApi } from "../../../api";
+import { auth as authApi } from "../../../../api";
 import onAuthUserChanges from "./onAuthUserChanges";
 
 let listenUserReloadsCallback = null;
-const startListenUserReloads = () => dispatch => {
+const startListenUserReloads = () => (dispatch, getState) => {
   if (!listenUserReloadsCallback) {
     return new Promise((resolve, reject) => {
       let executedBefore = false;
       listenUserReloadsCallback = (user, error) => {
         if (!error) {
-          onAuthUserChanges(dispatch, user);
+          onAuthUserChanges(dispatch, getState, user);
         }
         if (!executedBefore) {
           executedBefore = true;
@@ -20,6 +20,8 @@ const startListenUserReloads = () => dispatch => {
         }
       };
       authApi.startListenUserReloads(listenUserReloadsCallback);
+    }).finally(() => {
+      authApi.setMillisecondsToReloadUser(3000);
     });
   }
   return Promise.reject("Listen alread started");

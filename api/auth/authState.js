@@ -1,3 +1,4 @@
+import { auth } from "../firebase";
 export const checkAuthState = () => {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged(

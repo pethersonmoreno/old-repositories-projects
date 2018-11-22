@@ -1,4 +1,4 @@
-import { auth as authApi } from "../../../api";
+import { auth as authApi } from "../../../../api";
 import actions from "../actions";
 import {
   signUpUserWithEmailAndPassword,

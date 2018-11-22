@@ -1,6 +1,6 @@
 import { auth } from "../firebase";
 
-let millisecondsToReloadUser = 3000;
+let millisecondsToReloadUser = 500;
 const setMillisecondsToReloadUser = milliseconds => {
   millisecondsToReloadUser = milliseconds;
 };
@@ -47,6 +47,10 @@ const reloadCurrentUserInMilliseconds = () => {
   }
   setTimeout(() => {
     if (!auth.currentUser) {
+      const error = new Error("User not logged in");
+      listObserverCurrentUserReloads.forEach(callback => {
+        callback(null, error);
+      });
       reloadCurrentUserInMilliseconds();
       return;
     }

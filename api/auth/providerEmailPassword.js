@@ -1,6 +1,5 @@
 import { auth } from "../firebase";
 import { translateMessageErrorInCatch } from "./translations";
-
 export const signUpUserWithEmailAndPassword = (email, password) =>
   auth
     .createUserWithEmailAndPassword(email, password)
