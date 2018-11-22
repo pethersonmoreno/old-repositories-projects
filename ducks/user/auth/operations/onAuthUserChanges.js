@@ -4,7 +4,7 @@ const onAuthUserChanges = (dispatch, getState, user) => {
     user: { auth }
   } = getState();
   if (user) {
-    if (!auth.loggedIn) {
+    if (!auth.loggedIn || auth.emailVerified !== user.emailVerified) {
       dispatch(actions.signInFulfilled(user));
     }
   } else {

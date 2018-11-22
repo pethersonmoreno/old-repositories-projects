@@ -2,6 +2,12 @@ import { FULFILLED, REJECTED } from "redux-promise-middleware";
 import typeToReducer from "type-to-reducer";
 import types from "./types";
 
+const initialState = {
+  loggedIn: false,
+  email: null,
+  loginInvalidated: false,
+  emailVerified: false
+};
 export default typeToReducer(
   {
     [types.SIGN_IN]: {
@@ -9,32 +15,18 @@ export default typeToReducer(
         ...state,
         loginInvalidated: false,
         loggedIn: true,
-        email: action.payload.email
+        email: action.payload.email,
+        emailVerified: action.payload.emailVerified
       }),
-      [REJECTED]: (state, action) => ({
-        ...state,
-        loggedIn: false,
-        email: null
-      })
+      [REJECTED]: (state, action) => initialState
     },
     [types.SIGN_OUT]: {
-      [FULFILLED]: (state, action) => ({
-        ...state,
-        loginInvalidated: false,
-        loggedIn: false,
-        email: null
-      })
+      [FULFILLED]: (state, action) => initialState
     },
     [types.LOGIN_INVALIDATED]: (state, action) => ({
-      ...state,
-      loggedIn: false,
-      email: null,
+      ...initialState,
       loginInvalidated: true
     })
   },
-  {
-    loggedIn: false,
-    email: null,
-    loginInvalidated: false
-  }
+  initialState
 );
