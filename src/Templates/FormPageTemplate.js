@@ -84,7 +84,7 @@ const FormPageTemplate = (props) => {
 FormPageTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   botoes: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   links: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   error: PropTypes.shape({
@@ -92,6 +92,7 @@ FormPageTemplate.propTypes = {
   }),
 };
 FormPageTemplate.defaultProps = {
+  onSubmit: null,
   botoes: null,
   links: null,
   error: null,

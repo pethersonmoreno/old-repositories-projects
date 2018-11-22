@@ -102,7 +102,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 export default compose(
-  withAuthorization(false, '/shipList'),
+  withAuthorization({ loggedIn: false }, '/shipList'),
   connect(
     mapStateToProps,
     mapDispatchToProps,

@@ -93,7 +93,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   dispatch,
 );
 export default compose(
-  withAuthorization(true, '/signin'),
+  withAuthorization({ loggedIn: true, emailVerified: true }, '/emailVerification'),
   withRouter,
   connect(
     null,

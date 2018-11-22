@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const withAuthorization = (loggedState, pathToGoIfDifferent) => (WrappedComponent) => {
+const withAuthorization = (authCompare, pathToGoIfDifferent) => (WrappedComponent) => {
   class WithAuthorizationWrapper extends React.Component {
     componentDidMount() {
       this.verifyLoggedUser();
@@ -16,7 +16,8 @@ const withAuthorization = (loggedState, pathToGoIfDifferent) => (WrappedComponen
 
     verifyLoggedUser = () => {
       const { history, auth } = this.props;
-      if (auth.loggedIn !== loggedState) {
+      const authIsDifferent = Object.keys(authCompare).find(key => auth[key] !== authCompare[key]);
+      if (authIsDifferent) {
         history.push(pathToGoIfDifferent);
       }
     };
