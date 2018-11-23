@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import SignInWithBox from 'Molecules/SignInWithBox';
 
 const styles = () => ({
   loginBackground: {
@@ -77,6 +78,7 @@ const FormPageTemplate = (props) => {
           </form>
         </Paper>
         <div className={classes.withoutAccount}>{links}</div>
+        <SignInWithBox />
       </div>
     </div>
   );

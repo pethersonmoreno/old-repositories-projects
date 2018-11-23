@@ -21,7 +21,7 @@ const styles = () => ({
     color: '#5f71c5',
   },
 });
-const Menu = ({ classes, sidesDistance, loading }) => (
+const Loader = ({ classes, sidesDistance, loading }) => (
   <div className={classes.loading} style={{ display: loading ? 'block' : 'none' }}>
     <div
       className={classes.loadingSize}
@@ -36,15 +36,15 @@ const Menu = ({ classes, sidesDistance, loading }) => (
     </div>
   </div>
 );
-Menu.propTypes = {
+Loader.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   sidesDistance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   loading: PropTypes.bool.isRequired,
 };
-Menu.defaultProps = {
+Loader.defaultProps = {
   sidesDistance: '35%',
 };
 export default compose(
   withLoading(),
   withStyles(styles),
-)(Menu);
+)(Loader);

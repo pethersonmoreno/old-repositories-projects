@@ -30,8 +30,10 @@ const styles = () => ({
 });
 class ContainerRoutes extends Component {
   componentDidMount() {
-    const { startListenAuthChanges, startListenUserReloads } = this.props;
-    asyncOperation(Promise.all([startListenAuthChanges(), startListenUserReloads()]));
+    const { startListenAuthChanges, startListenUserReloads, signByRedirectResult } = this.props;
+    asyncOperation(
+      Promise.all([startListenAuthChanges(), startListenUserReloads(), signByRedirectResult()]),
+    );
   }
 
   componentWillUnmount() {
@@ -61,6 +63,7 @@ ContainerRoutes.propTypes = {
   stopListenAuthChanges: PropTypes.func.isRequired,
   startListenUserReloads: PropTypes.func.isRequired,
   stopListenUserReloads: PropTypes.func.isRequired,
+  signByRedirectResult: PropTypes.func.isRequired,
 };
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
@@ -69,6 +72,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     stopListenAuthChanges: operations.stopListenAuthChanges,
     startListenUserReloads: operations.startListenUserReloads,
     stopListenUserReloads: operations.stopListenUserReloads,
+    signByRedirectResult: operations.signByRedirectResult,
   },
   dispatch,
 );
