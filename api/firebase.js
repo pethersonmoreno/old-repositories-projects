@@ -8,5 +8,8 @@ var config = {
   storageBucket: process.env.APP_FIREBASE_STORAGE_BUCKET
 };
 const defaultFirebase = firebase.initializeApp(config);
+
+export { firebase };
 export const database = defaultFirebase.database();
 export const auth = firebase.auth();
+firebase.auth().useDeviceLanguage();

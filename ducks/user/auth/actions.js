@@ -21,6 +21,10 @@ const signInRejected = payload => ({
   type: types.SIGN_IN + "_" + REJECTED,
   payload
 });
+const signInWithRedirect = payload => ({
+  type: types.SIGN_IN_WITH_REDIRECT,
+  payload
+});
 const signOut = payload => ({
   type: types.SIGN_OUT,
   payload
@@ -34,6 +38,7 @@ export default {
   signIn,
   signInFulfilled,
   signInRejected,
+  signInWithRedirect,
   signOut,
   loginInvalidated
 };
