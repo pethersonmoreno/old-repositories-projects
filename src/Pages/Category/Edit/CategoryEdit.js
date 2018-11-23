@@ -9,7 +9,7 @@ import Form from '../CategoryForm';
 
 const Edit = (props) => {
   const {
-    history, match, categories, edit,
+    history, match, uid, categories, edit,
   } = props;
   const categoryId = match.params.id;
   const category = categories.find(item => item.id === categoryId);
@@ -19,7 +19,7 @@ const Edit = (props) => {
       <Form
         description={category.description}
         textoBotao="Alterar"
-        save={data => edit(categoryId, data)}
+        save={data => edit(uid, categoryId, data)}
         onSaved={() => history.push('/category')}
       />
     );
@@ -33,11 +33,13 @@ const Edit = (props) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  uid: PropTypes.string.isRequired,
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  uid: state.user.auth.uid,
   categories: state.categories,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(

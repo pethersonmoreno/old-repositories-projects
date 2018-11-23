@@ -13,6 +13,7 @@ const Edit = (props) => {
     match: {
       params: { id: productTypeId },
     },
+    uid,
     productTypes,
     edit,
   } = props;
@@ -23,7 +24,7 @@ const Edit = (props) => {
       <Form
         productType={productType}
         textoBotao="Alterar"
-        save={data => edit(productTypeId, data)}
+        save={data => edit(uid, productTypeId, data)}
         onSaved={() => history.push('/productType')}
       />
     );
@@ -37,11 +38,13 @@ const Edit = (props) => {
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  uid: PropTypes.string.isRequired,
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
+  uid: state.user.auth.uid,
   productTypes: state.productTypes,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(

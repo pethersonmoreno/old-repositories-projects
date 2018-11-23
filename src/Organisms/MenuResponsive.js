@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -95,6 +96,7 @@ MenuResponsive.propTypes = {
 };
 
 export default compose(
+  withRouter,
   connect(
     state => ({ ...state.menu }),
     { ...operations },

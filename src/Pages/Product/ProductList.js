@@ -21,7 +21,7 @@ import { operations } from 'controle-compras-frontend-redux/ducks/products';
 
 const ProductList = (props) => {
   const {
-    history, products, productTypes, remove,
+    history, uid, products, productTypes, remove,
   } = props;
   return (
     <PageTemplate titulo="Lista de Produtos">
@@ -47,7 +47,7 @@ const ProductList = (props) => {
                       <EditIcon color="primary" />
                     </IconButton>
                     <IconButton
-                      onClick={() => asyncOperation(() => remove(product.id), {
+                      onClick={() => asyncOperation(() => remove(uid, product.id), {
                         successMessage: 'Sucesso ao remover Produto',
                         errorMessage: 'Erro ao remover Produto',
                       })
@@ -75,11 +75,13 @@ const ProductList = (props) => {
 };
 ProductList.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  uid: PropTypes.string.isRequired,
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
   productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
   remove: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
+  uid: state.user.auth.uid,
   products: state.products,
   productTypes: state.productTypes,
 });

@@ -16,7 +16,7 @@ class ShipListItem extends Component {
     if (size !== undefined && size !== null) {
       description += `${size} `;
     }
-    return `${description}-testando`;
+    return description;
   };
 
   getDescriptionOfProduct = (productId) => {

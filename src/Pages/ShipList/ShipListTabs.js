@@ -56,7 +56,9 @@ class ShipListTabs extends Component {
 
   render() {
     const {
-      history, classes, shipLists,
+      history, classes,
+      uid,
+      shipLists,
       shipListIdSelected,
       updateShipListSelected, updateShipListSelectedByIndex,
       remove,
@@ -94,7 +96,7 @@ class ShipListTabs extends Component {
               </IconButton>
               <IconButton
                 aria-label="Delete ShipList"
-                onClick={() => asyncOperation(() => remove(shipListSelected.id), {
+                onClick={() => asyncOperation(() => remove(uid, shipListSelected.id), {
                   successMessage: `Sucesso ao remover Lista de Compras ${shipListSelected.description}`,
                   successCallback: () => updateShipListSelectedByIndex(shipListSelectedIndex),
                   errorMessage: `Erro ao remover Lista de Compras ${shipListSelected.description}`,
@@ -123,6 +125,7 @@ class ShipListTabs extends Component {
 ShipListTabs.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  uid: PropTypes.string.isRequired,
   shipLists: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   shipListIdSelected: PropTypes.string,
   startShiplistSelection: PropTypes.func.isRequired,
@@ -136,6 +139,7 @@ ShipListTabs.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+  uid: state.user.auth.uid,
   shipLists: state.shipLists.shipLists,
   shipListIdSelected: state.shipLists.shipListIdSelected,
 });

@@ -23,6 +23,11 @@ const styles = () => ({
 });
 
 class MainAuthenticatedTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { uid: props.uid };
+  }
+
   componentDidMount() {
     const {
       startListenCategories,
@@ -30,12 +35,13 @@ class MainAuthenticatedTemplate extends Component {
       startListenProducts,
       startListenShipLists,
     } = this.props;
+    const { uid } = this.state;
     asyncOperation(
       Promise.all([
-        startListenCategories(),
-        startListenProductTypes(),
-        startListenProducts(),
-        startListenShipLists(),
+        startListenCategories(uid),
+        startListenProductTypes(uid),
+        startListenProducts(uid),
+        startListenShipLists(uid),
       ]),
     );
   }
@@ -47,15 +53,17 @@ class MainAuthenticatedTemplate extends Component {
       stopListenProducts,
       stopListenShipLists,
     } = this.props;
-    stopListenCategories();
-    stopListenProductTypes();
-    stopListenProducts();
-    stopListenShipLists();
+    const { uid } = this.state;
+    if (uid) {
+      stopListenCategories(uid);
+      stopListenProductTypes(uid);
+      stopListenProducts(uid);
+      stopListenShipLists(uid);
+    }
   }
 
   render() {
     const { children, classes } = this.props;
-
     return (
       <div className={classes.root}>
         <MenuResponsive />
@@ -69,6 +77,7 @@ class MainAuthenticatedTemplate extends Component {
 MainAuthenticatedTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+  uid: PropTypes.string.isRequired,
   startListenCategories: PropTypes.func.isRequired,
   stopListenCategories: PropTypes.func.isRequired,
   startListenProductTypes: PropTypes.func.isRequired,
@@ -79,6 +88,9 @@ MainAuthenticatedTemplate.propTypes = {
   stopListenShipLists: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({
+  uid: state.user.auth.uid,
+});
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     startListenCategories: operationsCategories.startListenChanges,
@@ -96,7 +108,7 @@ export default compose(
   withAuthorization({ loggedIn: true, emailVerified: true }, '/emailVerification'),
   withRouter,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
   withStyles(styles, { withTheme: true }),
