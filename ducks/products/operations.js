@@ -4,28 +4,29 @@ import {
 } from "../../api";
 import actions from "./actions";
 
-const add = newCategory =>
-  actions.add(productApi.add(productApi.newId(), newCategory));
-const remove = id => actions.remove(productApi.remove(id));
-const edit = (id, updates) => actions.edit(productApi.edit(id, updates));
-const getAll = () => actions.getAll(productApi.getAll());
+const add = (uid, newCategory) =>
+  actions.add(productApi.add(uid, productApi.newId(uid), newCategory));
+const remove = (uid, id) => actions.remove(productApi.remove(uid, id));
+const edit = (uid, id, updates) =>
+  actions.edit(productApi.edit(uid, id, updates));
+const getAll = uid => actions.getAll(productApi.getAll(uid));
 let listenChangesCallback = null;
-const startListenChanges = () => dispatch => {
+const startListenChanges = uid => dispatch => {
   if (!listenChangesCallback) {
     listenChangesCallback = products => {
       dispatch(actions.getAllFulfilled(products));
     };
-    return productApi.getAll().then(products => {
+    return productApi.getAll(uid).then(products => {
       listenChangesCallback(products);
-      productApi.startListenChanges(listenChangesCallback);
+      productApi.startListenChanges(uid, listenChangesCallback);
       return products;
     });
   }
   return Promise.reject("Listen alread started");
 };
-const stopListenChanges = () => () => {
+const stopListenChanges = uid => () => {
   if (listenChangesCallback) {
-    productApi.stopListenChanges(listenChangesCallback);
+    productApi.stopListenChanges(uid, listenChangesCallback);
     listenChangesCallback = null;
   }
 };

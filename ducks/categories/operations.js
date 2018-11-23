@@ -1,28 +1,29 @@
 import { category as categoryApi } from "../../api";
 import actions from "./actions";
 
-const add = newCategory =>
-  actions.add(categoryApi.add(categoryApi.newId(), newCategory));
-const remove = id => actions.remove(categoryApi.remove(id));
-const edit = (id, updates) => actions.edit(categoryApi.edit(id, updates));
-const getAll = () => actions.getAll(categoryApi.getAll());
+const add = (uid, newCategory) =>
+  actions.add(categoryApi.add(uid, categoryApi.newId(uid), newCategory));
+const remove = (uid, id) => actions.remove(categoryApi.remove(uid, id));
+const edit = (uid, id, updates) =>
+  actions.edit(categoryApi.edit(uid, id, updates));
+const getAll = uid => actions.getAll(categoryApi.getAll(uid));
 let listenChangesCallback = null;
-const startListenChanges = () => dispatch => {
+const startListenChanges = uid => dispatch => {
   if (!listenChangesCallback) {
     listenChangesCallback = categories => {
       dispatch(actions.getAllFulfilled(categories));
     };
-    return categoryApi.getAll().then(categories => {
+    return categoryApi.getAll(uid).then(categories => {
       listenChangesCallback(categories);
-      categoryApi.startListenChanges(listenChangesCallback);
+      categoryApi.startListenChanges(uid, listenChangesCallback);
       return categories;
     });
   }
   return Promise.reject("Listen alread started");
 };
-const stopListenChanges = () => () => {
+const stopListenChanges = uid => () => {
   if (listenChangesCallback) {
-    categoryApi.stopListenChanges(listenChangesCallback);
+    categoryApi.stopListenChanges(uid, listenChangesCallback);
     listenChangesCallback = null;
   }
 };

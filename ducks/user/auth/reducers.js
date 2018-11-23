@@ -4,19 +4,21 @@ import types from "./types";
 
 const initialState = {
   loggedIn: false,
+  uid: null,
   email: null,
-  loginInvalidated: false,
-  emailVerified: false
+  emailVerified: false,
+  loginInvalidated: false
 };
 export default typeToReducer(
   {
     [types.SIGN_IN]: {
       [FULFILLED]: (state, action) => ({
         ...state,
-        loginInvalidated: false,
         loggedIn: true,
+        uid: action.payload.uid,
         email: action.payload.email,
-        emailVerified: action.payload.emailVerified
+        emailVerified: action.payload.emailVerified,
+        loginInvalidated: false
       }),
       [REJECTED]: (state, action) => initialState
     },

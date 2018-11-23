@@ -1,40 +1,46 @@
 import { shipList as shipListApi } from "../../api";
 import actions from "./actions";
 
-const add = newShipList =>
-  actions.add(shipListApi.add(shipListApi.newId(), newShipList));
-const remove = id => actions.remove(shipListApi.remove(id));
-const edit = (id, updates) => actions.edit(shipListApi.edit(id, updates));
-const getAll = () => actions.getAll(shipListApi.getAll());
+const add = (uid, newShipList) =>
+  actions.add(shipListApi.add(uid, shipListApi.newId(uid), newShipList));
+const remove = (uid, id) => actions.remove(shipListApi.remove(uid, id));
+const edit = (uid, id, updates) =>
+  actions.edit(shipListApi.edit(uid, id, updates));
+const getAll = uid => actions.getAll(shipListApi.getAll(uid));
 let listenChangesCallback = null;
-const startListenChanges = () => dispatch => {
+const startListenChanges = uid => dispatch => {
   if (!listenChangesCallback) {
     listenChangesCallback = shipLists => {
       dispatch(actions.getAllFulfilled(shipLists));
     };
-    return shipListApi.getAll().then(shipLists => {
+    return shipListApi.getAll(uid).then(shipLists => {
       listenChangesCallback(shipLists);
-      shipListApi.startListenChanges(listenChangesCallback);
+      shipListApi.startListenChanges(uid, listenChangesCallback);
       return shipLists;
     });
   }
   return Promise.reject("Listen alread started");
 };
-const stopListenChanges = () => () => {
+const stopListenChanges = uid => () => {
   if (listenChangesCallback) {
-    shipListApi.stopListenChanges(listenChangesCallback);
+    shipListApi.stopListenChanges(uid, listenChangesCallback);
     listenChangesCallback = null;
   }
 };
-const addItem = (shipListId, item) =>
+const addItem = (uid, shipListId, item) =>
   actions.addItem(
     { shipListId },
-    shipListApi.addItem(shipListId, shipListApi.newIdItem(shipListId), item)
+    shipListApi.addItem(
+      uid,
+      shipListId,
+      shipListApi.newIdItem(uid, shipListId),
+      item
+    )
   );
-const editItem = (shipListId, idItem, item) =>
+const editItem = (uid, shipListId, idItem, item) =>
   actions.editItem(
     { shipListId, idItem },
-    shipListApi.editItem(shipListId, idItem, item)
+    shipListApi.editItem(uid, shipListId, idItem, item)
   );
 const startShiplistSelection = () => (dispatch, getState) => {
   const {

@@ -1,27 +1,31 @@
-import { database } from "./firebase";
 import { mapObjectToList } from "./utils";
-const databaseProducts = database.ref("/products");
+import { getDatabaseUser } from "./user";
 
-export const newId = () => databaseProducts.push().key;
-const set = (id, values) => databaseProducts.child(id).set(values);
-export const add = (id, product) =>
-  set(id, product).then(() => ({
+const getDatabaseProducts = uid => getDatabaseUser(uid).child("/products");
+
+export const newId = uid => getDatabaseProducts(uid).push().key;
+const set = (uid, id, values) =>
+  getDatabaseProducts(uid)
+    .child(id)
+    .set(values);
+export const add = (uid, id, product) =>
+  set(uid, id, product).then(() => ({
     ...product,
     id
   }));
-export const edit = (id, { id: idField, ...otherFields }) =>
-  set(id, otherFields).then(() => ({ updates: otherFields, id }));
-export const remove = id =>
-  databaseProducts
+export const edit = (uid, id, { id: idField, ...otherFields }) =>
+  set(uid, id, otherFields).then(() => ({ updates: otherFields, id }));
+export const remove = (uid, id) =>
+  getDatabaseProducts(uid)
     .child(id)
     .remove()
     .then(() => id);
-export const getAll = () =>
-  databaseProducts
+export const getAll = uid =>
+  getDatabaseProducts(uid)
     .once("value")
     .then(snapshot => mapObjectToList(snapshot.val(), "id"));
 let dicListenChanges = {};
-export const startListenChanges = listenCallBack => {
+export const startListenChanges = (uid, listenCallBack) => {
   if (!dicListenChanges[listenCallBack]) {
     const listenChanges = snapshot => {
       if (listenCallBack) {
@@ -29,12 +33,12 @@ export const startListenChanges = listenCallBack => {
       }
     };
     dicListenChanges[listenCallBack] = listenChanges;
-    databaseProducts.on("value", listenChanges);
+    getDatabaseProducts(uid).on("value", listenChanges);
   }
 };
-export const stopListenChanges = listenCallBack => {
+export const stopListenChanges = (uid, listenCallBack) => {
   if (dicListenChanges[listenCallBack]) {
     const listenChanges = dicListenChanges[listenCallBack];
-    databaseProducts.off("value", listenChanges);
+    getDatabaseProducts(uid).off("value", listenChanges);
   }
 };

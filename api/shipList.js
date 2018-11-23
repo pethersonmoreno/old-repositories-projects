@@ -1,15 +1,19 @@
-import { database } from "./firebase";
 import { mapObjectToList } from "./utils";
-const databaseShipLists = database.ref("/shipLists");
+import { getDatabaseUser } from "./user";
 
-export const newId = () => databaseShipLists.push().key;
-const set = (id, values) => databaseShipLists.child(id).set(values);
-export const add = (id, shipList) =>
-  set(id, shipList).then(() => ({ ...shipList, id }));
-export const edit = (id, { id: idField, ...otherFields }) =>
-  set(id, otherFields).then(() => ({ updates: otherFields, id }));
-export const remove = id =>
-  databaseShipLists
+const getDatabaseShipLists = uid => getDatabaseUser(uid).child("/shipLists");
+
+export const newId = uid => getDatabaseShipLists(uid).push().key;
+const set = (uid, id, values) =>
+  getDatabaseShipLists(uid)
+    .child(id)
+    .set(values);
+export const add = (uid, id, shipList) =>
+  set(uid, id, shipList).then(() => ({ ...shipList, id }));
+export const edit = (uid, id, { id: idField, ...otherFields }) =>
+  set(uid, id, otherFields).then(() => ({ updates: otherFields, id }));
+export const remove = (uid, id) =>
+  getDatabaseShipLists(uid)
     .child(id)
     .remove()
     .then(() => ({ id }));
@@ -19,12 +23,12 @@ const mapObjectShipListToList = object => {
     items: shipList.items ? mapObjectToList(shipList.items, "id") : []
   }));
 };
-export const getAll = () =>
-  databaseShipLists
+export const getAll = uid =>
+  getDatabaseShipLists(uid)
     .once("value")
     .then(snapshot => mapObjectShipListToList(snapshot.val()));
 let dicListenChanges = {};
-export const startListenChanges = listenCallBack => {
+export const startListenChanges = (uid, listenCallBack) => {
   if (!dicListenChanges[listenCallBack]) {
     const listenChanges = snapshot => {
       if (listenCallBack) {
@@ -32,29 +36,37 @@ export const startListenChanges = listenCallBack => {
       }
     };
     dicListenChanges[listenCallBack] = listenChanges;
-    databaseShipLists.on("value", listenChanges);
+    getDatabaseShipLists(uid).on("value", listenChanges);
   }
 };
-export const stopListenChanges = listenCallBack => {
+export const stopListenChanges = (uid, listenCallBack) => {
   if (dicListenChanges[listenCallBack]) {
     const listenChanges = dicListenChanges[listenCallBack];
-    databaseShipLists.off("value", listenChanges);
+    getDatabaseShipLists(uid).off("value", listenChanges);
   }
 };
-const getDatabaseItems = shipListId =>
-  databaseShipLists.child(shipListId).child("items");
-export const newIdItem = shipListId => getDatabaseItems(shipListId).push().key;
-const setItem = (shipListId, idItem, values) =>
-  getDatabaseItems(shipListId)
+const getDatabaseItems = (uid, shipListId) =>
+  getDatabaseShipLists(uid)
+    .child(shipListId)
+    .child("items");
+export const newIdItem = (uid, shipListId) =>
+  getDatabaseItems(uid, shipListId).push().key;
+const setItem = (uid, shipListId, idItem, values) =>
+  getDatabaseItems(uid, shipListId)
     .child(idItem)
     .set(values);
-export const addItem = (shipListId, idItem, item) =>
-  setItem(shipListId, idItem, item).then(() => ({
+export const addItem = (uid, shipListId, idItem, item) =>
+  setItem(uid, shipListId, idItem, item).then(() => ({
     ...item,
     id: idItem
   }));
-export const editItem = (shipListId, idItem, { id: idField, ...otherFields }) =>
-  setItem(shipListId, idItem, otherFields).then(() => ({
+export const editItem = (
+  uid,
+  shipListId,
+  idItem,
+  { id: idField, ...otherFields }
+) =>
+  setItem(uid, shipListId, idItem, otherFields).then(() => ({
     updates: otherFields,
     id: idItem
   }));

@@ -20,7 +20,6 @@ const userInfo = typeToReducer(
     }
   },
   {
-    uid: null,
     sentEmailVerification: false
   }
 );
