@@ -7,6 +7,6 @@ const signInGoogleWithPopup = () => {
   );
 };
 const signInGoogleWithRedirect = () =>
-  actions.signIn(authApi.signInGoogleWithRedirect());
+  actions.signInWithRedirect(authApi.signInGoogleWithRedirect());
 
 export { signInGoogleWithPopup, signInGoogleWithRedirect };
