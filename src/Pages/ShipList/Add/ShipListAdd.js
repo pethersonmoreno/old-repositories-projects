@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
-import PageTemplate from 'Templates/PageTemplate';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import Form from '../ShipListForm';
 
 const ShipListAdd = ({
   history, uid, add, updateShipListSelected,
 }) => (
-  <PageTemplate titulo="Nova Lista">
+  <PageWithBackButtonTemplate backPath="/shipList" titulo="Nova Lista">
     <Form
       textoBotao="Adicionar"
       save={data => add(uid, data)}
@@ -18,7 +18,7 @@ const ShipListAdd = ({
         history.push('/shipList');
       }}
     />
-  </PageTemplate>
+  </PageWithBackButtonTemplate>
 );
 ShipListAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

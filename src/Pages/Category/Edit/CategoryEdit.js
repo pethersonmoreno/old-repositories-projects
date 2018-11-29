@@ -3,10 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from 'Templates/PageTemplate';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 import Form from '../CategoryForm';
 
+const backPath = '/category';
 const Edit = (props) => {
   const {
     history, match, uid, categories, edit,
@@ -20,14 +21,17 @@ const Edit = (props) => {
         description={category.description}
         textoBotao="Alterar"
         save={data => edit(uid, categoryId, data)}
-        onSaved={() => history.push('/category')}
+        onSaved={() => history.push(backPath)}
       />
     );
   }
   return (
-    <PageTemplate titulo={`Categoria ${category ? category.description : ''}`}>
+    <PageWithBackButtonTemplate
+      backPath={backPath}
+      titulo={`Categoria ${category ? category.description : ''}`}
+    >
       {conteudo}
-    </PageTemplate>
+    </PageWithBackButtonTemplate>
   );
 };
 Edit.propTypes = {

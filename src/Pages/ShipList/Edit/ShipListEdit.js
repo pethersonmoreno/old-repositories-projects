@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from 'Templates/PageTemplate';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListForm';
 
@@ -33,7 +33,11 @@ const Edit = (props) => {
       />
     );
   }
-  return <PageTemplate titulo="Editar Lista">{conteudo}</PageTemplate>;
+  return (
+    <PageWithBackButtonTemplate backPath="/shipList" titulo="Editar Lista">
+      {conteudo}
+    </PageWithBackButtonTemplate>
+  );
 };
 Edit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

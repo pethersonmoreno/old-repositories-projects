@@ -2,21 +2,22 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PageTemplate from 'Templates/PageTemplate';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/categories';
 import Form from '../CategoryForm';
 
+const backPath = '/category';
 const Add = (props) => {
   const { history, uid, add } = props;
   return (
-    <PageTemplate titulo="Nova Categoria">
+    <PageWithBackButtonTemplate backPath={backPath} titulo="Nova Categoria">
       <Form
         description=""
         textoBotao="Adicionar"
         save={data => add(uid, data)}
-        onSaved={() => history.push('/category')}
+        onSaved={() => history.push(backPath)}
       />
-    </PageTemplate>
+    </PageWithBackButtonTemplate>
   );
 };
 Add.propTypes = {
