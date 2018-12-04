@@ -26,6 +26,10 @@ const styles = theme => ({
   backButton: {
     marginRight: 15,
   },
+  title: {
+    width: '100%',
+    paddingRight: '15px',
+  },
   accountMenu: {
     position: 'absolute',
     right: '0px',
@@ -64,7 +68,7 @@ const AppBar = ({
             <ArrowBackIcon />
           </IconButton>
         )}
-        <Typography variant="h6" color="inherit" noWrap>
+        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
           {children}
         </Typography>
         {withButtonAccount && <AccountMenu className={classes.accountMenu} />}
@@ -75,7 +79,7 @@ const AppBar = ({
 
 AppBar.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  children: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   goBack: PropTypes.func,
   toggleMenu: PropTypes.func,
   withButtonAccount: PropTypes.bool,

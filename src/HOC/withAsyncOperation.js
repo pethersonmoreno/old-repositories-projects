@@ -33,6 +33,7 @@ export const asyncOperation = async (operation, params) => {
     if (operationInfo.successCallback) {
       operationInfo.successCallback(result);
     }
+    return result;
   } catch (error) {
     if (operationInfo.errorMessage) {
       notification.error(operationInfo.errorMessage, error);
@@ -40,6 +41,7 @@ export const asyncOperation = async (operation, params) => {
     if (operationInfo.errorCallback) {
       operationInfo.errorCallback(error);
     }
+    throw error;
   } finally {
     if (loading) {
       enableDisableLoading(false);

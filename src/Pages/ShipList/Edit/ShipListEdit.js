@@ -5,47 +5,45 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
-import Form from '../ShipListForm';
+import TextEditable from 'Atoms/TextEditable';
+import { asyncOperation } from 'HOC/withAsyncOperation';
 
 const Edit = (props) => {
   const {
-    history,
     match: {
       params: { id: shipListId },
     },
     uid,
     shipLists,
     edit,
-    updateShipListSelected,
   } = props;
   const shipList = shipLists.find(list => list.id === shipListId);
+  let titulo = 'Editar Lista';
   let conteudo = <Typography>Lista não encontrado</Typography>;
-  if (shipList !== undefined) {
-    conteudo = (
-      <Form
-        shipList={shipList}
-        textoBotao="Alterar"
-        save={data => edit(uid, shipListId, data)}
-        onSaved={() => {
-          updateShipListSelected(shipListId);
-          history.push('/shipList');
-        }}
+  if (shipList) {
+    conteudo = <div />;
+    titulo = (
+      <TextEditable
+        onConfirm={value => asyncOperation(() => edit(uid, shipListId, { description: value }), {
+          successMessage: `Sucesso ao alterar descrição da Lista de Compras ${value}`,
+          errorMessage: `Erro ao alterar descrição da Lista de Compras ${value}`,
+        })
+        }
+        value={shipList.description}
       />
     );
   }
   return (
-    <PageWithBackButtonTemplate backPath="/shipList" titulo="Editar Lista">
+    <PageWithBackButtonTemplate backPath="/shipList" titulo={titulo}>
       {conteudo}
     </PageWithBackButtonTemplate>
   );
 };
 Edit.propTypes = {
-  history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   edit: PropTypes.func.isRequired,
-  updateShipListSelected: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -55,7 +53,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     edit: operations.edit,
-    updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,
 );

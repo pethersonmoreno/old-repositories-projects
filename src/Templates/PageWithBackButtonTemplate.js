@@ -18,7 +18,7 @@ const PageWithBackButtonTemplate = ({
 };
 
 PageWithBackButtonTemplate.propTypes = {
-  titulo: PropTypes.string.isRequired,
+  titulo: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   backPath: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   goBack: PropTypes.func,
 };
