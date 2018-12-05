@@ -26,6 +26,11 @@ const addItem = (meta, payload) => ({
   meta,
   payload
 });
+const removeItem = (meta, payload) => ({
+  type: types.REMOVE_SHIPLIST_ITEM,
+  meta,
+  payload
+});
 const editItem = (meta, payload) => ({
   type: types.EDIT_SHIPLIST_ITEM,
   meta,
@@ -42,6 +47,7 @@ export default {
   getAll,
   getAllFulfilled,
   addItem,
+  removeItem,
   editItem,
   updateShipListSelected
 };

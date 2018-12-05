@@ -37,6 +37,11 @@ const addItem = (uid, shipListId, item) =>
       item
     )
   );
+const removeItem = (uid, shipListId, idItem) =>
+  actions.removeItem(
+    { shipListId, idItem },
+    shipListApi.removeItem(uid, shipListId, idItem)
+  );
 const editItem = (uid, shipListId, idItem, item) =>
   actions.editItem(
     { shipListId, idItem },
@@ -80,6 +85,7 @@ export default {
   startListenChanges,
   stopListenChanges,
   addItem,
+  removeItem,
   editItem,
   startShiplistSelection,
   updateShipListSelected,

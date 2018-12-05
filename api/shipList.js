@@ -51,15 +51,20 @@ const getDatabaseItems = (uid, shipListId) =>
     .child("items");
 export const newIdItem = (uid, shipListId) =>
   getDatabaseItems(uid, shipListId).push().key;
+
+const getItem = (uid, shipListId, idItem) =>
+  getDatabaseItems(uid, shipListId).child(idItem);
 const setItem = (uid, shipListId, idItem, values) =>
-  getDatabaseItems(uid, shipListId)
-    .child(idItem)
-    .set(values);
+  getItem(uid, shipListId, idItem).set(values);
 export const addItem = (uid, shipListId, idItem, item) =>
   setItem(uid, shipListId, idItem, item).then(() => ({
     ...item,
     id: idItem
   }));
+export const removeItem = (uid, shipListId, idItem) =>
+  getItem(uid, shipListId, idItem)
+    .remove()
+    .then(() => ({ shipListId, id: idItem }));
 export const editItem = (
   uid,
   shipListId,

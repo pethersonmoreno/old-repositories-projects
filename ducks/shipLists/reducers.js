@@ -52,6 +52,21 @@ const shipLists = typeToReducer(
           return shipList;
         })
     },
+    [types.REMOVE_SHIPLIST_ITEM]: {
+      [FULFILLED]: (state, action) =>
+        state.map(shipList => {
+          console.log(action);
+          if (shipList.id === action.meta.shipListId) {
+            return {
+              ...shipList,
+              items: shipList.items.filter(
+                item => item.id !== action.payload.id
+              )
+            };
+          }
+          return shipList;
+        })
+    },
     [types.EDIT_SHIPLIST_ITEM]: {
       [FULFILLED]: (state, action) =>
         state.map(shipList => {
