@@ -12,6 +12,9 @@ import ButtonFab from 'Atoms/ButtonFab';
 import AddIcon from '@material-ui/icons/Add';
 
 const styles = () => ({
+  list: {
+    backgroundColor: '#ffffff',
+  },
   item: {
     margin: '1px 0px',
     boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.2)',
@@ -24,7 +27,7 @@ const styles = () => ({
 });
 const ShipListList = ({ history, classes, shipLists }) => (
   <PageTemplate titulo="Não esqueça!" removePadding>
-    <List component="div" disablePadding>
+    <List disablePadding className={classes.list}>
       {shipLists.map(shipList => (
         <ListItem
           className={classes.item}
@@ -55,8 +58,8 @@ const mapStateToProps = state => ({
   products: state.products,
   productTypes: state.productTypes,
 });
-
 const mapDispatchToProps = null;
+
 export default compose(
   connect(
     mapStateToProps,

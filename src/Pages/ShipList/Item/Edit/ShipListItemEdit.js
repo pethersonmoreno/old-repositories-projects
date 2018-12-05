@@ -3,12 +3,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import PageTemplate from 'Templates/PageTemplate';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
+const backPath = shipListId => `/shipList/${shipListId}`;
 const ShipListItemEdit = ({
-  history, match, uid, shipLists, editItem, updateShipListSelected,
+  history,
+  match,
+  uid,
+  shipLists,
+  editItem,
+  removeItem,
+  updateShipListSelected,
 }) => {
   const {
     params: { shipListId, id: shipListItemId },
@@ -27,12 +34,21 @@ const ShipListItemEdit = ({
         save={data => editItem(uid, shipListId, shipListItemId, data)}
         onSaved={() => {
           updateShipListSelected(shipListId);
-          history.push('/shipList');
+          history.push(backPath(shipListId));
+        }}
+        remove={() => {
+          updateShipListSelected(shipListId);
+          history.push(backPath(shipListId));
+          return removeItem(uid, shipListId, shipListItemId);
         }}
       />
     );
   }
-  return <PageTemplate titulo="Editar Item">{conteudo}</PageTemplate>;
+  return (
+    <PageWithBackButtonTemplate backPath={backPath(shipListId)} titulo="Editar Item">
+      {conteudo}
+    </PageWithBackButtonTemplate>
+  );
 };
 ShipListItemEdit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -40,6 +56,7 @@ ShipListItemEdit.propTypes = {
   uid: PropTypes.string.isRequired,
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   editItem: PropTypes.func.isRequired,
+  removeItem: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
@@ -49,6 +66,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     editItem: operations.editItem,
+    removeItem: operations.removeItem,
     updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,

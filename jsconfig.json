@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "helpers/*": ["src/helpers/*"],
       "HOC/*": ["src/HOC/*"],
       "Atoms/*": ["src/Atoms/*"],
       "Molecules/*": ["src/Molecules/*"],

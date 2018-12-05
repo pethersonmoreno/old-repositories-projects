@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import compose from 'recompose/compose';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import ReactSelect from 'Atoms/ReactSelect';
 import { asyncOperation } from 'HOC/withAsyncOperation';
+import InputIntegerWithButtons from 'Atoms/InputIntegerWithButtons';
 
-const selecoesProdutoOptions = [
-  { value: true, label: 'Direta' },
-  { value: false, label: 'Por Tipo e Tamanho' },
-];
-
+const styles = () => ({
+  currentPrice: {
+    marginLeft: 10,
+  },
+});
 class ShipListItemForm extends Component {
   constructor(props) {
     super(props);
     this.state = { ...props.item };
   }
 
-  async onCallSubmit(event) {
+  onCallSubmit = async (event) => {
     const { save, onSaved } = this.props;
     event.preventDefault();
     asyncOperation(() => save({ ...this.state }), {
@@ -29,89 +32,93 @@ class ShipListItemForm extends Component {
     });
   }
 
-  onChangeQtd = (event) => {
-    const qtd = parseInt(event.target.value, 10);
-    this.setState({ qtd: qtd || '' });
+  onRemove = async () => {
+    const { remove, onRemoved } = this.props;
+    if (!remove) {
+      return;
+    }
+    asyncOperation(() => remove({ ...this.state }), {
+      successMessage: 'Sucesso ao remover Item da Lista de Compras',
+      successCallback: onRemoved,
+      errorMessage: 'Erro ao remover Item da Lista de Compras',
+    });
+  }
+
+  onChangeQtd = (value) => {
+    const qtd = parseInt(value, 10);
+    this.setState({ qtd: qtd || 0 });
+  };
+
+  onChangeCurrentPrice = (event) => {
+    const currentPrice = parseFloat(event.target.value);
+    this.setState({ currentPrice: currentPrice || 0.0 });
   };
 
   render() {
-    const { textoBotao, products, productTypes } = this.props;
+    const { classes, textoBotao, categories } = this.props;
     const {
-      qtd, selecaoDireta, productId, productTypeId, size: sizeSelected,
+      qtd, description, categoryId, currentPrice, note,
     } = this.state;
 
-    const productsOptions = products.map((product) => {
-      const productType = productTypes.find(type => type.id === product.productTypeId);
-      const brand = product ? product.brand : '';
-      const size = product ? product.size : '';
-      return {
-        value: product.id,
-        label: `${productType && productType.description} ${brand} ${size}`,
-      };
-    });
-    const productTypesOptions = productTypes.map(productType => ({
-      value: productType.id,
-      label: productType.description,
+    const categoriesOptions = categories.map(category => ({
+      value: category.id,
+      label: category.description,
     }));
-    let sizesOptions = [];
-    const productTypeSelected = productTypes.find(productType => productType.id === productTypeId);
-    if (productTypeSelected !== undefined) {
-      sizesOptions = productTypeSelected.sizes.map(size => ({
-        value: size,
-        label: size,
-      }));
-    }
-    const valueSelecaoProdutoSelected = selecoesProdutoOptions.find(
-      option => option.value === selecaoDireta,
-    );
-    const valueProductSelected = productsOptions.find(option => option.value === productId);
-    const valueProductTypeSelected = productTypesOptions.find(
-      option => option.value === productTypeId,
-    );
-    const valueSizeSelected = sizesOptions.find(option => option.value === sizeSelected);
+    const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
     return (
       <Paper>
-        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
-          <TextField
+        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit}>
+          <InputIntegerWithButtons
             label="Quantidade"
             value={qtd}
-            autoFocus
-            fullWidth
             onChange={this.onChangeQtd}
           />
-          <ReactSelect
-            label="Seleção do Produto"
-            value={valueSelecaoProdutoSelected}
-            options={selecoesProdutoOptions}
-            onChange={value => this.setState({ selecaoDireta: value ? value.value : null })}
+          <TextField
+            label="Descrição"
+            inputProps={{
+              placeholder: 'Se não informado, usa a descrição do primeiro produto aceito',
+            }}
+            value={description}
+            autoFocus
+            fullWidth
+            onChange={event => this.setState({ description: event.target.value })}
           />
-          {selecaoDireta === true && (
-            <ReactSelect
-              label="Produto"
-              value={valueProductSelected}
-              options={productsOptions}
-              onChange={value => this.setState({ productId: value ? value.value : null })}
-            />
-          )}
-          {selecaoDireta === false && (
-            <div>
+          <Grid container>
+            <Grid item xs={6}>
               <ReactSelect
-                label="Tipo de Produto"
-                value={valueProductTypeSelected}
-                options={productTypesOptions}
-                onChange={value => this.setState({ productTypeId: value ? value.value : null })}
+                label="Categoria"
+                value={valueCategorySelected}
+                options={categoriesOptions}
+                onChange={value => this.setState({ categoryId: value ? value.value : null })}
               />
-              <ReactSelect
-                label="Tamanho"
-                value={valueSizeSelected}
-                options={sizesOptions}
-                onChange={value => this.setState({ size: value ? value.value : null })}
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                className={classes.currentPrice}
+                label="Preço Atual"
+                inputProps={{
+                  type: 'number',
+                  step: '0.01',
+                  min: '0.00',
+                }}
+                value={currentPrice}
+                fullWidth
+                onChange={this.onChangeCurrentPrice}
               />
-            </div>
-          )}
+            </Grid>
+          </Grid>
+          <TextField
+            label="Nota"
+            value={note}
+            fullWidth
+            onChange={event => this.setState({ note: event.target.value })}
+          />
           <div className="formButtons">
             <Button type="submit" variant="contained" color="primary">
               {textoBotao}
+            </Button>
+            <Button type="button" variant="contained" color="primary" onClick={this.onRemove}>
+              Remover
             </Button>
           </div>
         </form>
@@ -120,31 +127,36 @@ class ShipListItemForm extends Component {
   }
 }
 ShipListItemForm.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   textoBotao: PropTypes.string.isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.string,
+    qtd: PropTypes.number,
+    description: PropTypes.string,
+    categoryId: PropTypes.string,
+    currentPrice: PropTypes.number,
+    note: PropTypes.string,
+  }),
+  categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   save: PropTypes.func.isRequired,
   onSaved: PropTypes.func.isRequired,
-  item: PropTypes.shape({
-    qtd: PropTypes.number,
-    selecao: PropTypes.string,
-    productId: PropTypes.string,
-    productTypeId: PropTypes.string,
-    sizeId: PropTypes.number,
-  }),
-  products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  remove: PropTypes.func,
+  onRemoved: PropTypes.func,
 };
 ShipListItemForm.defaultProps = {
   item: {
+    id: null,
     qtd: 1,
-    selecao: null,
-    productId: null,
-    productTypeId: null,
-    sizeId: null,
+    description: '',
+    categoryId: null,
+    currentPrice: 0.0,
+    note: '',
   },
+  remove: null,
+  onRemoved: null,
 };
 const mapStateToProps = state => ({
-  productTypes: state.productTypes,
-  products: state.products,
+  categories: state.categories,
 });
 const mapDispatchToProps = null;
 export default compose(
@@ -152,4 +164,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps,
   ),
+  withStyles(styles, { withTheme: true }),
 )(ShipListItemForm);

@@ -11,6 +11,7 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import { css } from 'emotion';
 
 const styles = theme => ({
   root: {
@@ -65,12 +66,15 @@ const styles = theme => ({
   divider: {
     height: theme.spacing.unit * 1,
   },
+  indicatorsContainer: {
+    '& > div': {
+      padding: '6px',
+    },
+  },
 });
 
 function NoOptionsMessage(props) {
-  const {
-    selectProps, children, innerProps,
-  } = props;
+  const { selectProps, children, innerProps } = props;
   return (
     <Typography
       color="textSecondary"
@@ -154,7 +158,6 @@ Option.defaultProps = {
   innerRef: undefined,
 };
 
-
 function Placeholder(props) {
   const { children, innerProps, selectProps } = props;
   return (
@@ -196,6 +199,36 @@ function ValueContainer(props) {
 ValueContainer.propTypes = {
   selectProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+function IndicatorsContainer(props) {
+  const {
+    children, className, cx, getStyles, selectProps,
+  } = props;
+  return (
+    <div
+      className={cx(
+        css(getStyles('indicatorsContainer', props)),
+        {
+          indicators: true,
+        },
+        classNames(selectProps.classes.indicatorsContainer, className),
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+IndicatorsContainer.propTypes = {
+  className: PropTypes.string,
+  cx: PropTypes.func.isRequired,
+  getStyles: PropTypes.func.isRequired,
+  children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+  selectProps: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+IndicatorsContainer.defaultProps = {
+  className: undefined,
+  innerRef: undefined,
+  innerProps: undefined,
 };
 
 function MultiValue(props) {
@@ -261,6 +294,7 @@ MenuList.defaultProps = {
 };
 
 const components = {
+  IndicatorsContainer,
   Control,
   Menu,
   MenuList,

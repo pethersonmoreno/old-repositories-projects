@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   resolve: {
     alias: {
+      helpers: path.resolve('src/helpers'),
       HOC: path.resolve('src/HOC'),
       Atoms: path.resolve('src/Atoms'),
       Molecules: path.resolve('src/Molecules'),

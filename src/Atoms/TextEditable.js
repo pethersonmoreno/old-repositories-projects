@@ -131,7 +131,7 @@ class TextEditable extends Component {
 }
 
 TextEditable.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   value: PropTypes.string.isRequired,
   label: PropTypes.string,
@@ -139,6 +139,7 @@ TextEditable.propTypes = {
   onConfirm: PropTypes.func.isRequired,
 };
 TextEditable.defaultProps = {
+  className: null,
   label: '',
   fullWidth: true,
 };
