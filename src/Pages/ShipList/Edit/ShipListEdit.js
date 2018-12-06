@@ -10,7 +10,6 @@ import TextEditable from 'Atoms/TextEditable';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { Paper } from '@material-ui/core';
 import ShipListItems from './ShipListItems';
 
 const ShipListEdit = (props) => {
@@ -29,9 +28,7 @@ const ShipListEdit = (props) => {
   if (shipList) {
     conteudo = (
       <div>
-        <Paper className="paper">
-          <ShipListItems shipList={shipList} />
-        </Paper>
+        <ShipListItems shipList={shipList} />
         <ButtonFabContainer>
           <ButtonFab onClick={() => history.push(`/shipList/${shipList.id}/item/new`)}>
             <AddIcon />

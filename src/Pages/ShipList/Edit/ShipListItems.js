@@ -4,35 +4,23 @@ import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core';
+import { withStyles, IconButton } from '@material-ui/core';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { currency } from 'helpers/format';
 import InputIntegerWithButtons from 'Atoms/InputIntegerWithButtons';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import { asyncOperation } from 'HOC/withAsyncOperation';
+import PaperListItem from 'Atoms/PaperListItem';
 
 const styles = () => ({
-  list: {
-    backgroundColor: '#ffffff',
-  },
   item: {
-    width: '100%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    boxSizing: 'border-box',
-    padding: '12px 16px',
-    boxShadow: '0px 3px 5px -1px rgba(0, 0, 0, 0.2)',
-    borderRadius: '1%',
-    '& > .containerQtdDescription': {
+    '& > .content': {
       alignItems: 'center',
-      justifyContent: 'center',
-      flexGrow: 0,
-      maxWidth: '83.333333%',
-      flexBasis: '83.333333%',
       display: 'flex',
       flexWrap: 'wrap',
       boxSizing: 'border-box',
+      // justifyContent: 'center',
       '& > .multiply': {
         fontSize: '1.2em',
         margin: '0 10px',
@@ -47,10 +35,12 @@ const styles = () => ({
         },
       },
     },
-    '& > .price': {
-      flex: 1,
-      fontSize: '1.2em',
+    '& > .contentRight': {
       textAlign: 'right',
+      '& > .price': {
+        fontSize: '1.2em',
+        textAlign: 'right',
+      },
     },
   },
 });
@@ -60,19 +50,30 @@ const updateQtdItem = (editItem, uid, shipListId, item, qtd) => {
     errorMessage: 'Erro ao alterar quantidade do item',
   });
 };
+const removeItemPrepared = (removeItem, uid, shipListId, idItem) => {
+  asyncOperation(() => removeItem(uid, shipListId, idItem), {
+    successMessage: 'Sucesso ao remover item',
+    errorMessage: 'Erro ao remover item',
+  });
+};
 const ShipListItems = ({
-  history, classes, shipList, uid, editItem,
+  history,
+  classes,
+  shipList,
+  uid,
+  editItem,
+  removeItem,
 }) => (
-  <List disablePadding className={classes.list}>
+  <List disablePadding>
     {shipList.items
       && shipList.items.map(item => (
-        <ListItem
+        <PaperListItem
           button
           key={item.id}
           className={classes.item}
           onClick={() => history.push(`/shipList/${shipList.id}/item/${item.id}`)}
         >
-          <div className="containerQtdDescription">
+          <div className="content">
             <InputIntegerWithButtons
               buttonSize="little"
               textField={false}
@@ -85,18 +86,30 @@ const ShipListItems = ({
               <div className="note">{item.note}</div>
             </div>
           </div>
-          <div className="price">{currency(item.currentPrice)}</div>
-        </ListItem>
+          <div className="contentRight">
+            <span className="price">{currency(item.currentPrice)}</span>
+            <IconButton onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              removeItemPrepared(removeItem, uid, shipList.id, item.id);
+            }}
+            >
+              <DeleteIcon color="primary" />
+            </IconButton>
+          </div>
+        </PaperListItem>
       ))}
     {shipList.items && (
-      <ListItem className={classes.item}>
-        <div className="containerQtdDescription" />
-        <div className="price">
-          {currency(
-            shipList.items.map(item => item.qtd * item.currentPrice).reduce((a, b) => a + b, 0),
-          )}
+      <PaperListItem className={classes.item}>
+        <div className="contentRight">
+          <div className="price">
+            {currency(
+              shipList.items.map(item => item.qtd * item.currentPrice).reduce((a, b) => a + b, 0),
+            )}
+          </div>
+          <div className="removeButton" />
         </div>
-      </ListItem>
+      </PaperListItem>
     )}
   </List>
 );
@@ -106,6 +119,7 @@ ShipListItems.propTypes = {
   shipList: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   editItem: PropTypes.func.isRequired,
+  removeItem: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -114,6 +128,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     editItem: operations.editItem,
+    removeItem: operations.removeItem,
   },
   dispatch,
 );
