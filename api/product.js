@@ -1,27 +1,27 @@
 import { mapObjectToList } from "./utils";
 import { getDatabaseUser } from "./user";
 
-const getDatabaseProducts = uid => getDatabaseUser(uid).child("/products");
+const getDatabaseAllProducts = uid => getDatabaseUser(uid).child("/products");
+const getDatabaseProduct = (uid, id) => getDatabaseAllProducts(uid).child(id);
 
-export const newId = uid => getDatabaseProducts(uid).push().key;
-const set = (uid, id, values) =>
-  getDatabaseProducts(uid)
-    .child(id)
-    .set(values);
+export const newId = uid => getDatabaseAllProducts(uid).push().key;
 export const add = (uid, id, product) =>
-  set(uid, id, product).then(() => ({
-    ...product,
-    id
-  }));
+  getDatabaseProduct(uid, id)
+    .set(product)
+    .then(() => ({
+      ...product,
+      id
+    }));
 export const edit = (uid, id, { id: idField, ...otherFields }) =>
-  set(uid, id, otherFields).then(() => ({ updates: otherFields, id }));
+  getDatabaseProduct(uid, id)
+    .update(otherFields)
+    .then(() => ({ updates: otherFields, id }));
 export const remove = (uid, id) =>
-  getDatabaseProducts(uid)
-    .child(id)
+  getDatabaseProduct(uid, id)
     .remove()
     .then(() => id);
 export const getAll = uid =>
-  getDatabaseProducts(uid)
+  getDatabaseAllProducts(uid)
     .once("value")
     .then(snapshot => mapObjectToList(snapshot.val(), "id"));
 let dicListenChanges = {};
@@ -33,12 +33,12 @@ export const startListenChanges = (uid, listenCallBack) => {
       }
     };
     dicListenChanges[listenCallBack] = listenChanges;
-    getDatabaseProducts(uid).on("value", listenChanges);
+    getDatabaseAllProducts(uid).on("value", listenChanges);
   }
 };
 export const stopListenChanges = (uid, listenCallBack) => {
   if (dicListenChanges[listenCallBack]) {
     const listenChanges = dicListenChanges[listenCallBack];
-    getDatabaseProducts(uid).off("value", listenChanges);
+    getDatabaseAllProducts(uid).off("value", listenChanges);
   }
 };
