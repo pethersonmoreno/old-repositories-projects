@@ -5,13 +5,14 @@ import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ReactSelect from 'Atoms/ReactSelect';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import InputIntegerWithButtons from 'Atoms/InputIntegerWithButtons';
 import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { Typography } from '@material-ui/core';
+import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
 
 const styles = () => ({
   currentPrice: {
@@ -34,18 +35,6 @@ class ShipListItemForm extends Component {
       successMessage: 'Sucesso ao salvar Item da Lista de Compras',
       successCallback: onSaved,
       errorMessage: 'Erro ao salvar Item da Lista de Compras',
-    });
-  }
-
-  onRemove = async () => {
-    const { remove, onRemoved } = this.props;
-    if (!remove) {
-      return;
-    }
-    asyncOperation(() => remove({ ...this.state }), {
-      successMessage: 'Sucesso ao remover Item da Lista de Compras',
-      successCallback: onRemoved,
-      errorMessage: 'Erro ao remover Item da Lista de Compras',
     });
   }
 
@@ -81,63 +70,54 @@ class ShipListItemForm extends Component {
     } else {
       onDone = this.onSave;
       content = (
-        <Paper className="paper">
-          <form noValidate autoComplete="on" onSubmit={this.onSave}>
-            <button type="submit" className="displayNone" />
-            <InputIntegerWithButtons
-              label="Quantidade"
-              value={qtd}
-              onChange={this.onChangeQtd}
-            />
-            <TextField
-              label="Descrição"
-              inputProps={{
-                placeholder: 'Se não informado, usa a descrição do primeiro produto aceito',
-              }}
-              value={description}
-              autoFocus
-              fullWidth
-              onChange={event => this.setState({ description: event.target.value })}
-            />
-            <Grid container>
-              <Grid item xs={6}>
-                <ReactSelect
-                  label="Categoria"
-                  value={valueCategorySelected}
-                  options={categoriesOptions}
-                  onChange={value => this.setState({ categoryId: value ? value.value : null })}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  className={classes.currentPrice}
-                  label="Preço Atual (R$)"
-                  inputProps={{
-                    type: 'number',
-                    step: '0.01',
-                    min: '0.00',
-                  }}
-                  value={currentPrice}
-                  fullWidth
-                  onChange={this.onChangeCurrentPrice}
-                />
-              </Grid>
+        <form noValidate autoComplete="on" onSubmit={this.onSave}>
+          <InvisibleButtonSubmit />
+          <InputIntegerWithButtons
+            label="Quantidade"
+            value={qtd}
+            onChange={this.onChangeQtd}
+          />
+          <TextField
+            label="Descrição"
+            inputProps={{
+              placeholder: 'Se não informado, usa a descrição do primeiro produto aceito',
+            }}
+            value={description}
+            autoFocus
+            fullWidth
+            onChange={event => this.setState({ description: event.target.value })}
+          />
+          <Grid container>
+            <Grid item xs={6}>
+              <ReactSelect
+                label="Categoria"
+                value={valueCategorySelected}
+                options={categoriesOptions}
+                onChange={value => this.setState({ categoryId: value ? value.value : null })}
+              />
             </Grid>
-            <TextField
-              label="Nota"
-              value={note}
-              fullWidth
-              onChange={event => this.setState({ note: event.target.value })}
-            />
-            {editing && (
-              <div className="formButtons">
-                <Button type="button" variant="contained" color="primary" onClick={this.onRemove}>
-                  Remover
-                </Button>
-              </div>
-            )}
-          </form>
-        </Paper>
+            <Grid item xs={6}>
+              <TextField
+                className={classes.currentPrice}
+                label="Preço Atual (R$)"
+                inputProps={{
+                  type: 'number',
+                  step: '0.01',
+                  min: '0.00',
+                }}
+                value={currentPrice}
+                fullWidth
+                onChange={this.onChangeCurrentPrice}
+              />
+            </Grid>
+          </Grid>
+          <TextField
+            label="Nota"
+            value={note}
+            fullWidth
+            onChange={event => this.setState({ note: event.target.value })}
+          />
+        </form>
       );
     }
     return (
@@ -147,7 +127,9 @@ class ShipListItemForm extends Component {
         onDone={onDone}
         withButtonAccount={false}
       >
-        {content}
+        <Paper className="paper">
+          {content}
+        </Paper>
       </PageWithBackButtonTemplate>
     );
   }
@@ -168,8 +150,6 @@ ShipListItemForm.propTypes = {
   categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   save: PropTypes.func.isRequired,
   onSaved: PropTypes.func.isRequired,
-  remove: PropTypes.func,
-  onRemoved: PropTypes.func,
 };
 ShipListItemForm.defaultProps = {
   editing: false,
@@ -181,8 +161,6 @@ ShipListItemForm.defaultProps = {
     currentPrice: 0.0,
     note: '',
   },
-  remove: null,
-  onRemoved: null,
 };
 const mapStateToProps = state => ({
   categories: state.categories,

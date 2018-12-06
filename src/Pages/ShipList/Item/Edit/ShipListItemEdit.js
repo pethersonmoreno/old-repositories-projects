@@ -7,13 +7,7 @@ import Form from '../ShipListItemForm';
 
 const backPath = shipListId => `/shipList/${shipListId}`;
 const ShipListItemEdit = ({
-  history,
-  match,
-  uid,
-  shipLists,
-  editItem,
-  removeItem,
-  updateShipListSelected,
+  history, match, uid, shipLists, editItem, updateShipListSelected,
 }) => {
   const {
     params: { shipListId, id: shipListItemId },
@@ -34,11 +28,6 @@ const ShipListItemEdit = ({
         updateShipListSelected(shipListId);
         history.push(backPath(shipListId));
       }}
-      remove={() => {
-        updateShipListSelected(shipListId);
-        history.push(backPath(shipListId));
-        return removeItem(uid, shipListId, shipListItemId);
-      }}
     />
   );
 };
@@ -48,7 +37,6 @@ ShipListItemEdit.propTypes = {
   uid: PropTypes.string.isRequired,
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   editItem: PropTypes.func.isRequired,
-  removeItem: PropTypes.func.isRequired,
   updateShipListSelected: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
@@ -58,7 +46,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     editItem: operations.editItem,
-    removeItem: operations.removeItem,
     updateShipListSelected: operations.updateShipListSelected,
   },
   dispatch,

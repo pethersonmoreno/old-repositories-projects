@@ -47,8 +47,8 @@ code {
 .paper {
   margin: 0 auto;
 }
-
-form {
+.paper > form,
+.paper > p {
   padding: 25px;
 }
 .AppBar-appBar-116 {

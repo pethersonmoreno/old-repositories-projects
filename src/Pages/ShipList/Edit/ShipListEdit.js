@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
+import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import TextEditable from 'Atoms/TextEditable';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
+import { Paper } from '@material-ui/core';
 import ShipListItems from './ShipListItems';
 
 const ShipListEdit = (props) => {
@@ -24,7 +25,11 @@ const ShipListEdit = (props) => {
   } = props;
   const shipList = shipLists.find(list => list.id === shipListId);
   let titulo = 'Editar Lista';
-  let conteudo = <Typography>Lista não encontrado</Typography>;
+  let conteudo = (
+    <Paper className="paper">
+      <Typography>Lista não encontrado</Typography>
+    </Paper>
+  );
   if (shipList) {
     conteudo = (
       <div>
@@ -47,11 +52,7 @@ const ShipListEdit = (props) => {
       />
     );
   }
-  return (
-    <PageWithBackButtonTemplate backPath="/shipList" titulo={titulo}>
-      {conteudo}
-    </PageWithBackButtonTemplate>
-  );
+  return <PageTemplate titulo={titulo}>{conteudo}</PageTemplate>;
 };
 ShipListEdit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

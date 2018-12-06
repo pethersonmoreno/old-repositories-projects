@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { asyncOperation } from 'HOC/withAsyncOperation';
+import { Typography } from '@material-ui/core';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
+import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
 
 class FormCategory extends Component {
   constructor(props) {
     super(props);
-    const { description } = props;
-    this.state = {
-      description,
-    };
+    this.state = { ...props.category };
   }
 
-  async onCallSubmit(event) {
+  onSave = async (event) => {
     const { save, onSaved } = this.props;
     const { description } = this.state;
     event.preventDefault();
@@ -23,37 +22,59 @@ class FormCategory extends Component {
       successCallback: onSaved,
       errorMessage: 'Erro ao salvar categoria',
     });
-  }
+  };
 
   render() {
-    const { textoBotao } = this.props;
-    const { description } = this.state;
-    return (
-      <Paper className="paper">
-        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
-          <div>
-            <TextField
-              label="Descrição"
-              value={description}
-              autoFocus
-              fullWidth
-              onChange={event => this.setState({ description: event.target.value })}
-            />
-          </div>
-          <div className="formButtons">
-            <Button type="submit" variant="contained" color="primary">
-              {textoBotao}
-            </Button>
-          </div>
+    const { editing, backPath, title } = this.props;
+    const { id, description } = this.state;
+    let content;
+    let onDone;
+    if (editing && !id) {
+      onDone = null;
+      content = <Typography>Categoria não encontrada</Typography>;
+    } else {
+      onDone = this.onSave;
+      content = (
+        <form noValidate autoComplete="on" onSubmit={this.onSave.bind(this)}>
+          <InvisibleButtonSubmit />
+          <TextField
+            label="Descrição"
+            value={description}
+            autoFocus
+            fullWidth
+            onChange={event => this.setState({ description: event.target.value })}
+          />
         </form>
-      </Paper>
+      );
+    }
+    return (
+      <PageWithBackButtonTemplate
+        backPath={backPath}
+        titulo={title}
+        onDone={onDone}
+        withButtonAccount={false}
+      >
+        <Paper className="paper">{content}</Paper>
+      </PageWithBackButtonTemplate>
     );
   }
 }
 FormCategory.propTypes = {
-  textoBotao: PropTypes.string.isRequired,
+  editing: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  backPath: PropTypes.string.isRequired,
   save: PropTypes.func.isRequired,
   onSaved: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired,
+  category: PropTypes.shape({
+    id: PropTypes.string,
+    description: PropTypes.string,
+  }),
+};
+FormCategory.defaultProps = {
+  editing: false,
+  category: {
+    id: null,
+    description: '',
+  },
 };
 export default FormCategory;
