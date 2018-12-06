@@ -26,8 +26,6 @@ const styles = theme => ({
       paddingLeft: '15px',
       paddingRight: '15px',
       '& > .menuButton': {
-        marginRight: '15px',
-        marginLeft: '15px',
         [theme.breakpoints.up('sm')]: {
           display: 'none',
         },

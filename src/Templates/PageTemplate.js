@@ -20,7 +20,7 @@ const PageTemplate = ({
 );
 PageTemplate.propTypes = {
   toggleMenu: PropTypes.func.isRequired,
-  titulo: PropTypes.string.isRequired,
+  titulo: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   onDone: PropTypes.func,
   withButtonAccount: PropTypes.bool,
 };

@@ -63,7 +63,6 @@ ProductList.propTypes = {
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
   products: state.products,
-  productTypes: state.productTypes,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

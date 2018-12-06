@@ -9,7 +9,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuResponsive from 'Organisms/MenuResponsive';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
-import { operations as operationsProductTypes } from 'controle-compras-frontend-redux/ducks/productTypes';
 import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
 import { operations as operationsShipLists } from 'controle-compras-frontend-redux/ducks/shipLists';
 import withAuthorization from 'HOC/withAuthorization';
@@ -29,17 +28,11 @@ class MainAuthenticatedTemplate extends Component {
   }
 
   componentDidMount() {
-    const {
-      startListenCategories,
-      startListenProductTypes,
-      startListenProducts,
-      startListenShipLists,
-    } = this.props;
+    const { startListenCategories, startListenProducts, startListenShipLists } = this.props;
     const { uid } = this.state;
     asyncOperation(
       Promise.all([
         startListenCategories(uid),
-        startListenProductTypes(uid),
         startListenProducts(uid),
         startListenShipLists(uid),
       ]),
@@ -47,16 +40,10 @@ class MainAuthenticatedTemplate extends Component {
   }
 
   componentWillUnmount() {
-    const {
-      stopListenCategories,
-      stopListenProductTypes,
-      stopListenProducts,
-      stopListenShipLists,
-    } = this.props;
+    const { stopListenCategories, stopListenProducts, stopListenShipLists } = this.props;
     const { uid } = this.state;
     if (uid) {
       stopListenCategories(uid);
-      stopListenProductTypes(uid);
       stopListenProducts(uid);
       stopListenShipLists(uid);
     }
@@ -80,8 +67,6 @@ MainAuthenticatedTemplate.propTypes = {
   uid: PropTypes.string.isRequired,
   startListenCategories: PropTypes.func.isRequired,
   stopListenCategories: PropTypes.func.isRequired,
-  startListenProductTypes: PropTypes.func.isRequired,
-  stopListenProductTypes: PropTypes.func.isRequired,
   startListenProducts: PropTypes.func.isRequired,
   stopListenProducts: PropTypes.func.isRequired,
   startListenShipLists: PropTypes.func.isRequired,
@@ -95,8 +80,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   {
     startListenCategories: operationsCategories.startListenChanges,
     stopListenCategories: operationsCategories.stopListenChanges,
-    startListenProductTypes: operationsProductTypes.startListenChanges,
-    stopListenProductTypes: operationsProductTypes.stopListenChanges,
     startListenProducts: operationsProducts.startListenChanges,
     stopListenProducts: operationsProducts.stopListenChanges,
     startListenShipLists: operationsShipLists.startListenChanges,

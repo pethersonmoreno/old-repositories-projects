@@ -21,7 +21,7 @@ const ShipListItemEdit = ({
     <Form
       backPath={backPath(shipListId)}
       editing
-      title="Editar Item"
+      title={`Item ${shipListItem ? shipListItem.description : ''}`}
       item={shipListItem}
       save={data => editItem(uid, shipListId, shipListItemId, data)}
       onSaved={() => {

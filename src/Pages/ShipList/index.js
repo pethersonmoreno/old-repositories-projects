@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import Component from './ShipListTabs';
+import Component from './ShipListList';
 
 export { default as route } from './route';
 export { constants };

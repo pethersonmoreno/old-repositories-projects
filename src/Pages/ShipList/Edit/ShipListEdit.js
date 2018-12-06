@@ -1,6 +1,7 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,11 +11,19 @@ import TextEditable from 'Atoms/TextEditable';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { Paper } from '@material-ui/core';
+import { Paper, withStyles } from '@material-ui/core';
 import ShipListItems from './ShipListItems';
 
+const styles = () => ({
+  textEditable: {
+    '& input': {
+      fontSize: '20px',
+    },
+  },
+});
 const ShipListEdit = (props) => {
   const {
+    classes,
     history,
     match: {
       params: { id: shipListId },
@@ -43,6 +52,7 @@ const ShipListEdit = (props) => {
     );
     titulo = (
       <TextEditable
+        className={classes.textEditable}
         onConfirm={value => asyncOperation(() => edit(uid, shipListId, { description: value }), {
           successMessage: `Sucesso ao alterar descrição da Lista de Compras ${value}`,
           errorMessage: `Erro ao alterar descrição da Lista de Compras ${value}`,
@@ -55,6 +65,7 @@ const ShipListEdit = (props) => {
   return <PageTemplate titulo={titulo}>{conteudo}</PageTemplate>;
 };
 ShipListEdit.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
@@ -72,7 +83,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   },
   dispatch,
 );
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withStyles(styles, { withTheme: true }),
 )(ShipListEdit);

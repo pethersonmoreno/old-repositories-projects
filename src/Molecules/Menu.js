@@ -8,8 +8,31 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import { Collapse } from '@material-ui/core';
+import { bindActionCreators } from 'redux';
+import { operations } from 'controle-compras-frontend-redux/ducks/menu';
 
 const styles = () => ({
+  list: {
+    '& .listItemActive': {
+      '& .expandButton': {
+        color: 'rgba(255, 255, 255, 0.95)',
+      },
+      backgroundColor: '#3f51b5',
+      cursor: 'text',
+      '& div': {
+        '& span': {
+          color: 'rgba(255, 255, 255, 0.95)',
+        },
+      },
+      '&:hover': {
+        backgroundColor: '#3f51b5',
+      },
+    },
+  },
   subList: {
     backgroundColor: 'rgba(63, 81, 181, 0.05)',
     padding: '1px 0',
@@ -17,50 +40,52 @@ const styles = () => ({
       paddingLeft: '40px',
     },
   },
-  listItemActive: {
-    backgroundColor: '#3f51b5',
-    cursor: 'text',
-    '& div': {
-      '& span': {
-        color: 'rgba(255, 255, 255, 0.95)',
-      },
-    },
-    '&:hover': {
-      backgroundColor: '#3f51b5',
-    },
-  },
 });
-const Menu = ({ classes, toggleMenu, shipLists }) => (
+const Menu = ({
+  classes, toggleMenu, menuShipListsOpen, toggleMenuShipLists, shipLists,
+}) => (
   <div>
     <Divider />
-    <List>
+    <List className={classes.list}>
       <ListItem
         component={NavLink}
-        activeClassName={classes.listItemActive}
+        activeClassName="listItemActive"
         exact
         to="/shipList"
         onClick={toggleMenu}
         button
       >
         <ListItemText primary="Listas de Compras" />
+        <IconButton
+          className="expandButton"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleMenuShipLists();
+          }}
+        >
+          {menuShipListsOpen ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
       </ListItem>
-      <List className={classes.subList}>
-        {shipLists.map(shipList => (
-          <ListItem
-            key={shipList.id}
-            component={NavLink}
-            activeClassName={classes.listItemActive}
-            to={`/shipList/${shipList.id}`}
-            onClick={toggleMenu}
-            button
-          >
-            <ListItemText primary={shipList.description} />
-          </ListItem>
-        ))}
-      </List>
+      <Collapse in={menuShipListsOpen} timeout="auto" unmountOnExit>
+        <List className={classes.subList}>
+          {shipLists.map(shipList => (
+            <ListItem
+              key={shipList.id}
+              component={NavLink}
+              activeClassName="listItemActive"
+              to={`/shipList/${shipList.id}`}
+              onClick={toggleMenu}
+              button
+            >
+              <ListItemText primary={shipList.description} />
+            </ListItem>
+          ))}
+        </List>
+      </Collapse>
       <ListItem
         component={NavLink}
-        activeClassName={classes.listItemActive}
+        activeClassName="listItemActive"
         to="/category"
         onClick={toggleMenu}
         button
@@ -69,16 +94,7 @@ const Menu = ({ classes, toggleMenu, shipLists }) => (
       </ListItem>
       <ListItem
         component={NavLink}
-        activeClassName={classes.listItemActive}
-        to="/productType"
-        onClick={toggleMenu}
-        button
-      >
-        <ListItemText primary="Tipos de Produto" />
-      </ListItem>
-      <ListItem
-        component={NavLink}
-        activeClassName={classes.listItemActive}
+        activeClassName="listItemActive"
         to="/product"
         onClick={toggleMenu}
         button
@@ -92,14 +108,21 @@ const Menu = ({ classes, toggleMenu, shipLists }) => (
 Menu.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   toggleMenu: PropTypes.func.isRequired,
+  toggleMenuShipLists: PropTypes.func.isRequired,
+  menuShipListsOpen: PropTypes.bool.isRequired,
   shipLists: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 const mapStateToProps = state => ({
   shipLists: state.shipLists.shipLists,
+  menuShipListsOpen: state.menu.menuShipListsOpen,
 });
-const mapDispatchToProps = null;
-
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    toggleMenuShipLists: operations.toggleMenuShipLists,
+  },
+  dispatch,
+);
 export default compose(
   withRouter,
   connect(

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
@@ -89,13 +87,4 @@ ProductForm.defaultProps = {
     ean: '',
   },
 };
-const mapStateToProps = state => ({
-  productTypes: state.productTypes,
-});
-const mapDispatchToProps = null;
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(ProductForm);
+export default ProductForm;
