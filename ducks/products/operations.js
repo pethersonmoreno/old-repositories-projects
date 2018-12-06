@@ -1,7 +1,4 @@
-import {
-  product as productApi,
-  productType as productTypeApi
-} from "../../api";
+import { product as productApi } from "../../api";
 import actions from "./actions";
 
 const add = (uid, newCategory) =>

@@ -1,5 +1,8 @@
-import types from './types';
+import types from "./types";
 
 const toggleMenu = () => dispatch => dispatch({ type: types.TOGGLE_MENU });
-const updateSmUp = smUp => dispatch => dispatch({ type: types.UPDATE_SMUP, payload: { smUp } });
-export default { toggleMenu, updateSmUp };
+const toggleMenuShipLists = () => dispatch =>
+  dispatch({ type: types.TOGGLE_MENU_SHIPLISTS });
+const updateSmUp = smUp => dispatch =>
+  dispatch({ type: types.UPDATE_SMUP, payload: { smUp } });
+export default { toggleMenu, toggleMenuShipLists, updateSmUp };
