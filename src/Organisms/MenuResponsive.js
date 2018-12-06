@@ -17,6 +17,7 @@ const styles = theme => ({
     },
   },
   drawerPaper: {
+    position: 'absolute',
     width: menuWidth,
   },
 });

@@ -81,7 +81,7 @@ class ShipListItemForm extends Component {
     } else {
       onDone = this.onSave;
       content = (
-        <Paper>
+        <Paper className="paper">
           <form noValidate autoComplete="on" onSubmit={this.onSave}>
             <button type="submit" className="displayNone" />
             <InputIntegerWithButtons

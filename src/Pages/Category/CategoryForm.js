@@ -29,7 +29,7 @@ class FormCategory extends Component {
     const { textoBotao } = this.props;
     const { description } = this.state;
     return (
-      <Paper>
+      <Paper className="paper">
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <div>
             <TextField

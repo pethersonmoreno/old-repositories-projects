@@ -13,6 +13,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 #root {
+  background-color: #fff;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -20,14 +21,38 @@ body {
   right: 0;
   overflow: hidden;
 }
+#root .rootPage {
+  background-color: rgba(0, 0, 0, 0.02);
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+@media (min-width: 1025px) {
+  #root .rootPage {
+    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 2%;
+    overflow: hidden;
+  }
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.toolBar {
+  width: 100%;
+  margin: 0 auto;
+}
+.paper {
+  margin: 0 auto;
+}
+
 form {
-  max-width: 600px;
   padding: 25px;
+}
+.AppBar-appBar-116 {
+  width: calc(100% - 240px);
 }
 .formButtons {
   margin-top: 15px;

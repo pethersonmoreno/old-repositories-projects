@@ -69,7 +69,7 @@ const FormPageTemplate = (props) => {
   return (
     <div className={classes.loginBackground}>
       <div className={classes.loginBox}>
-        <Paper>
+        <Paper className="paper">
           <form onSubmit={onSubmit}>
             <h1 className={classes.headerTitle}>Não esqueça!</h1>
             <div className={classes.campos}>{children}</div>

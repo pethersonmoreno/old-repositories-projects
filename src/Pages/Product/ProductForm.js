@@ -56,7 +56,7 @@ class ProductForm extends Component {
     const valueBrandSelected = brandsOptions.find(option => option.value === brandSelected);
     const valueSizeSelected = sizesOptions.find(option => option.value === sizeSelected);
     return (
-      <Paper>
+      <Paper className="paper">
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <ReactSelect
             label="Tipo de Produto"

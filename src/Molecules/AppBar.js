@@ -14,6 +14,10 @@ import { menuWidth } from '../config';
 
 const styles = theme => ({
   appBar: {
+    position: 'absolute',
+    top: 0,
+    left: 'auto',
+    right: 0,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${menuWidth}px)`,
     },
@@ -38,7 +42,7 @@ const styles = theme => ({
 const AppBar = ({
   classes, children, toggleMenu, goBack, onDone, withButtonAccount,
 }) => (
-  <AppBarMaterialUI position="fixed" className={classes.appBar}>
+  <AppBarMaterialUI position="fixed" className={`${classes.appBar} appBar`}>
     <Toolbar className="toolBar">
       {!goBack && (
         <IconButton

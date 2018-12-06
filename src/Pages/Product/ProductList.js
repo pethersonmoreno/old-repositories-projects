@@ -25,7 +25,7 @@ const ProductList = (props) => {
   } = props;
   return (
     <PageTemplate titulo="Lista de Produtos">
-      <Paper>
+      <Paper className="paper">
         <Table>
           <TableHead>
             <TableRow>

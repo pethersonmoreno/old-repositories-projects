@@ -46,13 +46,15 @@ class ContainerRoutes extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        {route}
-        <NotificationSystem
-          ref={(ref) => {
-            setNotificationSystem(ref);
-          }}
-        />
-        <Loader />
+        <div className="rootPage">
+          {route}
+          <NotificationSystem
+            ref={(ref) => {
+              setNotificationSystem(ref);
+            }}
+          />
+          <Loader />
+        </div>
       </div>
     );
   }

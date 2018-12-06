@@ -10,6 +10,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import AddIcon from '@material-ui/icons/Add';
+import { Paper } from '@material-ui/core';
 
 const styles = () => ({
   list: {
@@ -26,19 +27,21 @@ const styles = () => ({
   },
 });
 const ShipListList = ({ history, classes, shipLists }) => (
-  <PageTemplate titulo="Não esqueça!" removePadding>
-    <List disablePadding className={classes.list}>
-      {shipLists.map(shipList => (
-        <ListItem
-          className={classes.item}
-          key={shipList.id}
-          button
-          onClick={() => history.push(`/shipList/${shipList.id}`)}
-        >
-          <ListItemText inset primary={shipList.description} />
-        </ListItem>
-      ))}
-    </List>
+  <PageTemplate titulo="Não esqueça!">
+    <Paper className="paper">
+      <List disablePadding className={classes.list}>
+        {shipLists.map(shipList => (
+          <ListItem
+            className={classes.item}
+            key={shipList.id}
+            button
+            onClick={() => history.push(`/shipList/${shipList.id}`)}
+          >
+            <ListItemText inset primary={shipList.description} />
+          </ListItem>
+        ))}
+      </List>
+    </Paper>
     <ButtonFabContainer>
       <ButtonFab onClick={() => history.push('/shipList/new')}>
         <AddIcon />

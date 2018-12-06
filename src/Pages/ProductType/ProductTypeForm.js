@@ -48,7 +48,7 @@ class Form extends Component {
     }));
     const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
     return (
-      <Paper>
+      <Paper className="paper">
         <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
           <TextField
             label="Descrição"
