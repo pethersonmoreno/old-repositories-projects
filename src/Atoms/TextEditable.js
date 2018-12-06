@@ -66,6 +66,10 @@ class TextEditable extends Component {
     if (!editing) {
       return;
     }
+    if (value === valueProp) {
+      this.setState({ editing: false });
+      return;
+    }
     if (onConfirm) {
       try {
         onConfirm(value);
