@@ -16,23 +16,23 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${menuWidth}px)`,
     },
-  },
-  menuButton: {
-    marginRight: 15,
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
+    '& > .toolBar': {
+      display: 'flex',
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      '& > .menuButton': {
+        marginRight: '15px',
+        marginLeft: '15px',
+        [theme.breakpoints.up('sm')]: {
+          display: 'none',
+        },
+      },
+      '& > .backButton': {},
+      '& > .title': {
+        flex: 1,
+      },
+      '& > .accountMenu': {},
     },
-  },
-  backButton: {
-    marginRight: 15,
-  },
-  title: {
-    width: '100%',
-    paddingRight: '15px',
-  },
-  accountMenu: {
-    position: 'absolute',
-    right: '0px',
   },
 });
 
@@ -47,31 +47,26 @@ const AppBar = ({
   }
   return (
     <AppBarMaterialUI position="fixed" className={classes.appBar}>
-      <Toolbar>
+      <Toolbar className="toolBar">
         {withButtonMenu && (
           <IconButton
             color="inherit"
             aria-label="Mostrar Menu"
             onClick={toggleMenu}
-            className={classes.menuButton}
+            className="menuButton"
           >
             <MenuIcon />
           </IconButton>
         )}
         {withButtonBack && (
-          <IconButton
-            color="inherit"
-            aria-label="Voltar"
-            onClick={goBack}
-            className={classes.backButton}
-          >
+          <IconButton color="inherit" aria-label="Voltar" onClick={goBack} className="backButton">
             <ArrowBackIcon />
           </IconButton>
         )}
-        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+        <Typography className="title" variant="h6" color="inherit" noWrap>
           {children}
         </Typography>
-        {withButtonAccount && <AccountMenu className={classes.accountMenu} />}
+        {withButtonAccount && <AccountMenu className="accountMenu" />}
       </Toolbar>
     </AppBarMaterialUI>
   );
