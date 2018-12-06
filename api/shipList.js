@@ -1,37 +1,35 @@
 import { mapObjectToList } from "./utils";
 import { getDatabaseUser } from "./user";
+import createBasicRegistry from "./createBasicRegistry";
 
-const getDatabaseAllShipLists = uid => getDatabaseUser(uid).child("/shipLists");
+const path = "/shipLists";
+
+const basicShipListApi = createBasicRegistry(path);
+
+const newId = basicShipListApi.newId;
+const add = basicShipListApi.add;
+const edit = basicShipListApi.edit;
+const remove = basicShipListApi.remove;
+
+const getDatabaseAllShipLists = uid => getDatabaseUser(uid).child(path);
 const getDatabaseShipList = (uid, shipListId) =>
   getDatabaseAllShipLists(uid).child(shipListId);
-const getDatabaseItems = (uid, shipListId) =>
-  getDatabaseShipList(uid, shipListId).child("items");
 
-export const newId = uid => getDatabaseAllShipLists(uid).push().key;
-export const add = (uid, id, shipList) =>
-  getDatabaseShipList(uid, id)
-    .set(shipList)
-    .then(() => ({ ...shipList, id }));
-export const edit = (uid, id, { id: idField, ...otherFields }) =>
-  getDatabaseShipList(uid, id)
-    .update(otherFields)
-    .then(() => ({ updates: otherFields, id }));
-export const remove = (uid, id) =>
-  getDatabaseShipList(uid, id)
-    .remove()
-    .then(() => ({ id }));
-const mapObjectShipListToList = object => {
-  return mapObjectToList(object, "id").map(shipList => ({
+const mapItemsInShipListList = shipListList => {
+  return shipListList.map(shipList => ({
     ...shipList,
     items: shipList.items ? mapObjectToList(shipList.items, "id") : []
   }));
 };
-export const getAll = uid =>
-  getDatabaseAllShipLists(uid)
-    .once("value")
-    .then(snapshot => mapObjectShipListToList(snapshot.val()));
+const mapObjectShipListToList = object => {
+  return mapItemsInShipListList(mapObjectToList(object, "id"));
+};
+const getAll = uid =>
+  basicShipListApi
+    .getAll(uid)
+    .then(shipList => mapItemsInShipListList(shipList));
 let dicListenChanges = {};
-export const startListenChanges = (uid, listenCallBack) => {
+const startListenChanges = (uid, listenCallBack) => {
   if (!dicListenChanges[listenCallBack]) {
     const listenChanges = snapshot => {
       if (listenCallBack) {
@@ -42,35 +40,50 @@ export const startListenChanges = (uid, listenCallBack) => {
     getDatabaseAllShipLists(uid).on("value", listenChanges);
   }
 };
-export const stopListenChanges = (uid, listenCallBack) => {
+const stopListenChanges = (uid, listenCallBack) => {
   if (dicListenChanges[listenCallBack]) {
     const listenChanges = dicListenChanges[listenCallBack];
     getDatabaseAllShipLists(uid).off("value", listenChanges);
   }
 };
-export const newIdItem = (uid, shipListId) =>
+
+const getDatabaseItems = (uid, shipListId) =>
+  getDatabaseShipList(uid, shipListId).child("items");
+
+const newIdItem = (uid, shipListId) =>
   getDatabaseItems(uid, shipListId).push().key;
 
 const getItem = (uid, shipListId, idItem) =>
   getDatabaseItems(uid, shipListId).child(idItem);
-const setItem = (uid, shipListId, idItem, values) =>
-  getItem(uid, shipListId, idItem).set(values);
-export const addItem = (uid, shipListId, idItem, item) =>
-  setItem(uid, shipListId, idItem, item).then(() => ({
-    ...item,
-    id: idItem
-  }));
-export const removeItem = (uid, shipListId, idItem) =>
+const addItem = (uid, shipListId, idItem, item) =>
+  getItem(uid, shipListId, idItem)
+    .set(item)
+    .then(() => ({
+      ...item,
+      id: idItem
+    }));
+const removeItem = (uid, shipListId, idItem) =>
   getItem(uid, shipListId, idItem)
     .remove()
     .then(() => ({ shipListId, id: idItem }));
-export const editItem = (
-  uid,
-  shipListId,
-  idItem,
-  { id: idField, ...otherFields }
-) =>
-  setItem(uid, shipListId, idItem, otherFields).then(() => ({
-    updates: otherFields,
-    id: idItem
-  }));
+const editItem = (uid, shipListId, idItem, { id: idField, ...otherFields }) =>
+  getItem(uid, shipListId, idItem)
+    .update(otherFields)
+    .then(() => ({
+      updates: otherFields,
+      id: idItem
+    }));
+
+export default {
+  newId,
+  add,
+  edit,
+  remove,
+  getAll,
+  startListenChanges,
+  stopListenChanges,
+  newIdItem,
+  addItem,
+  removeItem,
+  editItem
+};
