@@ -4,78 +4,49 @@ import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import ReactSelect from 'Atoms/ReactSelect';
 import { asyncOperation } from 'HOC/withAsyncOperation';
+import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
+import { Typography } from '@material-ui/core';
 
 class ProductForm extends Component {
   constructor(props) {
     super(props);
-    const { product } = props;
-    this.state = { ...product };
+    this.state = { ...props.product };
   }
 
-  async onCallSubmit(event) {
+  onSave = async (event) => {
     const { save, onSaved } = this.props;
     event.preventDefault();
-    const { productTypeId, size, brand } = this.state;
-    if (productTypeId && size && brand) {
+    const { description } = this.state;
+    if (description) {
       asyncOperation(() => save({ ...this.state }), {
         successMessage: 'Sucesso ao salvar produto',
         successCallback: onSaved,
         errorMessage: 'Erro ao salvar produto',
       });
     }
-  }
+  };
 
   render() {
-    const { textoBotao, productTypes } = this.props;
-    const {
-      productTypeId, brand: brandSelected, size: sizeSelected, ean,
-    } = this.state;
-    const productTypesOptions = productTypes.map(productType => ({
-      value: productType.id,
-      label: productType.description,
-    }));
-    let sizesOptions = [];
-    let brandsOptions = [];
-    const productTypeSelected = productTypes.find(productType => productType.id === productTypeId);
-    if (productTypeSelected) {
-      sizesOptions = productTypeSelected.sizes.map(size => ({
-        value: size,
-        label: size,
-      }));
-      brandsOptions = productTypeSelected.brands.map(brand => ({
-        value: brand,
-        label: brand,
-      }));
-    }
-    const valueProductTypeSelected = productTypesOptions.find(
-      option => option.value === productTypeId,
-    );
-    const valueBrandSelected = brandsOptions.find(option => option.value === brandSelected);
-    const valueSizeSelected = sizesOptions.find(option => option.value === sizeSelected);
-    return (
-      <Paper className="paper">
-        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit.bind(this)}>
-          <ReactSelect
-            label="Tipo de Produto"
-            value={valueProductTypeSelected}
+    const { editing, backPath, title } = this.props;
+    const { id, description, ean } = this.state;
+    let content;
+    let onDone;
+    if (editing && !id) {
+      onDone = null;
+      content = <Typography>Produto não encontrada</Typography>;
+    } else {
+      onDone = this.onSave;
+      content = (
+        <form noValidate autoComplete="on" onSubmit={this.onSave}>
+          <InvisibleButtonSubmit />
+          <TextField
+            label="Descrição"
+            value={description}
             autoFocus
-            options={productTypesOptions}
-            onChange={value => this.setState({ productTypeId: value ? value.value : null })}
-          />
-          <ReactSelect
-            label="Marca"
-            value={valueBrandSelected}
-            options={brandsOptions}
-            onChange={value => this.setState({ brand: value ? value.value : null })}
-          />
-          <ReactSelect
-            label="Tamanho"
-            value={valueSizeSelected}
-            options={sizesOptions}
-            onChange={value => this.setState({ size: value ? value.value : null })}
+            fullWidth
+            onChange={event => this.setState({ description: event.target.value })}
           />
           <TextField
             label="EAN"
@@ -83,33 +54,38 @@ class ProductForm extends Component {
             fullWidth
             onChange={event => this.setState({ ean: event.target.value })}
           />
-          <div className="formButtons">
-            <Button type="submit" variant="contained" color="primary">
-              {textoBotao}
-            </Button>
-          </div>
         </form>
-      </Paper>
+      );
+    }
+    return (
+      <PageWithBackButtonTemplate
+        backPath={backPath}
+        titulo={title}
+        onDone={onDone}
+        withButtonAccount={false}
+      >
+        <Paper className="paper">{content}</Paper>
+      </PageWithBackButtonTemplate>
     );
   }
 }
 ProductForm.propTypes = {
-  textoBotao: PropTypes.string.isRequired,
+  editing: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  backPath: PropTypes.string.isRequired,
   save: PropTypes.func.isRequired,
   onSaved: PropTypes.func.isRequired,
   product: PropTypes.shape({
-    productTypeId: PropTypes.string,
-    size: PropTypes.string,
-    brand: PropTypes.string,
+    id: PropTypes.string,
+    description: PropTypes.string,
     ean: PropTypes.string,
   }),
-  productTypes: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 ProductForm.defaultProps = {
+  editing: false,
   product: {
-    productTypeId: null,
-    size: null,
-    brand: null,
+    id: null,
+    description: '',
     ean: '',
   },
 };

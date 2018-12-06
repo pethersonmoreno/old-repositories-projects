@@ -2,18 +2,17 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PageTemplate from 'Templates/PageTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/products';
 import Form from '../ProductForm';
 
+const backPath = '/product';
 const Add = ({ history, uid, add }) => (
-  <PageTemplate titulo="Novo Produto">
-    <Form
-      textoBotao="Adicionar"
-      save={data => add(uid, data)}
-      onSaved={() => history.push('/product')}
-    />
-  </PageTemplate>
+  <Form
+    backPath={backPath}
+    title="Novo Produto"
+    save={data => add(uid, data)}
+    onSaved={() => history.push(backPath)}
+  />
 );
 Add.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

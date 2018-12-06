@@ -35,7 +35,7 @@ class FormCategory extends Component {
     } else {
       onDone = this.onSave;
       content = (
-        <form noValidate autoComplete="on" onSubmit={this.onSave.bind(this)}>
+        <form noValidate autoComplete="on" onSubmit={this.onSave}>
           <InvisibleButtonSubmit />
           <TextField
             label="Descrição"
