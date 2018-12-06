@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
@@ -14,16 +13,15 @@ const ShipListItemAdd = ({
     params: { shipListId },
   } = match;
   return (
-    <PageWithBackButtonTemplate backPath={backPath(shipListId)} titulo="Novo Item">
-      <Form
-        textoBotao="Adicionar"
-        save={data => addItem(uid, shipListId, data)}
-        onSaved={() => {
-          updateShipListSelected(shipListId);
-          history.push(backPath(shipListId));
-        }}
-      />
-    </PageWithBackButtonTemplate>
+    <Form
+      backPath={backPath(shipListId)}
+      title="Novo Item"
+      save={data => addItem(uid, shipListId, data)}
+      onSaved={() => {
+        updateShipListSelected(shipListId);
+        history.push(backPath(shipListId));
+      }}
+    />
   );
 };
 ShipListItemAdd.propTypes = {

@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import ReactSelect from 'Atoms/ReactSelect';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import InputIntegerWithButtons from 'Atoms/InputIntegerWithButtons';
+import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
+import { Typography } from '@material-ui/core';
 
 const styles = () => ({
   currentPrice: {
@@ -22,7 +24,7 @@ class ShipListItemForm extends Component {
     this.state = { ...props.item };
   }
 
-  onCallSubmit = async (event) => {
+  onSave = async (event) => {
     const { save, onSaved } = this.props;
     event.preventDefault();
     asyncOperation(() => save({ ...this.state }), {
@@ -55,8 +57,11 @@ class ShipListItemForm extends Component {
   };
 
   render() {
-    const { classes, textoBotao, categories } = this.props;
     const {
+      classes, editing, backPath, title, categories,
+    } = this.props;
+    const {
+      id,
       qtd, description, categoryId, currentPrice, note,
     } = this.state;
 
@@ -65,70 +70,89 @@ class ShipListItemForm extends Component {
       label: category.description,
     }));
     const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
+    let content;
+    let onDone;
+    if (editing && !id) {
+      onDone = null;
+      content = <Typography>Item não encontrado</Typography>;
+    } else {
+      onDone = this.onSave;
+      content = (
+        <Paper>
+          <form noValidate autoComplete="on" onSubmit={this.onSave}>
+            <InputIntegerWithButtons
+              label="Quantidade"
+              value={qtd}
+              onChange={this.onChangeQtd}
+            />
+            <TextField
+              label="Descrição"
+              inputProps={{
+                placeholder: 'Se não informado, usa a descrição do primeiro produto aceito',
+              }}
+              value={description}
+              autoFocus
+              fullWidth
+              onChange={event => this.setState({ description: event.target.value })}
+            />
+            <Grid container>
+              <Grid item xs={6}>
+                <ReactSelect
+                  label="Categoria"
+                  value={valueCategorySelected}
+                  options={categoriesOptions}
+                  onChange={value => this.setState({ categoryId: value ? value.value : null })}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  className={classes.currentPrice}
+                  label="Preço Atual"
+                  inputProps={{
+                    type: 'number',
+                    step: '0.01',
+                    min: '0.00',
+                  }}
+                  value={currentPrice}
+                  fullWidth
+                  onChange={this.onChangeCurrentPrice}
+                />
+              </Grid>
+            </Grid>
+            <TextField
+              label="Nota"
+              value={note}
+              fullWidth
+              onChange={event => this.setState({ note: event.target.value })}
+            />
+            {editing && (
+              <div className="formButtons">
+                <Button type="button" variant="contained" color="primary" onClick={this.onRemove}>
+                  Remover
+                </Button>
+              </div>
+            )}
+          </form>
+        </Paper>
+      );
+    }
     return (
-      <Paper>
-        <form noValidate autoComplete="on" onSubmit={this.onCallSubmit}>
-          <InputIntegerWithButtons
-            label="Quantidade"
-            value={qtd}
-            onChange={this.onChangeQtd}
-          />
-          <TextField
-            label="Descrição"
-            inputProps={{
-              placeholder: 'Se não informado, usa a descrição do primeiro produto aceito',
-            }}
-            value={description}
-            autoFocus
-            fullWidth
-            onChange={event => this.setState({ description: event.target.value })}
-          />
-          <Grid container>
-            <Grid item xs={6}>
-              <ReactSelect
-                label="Categoria"
-                value={valueCategorySelected}
-                options={categoriesOptions}
-                onChange={value => this.setState({ categoryId: value ? value.value : null })}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                className={classes.currentPrice}
-                label="Preço Atual"
-                inputProps={{
-                  type: 'number',
-                  step: '0.01',
-                  min: '0.00',
-                }}
-                value={currentPrice}
-                fullWidth
-                onChange={this.onChangeCurrentPrice}
-              />
-            </Grid>
-          </Grid>
-          <TextField
-            label="Nota"
-            value={note}
-            fullWidth
-            onChange={event => this.setState({ note: event.target.value })}
-          />
-          <div className="formButtons">
-            <Button type="submit" variant="contained" color="primary">
-              {textoBotao}
-            </Button>
-            <Button type="button" variant="contained" color="primary" onClick={this.onRemove}>
-              Remover
-            </Button>
-          </div>
-        </form>
-      </Paper>
+      <PageWithBackButtonTemplate
+        backPath={backPath}
+        titulo={title}
+        onDone={onDone}
+        withButtonAccount={false}
+      >
+        {content}
+      </PageWithBackButtonTemplate>
     );
   }
 }
 ShipListItemForm.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  textoBotao: PropTypes.string.isRequired,
+  editing: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  backPath: PropTypes.string.isRequired,
   item: PropTypes.shape({
     id: PropTypes.string,
     qtd: PropTypes.number,
@@ -144,6 +168,7 @@ ShipListItemForm.propTypes = {
   onRemoved: PropTypes.func,
 };
 ShipListItemForm.defaultProps = {
+  editing: false,
   item: {
     id: null,
     qtd: 1,

@@ -2,8 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { operations } from 'controle-compras-frontend-redux/ducks/shipLists';
 import Form from '../ShipListItemForm';
 
@@ -25,29 +23,23 @@ const ShipListItemEdit = ({
   if (shipList && shipList.items) {
     shipListItem = shipList.items.find(item => item.id === shipListItemId);
   }
-  let conteudo = <Typography>Item não encontrado</Typography>;
-  if (shipListItem !== undefined) {
-    conteudo = (
-      <Form
-        item={shipListItem}
-        textoBotao="Alterar"
-        save={data => editItem(uid, shipListId, shipListItemId, data)}
-        onSaved={() => {
-          updateShipListSelected(shipListId);
-          history.push(backPath(shipListId));
-        }}
-        remove={() => {
-          updateShipListSelected(shipListId);
-          history.push(backPath(shipListId));
-          return removeItem(uid, shipListId, shipListItemId);
-        }}
-      />
-    );
-  }
   return (
-    <PageWithBackButtonTemplate backPath={backPath(shipListId)} titulo="Editar Item">
-      {conteudo}
-    </PageWithBackButtonTemplate>
+    <Form
+      backPath={backPath(shipListId)}
+      editing
+      title="Editar Item"
+      item={shipListItem}
+      save={data => editItem(uid, shipListId, shipListItemId, data)}
+      onSaved={() => {
+        updateShipListSelected(shipListId);
+        history.push(backPath(shipListId));
+      }}
+      remove={() => {
+        updateShipListSelected(shipListId);
+        history.push(backPath(shipListId));
+        return removeItem(uid, shipListId, shipListItemId);
+      }}
+    />
   );
 };
 ShipListItemEdit.propTypes = {
