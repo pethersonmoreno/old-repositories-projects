@@ -31,6 +31,7 @@ form {
 }
 .formButtons {
   margin-top: 15px;
+  text-align: center;
 }
 .formButtons > button {
   margin-left: 15px;
@@ -49,4 +50,7 @@ form {
 }
 .colunaBotoes {
   width: 96px;
+}
+.displayNone {
+  display: none;
 }
