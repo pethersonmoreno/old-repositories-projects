@@ -5,38 +5,37 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import DoneIcon from '@material-ui/icons/Done';
 
-const styles = theme => ({
+const styles = () => ({
   inputContainer: {
     position: 'relative',
-  },
-  textfield: {
-    paddingRight: '38px',
-    '& > div': {
-      color: 'white',
-      '&::before': {
-        borderBottomColor: 'rgba(255, 255, 255, 0.42)',
-      },
-      '&:hover:not(:focus)::before, &:focus::before': {
-        borderBottomColor: 'rgba(255, 255, 255, 0.65) !important',
-      },
-      '&::after': {
-        borderBottomColor: 'rgba(255, 255, 255, 1)',
-      },
-      '& > input': {
+    '& > .textField': {
+      '& > div': {
         color: 'white',
+        '&::before': {
+          borderBottomColor: 'rgba(255, 255, 255, 0.42)',
+        },
+        '&:hover:not(:focus)::before, &:focus::before': {
+          borderBottomColor: 'rgba(255, 255, 255, 0.65) !important',
+        },
+        '&::after': {
+          borderBottomColor: 'rgba(255, 255, 255, 1)',
+        },
+        '& > input': {
+          color: 'white',
+        },
       },
     },
-  },
-  button: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    width: '36px',
-    height: '36px',
-    minHeight: 'auto',
-  },
-  chip: {
-    margin: theme.spacing.unit / 4,
+    '& > .textFieldEditing': {
+      paddingRight: '38px',
+    },
+    '& > .button': {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+      width: '36px',
+      height: '36px',
+      minHeight: 'auto',
+    },
   },
 });
 class TextEditable extends Component {
@@ -102,7 +101,7 @@ class TextEditable extends Component {
           <TextField
             color="inherit"
             label={label}
-            className={classes.textfield}
+            className={`textField${editing ? ' textFieldEditing' : ''}`}
             value={value}
             inputRef={(input) => {
               this.input = input;
@@ -117,7 +116,7 @@ class TextEditable extends Component {
             <IconButton
               variant="fab"
               color="inherit"
-              className={classes.button}
+              className="button"
               tabIndex="-1"
               onClick={this.confirmEdit}
             >
