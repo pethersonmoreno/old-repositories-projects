@@ -16,6 +16,9 @@ import { Typography } from '@material-ui/core';
 const styles = () => ({
   currentPrice: {
     marginLeft: 10,
+    '& input': {
+      textAlign: 'right',
+    },
   },
 });
 class ShipListItemForm extends Component {
@@ -80,6 +83,7 @@ class ShipListItemForm extends Component {
       content = (
         <Paper>
           <form noValidate autoComplete="on" onSubmit={this.onSave}>
+            <button type="submit" className="displayNone" />
             <InputIntegerWithButtons
               label="Quantidade"
               value={qtd}
@@ -107,7 +111,7 @@ class ShipListItemForm extends Component {
               <Grid item xs={6}>
                 <TextField
                   className={classes.currentPrice}
-                  label="Preço Atual"
+                  label="Preço Atual (R$)"
                   inputProps={{
                     type: 'number',
                     step: '0.01',
