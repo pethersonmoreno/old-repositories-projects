@@ -37,8 +37,14 @@ class MenuResponsive extends React.Component {
 
   updateSmUp = () => {
     const { updateSmUp } = this.props;
-    const newSmUp = document.body.clientWidth >= 600;
-    updateSmUp(newSmUp);
+    if (this.timeoutUpdateSmUp) {
+      clearTimeout(this.timeoutUpdateSmUp);
+    }
+    this.timeoutUpdateSmUp = setTimeout(() => {
+      const newSmUp = document.body.clientWidth >= 600;
+      updateSmUp(newSmUp);
+      this.timeoutUpdateSmUp = null;
+    }, 100);
   };
 
   toggleInsideMenu = () => {
