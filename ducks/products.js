@@ -10,22 +10,23 @@ const saveProductInStores = (dispatch, getState) => (
   productInStores
 ) => {
   const { add, edit, remove } = operationsProductsInStores;
-  const { productsInStores: allProductsInStores } = getState();
+  const { stores, productsInStores: allProductsInStores } = getState();
   const currentProductInStores = allProductsInStores.filter(
     p => p.productId === productId
   );
+  const productInStoresPrepared = productInStores
+    .filter(p => stores.find(store => store.id === p.storeId))
+    .map(productInStore => ({ ...productInStore, productId }));
   const promises = [
     ...currentProductInStores
       .filter(currentP => !productInStores.find(p => p.id === currentP.id))
       .map(({ id }) => dispatch(remove(uid, id))),
-    ...productInStores
-      .map(productInStore => ({ ...productInStore, productId }))
-      .map(({ id, ...fields }) => {
-        if (id) {
-          return dispatch(edit(uid, id, fields));
-        }
-        return dispatch(add(uid, fields));
-      })
+    ...productInStoresPrepared
+      .filter(p => p.id)
+      .map(({ id, ...fields }) => dispatch(edit(uid, id, fields))),
+    ...productInStoresPrepared
+      .filter(p => !p.id)
+      .map(({ id, ...fields }) => dispatch(add(uid, fields)))
   ];
   return Promise.all(promises);
 };
