@@ -55,7 +55,6 @@ const shipLists = typeToReducer(
     [types.REMOVE_SHIPLIST_ITEM]: {
       [FULFILLED]: (state, action) =>
         state.map(shipList => {
-          console.log(action);
           if (shipList.id === action.meta.shipListId) {
             return {
               ...shipList,

@@ -1,6 +1,5 @@
 const createOperations = (actions, registryApi) => {
   const add = (uid, newRegistry) => {
-    console.log("test: ", newRegistry);
     return actions.add(
       registryApi.add(uid, registryApi.newId(uid), newRegistry)
     );
