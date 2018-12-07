@@ -30,16 +30,13 @@ const styles = () => ({
 });
 class ContainerRoutes extends Component {
   componentDidMount() {
-    const { startListenAuthChanges, startListenUserReloads, signByRedirectResult } = this.props;
-    asyncOperation(
-      Promise.all([startListenAuthChanges(), startListenUserReloads(), signByRedirectResult()]),
-    );
+    const { startListenAuthChanges, signByRedirectResult } = this.props;
+    asyncOperation(Promise.all([startListenAuthChanges(), signByRedirectResult()]));
   }
 
   componentWillUnmount() {
-    const { stopListenAuthChanges, stopListenUserReloads } = this.props;
+    const { stopListenAuthChanges } = this.props;
     stopListenAuthChanges();
-    stopListenUserReloads();
   }
 
   render() {
@@ -63,8 +60,6 @@ ContainerRoutes.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   startListenAuthChanges: PropTypes.func.isRequired,
   stopListenAuthChanges: PropTypes.func.isRequired,
-  startListenUserReloads: PropTypes.func.isRequired,
-  stopListenUserReloads: PropTypes.func.isRequired,
   signByRedirectResult: PropTypes.func.isRequired,
 };
 const mapStateToProps = null;
@@ -72,8 +67,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   {
     startListenAuthChanges: operations.startListenAuthChanges,
     stopListenAuthChanges: operations.stopListenAuthChanges,
-    startListenUserReloads: operations.startListenUserReloads,
-    stopListenUserReloads: operations.stopListenUserReloads,
     signByRedirectResult: operations.signByRedirectResult,
   },
   dispatch,

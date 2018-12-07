@@ -14,6 +14,16 @@ class EmailVerificationForm extends Component {
     error: null,
   };
 
+  componentDidMount() {
+    const { startListenUserReloads } = this.props;
+    asyncOperation(Promise.all([startListenUserReloads()]));
+  }
+
+  componentWillUnmount() {
+    const { stopListenUserReloads } = this.props;
+    stopListenUserReloads();
+  }
+
   sendEmailVerification = () => {
     const { sendEmailVerification } = this.props;
     asyncOperation(() => sendEmailVerification(), {
@@ -52,11 +62,15 @@ class EmailVerificationForm extends Component {
 }
 EmailVerificationForm.propTypes = {
   sendEmailVerification: PropTypes.func.isRequired,
+  startListenUserReloads: PropTypes.func.isRequired,
+  stopListenUserReloads: PropTypes.func.isRequired,
 };
 const mapStateToProps = null;
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     sendEmailVerification: operations.sendEmailVerification,
+    startListenUserReloads: operations.startListenUserReloads,
+    stopListenUserReloads: operations.stopListenUserReloads,
   },
   dispatch,
 );
