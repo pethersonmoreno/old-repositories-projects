@@ -11,19 +11,11 @@ import TextEditable from 'Atoms/TextEditable';
 import { asyncOperation } from 'HOC/withAsyncOperation';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
-import { Paper, withStyles } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import ShipListItems from './ShipListItems';
 
-const styles = () => ({
-  textEditable: {
-    '& input': {
-      fontSize: '20px',
-    },
-  },
-});
 const ShipListEdit = (props) => {
   const {
-    classes,
     history,
     match: {
       params: { id: shipListId },
@@ -52,7 +44,6 @@ const ShipListEdit = (props) => {
     );
     titulo = (
       <TextEditable
-        className={classes.textEditable}
         onConfirm={value => asyncOperation(() => edit(uid, shipListId, { description: value }), {
           successMessage: `Sucesso ao alterar descrição da Lista de Compras ${value}`,
           errorMessage: `Erro ao alterar descrição da Lista de Compras ${value}`,
@@ -65,7 +56,6 @@ const ShipListEdit = (props) => {
   return <PageTemplate titulo={titulo}>{conteudo}</PageTemplate>;
 };
 ShipListEdit.propTypes = {
-  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
@@ -88,5 +78,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps,
   ),
-  withStyles(styles, { withTheme: true }),
 )(ShipListEdit);

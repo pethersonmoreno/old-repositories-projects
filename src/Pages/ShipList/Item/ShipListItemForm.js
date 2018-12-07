@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-// import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import ReactSelect from 'Atoms/ReactSelect';
 import { asyncOperation } from 'HOC/withAsyncOperation';
@@ -57,11 +56,6 @@ class ShipListItemForm extends Component {
       qtd, description, categoryId, currentPrice, note,
     } = this.state;
 
-    const categoriesOptions = categories.map(category => ({
-      value: category.id,
-      label: category.description,
-    }));
-    const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
     let content;
     let onDone;
     if (editing && !id) {
@@ -69,6 +63,12 @@ class ShipListItemForm extends Component {
       content = <Typography>Item não encontrado</Typography>;
     } else {
       onDone = this.onSave;
+
+      const categoriesOptions = categories.map(category => ({
+        value: category.id,
+        label: category.description,
+      }));
+      const valueCategorySelected = categoriesOptions.find(option => option.value === categoryId);
       content = (
         <form noValidate autoComplete="on" onSubmit={this.onSave}>
           <InvisibleButtonSubmit />

@@ -8,6 +8,7 @@ const styles = () => ({
     '& > div, & > li': {
       width: '100%',
       display: 'flex',
+      alignItems: 'center',
       flexWrap: 'wrap',
       boxSizing: 'border-box',
       padding: '12px 16px',
@@ -16,9 +17,13 @@ const styles = () => ({
       borderRadius: '7%',
       '& > .content': {
         flexGrow: 1,
+        display: 'flex',
+        alignItems: 'center',
       },
       '& > .contentRight': {
         marginLeft: 'auto',
+        display: 'flex',
+        alignItems: 'center',
       },
     },
   },

@@ -7,21 +7,30 @@ import DoneIcon from '@material-ui/icons/Done';
 
 const styles = () => ({
   inputContainer: {
+    borderColor: 'inherit',
     position: 'relative',
     '& > .textField': {
+      borderColor: 'inherit',
       '& > div': {
-        color: 'white',
+        borderColor: 'inherit',
+        color: 'inherit',
+        fontSize: 'inherit',
         '&::before': {
-          borderBottomColor: 'rgba(255, 255, 255, 0.42)',
+          borderBottomColor: 'inherit',
+          opacity: 0.42,
         },
         '&:hover:not(:focus)::before, &:focus::before': {
-          borderBottomColor: 'rgba(255, 255, 255, 0.65) !important',
+          borderBottomColor: 'inherit !important',
+          opacity: '0.65 !important',
         },
         '&::after': {
-          borderBottomColor: 'rgba(255, 255, 255, 1)',
+          borderBottomColor: 'inherit',
+          opacity: 1,
         },
         '& > input': {
-          color: 'white',
+          textAlign: 'inherit',
+          fontSize: 'inherit',
+          color: 'inherit',
         },
       },
     },
@@ -89,49 +98,54 @@ class TextEditable extends Component {
 
   focusInput = () => {
     setTimeout(() => {
-      if (this.input) {
+      if (this.input && document.activeElement !== this.input) {
         this.input.focus();
       }
     }, 100);
   };
 
   startEdit = () => {
+    const { editing } = this.state;
+    if (editing) {
+      return;
+    }
     this.setState({ editing: true });
+    this.focusInput();
   };
 
   render() {
     const {
-      className, classes, label, fullWidth, value,
+      className, classes, label, fullWidth, value, onConfirm, ...otherProps
     } = this.props;
     const { editing } = this.state;
     return (
-      <div className={className}>
-        <div className={classes.inputContainer}>
-          <TextField
+      <div className={`${classes.inputContainer} ${className}`}>
+        <TextField
+          color="inherit"
+          label={label}
+          className={`textField${editing ? ' textFieldEditing' : ''}`}
+          defaultValue={value}
+          inputRef={(input) => {
+            this.input = input;
+          }}
+          fullWidth={fullWidth}
+          onKeyPress={this.onKeyPress}
+          onClick={this.startEdit}
+          onFocus={this.startEdit}
+          onBlur={this.confirmEdit}
+          {...otherProps}
+        />
+        {editing && (
+          <IconButton
+            variant="fab"
             color="inherit"
-            label={label}
-            className={`textField${editing ? ' textFieldEditing' : ''}`}
-            defaultValue={value}
-            inputRef={(input) => {
-              this.input = input;
-            }}
-            fullWidth={fullWidth}
-            onKeyPress={this.onKeyPress}
-            onFocus={this.startEdit}
-            onBlur={this.confirmEdit}
-          />
-          {editing && (
-            <IconButton
-              variant="fab"
-              color="inherit"
-              className="button"
-              tabIndex="-1"
-              onClick={this.confirmEdit}
-            >
-              <DoneIcon />
-            </IconButton>
-          )}
-        </div>
+            className="button"
+            tabIndex="-1"
+            onClick={this.confirmEdit}
+          >
+            <DoneIcon />
+          </IconButton>
+        )}
       </div>
     );
   }
@@ -140,7 +154,7 @@ class TextEditable extends Component {
 TextEditable.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string,
   fullWidth: PropTypes.bool,
   onConfirm: PropTypes.func.isRequired,
@@ -149,6 +163,7 @@ TextEditable.defaultProps = {
   className: null,
   label: '',
   fullWidth: true,
+  value: '',
 };
 
 export default withStyles(styles, { withTheme: true })(TextEditable);

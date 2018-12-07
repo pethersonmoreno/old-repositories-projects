@@ -12,6 +12,7 @@ import { operations as operationsCategories } from 'controle-compras-frontend-re
 import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
 import { operations as operationsShipLists } from 'controle-compras-frontend-redux/ducks/shipLists';
 import { operations as operationsStores } from 'controle-compras-frontend-redux/ducks/stores';
+import { operations as operationsProductsInStores } from 'controle-compras-frontend-redux/ducks/productsInStores';
 import withAuthorization from 'HOC/withAuthorization';
 
 const styles = () => ({
@@ -34,6 +35,7 @@ class MainAuthenticatedTemplate extends Component {
       startListenProducts,
       startListenShipLists,
       startListenStores,
+      startListenProductsInStores,
     } = this.props;
     const { uid } = this.state;
     asyncOperation(
@@ -42,6 +44,7 @@ class MainAuthenticatedTemplate extends Component {
         startListenProducts(uid),
         startListenShipLists(uid),
         startListenStores(uid),
+        startListenProductsInStores(uid),
       ]),
     );
   }
@@ -52,6 +55,7 @@ class MainAuthenticatedTemplate extends Component {
       stopListenProducts,
       stopListenShipLists,
       stopListenStores,
+      stopListenProductsInStores,
     } = this.props;
     const { uid } = this.state;
     if (uid) {
@@ -59,6 +63,7 @@ class MainAuthenticatedTemplate extends Component {
       stopListenProducts(uid);
       stopListenShipLists(uid);
       stopListenStores(uid);
+      stopListenProductsInStores(uid);
     }
   }
 
@@ -86,6 +91,8 @@ MainAuthenticatedTemplate.propTypes = {
   stopListenShipLists: PropTypes.func.isRequired,
   startListenStores: PropTypes.func.isRequired,
   stopListenStores: PropTypes.func.isRequired,
+  startListenProductsInStores: PropTypes.func.isRequired,
+  stopListenProductsInStores: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -101,6 +108,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     stopListenShipLists: operationsShipLists.stopListenChanges,
     startListenStores: operationsStores.startListenChanges,
     stopListenStores: operationsStores.stopListenChanges,
+    startListenProductsInStores: operationsProductsInStores.startListenChanges,
+    stopListenProductsInStores: operationsProductsInStores.stopListenChanges,
   },
   dispatch,
 );
