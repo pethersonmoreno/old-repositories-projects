@@ -32,6 +32,11 @@ const styles = theme => ({
       },
       '& > .title': {
         flex: 1,
+        '&.withoutGoBack': {
+          [theme.breakpoints.up('sm')]: {
+            paddingLeft: '12px',
+          },
+        },
       },
     },
   },
@@ -57,7 +62,12 @@ const AppBar = ({
           <ArrowBackIcon />
         </IconButton>
       )}
-      <Typography className="title" variant="h6" color="inherit" noWrap>
+      <Typography
+        className={`title ${!goBack ? 'withoutGoBack' : ''}`}
+        variant="h6"
+        color="inherit"
+        noWrap
+      >
         {children}
       </Typography>
       {onDone && (
