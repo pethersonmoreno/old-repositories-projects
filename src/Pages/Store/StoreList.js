@@ -16,7 +16,7 @@ import PaperListItem from 'Atoms/PaperListItem';
 
 const StoreList = (props) => {
   const {
-    history, uid, stores, remove,
+    history, uid, stores, removeWithProductsInStore,
   } = props;
   return (
     <PageTemplate titulo="Lojas">
@@ -34,7 +34,7 @@ const StoreList = (props) => {
               <IconButton
                 onClick={(event) => {
                   event.stopPropagation();
-                  asyncOperation(() => remove(uid, store.id), {
+                  asyncOperation(() => removeWithProductsInStore(uid, store.id), {
                     successMessage: `Sucesso ao remover Loja ${store.name}`,
                     errorMessage: `Erro ao remover Loja ${store.name}`,
                   });
@@ -58,7 +58,7 @@ StoreList.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   stores: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  remove: PropTypes.func.isRequired,
+  removeWithProductsInStore: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
@@ -66,7 +66,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    remove: operations.remove,
+    removeWithProductsInStore: operations.removeWithProductsInStore,
   },
   dispatch,
 );

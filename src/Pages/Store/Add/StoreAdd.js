@@ -7,12 +7,12 @@ import Form from '../StoreForm';
 import { PREFIX_ROUTE as backPath } from '../constants';
 
 const StoreAdd = (props) => {
-  const { history, uid, add } = props;
+  const { history, uid, addWithProductsInStore } = props;
   return (
     <Form
       backPath={backPath}
       title="Nova Loja"
-      save={data => add(uid, data)}
+      save={data => addWithProductsInStore(uid, data.store, data.productsInStore)}
       onSaved={() => history.push(backPath)}
     />
   );
@@ -20,7 +20,7 @@ const StoreAdd = (props) => {
 StoreAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
-  add: PropTypes.func.isRequired,
+  addWithProductsInStore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    add: operations.add,
+    addWithProductsInStore: operations.addWithProductsInStore,
   },
   dispatch,
 );

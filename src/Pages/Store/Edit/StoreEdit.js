@@ -14,16 +14,23 @@ const StoreEdit = (props) => {
     },
     uid,
     stores,
-    edit,
+    productsInStores: allProductsInStores,
+    editWithProductsInStore,
   } = props;
   const store = stores.find(item => item.id === storeId);
+  const productsInStore = allProductsInStores
+    .filter(p => p.storeId === storeId)
+    .map(({ storeId: storeIdMap, ...otherFields }) => ({
+      ...otherFields,
+    }));
   return (
     <Form
       editing
       backPath={backPath}
       title={`Loja ${store ? store.name : ''}`}
-      store={store}
-      save={data => edit(uid, storeId, data)}
+      storeShop={store}
+      productsInStore={productsInStore}
+      save={data => editWithProductsInStore(uid, storeId, data.store, data.productsInStore)}
       onSaved={() => history.push(backPath)}
     />
   );
@@ -33,16 +40,18 @@ StoreEdit.propTypes = {
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   stores: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  edit: PropTypes.func.isRequired,
+  productsInStores: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
+  editWithProductsInStore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
   stores: state.stores,
+  productsInStores: state.productsInStores,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    edit: operations.edit,
+    editWithProductsInStore: operations.editWithProductsInStore,
   },
   dispatch,
 );

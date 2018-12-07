@@ -19,9 +19,6 @@ const styles = () => ({
     display: 'inline-block',
     width: '90px',
     textAlign: 'center',
-    // '& > .textField': {
-    //   paddingRight: '38px',
-    // },
   },
 });
 class ProductForm extends Component {
@@ -97,7 +94,8 @@ class ProductForm extends Component {
   render() {
     const {
       classes,
-      editing, backPath, title, stores,
+      editing, backPath, title,
+      stores,
     } = this.props;
     const {
       product: { id, description, ean },
@@ -140,34 +138,38 @@ class ProductForm extends Component {
             onChange={value => this.addToStore(value.value)}
           />
           <List>
-            {productInStores.map(productInStore => ({
-              ...productInStore,
-              store: stores.find(s => (s.id === productInStore.storeId)),
-            })).map(({ storeId, price, store }) => (
-              <PaperListItem
-                key={storeId}
-              >
-                <div className="content">
-                  {store.name}
-                </div>
-                <div className="contentRight">
-                  <TextEditable
-                    className={classes.textEditable}
-                    onConfirm={value => this.updatePriceInStore(storeId, value)}
-                    value={price}
-                    inputProps={{
-                      type: 'number',
-                      step: '0.01',
-                    }}
-                  />
-                  <IconButton
-                    onClick={() => this.removeProductInStore(storeId)}
-                  >
-                    <DeleteIcon color="primary" />
-                  </IconButton>
-                </div>
-              </PaperListItem>
-            ))}
+            {productInStores
+              .map(productInStore => ({
+                ...productInStore,
+                store: stores.find(s => (s.id === productInStore.storeId)),
+              }))
+              .filter(productInStore => productInStore.store)
+              .map(({ storeId, price, store }) => (
+                <PaperListItem
+                  key={storeId}
+                >
+                  <div className="content">
+                    {store.name}
+                  </div>
+                  <div className="contentRight">
+                    <TextEditable
+                      className={classes.textEditable}
+                      onConfirm={value => this.updatePriceInStore(storeId, value)}
+                      value={price}
+                      inputProps={{
+                        type: 'number',
+                        step: '0.01',
+                      }}
+                    />
+                    <IconButton
+                      onClick={() => this.removeProductInStore(storeId)}
+                    >
+                      <DeleteIcon color="primary" />
+                    </IconButton>
+                  </div>
+                </PaperListItem>
+              ))
+            }
           </List>
         </form>
       );
