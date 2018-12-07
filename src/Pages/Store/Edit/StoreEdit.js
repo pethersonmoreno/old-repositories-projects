@@ -2,38 +2,43 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { operations } from 'controle-compras-frontend-redux/ducks/categories';
-import Form from '../CategoryForm';
+import { operations } from 'controle-compras-frontend-redux/ducks/stores';
+import Form from '../StoreForm';
 import { PREFIX_ROUTE as backPath } from '../constants';
 
-const CategoryEdit = (props) => {
+const StoreEdit = (props) => {
   const {
-    history, match, uid, categories, edit,
+    history,
+    match: {
+      params: { id: storeId },
+    },
+    uid,
+    stores,
+    edit,
   } = props;
-  const categoryId = match.params.id;
-  const category = categories.find(item => item.id === categoryId);
+  const store = stores.find(item => item.id === storeId);
   return (
     <Form
       editing
       backPath={backPath}
-      title={`Categoria ${category ? category.description : ''}`}
-      category={category}
-      save={data => edit(uid, categoryId, data)}
+      title={`Loja ${store ? store.name : ''}`}
+      store={store}
+      save={data => edit(uid, storeId, data)}
       onSaved={() => history.push(backPath)}
     />
   );
 };
-CategoryEdit.propTypes = {
+StoreEdit.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   match: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
-  categories: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  stores: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
-  categories: state.categories,
+  stores: state.stores,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
@@ -44,4 +49,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CategoryEdit);
+)(StoreEdit);

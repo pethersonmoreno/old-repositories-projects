@@ -2,22 +2,22 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { operations } from 'controle-compras-frontend-redux/ducks/categories';
-import Form from '../CategoryForm';
+import { operations } from 'controle-compras-frontend-redux/ducks/stores';
+import Form from '../StoreForm';
 import { PREFIX_ROUTE as backPath } from '../constants';
 
-const CategoryAdd = (props) => {
+const StoreAdd = (props) => {
   const { history, uid, add } = props;
   return (
     <Form
       backPath={backPath}
-      title="Nova Categoria"
+      title="Nova Loja"
       save={data => add(uid, data)}
       onSaved={() => history.push(backPath)}
     />
   );
 };
-CategoryAdd.propTypes = {
+StoreAdd.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   add: PropTypes.func.isRequired,
@@ -35,4 +35,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CategoryAdd);
+)(StoreAdd);

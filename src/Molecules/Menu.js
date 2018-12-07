@@ -41,6 +41,11 @@ const styles = () => ({
     },
   },
 });
+const commonMenuItens = [
+  { to: '/category', label: 'Categorias' },
+  { to: '/product', label: 'Produtos' },
+  { to: '/store', label: 'Lojas' },
+];
 const Menu = ({
   classes, toggleMenu, menuShipListsOpen, toggleMenuShipLists, shipLists,
 }) => (
@@ -83,24 +88,17 @@ const Menu = ({
           ))}
         </List>
       </Collapse>
-      <ListItem
-        component={NavLink}
-        activeClassName="listItemActive"
-        to="/category"
-        onClick={toggleMenu}
-        button
-      >
-        <ListItemText primary="Categorias" />
-      </ListItem>
-      <ListItem
-        component={NavLink}
-        activeClassName="listItemActive"
-        to="/product"
-        onClick={toggleMenu}
-        button
-      >
-        <ListItemText primary="Produtos" />
-      </ListItem>
+      {commonMenuItens.map(menuItem => (
+        <ListItem
+          component={NavLink}
+          activeClassName="listItemActive"
+          to={menuItem.to}
+          onClick={toggleMenu}
+          button
+        >
+          <ListItemText primary={menuItem.label} />
+        </ListItem>
+      ))}
     </List>
     <Divider />
   </div>

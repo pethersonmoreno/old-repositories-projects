@@ -7,42 +7,56 @@ import { Typography } from '@material-ui/core';
 import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
 
-class CategoryForm extends Component {
+class StoreForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...props.category };
+    this.state = { ...props.store };
   }
 
   onSave = async (event) => {
     const { save, onSaved } = this.props;
-    const { description } = this.state;
+    const { name } = this.state;
     event.preventDefault();
     asyncOperation(() => save({ ...this.state }), {
-      successMessage: `Sucesso ao salvar Categoria ${description}`,
+      successMessage: `Sucesso ao salvar Loja ${name}`,
       successCallback: onSaved,
-      errorMessage: 'Erro ao salvar categoria',
+      errorMessage: 'Erro ao salvar Loja',
     });
   };
 
   render() {
     const { editing, backPath, title } = this.props;
-    const { id, description } = this.state;
+    const {
+      id, name, physicalStoreAddress, virtualStoreSite,
+    } = this.state;
     let content;
     let onDone;
     if (editing && !id) {
       onDone = null;
-      content = <Typography>Categoria não encontrada</Typography>;
+      content = <Typography>Loja não encontrada</Typography>;
     } else {
       onDone = this.onSave;
       content = (
         <form noValidate autoComplete="on" onSubmit={this.onSave}>
           <InvisibleButtonSubmit />
           <TextField
-            label="Descrição"
-            value={description}
+            label="Nome"
+            value={name}
             autoFocus
             fullWidth
-            onChange={event => this.setState({ description: event.target.value })}
+            onChange={event => this.setState({ name: event.target.value })}
+          />
+          <TextField
+            label="Endereço da Loja Física"
+            value={physicalStoreAddress}
+            fullWidth
+            onChange={event => this.setState({ physicalStoreAddress: event.target.value })}
+          />
+          <TextField
+            label="Site da Loja Virtual"
+            value={virtualStoreSite}
+            fullWidth
+            onChange={event => this.setState({ virtualStoreSite: event.target.value })}
           />
         </form>
       );
@@ -59,22 +73,26 @@ class CategoryForm extends Component {
     );
   }
 }
-CategoryForm.propTypes = {
+StoreForm.propTypes = {
   editing: PropTypes.bool,
   title: PropTypes.string.isRequired,
   backPath: PropTypes.string.isRequired,
   save: PropTypes.func.isRequired,
   onSaved: PropTypes.func.isRequired,
-  category: PropTypes.shape({
+  store: PropTypes.shape({
     id: PropTypes.string,
-    description: PropTypes.string,
+    name: PropTypes.string,
+    physicalStoreAddress: PropTypes.string,
+    virtualStoreSite: PropTypes.string,
   }),
 };
-CategoryForm.defaultProps = {
+StoreForm.defaultProps = {
   editing: false,
-  category: {
+  store: {
     id: null,
-    description: '',
+    name: '',
+    physicalStoreAddress: '',
+    virtualStoreSite: '',
   },
 };
-export default CategoryForm;
+export default StoreForm;
