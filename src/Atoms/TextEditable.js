@@ -41,10 +41,8 @@ const styles = () => ({
 class TextEditable extends Component {
   constructor(props) {
     super(props);
-    const { value } = this.props;
     this.state = {
       editing: false,
-      value,
     };
   }
 
@@ -61,25 +59,25 @@ class TextEditable extends Component {
   };
 
   confirmEdit = () => {
-    const { onConfirm, value: valueProp } = this.props;
-    const { editing, value } = this.state;
+    const { onConfirm, value } = this.props;
+    const { editing } = this.state;
     if (!editing) {
       return;
     }
-    if (value === valueProp) {
+    if (this.input.value === value) {
       this.setState({ editing: false });
       return;
     }
     if (onConfirm) {
       try {
-        onConfirm(value);
+        onConfirm(this.input.value);
         this.setState({ editing: false });
       } catch (error) {
         this.focusInput();
       }
       return;
     }
-    this.setState({ editing: false, value: valueProp });
+    this.setState({ editing: false });
   };
 
   focusInput = () => {
@@ -96,9 +94,9 @@ class TextEditable extends Component {
 
   render() {
     const {
-      className, classes, label, fullWidth,
+      className, classes, label, fullWidth, value,
     } = this.props;
-    const { editing, value } = this.state;
+    const { editing } = this.state;
     return (
       <div className={className}>
         <div className={classes.inputContainer}>
@@ -106,11 +104,11 @@ class TextEditable extends Component {
             color="inherit"
             label={label}
             className={`textField${editing ? ' textFieldEditing' : ''}`}
-            value={value}
+            value={editing ? undefined : value}
+            defaultValue={value}
             inputRef={(input) => {
               this.input = input;
             }}
-            onChange={event => this.setState({ value: event.target.value })}
             fullWidth={fullWidth}
             onKeyPress={this.onKeyPress}
             onFocus={this.startEdit}
