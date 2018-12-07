@@ -1,6 +1,10 @@
 const createOperations = (actions, registryApi) => {
-  const add = (uid, newRegistry) =>
-    actions.add(registryApi.add(uid, registryApi.newId(uid), newRegistry));
+  const add = (uid, newRegistry) => {
+    console.log("test: ", newRegistry);
+    return actions.add(
+      registryApi.add(uid, registryApi.newId(uid), newRegistry)
+    );
+  };
   const remove = (uid, id) => actions.remove(registryApi.remove(uid, id));
   const edit = (uid, id, updates) =>
     actions.edit(registryApi.edit(uid, id, updates));

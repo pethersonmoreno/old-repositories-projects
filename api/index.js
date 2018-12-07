@@ -4,13 +4,15 @@ import category from "./category";
 import product from "./product";
 import shipList from "./shipList";
 import store from "./store";
+import productInStore from "./productInStore";
 
-export { auth, user, category, product, shipList, store };
+export { auth, user, category, product, shipList, store, productInStore };
 export default {
   auth,
   user,
   category,
   product,
   shipList,
-  store
+  store,
+  productInStore
 };
