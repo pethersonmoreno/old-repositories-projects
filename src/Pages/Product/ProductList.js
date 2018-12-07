@@ -10,26 +10,16 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
-import { operations as operationsProductsInStores } from 'controle-compras-frontend-redux/ducks/productsInStores';
+import { operations } from 'controle-compras-frontend-redux/ducks/products';
 import PaperListItem from 'Atoms/PaperListItem';
 import { List } from '@material-ui/core';
-import saveProductInStores from './saveProductInStores';
 
-const removeProduct = async (uid, productId, allProductsInStores, operations) => {
-  const { remove } = operations;
-  const productInStores = [];
-  await saveProductInStores(uid, productId, allProductsInStores, productInStores, operations);
-  return remove(uid, productId);
-};
 const ProductList = (props) => {
   const {
     history,
     uid,
     products,
-    productsInStores: allProductsInStores,
-    remove,
-    removeProductInStore,
+    removeWithProductInStores,
   } = props;
   return (
     <PageTemplate titulo="Produtos">
@@ -46,10 +36,7 @@ const ProductList = (props) => {
                 onClick={(event) => {
                   event.stopPropagation();
                   asyncOperation(
-                    () => removeProduct(uid, product.id, allProductsInStores, {
-                      remove,
-                      removeProductInStore,
-                    }),
+                    () => removeWithProductInStores(uid, product.id),
                     {
                       successMessage: 'Sucesso ao remover Produto',
                       errorMessage: 'Erro ao remover Produto',
@@ -75,19 +62,15 @@ ProductList.propTypes = {
   history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
   products: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
-  productsInStores: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types,
-  remove: PropTypes.func.isRequired,
-  removeProductInStore: PropTypes.func.isRequired,
+  removeWithProductInStores: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
   products: state.products,
-  productsInStores: state.productsInStores,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    remove: operationsProducts.remove,
-    removeProductInStore: operationsProductsInStores.remove,
+    removeWithProductInStores: operations.removeWithProductInStores,
   },
   dispatch,
 );
