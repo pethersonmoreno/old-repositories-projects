@@ -46,6 +46,13 @@ class TextEditable extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { value } = this.props;
+    if (value !== prevProps.value) {
+      this.input.value = value;
+    }
+  }
+
   onKeyPress = (event) => {
     if (event.key === 'Enter') {
       const { editing } = this.state;
@@ -59,12 +66,12 @@ class TextEditable extends Component {
   };
 
   confirmEdit = () => {
-    const { onConfirm, value } = this.props;
+    const { onConfirm, value: valueProp } = this.props;
     const { editing } = this.state;
     if (!editing) {
       return;
     }
-    if (this.input.value === value) {
+    if (this.input.value === valueProp) {
       this.setState({ editing: false });
       return;
     }
@@ -104,7 +111,6 @@ class TextEditable extends Component {
             color="inherit"
             label={label}
             className={`textField${editing ? ' textFieldEditing' : ''}`}
-            value={editing ? undefined : value}
             defaultValue={value}
             inputRef={(input) => {
               this.input = input;
