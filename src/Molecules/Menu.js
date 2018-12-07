@@ -90,6 +90,7 @@ const Menu = ({
       </Collapse>
       {commonMenuItens.map(menuItem => (
         <ListItem
+          key={menuItem.to}
           component={NavLink}
           activeClassName="listItemActive"
           to={menuItem.to}
