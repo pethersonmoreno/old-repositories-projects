@@ -8,11 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuResponsive from 'Organisms/MenuResponsive';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations as operationsCategories } from 'controle-compras-frontend-redux/ducks/categories';
-import { operations as operationsProducts } from 'controle-compras-frontend-redux/ducks/products';
-import { operations as operationsShipLists } from 'controle-compras-frontend-redux/ducks/shipLists';
-import { operations as operationsStores } from 'controle-compras-frontend-redux/ducks/stores';
-import { operations as operationsProductsInStores } from 'controle-compras-frontend-redux/ducks/productsInStores';
+import { operations } from 'controle-compras-frontend-redux/ducks';
 import withAuthorization from 'HOC/withAuthorization';
 
 const styles = () => ({
@@ -30,40 +26,16 @@ class MainAuthenticatedTemplate extends Component {
   }
 
   componentDidMount() {
-    const {
-      startListenCategories,
-      startListenProducts,
-      startListenShipLists,
-      startListenStores,
-      startListenProductsInStores,
-    } = this.props;
+    const { startListenChanges } = this.props;
     const { uid } = this.state;
-    asyncOperation(
-      Promise.all([
-        startListenCategories(uid),
-        startListenProducts(uid),
-        startListenShipLists(uid),
-        startListenStores(uid),
-        startListenProductsInStores(uid),
-      ]),
-    );
+    asyncOperation(startListenChanges(uid));
   }
 
   componentWillUnmount() {
-    const {
-      stopListenCategories,
-      stopListenProducts,
-      stopListenShipLists,
-      stopListenStores,
-      stopListenProductsInStores,
-    } = this.props;
+    const { stopListenChanges } = this.props;
     const { uid } = this.state;
     if (uid) {
-      stopListenCategories(uid);
-      stopListenProducts(uid);
-      stopListenShipLists(uid);
-      stopListenStores(uid);
-      stopListenProductsInStores(uid);
+      stopListenChanges(uid);
     }
   }
 
@@ -83,16 +55,8 @@ MainAuthenticatedTemplate.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   children: PropTypes.any.isRequired, // eslint-disable-line react/forbid-prop-types
   uid: PropTypes.string.isRequired,
-  startListenCategories: PropTypes.func.isRequired,
-  stopListenCategories: PropTypes.func.isRequired,
-  startListenProducts: PropTypes.func.isRequired,
-  stopListenProducts: PropTypes.func.isRequired,
-  startListenShipLists: PropTypes.func.isRequired,
-  stopListenShipLists: PropTypes.func.isRequired,
-  startListenStores: PropTypes.func.isRequired,
-  stopListenStores: PropTypes.func.isRequired,
-  startListenProductsInStores: PropTypes.func.isRequired,
-  stopListenProductsInStores: PropTypes.func.isRequired,
+  startListenChanges: PropTypes.func.isRequired,
+  stopListenChanges: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -100,16 +64,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    startListenCategories: operationsCategories.startListenChanges,
-    stopListenCategories: operationsCategories.stopListenChanges,
-    startListenProducts: operationsProducts.startListenChanges,
-    stopListenProducts: operationsProducts.stopListenChanges,
-    startListenShipLists: operationsShipLists.startListenChanges,
-    stopListenShipLists: operationsShipLists.stopListenChanges,
-    startListenStores: operationsStores.startListenChanges,
-    stopListenStores: operationsStores.stopListenChanges,
-    startListenProductsInStores: operationsProductsInStores.startListenChanges,
-    stopListenProductsInStores: operationsProductsInStores.stopListenChanges,
+    startListenChanges: operations.startListenChanges,
+    stopListenChanges: operations.stopListenChanges,
   },
   dispatch,
 );
