@@ -2,7 +2,7 @@ import { store as storeApi } from "../api";
 import createBasicDuckRegistry from "./createBasicDuckRegistry";
 import { operations as operationsProductsInStores } from "./productsInStores";
 
-const duckStores = createBasicDuckRegistry("store", storeApi);
+const duckStores = createBasicDuckRegistry("stores", "store", storeApi);
 
 const saveProductsInStore = (dispatch, getState) => (
   uid,
@@ -72,6 +72,7 @@ const operations = {
   removeWithProductsInStore,
   editWithProductsInStore
 };
-export { operations };
+const selectors = duckStores.selectors;
+export { operations, selectors };
 
 export default duckStores.reducer;

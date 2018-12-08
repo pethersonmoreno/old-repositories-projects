@@ -1,4 +1,4 @@
-import { FULFILLED } from "redux-promise-middleware";
+import { PENDING, FULFILLED } from "redux-promise-middleware";
 import typeToReducer from "type-to-reducer";
 
 const createReducer = (types, name) => {
@@ -14,6 +14,31 @@ const createReducer = (types, name) => {
         }
       },
       [types[`REMOVE_${nameUpperCase}`]]: {
+        [PENDING]: (state, action) =>
+          state.map(registry => {
+            if (registry.id === action.meta.id) {
+              return {
+                id: registry.id,
+                deleted: true
+              };
+            }
+            return registry;
+          })
+      },
+      [types[`REMOVE_COMPLETE_${nameUpperCase}`]]: {
+        [PENDING]: (state, action) => {
+          if (!state.find(({ id }) => id === action.meta.id)) {
+            return [
+              ...state,
+              {
+                id: action.meta.id,
+                deleted: true,
+                deletedPendingComplete: true
+              }
+            ];
+          }
+          return state;
+        },
         [FULFILLED]: (state, action) =>
           state.filter(({ id }) => id !== action.payload.id)
       },

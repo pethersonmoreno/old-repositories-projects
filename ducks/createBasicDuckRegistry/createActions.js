@@ -6,8 +6,14 @@ const createActions = (types, name) => {
     type: types[`ADD_${nameUpperCase}`],
     payload
   });
-  const remove = payload => ({
+  const remove = (meta, payload) => ({
     type: types[`REMOVE_${nameUpperCase}`],
+    meta,
+    payload
+  });
+  const removeComplete = (meta, payload) => ({
+    type: types[`REMOVE_COMPLETE_${nameUpperCase}`],
+    meta,
     payload
   });
   const edit = payload => ({
@@ -25,6 +31,7 @@ const createActions = (types, name) => {
   return {
     add,
     remove,
+    removeComplete,
     edit,
     getAll,
     getAllFulfilled

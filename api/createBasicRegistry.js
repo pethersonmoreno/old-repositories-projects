@@ -16,6 +16,10 @@ const createBasicRegistry = path => {
       .then(() => ({ updates: otherFields, id }));
   const remove = (uid, id) =>
     getDatabaseRegistry(uid, id)
+      .set(false)
+      .then(() => ({ id }));
+  const removeComplete = (uid, id) =>
+    getDatabaseRegistry(uid, id)
       .remove()
       .then(() => ({ id }));
   const getAll = uid =>
@@ -45,6 +49,7 @@ const createBasicRegistry = path => {
     add,
     edit,
     remove,
+    removeComplete,
     getAll,
     startListenChanges,
     stopListenChanges
