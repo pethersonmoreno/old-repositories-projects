@@ -1,14 +1,23 @@
 import React from 'react';
 import { notification } from './withNotification';
 
-let loading = false;
-const callbacksChangeLoading = [
-  (enable) => {
-    loading = enable;
-  },
-];
-const enableDisableLoading = (enable) => {
-  callbacksChangeLoading.forEach(callback => callback(enable));
+let loading = true;
+const pendingOperations = [];
+const updateLoading = (operation, enable) => {
+  const index = pendingOperations.indexOf(operation);
+  if (enable) {
+    if (index === -1) {
+      pendingOperations.push(operation);
+    }
+  } else if (index !== -1) {
+    pendingOperations.splice(index, 1);
+  }
+  loading = pendingOperations.length > 0;
+};
+const callbacksChangeLoading = [];
+const enableDisableLoading = (operation, enable) => {
+  updateLoading(operation, enable);
+  callbacksChangeLoading.forEach(callback => callback(loading));
 };
 const defaultParams = {
   operation: Promise.resolve(null),
@@ -17,15 +26,20 @@ const defaultParams = {
   errorMessage: null,
   errorCallback: null,
 };
+const connectionActive = true;
 export const asyncOperation = async (operation, params) => {
   const operationInfo = { ...defaultParams, ...params };
-  enableDisableLoading(true);
+  enableDisableLoading(operation, true);
   try {
+    let operationToExecute = operation;
+    if (!(operation instanceof Promise)) {
+      operationToExecute = operation();
+    }
     let result;
-    if (operation instanceof Promise) {
-      result = await operation;
+    if (connectionActive) {
+      result = await operationToExecute;
     } else {
-      result = await operation();
+      result = operationToExecute;
     }
     if (operationInfo.successMessage) {
       notification.success(operationInfo.successMessage);
@@ -44,7 +58,7 @@ export const asyncOperation = async (operation, params) => {
     throw error;
   } finally {
     if (loading) {
-      enableDisableLoading(false);
+      enableDisableLoading(operation, false);
     }
   }
 };

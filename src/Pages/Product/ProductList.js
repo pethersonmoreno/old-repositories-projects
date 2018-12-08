@@ -10,7 +10,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations } from 'controle-compras-frontend-redux/ducks/products';
+import { operations, selectors } from 'controle-compras-frontend-redux/ducks/products';
 import PaperListItem from 'Atoms/PaperListItem';
 import { List } from '@material-ui/core';
 
@@ -66,7 +66,7 @@ ProductList.propTypes = {
 };
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
-  products: state.products,
+  products: selectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

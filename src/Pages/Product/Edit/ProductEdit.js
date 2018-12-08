@@ -2,7 +2,11 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { operations } from 'controle-compras-frontend-redux/ducks/products';
+import {
+  operations,
+  selectors as productSelectors,
+} from 'controle-compras-frontend-redux/ducks/products';
+import { selectors as productsInStoresSelectors } from 'controle-compras-frontend-redux/ducks/productsInStores';
 import Form from '../ProductForm';
 
 const backPath = '/product';
@@ -46,8 +50,8 @@ ProductEdit.propTypes = {
 };
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
-  products: state.products,
-  productsInStores: state.productsInStores,
+  products: productSelectors.getAllUndeleted(state),
+  productsInStores: productsInStoresSelectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

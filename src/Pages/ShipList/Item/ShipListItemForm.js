@@ -12,6 +12,7 @@ import InputIntegerWithButtons from 'Atoms/InputIntegerWithButtons';
 import PageWithBackButtonTemplate from 'Templates/PageWithBackButtonTemplate';
 import { Typography } from '@material-ui/core';
 import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
+import { selectors as categorySelectors } from 'controle-compras-frontend-redux/ducks/categories';
 
 const styles = () => ({
   currentPrice: {
@@ -163,7 +164,7 @@ ShipListItemForm.defaultProps = {
   },
 };
 const mapStateToProps = state => ({
-  categories: state.categories,
+  categories: categorySelectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = null;
 export default compose(

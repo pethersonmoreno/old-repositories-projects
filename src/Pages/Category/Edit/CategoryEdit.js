@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { operations } from 'controle-compras-frontend-redux/ducks/categories';
+import { operations, selectors } from 'controle-compras-frontend-redux/ducks/categories';
 import Form from '../CategoryForm';
 import { PREFIX_ROUTE as backPath } from '../constants';
 
@@ -33,7 +33,7 @@ CategoryEdit.propTypes = {
 
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
-  categories: state.categories,
+  categories: selectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

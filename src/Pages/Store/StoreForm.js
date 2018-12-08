@@ -15,6 +15,7 @@ import InvisibleButtonSubmit from 'Atoms/InvisibleButtonSubmit';
 import ReactSelect from 'Atoms/ReactSelect';
 import PaperListItem from 'Atoms/PaperListItem';
 import TextEditable from 'Atoms/TextEditable';
+import { selectors as productsSelectors } from 'controle-compras-frontend-redux/ducks/products';
 
 const styles = () => ({
   textEditable: {
@@ -222,7 +223,7 @@ StoreForm.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  products: state.products,
+  products: productsSelectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = null;
 export default compose(

@@ -10,7 +10,7 @@ import PageTemplate from 'Templates/PageTemplate';
 import ButtonFabContainer from 'Atoms/ButtonFabContainer';
 import ButtonFab from 'Atoms/ButtonFab';
 import { asyncOperation } from 'HOC/withAsyncOperation';
-import { operations } from 'controle-compras-frontend-redux/ducks/stores';
+import { operations, selectors } from 'controle-compras-frontend-redux/ducks/stores';
 import { List } from '@material-ui/core';
 import PaperListItem from 'Atoms/PaperListItem';
 
@@ -22,14 +22,8 @@ const StoreList = (props) => {
     <PageTemplate titulo="Lojas">
       <List disablePadding>
         {stores.map(store => (
-          <PaperListItem
-            button
-            key={store.id}
-            onClick={() => history.push(`/store/${store.id}`)}
-          >
-            <div className="content">
-              {store.name}
-            </div>
+          <PaperListItem button key={store.id} onClick={() => history.push(`/store/${store.id}`)}>
+            <div className="content">{store.name}</div>
             <div className="contentRight">
               <IconButton
                 onClick={(event) => {
@@ -62,7 +56,7 @@ StoreList.propTypes = {
 };
 const mapStateToProps = state => ({
   uid: state.user.auth.uid,
-  stores: state.stores,
+  stores: selectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

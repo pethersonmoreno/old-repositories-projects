@@ -44,13 +44,13 @@ class ContainerRoutes extends Component {
     return (
       <div className={classes.root}>
         <div className="rootPage">
+          <Loader />
           {route}
           <NotificationSystem
             ref={(ref) => {
               setNotificationSystem(ref);
             }}
           />
-          <Loader />
         </div>
       </div>
     );

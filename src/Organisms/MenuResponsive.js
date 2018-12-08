@@ -36,13 +36,13 @@ class MenuResponsive extends React.Component {
   }
 
   updateSmUp = () => {
-    const { updateSmUp } = this.props;
+    // const { updateSmUp } = this.props;
     if (this.timeoutUpdateSmUp) {
       clearTimeout(this.timeoutUpdateSmUp);
     }
     this.timeoutUpdateSmUp = setTimeout(() => {
-      const newSmUp = document.body.clientWidth >= 600;
-      updateSmUp(newSmUp);
+      // const newSmUp = document.body.clientWidth >= 600;
+      // updateSmUp(newSmUp);
       this.timeoutUpdateSmUp = null;
     }, 100);
   };
@@ -98,7 +98,7 @@ MenuResponsive.propTypes = {
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   menuOpen: PropTypes.bool.isRequired,
   toggleMenu: PropTypes.func.isRequired,
-  updateSmUp: PropTypes.func.isRequired,
+  // updateSmUp: PropTypes.func.isRequired,
   smUp: PropTypes.bool.isRequired,
 };
 

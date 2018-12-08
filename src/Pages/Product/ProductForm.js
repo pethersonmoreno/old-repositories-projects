@@ -13,6 +13,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ReactSelect from 'Atoms/ReactSelect';
 import PaperListItem from 'Atoms/PaperListItem';
 import TextEditable from 'Atoms/TextEditable';
+import { selectors as storesSelectors } from 'controle-compras-frontend-redux/ducks/stores';
 
 const styles = () => ({
   textEditable: {
@@ -212,7 +213,7 @@ ProductForm.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  stores: state.stores,
+  stores: storesSelectors.getAllUndeleted(state),
 });
 const mapDispatchToProps = null;
 export default compose(
