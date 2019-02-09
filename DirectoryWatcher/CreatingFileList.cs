@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace WatcherExample.DirectoryWatcher
 {
     class CreatingFileList
     {
+        public event LogMessageEvent LogMessage;
         private IList<string> list;
         private IList<string> listReadyVerifing;
 
@@ -47,7 +47,7 @@ namespace WatcherExample.DirectoryWatcher
             {
                 if (!list.Contains(filePath))
                 {
-                    Console.WriteLine("Watcher new " + filePath);
+                    LogNewMessage("Watcher new " + filePath);
                     list.Add(filePath);
                 }
             }
@@ -56,7 +56,7 @@ namespace WatcherExample.DirectoryWatcher
         {
             lock (list)
             {
-                Console.WriteLine("Watcher change path " + oldFilePath + " to " + newFilePath);
+                LogNewMessage("Watcher change path " + oldFilePath + " to " + newFilePath);
                 list = list.Select(fp => fp == oldFilePath ? newFilePath : fp).ToList();
             }
         }
@@ -64,7 +64,7 @@ namespace WatcherExample.DirectoryWatcher
         {
             lock (list)
             {
-                Console.WriteLine("Watcher removed " + filePath);
+                LogNewMessage("Watcher removed " + filePath);
                 list.Remove(filePath);
                 listReadyVerifing.Remove(filePath);
             }
@@ -73,9 +73,13 @@ namespace WatcherExample.DirectoryWatcher
         {
             lock (list)
             {
-                Console.WriteLine("Watcher clear");
+                LogNewMessage("Watcher clear");
                 list.Clear();
             }
+        }
+        private void LogNewMessage(string message)
+        {
+            LogMessage?.Invoke(message);
         }
     }
 }

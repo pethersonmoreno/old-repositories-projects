@@ -7,6 +7,7 @@ namespace WatcherExample.DirectoryWatcher
 {
     public class ContainerWatcher
     {
+        public event LogMessageEvent LogMessage;
         public event NewFileCreatedEvent NewFileCreated;
         public event WatcherWillStartAgainEvent WatcherWillStartAgain;
         private FileSystemWatcher watcher;
@@ -18,6 +19,7 @@ namespace WatcherExample.DirectoryWatcher
         public ContainerWatcher(string path, string filter)
         {
             creatingFileList = new CreatingFileList();
+            creatingFileList.LogMessage += LogNewMessage;
             this.path = path;
             this.filter = filter;
         }
@@ -31,7 +33,7 @@ namespace WatcherExample.DirectoryWatcher
         }
         private void Start()
         {
-            Console.WriteLine("Watcher Starting ...");
+            LogNewMessage("Watcher Starting ...");
             watcher = new FileSystemWatcher();
             watcher.Path = path;
             watcher.Filter = filter;
@@ -47,25 +49,25 @@ namespace WatcherExample.DirectoryWatcher
             try
             {
                 watcher.EnableRaisingEvents = true;
-                Console.WriteLine("Watcher Started");
+                LogNewMessage("Watcher Started");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error on Watcher Starting: " + ex.Message);
+                LogNewMessage("Error on Watcher Starting: " + ex.Message);
                 Thread.Sleep(10);
                 Start();
             }
         }
         private void Stop()
         {
-            Console.WriteLine("Watcher Stopping ...");
+            LogNewMessage("Watcher Stopping ...");
             try
             {
                 watcher.EnableRaisingEvents = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error on Watcher Stopping: " + ex.Message);
+                LogNewMessage("Error on Watcher Stopping: " + ex.Message);
                 if (watcher.EnableRaisingEvents)
                 {
                     Thread.Sleep(10);
@@ -79,14 +81,14 @@ namespace WatcherExample.DirectoryWatcher
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error on Watcher Disposing: " + ex.Message);
+                LogNewMessage("Error on Watcher Disposing: " + ex.Message);
             }
-            Console.WriteLine("Watcher Stopped");
+            LogNewMessage("Watcher Stopped");
             watcher = null;
         }
         private void Restart()
         {
-            Console.WriteLine("Watcher Restarting ...");
+            LogNewMessage("Watcher Restarting ...");
             Stop();
             creatingFileList.Clear();
             WatcherWillStartAgain?.Invoke();
@@ -95,7 +97,7 @@ namespace WatcherExample.DirectoryWatcher
 
         private void OnError(object sender, ErrorEventArgs e)
         {
-            Console.WriteLine("Watcher Error = " + e.GetException().Message);
+            LogNewMessage("Watcher Error = " + e.GetException().Message);
             Restart();
         }
 
@@ -143,6 +145,10 @@ namespace WatcherExample.DirectoryWatcher
                     ProcessFileIfCreatedAndReady(filePath);
                 });
             }
+        }
+        private void LogNewMessage(string message)
+        {
+            LogMessage?.Invoke(message);
         }
         private bool FileIsReady(string filePath)
         {
