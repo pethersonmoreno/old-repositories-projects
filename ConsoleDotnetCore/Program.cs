@@ -23,8 +23,14 @@ namespace WatcherExample.ConsoleDotnetCore
                 var cWatcher = new ContainerWatcher(path, filter);
                 cWatcher.NewFileCreated += CWatcher_NewFileCreated;
                 cWatcher.WatcherWillStartAgain += CWatcher_WatcherWillStartAgain; ;
+                cWatcher.LogMessage += ShowMessageOnConsole;
                 cWatcher.StartWatching();
             });
+        }
+
+        private static void ShowMessageOnConsole(string message)
+        {
+            Console.WriteLine(message);
         }
 
         private static int countFile = 0;
