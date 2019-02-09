@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace WatcherExample.DirectoryWatcher
 {
@@ -22,7 +23,7 @@ namespace WatcherExample.DirectoryWatcher
         }
         public void StartWatching()
         {
-            if(watcher != null)
+            if (watcher != null)
             {
                 throw new Exception("Watcher already started");
             }
@@ -48,7 +49,7 @@ namespace WatcherExample.DirectoryWatcher
                 watcher.EnableRaisingEvents = true;
                 Console.WriteLine("Watcher Started");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Error on Watcher Starting: " + ex.Message);
                 Thread.Sleep(10);
@@ -104,13 +105,13 @@ namespace WatcherExample.DirectoryWatcher
             {
                 creatingFileList.AddFilePath(e.FullPath);
             }
-            ProcessFileIfCreatedAndReady(e.FullPath.ToString());
+            ProcessFileIfCreatedAndReady(e.FullPath);
         }
 
         private void OnRenamed(object source, RenamedEventArgs e)
         {
-            creatingFileList.ChangeFilePath(e.OldFullPath.ToString(), e.FullPath.ToString());
-            ProcessFileIfCreatedAndReady(e.FullPath.ToString());
+            creatingFileList.ChangeFilePath(e.OldFullPath, e.FullPath);
+            ProcessFileIfCreatedAndReady(e.FullPath);
         }
 
         private object lockReadyVerification = "lockReadyVerification";
@@ -118,19 +119,29 @@ namespace WatcherExample.DirectoryWatcher
         {
             lock (lockReadyVerification)
             {
-                if (creatingFileList.Contains(filePath))
+                if (creatingFileList.StartReadyVerifing(filePath))
                 {
                     if (FileIsReady(filePath))
                     {
                         creatingFileList.RemoveFilePath(filePath);
-                        NewFileCreated?.Invoke(filePath);
+                        Task.Factory.StartNew(() =>
+                        {
+                            NewFileCreated?.Invoke(filePath);
+                        });
                     }
                     else
                     {
-                        Thread.Sleep(5);
-                        ProcessFileIfCreatedAndReady(filePath);
+                        creatingFileList.EndReadyVerifing(filePath);
                     }
                 }
+            }
+            if (creatingFileList.Contains(filePath))
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    Thread.Sleep(5);
+                    ProcessFileIfCreatedAndReady(filePath);
+                });
             }
         }
         private bool FileIsReady(string filePath)
