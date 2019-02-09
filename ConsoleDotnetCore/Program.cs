@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using WatcherExample.DirectoryProcess;
 using WatcherExample.DirectoryWatcher;
 
 namespace WatcherExample.ConsoleDotnetCore
@@ -20,9 +21,12 @@ namespace WatcherExample.ConsoleDotnetCore
             {
                 string path = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcher";
                 string filter = "*.pdf";
+                var dirFilesProcessing = new DirectoryFilesProcessing(path, filter);
+                dirFilesProcessing.NewFileToProcess += NewFileToProcess;
+                dirFilesProcessing.Process();
                 var cWatcher = new ContainerWatcher(path, filter);
-                cWatcher.NewFileCreated += CWatcher_NewFileCreated;
-                cWatcher.WatcherWillStartAgain += CWatcher_WatcherWillStartAgain; ;
+                cWatcher.NewFileCreated += NewFileToProcess;
+                cWatcher.WatcherWillStartAgain += WatcherWillStartAgain; ;
                 cWatcher.LogMessage += ShowMessageOnConsole;
                 cWatcher.StartWatching();
             });
@@ -34,12 +38,12 @@ namespace WatcherExample.ConsoleDotnetCore
         }
 
         private static int countFile = 0;
-        private static void CWatcher_NewFileCreated(string filePath)
+        private static void NewFileToProcess(string filePath)
         {
             Console.WriteLine("### " + (++countFile) + " - Arquivo Criado: " + filePath);
         }
 
-        private static void CWatcher_WatcherWillStartAgain()
+        private static void WatcherWillStartAgain()
         {
             Console.WriteLine("### - Watcher vai iniciar novamente");
         }
