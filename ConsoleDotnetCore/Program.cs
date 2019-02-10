@@ -50,7 +50,7 @@ namespace WatcherExample.ConsoleDotnetCore
                     File.Delete(destinyFile);
                 }
                 File.Move(filePath, destinyFile);
-                // Console.WriteLine("### " + (++countFile) + " - Arquivo Movido: " + fileName);
+                Console.WriteLine("### " + (++countFile) + " - Arquivo Movido: " + fileName);
             }
             catch (Exception ex)
             {

@@ -19,7 +19,7 @@ namespace WatcherExample.DirectoryWatcher
         public ContainerWatcher(string path, string filter)
         {
             creatingFileList = new CreatingFileList();
-            // creatingFileList.LogMessage += LogNewMessage;
+            creatingFileList.LogMessage += LogNewMessage;
             this.path = path;
             this.filter = filter;
         }
@@ -115,26 +115,21 @@ namespace WatcherExample.DirectoryWatcher
             creatingFileList.ChangeFilePath(e.OldFullPath, e.FullPath);
             ProcessFileIfCreatedAndReady(e.FullPath);
         }
-
-        private object lockReadyVerification = "lockReadyVerification";
         private void ProcessFileIfCreatedAndReady(string filePath)
         {
-            lock (lockReadyVerification)
+            if (creatingFileList.StartReadyVerifing(filePath))
             {
-                if (creatingFileList.StartReadyVerifing(filePath))
+                if (FileIsReady(filePath))
                 {
-                    if (FileIsReady(filePath))
+                    creatingFileList.RemoveFilePath(filePath);
+                    Task.Factory.StartNew(() =>
                     {
-                        creatingFileList.RemoveFilePath(filePath);
-                        Task.Factory.StartNew(() =>
-                        {
-                            NewFileCreated?.Invoke(filePath);
-                        });
-                    }
-                    else
-                    {
-                        creatingFileList.EndReadyVerifing(filePath);
-                    }
+                        NewFileCreated?.Invoke(filePath);
+                    });
+                }
+                else
+                {
+                    creatingFileList.EndReadyVerifing(filePath);
                 }
             }
             if (creatingFileList.Contains(filePath))
