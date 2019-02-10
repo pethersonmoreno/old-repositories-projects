@@ -11,8 +11,14 @@ namespace ThreadPoolPOC
         const string SOURCE_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcher";
         const string DESTINY_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcherDestino";
         const string FILTER = "*.pdf";
+        private static int WORKER_THREADS = Environment.ProcessorCount * 2;
         static void Main(string[] args)
         {
+            int maxWorkerThreads;
+            int maxCompletionWorkerThreads;
+            ThreadPool.GetMaxThreads(out maxWorkerThreads, out maxCompletionWorkerThreads);
+            ThreadPool.SetMaxThreads(WORKER_THREADS, maxCompletionWorkerThreads);
+
             Run();
             Console.WriteLine("Press 'q' to quit the sample.");
             while (Console.ReadKey().KeyChar != 'q') ;
@@ -37,6 +43,7 @@ namespace ThreadPoolPOC
             Console.WriteLine(message);
         }
 
+        private static object lockCountFiles = "lockCountFiles";
         private static int countFiles = 0;
         private static void NewFileToProcess(string filePath)
         {
@@ -71,7 +78,14 @@ namespace ThreadPoolPOC
                     File.Delete(destinyFile);
                 }
                 File.Move(filePath, destinyFile);
-                Console.WriteLine("### " + (++countFiles) + " - Arquivo Movido: " + fileName);
+                lock (lockCountFiles)
+                {
+                    countFiles++;
+                    if (countFiles % 200 == 0)
+                    {
+                        Console.WriteLine("### " + (countFiles) + " - Arquivo Movido: " + fileName);
+                    }
+                }
             }
             catch (Exception ex)
             {

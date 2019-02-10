@@ -1,4 +1,3 @@
-using System;
 using WatcherExample;
 
 namespace ThreadPoolPOC
