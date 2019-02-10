@@ -19,7 +19,7 @@ namespace WatcherExample.DirectoryWatcher
         public ContainerWatcher(string path, string filter)
         {
             creatingFileList = new CreatingFileList();
-            creatingFileList.LogMessage += LogNewMessage;
+            // creatingFileList.LogMessage += LogNewMessage;
             this.path = path;
             this.filter = filter;
         }

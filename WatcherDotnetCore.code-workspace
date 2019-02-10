@@ -8,6 +8,9 @@
     },
     {
       "path": "DirectoryProcess"
+    },
+    {
+      "path": "CompleteExample"
     }
   ],
   "settings": {}

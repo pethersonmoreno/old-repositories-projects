@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using WatcherExample.DirectoryProcess;
 using WatcherExample.DirectoryWatcher;
@@ -7,6 +8,9 @@ namespace WatcherExample.ConsoleDotnetCore
 {
     class Program
     {
+        const string SOURCE_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcher";
+        const string DESTINY_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcherDestino";
+        const string FILTER = "*.pdf";
         static void Main(string[] args)
         {
             Run();
@@ -19,16 +23,10 @@ namespace WatcherExample.ConsoleDotnetCore
         {
             Task.Factory.StartNew(() =>
             {
-                string path = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcher";
-                string filter = "*.pdf";
-                var dirFilesProcessing = new DirectoryFilesProcessing(path, filter);
-                dirFilesProcessing.NewFileToProcess += NewFileToProcess;
-                dirFilesProcessing.Process();
-                var cWatcher = new ContainerWatcher(path, filter);
-                cWatcher.NewFileCreated += NewFileToProcess;
-                cWatcher.WatcherWillStartAgain += WatcherWillStartAgain; ;
-                cWatcher.LogMessage += ShowMessageOnConsole;
-                cWatcher.StartWatching();
+                var completeExample = new CompleteExample(SOURCE_DIRECTORY, FILTER);
+                completeExample.NewFileToProcess += NewFileToProcess;
+                completeExample.LogMessage += ShowMessageOnConsole;
+                completeExample.StartProcessAndWatching();
             });
         }
 
@@ -40,12 +38,24 @@ namespace WatcherExample.ConsoleDotnetCore
         private static int countFile = 0;
         private static void NewFileToProcess(string filePath)
         {
-            Console.WriteLine("### " + (++countFile) + " - Arquivo Criado: " + filePath);
-        }
-
-        private static void WatcherWillStartAgain()
-        {
-            Console.WriteLine("### - Watcher vai iniciar novamente");
+            try
+            {
+                var fileName = Path.GetFileName(filePath);
+                var destinyFile = Path.Combine(
+                    DESTINY_DIRECTORY,
+                    fileName
+                );
+                if (File.Exists(destinyFile))
+                {
+                    File.Delete(destinyFile);
+                }
+                File.Move(filePath, destinyFile);
+                // Console.WriteLine("### " + (++countFile) + " - Arquivo Movido: " + fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("### Erro ao processar arquivo " + filePath + ": " + ex.Message);
+            }
         }
     }
 }

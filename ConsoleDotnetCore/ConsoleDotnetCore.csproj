@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\DirectoryWatcher\DirectoryWatcher.csproj" />
-    <ProjectReference Include="..\DirectoryProcess\DirectoryProcess.csproj" />
+    <ProjectReference Include="..\CompleteExample\CompleteExample.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
