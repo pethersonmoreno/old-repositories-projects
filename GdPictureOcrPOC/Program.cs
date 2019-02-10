@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GdPicture14;
+using System;
 using System.IO;
-using System.Linq;
 using System.Security.Permissions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WatcherExample;
@@ -14,6 +12,8 @@ namespace GdPictureOcrPOC
     {
         const string SOURCE_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcher";
         const string DESTINY_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcherDestino";
+        const string OCR_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcherOCR";
+        const string COMPLETED_DIRECTORY = @"C:\\Users\\DevPlace Developer\\Desktop\\TesteWatcherCompleted";
         const string FILTER = "*.pdf";
         private static int WORKER_THREADS = Environment.ProcessorCount * 2;
         static void Main(string[] args)
@@ -83,16 +83,58 @@ namespace GdPictureOcrPOC
                     File.Delete(destinyFile);
                 }
                 File.Move(filePath, destinyFile);
+                Console.WriteLine("### - Arquivo Movido: " + fileName + ", processando com GdPicture ...");
+                ProcessMovedFileWithGdPicture(destinyFile, OCR_DIRECTORY, COMPLETED_DIRECTORY);
                 lock (lockCountFiles)
                 {
                     countFiles++;
-                    Console.WriteLine("### " + (countFiles) + " - Arquivo Movido: " + fileName);
+                    Console.WriteLine("### " + (countFiles) + " - Processado com GdPicture: " + fileName);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("### Erro ao processar arquivo " + filePath + ": " + ex.Message);
             }
+        }
+        private static void ProcessMovedFileWithGdPicture(string filePath, string ocrDirectory, string completedDirectory)
+        {
+            var fileName = Path.GetFileName(filePath);
+            //We assume that GdPicture has been correctly installed and unlocked.
+            GdPicturePDF oGdPicturePDF = new GdPicturePDF();
+            //Loading an input document.
+            GdPictureStatus status = oGdPicturePDF.LoadFromFile(filePath, false);
+            //Checking if loading has been successful.
+            if (status == GdPictureStatus.OK)
+            {
+                int pageCount = oGdPicturePDF.GetPageCount();
+                //Loop through pages.
+                for (int i = 1; i <= pageCount; i++)
+                {
+                    //Selecting a page.
+                    oGdPicturePDF.SelectPage(i);
+                    if (oGdPicturePDF.OcrPage("eng", ocrDirectory, "", 200.0F) != GdPictureStatus.OK)
+                    {
+                        //Console.WriteLine("OCR Pages Example - Error occurred on the page " + i.ToString() + ". Error: " + oGdPicturePDF.GetStat().ToString());
+                    }
+                }
+                //Saving to a different file.
+                var completedFilePath = Path.Combine(
+                    completedDirectory,
+                    fileName
+                );
+                status = oGdPicturePDF.SaveToFile(completedFilePath, true);
+                if (status == GdPictureStatus.OK)
+                    Console.WriteLine("OCR Pages Example - Done! " + fileName);
+                else
+                    Console.WriteLine("OCR Pages Example - " + "The document can't be saved." + status.ToString() + " "+ fileName);
+                //Closing and releasing resources.
+                oGdPicturePDF.CloseDocument();
+            }
+            else
+            {
+                Console.WriteLine("OCR Pages Example - " + "The document can't be opened." + status.ToString() + " " + fileName);
+            }
+            oGdPicturePDF.Dispose();
         }
     }
 }
