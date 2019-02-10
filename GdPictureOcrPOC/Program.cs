@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Permissions;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WatcherExample;
@@ -26,6 +30,7 @@ namespace GdPictureOcrPOC
         }
 
         private static ProcessingVerification processingVerification;
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         private static void Run()
         {
             Task.Factory.StartNew(() =>

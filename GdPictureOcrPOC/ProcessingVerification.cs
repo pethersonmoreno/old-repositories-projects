@@ -1,4 +1,4 @@
-using WatcherExample;
+﻿using WatcherExample;
 
 namespace GdPictureOcrPOC
 {
