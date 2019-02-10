@@ -1,0 +1,17 @@
+{
+  "folders": [
+	{
+		"path": "ThreadPoolPOC"
+	},
+	{
+		"path": "WatcherExample\\CompleteExample"
+	},
+	{
+		"path": "WatcherExample\\DirectoryProcess"
+	},
+	{
+		"path": "WatcherExample\\DirectoryWatcher"
+	}
+],
+  "settings": {}
+}
