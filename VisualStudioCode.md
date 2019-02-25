@@ -11,7 +11,9 @@ Now when you save the file it will format the file to you.
 ## Project Config
 
 To use the phpcs and phpcbf in the project install in your composer.json the package "squizlabs/php_codesniffer" with the command:
- - composer require --dev "squizlabs/php_codesniffer"
+
+    composer require --dev "squizlabs/php_codesniffer"
+
 With that you can validate the quality of you code with phpcs and phpcbf with the extension PHP Sniffer
 
 ## Useful extensions
