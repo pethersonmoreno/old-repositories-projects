@@ -10,7 +10,7 @@
         "fixer"
     ],
     "type": "phpcodesniffer-standard",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
         {
