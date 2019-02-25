@@ -26,4 +26,4 @@ The onType to phpSniffer.run affect you when you are coding, you can see the err
 
 The config phpSniffer.executablesFolder to ./vendor/bin/ means that the extension will use the phpcs and phpcbf of your composer.json, it is better because your project has the phpcs inside the require dev packages.
 
-This extension need the configuration of phpcs to work, the standard that I'm using is in [config-phpcs][config-phpcs/], then you need create in your project at least the file phpcs.xml, this file will describe the rules about your project and the PHP Sniffer extension will use it to notify you about the errors and fix the code for you.
+This extension need the configuration of phpcs to work, the standard that I'm using is in [config-phpcs](config-phpcs/), then you need create in your project at least the file phpcs.xml, this file will describe the rules about your project and the PHP Sniffer extension will use it to notify you about the errors and fix the code for you.
