@@ -9,6 +9,11 @@
         <exclude name="Generic.Formatting.NoSpaceAfterCast"/>
         <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
         <exclude name="Generic.PHP.UpperCaseConstant"/>
+        <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
+        <exclude name="Generic.PHP.ClosingPHPTag.NotFound"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+        <exclude name="Generic.Classes.OpeningBraceSameLine"/>
+        <exclude name="Generic.Files.EndFileNoNewline.Found"/>
     </rule>
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.CodeAnalysis.EmptyStatement"/>

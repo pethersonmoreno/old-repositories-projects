@@ -11,7 +11,6 @@
     <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
     <rule ref="Squiz.PHP.DiscouragedFunctions"/>
     <rule ref="Squiz.PHP.Eval"/>
-    <rule ref="Squiz.PHP.ForbiddenFunctions"/>
     <rule ref="Squiz.PHP.GlobalKeyword"/>
     <rule ref="Squiz.PHP.InnerFunctions"/>
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
@@ -24,6 +23,7 @@
         <properties>
             <property name="spacing" value="1"/>
         </properties>
+        <exclude name="Squiz.WhiteSpace.FunctionSpacing.AfterLast" />
     </rule>
     <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
