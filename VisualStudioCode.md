@@ -3,7 +3,9 @@
 ## Visual Studio Code Config
 
 To apply automatic format when you save the file, change the config editor.formatOnSave in your settings.json:
+
     "editor.formatOnSave": true
+
 Now when you save the file it will format the file to you.
 
 ## Project Config
@@ -19,8 +21,10 @@ With that you can validate the quality of you code with phpcs and phpcbf with th
 Reference: https://github.com/wongjn/vscode-php-sniffer
 
 Configure settings.json:
-  "phpSniffer.run": "onType",
-  "phpSniffer.executablesFolder": "./vendor/bin/",
+
+    "phpSniffer.run": "onType",
+    "phpSniffer.executablesFolder": "./vendor/bin/",
+  
   
 The onType to phpSniffer.run affect you when you are coding, you can see the error on syntax while you are coding without saving the code.
 
