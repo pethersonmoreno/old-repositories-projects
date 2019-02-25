@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PethersonMoreno" xsi:noNamespaceSchemaLocation="phpcs.xsd">
     <description>Petherson Moreno Standard.</description>
-
-    <rule ref="PSR2" />
+    <rule ref="./.phpcs/AllCommon.xml" />
 </ruleset>

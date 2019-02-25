@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="All Common Standard">
+    <description>All Common Standard</description>
+    <rule ref="./Generic.xml"/>
+    <rule ref="./MySource.xml"/>
+    <rule ref="./PEAR.xml"/>
+    <rule ref="./Squiz.xml"/>
+    <rule ref="./Zend.xml"/>
+    <rule ref="./PSRs.xml"/>
+</ruleset>
