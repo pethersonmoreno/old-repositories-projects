@@ -14,8 +14,14 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "pethersonmoreno",
+            "email": "pethermoreno@gmail.com",
+            "role": "Developer"
+        },
+        {
             "name": "Petherson Moreno",
-            "email": "pethermoreno@gmail.com"
+            "email": "pethermoreno@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
