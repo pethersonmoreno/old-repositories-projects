@@ -7,13 +7,14 @@
         <exclude name="Generic.Debug.JSHint"/>
         <exclude name="Generic.Debug.CSSLint"/>
         <exclude name="Generic.Formatting.NoSpaceAfterCast"/>
-        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
         <exclude name="Generic.PHP.UpperCaseConstant"/>
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
         <exclude name="Generic.PHP.ClosingPHPTag.NotFound"/>
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
         <exclude name="Generic.Classes.OpeningBraceSameLine"/>
         <exclude name="Generic.Files.EndFileNoNewline.Found"/>
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
     </rule>
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
@@ -48,7 +49,6 @@
     <rule ref="Generic.Formatting.SpaceAfterCast"/>
     <rule ref="Generic.Functions.CallTimePassByReference"/>
     <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
-    <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
             <property name="complexity" value="10"/>
