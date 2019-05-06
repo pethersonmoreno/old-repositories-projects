@@ -1,0 +1,23 @@
+version: "3.0"
+
+services:
+    nginx:
+        image: "nginx:1.9"
+        container_name: nginx
+        ports:
+            - 5443:443
+            - 5442:80
+        links:
+            - docker-registry:docker-registry
+        volumes:
+            - ./nginx/:/etc/nginx/conf.d:ro
+    docker-registry:
+        image: registry:latest
+        container_name: docker-registry
+        environment:
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+        volumes:
+            - ./registry:/var/lib/registry
+        restart: unless-stopped
+volumes:
+    registry:
