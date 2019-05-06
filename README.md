@@ -7,6 +7,11 @@ Reference: https://www.ctl.io/developers/blog/post/how-to-secure-your-private-do
 mkdir -p nginx/certs
 docker run --rm -e COMMON_NAME=66.555.98.212 -e KEY_NAME=pserver -v "$PWD/nginx/certs:/certs" centurylink/openssl
 
+## Configure user and password to access personal Docker Registry
+
+cd nginx/
+htpasswd -c registry.password USERNAME
+
 ## Start the container services
 
 docker-compose up -d
