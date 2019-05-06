@@ -9,8 +9,7 @@ docker run --rm -e COMMON_NAME=66.555.98.212 -e KEY_NAME=pserver -v "$PWD/nginx/
 
 ## Configure user and password to access personal Docker Registry
 
-cd nginx/
-htpasswd -c registry.password USERNAME
+htpasswd -c nginx/registry.password USERNAME
 
 ## Start the container services
 
