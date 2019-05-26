@@ -1,0 +1,7 @@
+.page {
+    margin: 5px;
+}
+.containerCanvas {
+    border: 1px solid black;
+    display: inline-block;
+}
