@@ -18,7 +18,7 @@
         var ipod = userAgent.includes("iPod".toLowerCase());
         // check if is a mobile
         if (iphone || android || palmpre || ipod || berry == true) {
-            window.location = 'whatsapp://send?phone=' + phone + '&text=' + text;
+            window.location = 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + text;
         }
         else {
             window.location = 'https://web.whatsapp.com/send?phone=' + phone + '&text=' + text;
