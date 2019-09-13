@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>Redirecting to Whatsapp</title>
+    <script type='text/javascript'>
+        var getParameterByName = function (name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        };
+        var phone = getParameterByName('phone');
+        var text = getParameterByName('text');
+
+        var userAgent = navigator.userAgent.toLowerCase();
+        var iphone = userAgent.includes("iPhone");
+        var android = userAgent.includes("Android");
+        var palmpre = userAgent.includes("webOS");
+        var berry = userAgent.includes("BlackBerry");
+        var ipod = userAgent.includes("iPod");
+        // check if is a mobile
+        if (iphone || android || palmpre || ipod || berry == true) {
+            window.location = 'whatsapp://send?phone=' + phone + '&text=' + text;
+        }
+        else {
+            window.location = 'https://web.whatsapp.com/send?phone=' + phone + '&text=' + text;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Redirecting to Whatsapp</h1>
+</body>
+
+</html>
