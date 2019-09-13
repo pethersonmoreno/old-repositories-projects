@@ -9,6 +9,8 @@
         };
         var phone = getParameterByName('phone');
         var text = getParameterByName('text');
+        if (!text)
+            text = '';
 
         var userAgent = navigator.userAgent.toLowerCase();
         var iphone = userAgent.includes("iPhone".toLowerCase());
