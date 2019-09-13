@@ -11,11 +11,11 @@
         var text = getParameterByName('text');
 
         var userAgent = navigator.userAgent.toLowerCase();
-        var iphone = userAgent.includes("iPhone");
-        var android = userAgent.includes("Android");
-        var palmpre = userAgent.includes("webOS");
-        var berry = userAgent.includes("BlackBerry");
-        var ipod = userAgent.includes("iPod");
+        var iphone = userAgent.includes("iPhone".toLowerCase());
+        var android = userAgent.includes("Android".toLowerCase());
+        var palmpre = userAgent.includes("webOS".toLowerCase());
+        var berry = userAgent.includes("BlackBerry".toLowerCase());
+        var ipod = userAgent.includes("iPod".toLowerCase());
         // check if is a mobile
         if (iphone || android || palmpre || ipod || berry == true) {
             window.location = 'https://api.whatsapp.com/send?phone=' + phone + '&text=' + text;
