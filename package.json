@@ -1,6 +1,6 @@
 {
   "name": "cash-flow-firebase",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Cash Flow project firebase configs",
   "scripts": {
     "postinstall": "npm --prefix functions install",
