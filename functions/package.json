@@ -6,7 +6,7 @@
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "predeploy": "echo nothing to do before deploy",
+    "predeploy": "npm run lint",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },

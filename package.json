@@ -1,0 +1,30 @@
+{
+  "name": "cash-flow-firebase",
+  "version": "1.0.0",
+  "description": "Cash Flow project firebase configs",
+  "scripts": {
+    "postinstall": "npm --prefix functions install",
+    "lint": "npm run functions:lint",
+    "functions:lint": "npm --prefix functions run lint",
+    "functions:serve": "npm --prefix functions run serve",
+    "functions:shell": "npm --prefix functions run shell",
+    "functions:deploy": "npm --prefix functions run deploy",
+    "functions:log": "npm --prefix functions run logs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pethersonmoreno/cash-flow-firebase.git"
+  },
+  "keywords": [
+    "cash",
+    "flow",
+    "firebase",
+    "config"
+  ],
+  "author": "Petherson Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/cash-flow-firebase/issues"
+  },
+  "homepage": "https://github.com/pethersonmoreno/cash-flow-firebase#readme"
+}
