@@ -7,4 +7,4 @@ if (functions.config().cashflowapi && functions.config().cashflowapi.firebase) {
 }
 const server = require('cash-flow-api');
 
-exports.api = functions.https.onRequest(server._events.request);
+exports.api = functions.https.onRequest(server);

@@ -1,10 +1,11 @@
 {
   "name": "cash-flow-firebase",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Cash Flow project firebase configs",
   "scripts": {
     "postinstall": "npm --prefix functions install",
     "lint": "npm run functions:lint",
+    "deploy": "firebase deploy",
     "functions:lint": "npm --prefix functions run lint",
     "functions:serve": "npm --prefix functions run serve",
     "functions:shell": "npm --prefix functions run shell",
