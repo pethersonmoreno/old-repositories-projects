@@ -2,15 +2,30 @@
   "name": "cash-flow-firebase",
   "version": "0.0.2",
   "description": "Cash Flow project firebase configs",
+  "main": "src/index.js",
   "scripts": {
-    "postinstall": "npm --prefix functions install",
-    "lint": "npm run functions:lint",
-    "deploy": "firebase deploy",
-    "functions:lint": "npm --prefix functions run lint",
-    "functions:serve": "npm --prefix functions run serve",
-    "functions:shell": "npm --prefix functions run shell",
-    "functions:deploy": "npm --prefix functions run deploy",
-    "functions:log": "npm --prefix functions run logs"
+    "deploy": "npm run deploy:functions",
+    "lint": "eslint .",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "predeploy": "npm run lint",
+    "deploy:all": "firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "cash-flow-api": "github:pethersonmoreno/cash-flow-api#0.0.2",
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "firebase-functions-test": "^0.1.6"
   },
   "repository": {
     "type": "git",
