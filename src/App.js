@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import { getRedirectResult } from './api/auth';
@@ -11,6 +12,13 @@ const signByRedirectResult = async () => {
 };
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      people: []
+    };
+  }
+
   async componentDidMount() {
     try {
       const [authChangesResult, userLogged] = await Promise.all([
@@ -25,6 +33,10 @@ class App extends Component {
       console.log(error.message);
       console.log(error);
     }
+    const { data: people } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/people`
+    );
+    this.setState({ people });
   }
 
   componentWillUnmount() {
@@ -32,10 +44,18 @@ class App extends Component {
   }
 
   render() {
+    const { people } = this.state;
     return (
       <div className="App">
         <div>
           <SignInWithBox />
+        </div>
+        <div>
+          <ul>
+            {people.map(person => (
+              <li key={person.id}>{person.name}</li>
+            ))}
+          </ul>
         </div>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
