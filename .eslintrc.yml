@@ -9,6 +9,8 @@ plugins:
   - prettier
 extends:
   - airbnb
+  - eslint:recommended
+  - plugin:react/recommended
 rules:
   react/jsx-filename-extension:
     - error
@@ -31,6 +33,4 @@ rules:
   comma-dangle:
     - error
     - only-multiline
-  implicit-arrow-linebreak:
-    - error
-    - bellow
+  implicit-arrow-linebreak: off
