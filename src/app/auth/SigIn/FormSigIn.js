@@ -4,6 +4,7 @@ import {
 } from 'grommet';
 import ButtonSignInWith from './ButtonSignInWith';
 import googleIcon from './googleIcon.png';
+import { signInGoogleWithRedirect } from '../../../api/auth';
 
 const FormSigIn = () => (
   <Form>
@@ -11,7 +12,7 @@ const FormSigIn = () => (
       imageSrc={googleIcon}
       alt="Google"
       title="Sign in with Google"
-      onClick={() => alert('teste')}
+      onClick={signInGoogleWithRedirect}
     >
       Continue with Google
     </ButtonSignInWith>

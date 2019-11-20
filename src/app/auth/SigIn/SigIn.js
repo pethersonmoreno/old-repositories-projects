@@ -3,6 +3,7 @@ import {
   Box, Grommet, Heading
 } from 'grommet';
 import FormSigIn from './FormSigIn';
+import withAuthorization from '../../hoc/withAuthorization';
 
 const theme = {
   global: {
@@ -29,4 +30,4 @@ const SigIn = () =>
     </Grommet>
   );
 
-export default SigIn;
+export default withAuthorization({ authenticated: false }, '/people')(SigIn);
