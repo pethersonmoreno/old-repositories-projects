@@ -62,7 +62,9 @@ const styles = () => ({
 });
 
 const FormPageTemplate = props => {
-  const { children, botoes, links, classes, error, onSubmit } = props;
+  const {
+    children, botoes, links, classes, error, onSubmit
+  } = props;
 
   return (
     <div className={classes.loginBackground}>

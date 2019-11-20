@@ -1,4 +1,4 @@
-import { auth } from "../firebase";
+import { auth } from '../firebase';
 
 let millisecondsToReloadUser = 500;
 const setMillisecondsToReloadUser = milliseconds => {
@@ -6,17 +6,18 @@ const setMillisecondsToReloadUser = milliseconds => {
 };
 const basicUserToJson = user => {
   const keys = [
-    "displayName",
-    "email",
-    "emailVerified",
-    "isAnonymous",
-    "phoneNumber",
-    "photoURL",
+    'displayName',
+    'email',
+    'emailVerified',
+    'isAnonymous',
+    'phoneNumber',
+    'photoURL',
     // "providerId",
-    "refreshToken",
-    "uid"
+    'refreshToken',
+    'uid'
   ];
   const objectToJson = keys.reduce((ret, key) => {
+    // eslint-disable-next-line no-param-reassign
     ret[key] = user[key];
     return ret;
   }, {});
@@ -25,29 +26,28 @@ const basicUserToJson = user => {
 const basicUsersInfoAreEqual = users => {
   if (users.length === 0) {
     return false;
-  } else if (users.length === 1) {
+  } if (users.length === 1) {
     return true;
-  } else {
-    const firstUser = users[0];
-    const jsonFirstUser = basicUserToJson(firstUser);
-    const differentUser = users.find(user => {
-      if (user === firstUser) {
-        return false;
-      }
-      const jsonUser = basicUserToJson(user);
-      return jsonUser !== jsonFirstUser;
-    });
-    return differentUser === undefined;
   }
+  const firstUser = users[0];
+  const jsonFirstUser = basicUserToJson(firstUser);
+  const differentUser = users.find(user => {
+    if (user === firstUser) {
+      return false;
+    }
+    const jsonUser = basicUserToJson(user);
+    return jsonUser !== jsonFirstUser;
+  });
+  return differentUser === undefined;
 };
-let listObserverCurrentUserReloads = [];
+const listObserverCurrentUserReloads = [];
 const reloadCurrentUserInMilliseconds = () => {
   if (listObserverCurrentUserReloads.length === 0) {
     return;
   }
   setTimeout(() => {
     if (!auth.currentUser) {
-      const error = new Error("User not logged in");
+      const error = new Error('User not logged in');
       listObserverCurrentUserReloads.forEach(callback => {
         callback(null, error);
       });
@@ -61,22 +61,20 @@ const reloadCurrentUserInMilliseconds = () => {
         const userAfter = auth.currentUser;
         if (!basicUsersInfoAreEqual([userBefore, userAfter])) {
           listObserverCurrentUserReloads.forEach(callback =>
-            callback(userAfter)
-          );
+            callback(userAfter));
         }
       })
       .catch(error =>
         listObserverCurrentUserReloads.forEach(callback => {
           if (
-            error.code === "auth/invalid-user-token" ||
-            error.code === "auth/user-token-expired"
+            error.code === 'auth/invalid-user-token'
+            || error.code === 'auth/user-token-expired'
           ) {
             callback(null);
           } else {
             callback(null, error);
           }
-        })
-      )
+        }))
       .finally(reloadCurrentUserInMilliseconds);
   }, millisecondsToReloadUser);
 };

@@ -5,14 +5,12 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import FormPageTemplate from '../Templates/FormPageTemplate';
 
-class SignUpForm extends Component {
+class SignInForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: '',
-      passwordOne: '',
-      passwordTwo: '',
+      password: '',
       error: null
     };
   }
@@ -22,46 +20,41 @@ class SignUpForm extends Component {
   };
 
   onSubmit = async event => {
-    const { signUpUserWithEmailAndPassword } = this.props;
-    const { email, passwordOne } = this.state;
+    const { email, password } = this.state;
+    const { signInWithEmailAndPassword } = this.props;
     event.preventDefault();
 
-    const signUpResult = await signUpUserWithEmailAndPassword(
-      email,
-      passwordOne
-    );
-    console.log('signUpResult: ', signUpResult);
+    const signResult = await signInWithEmailAndPassword(email, password);
+    console.log('signResult: ', signResult);
   };
 
   render() {
-    const {
- email, passwordOne, passwordTwo, error 
-} = this.state;
+    const { email, password, error } = this.state;
 
-    const isInvalid =      passwordOne !== passwordTwo || passwordOne === '' || email === '';
+    const isInvalid = password === '' || email === '';
 
     return (
       <FormPageTemplate
         onSubmit={this.onSubmit}
         error={error}
         botoes={(
-<Button
+          <Button
             type="submit"
             variant="contained"
             color="primary"
             disabled={isInvalid}
           >
-            Registrar
+            Logar
           </Button>
-)}
+        )}
         links={(
-<p>
-            Já tem uma conta?
-            <Link to="/signin" variant="contained" color="primary">
-              Logar
+          <p>
+            Não tem uma conta?
+            <Link to="/signup" variant="contained" color="primary">
+              Registrar
             </Link>
           </p>
-)}
+        )}
       >
         <TextField
           autoFocus
@@ -74,25 +67,20 @@ class SignUpForm extends Component {
         />
         <TextField
           fullWidth
-          name="passwordOne"
-          value={passwordOne}
+          name="password"
+          value={password}
           onChange={this.onChange}
           type="password"
           placeholder="Senha"
-        />
-        <TextField
-          fullWidth
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirme a Senha"
         />
       </FormPageTemplate>
     );
   }
 }
-SignUpForm.propTypes = {
-  signUpUserWithEmailAndPassword: PropTypes.func.isRequired
+SignInForm.propTypes = {
+  signInWithEmailAndPassword: PropTypes.func
 };
-export default SignUpForm;
+SignInForm.defaultProps = {
+  signInWithEmailAndPassword: () => { }
+};
+export default SignInForm;

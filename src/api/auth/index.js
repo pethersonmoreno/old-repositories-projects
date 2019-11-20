@@ -1,25 +1,25 @@
-import { auth } from "../firebase";
-import { translateMessageErrorInCatch } from "./translations";
+import { auth } from '../firebase';
+import { translateMessageErrorInCatch } from './translations';
 import {
   signUpUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   updateCurrentUserPassword
-} from "./providerEmailPassword";
+} from './providerEmailPassword';
 import {
   signInGoogleWithPopup,
   signInGoogleWithRedirect
-} from "./providerGoogle";
+} from './providerGoogle';
 import {
   checkAuthState,
   startListenAuthChanges,
   stopListenAuthChanges
-} from "./authState";
+} from './authState';
 import {
   setMillisecondsToReloadUser,
   startListenUserReloads,
   stopListenUserReloads
-} from "./userReloads";
+} from './userReloads';
 
 const getRedirectResult = () =>
   auth.getRedirectResult().catch(translateMessageErrorInCatch);

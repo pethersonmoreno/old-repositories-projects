@@ -1,5 +1,5 @@
-import { firebase, auth } from "../firebase";
-import { translateMessageErrorInCatch } from "./translations";
+import { firebase, auth } from '../firebase';
+import { translateMessageErrorInCatch } from './translations';
 
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
