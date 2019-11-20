@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import * as firebase from 'firebase/app';
 import logo from './logo.svg';
 import './App.css';
 import { getRedirectResult } from './api/auth';
@@ -33,8 +34,14 @@ class App extends Component {
       console.log(error.message);
       console.log(error);
     }
+    const token = await firebase.auth().currentUser.getIdToken();
     const { data: people } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/people`
+      `${process.env.REACT_APP_API_URL}/people`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
     );
     this.setState({ people });
   }
