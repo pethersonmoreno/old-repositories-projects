@@ -31,3 +31,6 @@ rules:
   comma-dangle:
     - error
     - only-multiline
+  implicit-arrow-linebreak:
+    - error
+    - bellow
