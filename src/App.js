@@ -6,6 +6,7 @@ import './App.css';
 import { getRedirectResult } from './api/auth';
 import { startListenAuthChanges, stopListenAuthChanges } from './authState';
 import SignInWithBox from './SignInWithBox';
+import peopleApi from './api/people';
 
 const signByRedirectResult = async () => {
   const userCredential = await getRedirectResult();
@@ -35,14 +36,15 @@ class App extends Component {
       console.log(error);
     }
     const token = await firebase.auth().currentUser.getIdToken();
-    const { data: people } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/people`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
+    const people = await peopleApi.getList(token);
+    // const { data: people } = await axios.get(
+    //   `${process.env.REACT_APP_API_URL}/people`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   }
+    // );
     this.setState({ people });
   }
 
