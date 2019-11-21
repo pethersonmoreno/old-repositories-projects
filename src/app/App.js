@@ -26,6 +26,7 @@ class App extends Component {
       authenticated: false,
       userProfile: null,
       showSidebar: false,
+      pageTitle: '',
     };
   }
 
@@ -79,16 +80,18 @@ class App extends Component {
     this.setState({ showSidebar: false });
   }
 
+  setPageTitle = pageTitle => {
+    this.setState({ pageTitle });
+  }
+
   render() {
     const { startedAuth } = this.state;
-    // if (!startedAuth) {
-    // return <Spinner />;
-    // }
     return (
       <AppContext.Provider value={{
         ...this.state,
         toggleSideBar: this.toggleSideBar,
         hideSideBar: this.hideSideBar,
+        setPageTitle: this.setPageTitle,
       }}
       >
         <Grommet theme={theme} full>

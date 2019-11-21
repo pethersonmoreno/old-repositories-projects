@@ -10,11 +10,14 @@ import SideBar from '../components/SideBar';
 import withAppStateActions from '../hoc/withAppStateActions';
 
 const PageTemplate = ({
-  toggleSideBar, children
+  toggleSideBar, pageTitle, children
 }) => (
   <Box fill>
     <AppBar>
-      <Heading level="3" margin="none">My App</Heading>
+      <Heading level="3" margin="none">
+        Cash Flow
+        {pageTitle ? ` - ${pageTitle}` : ''}
+      </Heading>
       <Button icon={<Notification />} onClick={toggleSideBar} />
     </AppBar>
     <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
@@ -28,6 +31,7 @@ const PageTemplate = ({
 
 PageTemplate.propTypes = {
   toggleSideBar: PropTypes.func.isRequired,
+  pageTitle: PropTypes.string.isRequired,
   children: PropTypes.element.isRequired,
 };
 
