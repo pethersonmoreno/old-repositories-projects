@@ -1,25 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Switch, Route, Redirect, BrowserRouter, HashRouter
 } from 'react-router-dom';
 import SigIn from '../auth/SigIn/SigIn';
-
+import AppAuthenticated from '../AppAuthenticated';
 
 const NavigationRouter = process.env.NODE_ENV !== 'development' ? HashRouter : BrowserRouter;
 
-const MainRouter = ({ children }) => (
+const MainRouter = () => (
   <NavigationRouter basename={process.env.PUBLIC_URL}>
     <Switch>
       <Route path="/" exact render={() => <Redirect to="/signIn" />} />
       <Route exact path="/signIn" component={SigIn} />
-      {children}
+      <Route component={AppAuthenticated} />
     </Switch>
   </NavigationRouter>
 );
-
-MainRouter.propTypes = {
-  children: PropTypes.element.isRequired,
-};
 
 export default MainRouter;

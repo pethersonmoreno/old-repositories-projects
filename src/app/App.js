@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import MainRouter from './routers/MainRouter';
-import AuthenticatedRouter from './routers/AuthenticatedRouter';
 import { getRedirectResult } from '../api/auth';
 import AppContext from './contexts/AppContext';
 
@@ -12,6 +11,7 @@ class App extends Component {
     this.state = {
       authenticated: false,
       userProfile: null,
+      showSidebar: false,
     };
   }
 
@@ -38,17 +38,23 @@ class App extends Component {
     }
   }
 
+  toggleSideBar = () => {
+    this.setState(prevState => ({ showSidebar: !prevState.showSidebar }));
+  }
+
+  hideSideBar = () => {
+    this.setState({ showSidebar: false });
+  }
+
   render() {
-    const { authenticated, userProfile } = this.state;
     return (
       <AppContext.Provider value={{
-        authenticated,
-        userProfile,
+        ...this.state,
+        toggleSideBar: this.toggleSideBar,
+        hideSideBar: this.hideSideBar,
       }}
       >
-        <MainRouter>
-          <AuthenticatedRouter />
-        </MainRouter>
+        <MainRouter />
       </AppContext.Provider>
     );
   }

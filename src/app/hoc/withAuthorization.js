@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import withAppData from './withAppData';
+import withAppStateActions from './withAppStateActions';
 
 const withAuthorization = (authCompare, pathToGoIfDifferent) => WrappedComponent => {
   class WithAuthorizationWrapper extends React.Component {
@@ -36,6 +36,6 @@ const withAuthorization = (authCompare, pathToGoIfDifferent) => WrappedComponent
   WithAuthorizationWrapper.propTypes = {
     history: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
-  return withAppData(withRouter(WithAuthorizationWrapper));
+  return withAppStateActions(withRouter(WithAuthorizationWrapper));
 };
 export default withAuthorization;
