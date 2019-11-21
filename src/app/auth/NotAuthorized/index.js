@@ -2,6 +2,8 @@ import React from 'react';
 import {
   Box, Grommet, Heading, Button
 } from 'grommet';
+import { signOut } from '../../../api/auth';
+import withAuthorization from '../../hoc/withAuthorization';
 
 const theme = {
   global: {
@@ -25,10 +27,11 @@ const NotAuthorized = () =>
           <Heading level={2}>Request Authorization</Heading>
           <Button
             label="Sign Out"
+            onClick={signOut}
           />
         </Box>
       </Box>
     </Grommet>
   );
 
-export default NotAuthorized;
+export default withAuthorization({ authenticated: true, isValidEmail: false }, '/people')(NotAuthorized);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import { Grommet } from 'grommet';
 import MainRouter from './routers/MainRouter';
-import { getRedirectResult } from '../api/auth';
+import { getRedirectResult, isValidEmail } from '../api/auth';
 import AppContext from './contexts/AppContext';
 import Spinner from './components/Spinner';
 
@@ -35,20 +35,24 @@ class App extends Component {
       this.captureAuthChanges(),
       this.captureSigInRedirectResult()
     ]);
-    this.setState({ startedAuth: true });
+    const { userProfile } = this.state;
+    this.setState({
+      startedAuth: true,
+      isValidEmail: userProfile ? await isValidEmail(await userProfile.getIdToken()):false
+    });
   }
 
   captureAuthChanges = () => {
     let firstAuthChanged = true;
     return new Promise(resolve => {
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(async user => {
         if (user) {
-          this.setState({
+          await this.setState({
             authenticated: true,
             userProfile: user,
           });
         } else {
-          this.setState({
+          await this.setState({
             authenticated: false,
             userProfile: null,
           });
@@ -64,7 +68,7 @@ class App extends Component {
   captureSigInRedirectResult = async () => {
     const userCredential = await getRedirectResult();
     if (userCredential.user) {
-      this.setState({
+      await this.setState({
         authenticated: true,
         userProfile: userCredential.user,
       });

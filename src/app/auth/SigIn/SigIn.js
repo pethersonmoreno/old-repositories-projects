@@ -30,4 +30,4 @@ const SigIn = () =>
     </Grommet>
   );
 
-export default withAuthorization({ authenticated: false }, '/people')(SigIn);
+export default withAuthorization({ authenticated: false }, '/notAuthorized')(SigIn);

@@ -20,6 +20,7 @@ import {
   startListenUserReloads,
   stopListenUserReloads
 } from './userReloads';
+import isValidEmail from './isValidEmail';
 
 const getRedirectResult = () =>
   auth.getRedirectResult().catch(translateMessageErrorInCatch);
@@ -42,5 +43,6 @@ export {
   stopListenAuthChanges,
   setMillisecondsToReloadUser,
   startListenUserReloads,
-  stopListenUserReloads
+  stopListenUserReloads,
+  isValidEmail
 };
