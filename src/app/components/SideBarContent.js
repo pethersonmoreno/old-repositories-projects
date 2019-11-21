@@ -1,7 +1,12 @@
 import React from 'react';
+import { Box } from 'grommet';
+import SidebarButton from './SideBarButton';
+import { signOut } from '../../api/auth';
 
 const SideBarContent = () => (
-  <span>Side bar</span>
+  <Box fill>
+    <SidebarButton label="Sign Out" onClick={signOut} />
+  </Box>
 );
 
 export default SideBarContent;
