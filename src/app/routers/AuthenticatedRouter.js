@@ -4,10 +4,11 @@ import {
   Switch, Route
 } from 'react-router-dom';
 import NotFound from '../others/NotFound';
+import People from '../modules/People';
 
 const AuthenticatedRouter = ({ children }) => (
   <Switch>
-    <Route exact path="/people" component={() => <div>People</div>} />
+    <Route path="/people" component={People} />
     {children}
     <Route component={NotFound} />
   </Switch>

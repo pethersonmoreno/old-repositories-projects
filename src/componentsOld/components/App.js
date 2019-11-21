@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 import './App.css';
-import { getRedirectResult } from '../api/auth';
+import { getRedirectResult } from '../../api/auth';
 import {
   startListenAuthChanges,
   stopListenAuthChanges
-} from '../helpers/authState';
+} from '../../helpers/authState';
 import SignInWithBox from './SignInWithBox';
-import peopleApi from '../api/people';
+import peopleApi from '../../api/people';
 
 const signByRedirectResult = async () => {
   const userCredential = await getRedirectResult();

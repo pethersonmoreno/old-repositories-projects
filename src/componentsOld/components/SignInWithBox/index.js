@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ButtonSignInWith from '../ButtonSignInWith';
-import { signInGoogleWithRedirect } from '../../api/auth';
+import { signInGoogleWithRedirect } from '../../../api/auth';
 import googleIcon from './googleIcon.png';
 
 const styles = () => ({
