@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Button, Collapsible,
   Layer, ResponsiveContext
@@ -9,8 +9,10 @@ import useAuthState from '../states/useAuthState';
 import { hideSideBar } from '../actions/auth';
 
 const SideBar = () => {
-  const [state] = useAuthState();
+  const [state, , unlinkState] = useAuthState();
   const { showSidebar } = state;
+
+  useEffect(() => unlinkState);
   return (
     <ResponsiveContext.Consumer>
       {size => ((!showSidebar || size !== 'small') ? (

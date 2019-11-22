@@ -19,12 +19,12 @@ const verifyLoggedUser = (props, authState, authCompare, pathToGoIfDifferent) =>
 
 const withAuthorization = (authCompare, pathToGoIfDifferent) => WrappedComponent => {
   const WithAuthorizationWrapper = props => {
-    const [authState] = useAuthState();
+    const [authState, , unlinkState] = useAuthState();
     useEffect(() => {
       // Called just after component mount
       verifyLoggedUser(props, authState, authCompare, pathToGoIfDifferent);
-    },
-    [props, authState]);
+      return unlinkState;
+    });
     if (authIsDifferent(authState, authCompare)) {
       return null;
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Button,
@@ -13,8 +13,9 @@ import { toggleSideBar } from '../actions/auth';
 const PageTemplate = ({
   children
 }) => {
-  const [state] = useAuthState();
+  const [state, , unlinkState] = useAuthState();
   const { pageTitle } = state;
+  useEffect(() => unlinkState);
   return (
     <Box fill>
       <AppBar>

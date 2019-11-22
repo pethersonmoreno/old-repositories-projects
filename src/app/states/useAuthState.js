@@ -1,29 +1,36 @@
 import createUseSharedStateHook from './createUseSharedStateHook';
 
-const startedAuth = JSON.parse(localStorage.getItem('startedAuth'));
-const loading = JSON.parse(localStorage.getItem('loading'));
-const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-const token = JSON.parse(localStorage.getItem('token'));
-const isValidEmailBool = JSON.parse(localStorage.getItem('isValidEmail'));
 
 const initialState = {
-  startedAuth,
-  loading,
-  authenticated: !!userProfile,
-  userProfile,
-  token,
-  isValidEmail: isValidEmailBool,
+  startedAuth: null,
+  loading: null,
+  authenticated: false,
+  userProfile: null,
+  token: null,
+  isValidEmail: null,
   showSidebar: false,
   pageTitle: '',
 };
 
+const currentState = {
+  ...initialState,
+  ...JSON.parse(localStorage.getItem('auth'))
+};
+
+
 const {
   getState,
-  setState,
+  setState: setStateGenerated,
   useState: useAuthState,
-} = createUseSharedStateHook(initialState);
+} = createUseSharedStateHook(currentState);
+
+const setState = data => {
+  setStateGenerated(data);
+  localStorage.setItem('auth', JSON.stringify(getState()));
+};
 
 export {
+  initialState,
   getState,
   setState,
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 
 const createSetState = data => {
@@ -20,18 +20,18 @@ const createSetState = data => {
 const createUseStateFunction = data => {
   const useStateFunction = () => {
     const newListener = useState()[1];
+    const unlinkState = useCallback(() => {
+      data.setStateListeners = data.setStateListeners.filter(
+        listener =>
+          listener !== newListener
+      );
+    }, [newListener]);
     useEffect(() => {
       // Called just after component mount
       data.setStateListeners.push(newListener);
-      return () => {
-        // Called just before the component unmount
-        data.setStateListeners = data.setStateListeners.filter(
-          listener =>
-            listener !== newListener
-        );
-      };
-    }, [newListener]);
-    return [data.state, data.setState];
+      return unlinkState;
+    }, [newListener, unlinkState]);
+    return [data.state, data.setState, unlinkState];
   };
   return useStateFunction;
 };
