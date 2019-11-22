@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import * as firebase from 'firebase/app';
+import PropTypes from 'prop-types';
 import peopleApi from '../../../api/people';
+import withAppStateActions from '../../hoc/withAppStateActions';
 
-const PeopleList = () => {
+const PeopleList = ({ token }) => {
   const [list, setList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const token = await firebase.auth().currentUser.getIdToken();
       const listLoaded = await peopleApi.getList(token);
       setList(listLoaded);
     };
     fetchData();
-  }, []);
+  }, [token]);
   return (
     <div>
       <ul>
@@ -23,4 +23,8 @@ const PeopleList = () => {
   );
 };
 
-export default PeopleList;
+PeopleList.propTypes = {
+  token: PropTypes.string.isRequired,
+};
+
+export default withAppStateActions(PeopleList);

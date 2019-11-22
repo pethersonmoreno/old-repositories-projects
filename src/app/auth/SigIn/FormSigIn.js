@@ -1,22 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Form
 } from 'grommet';
 import ButtonSignInWith from './ButtonSignInWith';
 import googleIcon from './googleIcon.png';
-import { signInGoogleWithRedirect } from '../../../api/auth';
+import withAppStateActions from '../../hoc/withAppStateActions';
 
-const FormSigIn = () => (
+const FormSigIn = ({ signIn }) => (
   <Form>
     <ButtonSignInWith
       imageSrc={googleIcon}
       alt="Google"
       title="Sign in with Google"
-      onClick={signInGoogleWithRedirect}
+      onClick={signIn}
     >
       Continue with Google
     </ButtonSignInWith>
   </Form>
 );
+FormSigIn.propTypes = {
+  signIn: PropTypes.func.isRequired,
+};
 
-export default FormSigIn;
+export default withAppStateActions(FormSigIn);
