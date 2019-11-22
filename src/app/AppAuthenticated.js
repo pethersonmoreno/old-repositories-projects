@@ -9,4 +9,4 @@ const AppAuthenticated = () => (
   </PageTemplate>
 );
 
-export default withAuthorization({ authenticated: true }, '/')(AppAuthenticated);
+export default withAuthorization({ authenticated: true, isValidEmail: true }, '/')(AppAuthenticated);
