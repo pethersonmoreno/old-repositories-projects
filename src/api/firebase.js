@@ -11,3 +11,4 @@ firebase.initializeApp(config);
 export { firebase };
 export const auth = firebase.auth();
 auth.useDeviceLanguage();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
