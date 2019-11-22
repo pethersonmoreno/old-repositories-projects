@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Grommet } from 'grommet';
 import MainRouter from './routers/MainRouter';
 import Spinner from './components/Spinner';
-import useAuthState from './states/useAuthState';
+import useAuthState from './hooks/useAuthState';
 import { start } from './actions/auth';
 
 

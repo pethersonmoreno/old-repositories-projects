@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 import { signInGoogleWithRedirect, getRedirectResult, isValidEmail } from '../../api/auth';
-import { initialState, setState } from '../states/useAuthState';
+import { initialState, setState } from '../hooks/useAuthState';
 
 
 const signIn = async () => {

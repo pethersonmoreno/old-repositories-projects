@@ -5,7 +5,7 @@ import {
 } from 'grommet';
 import { FormClose } from 'grommet-icons';
 import SideBarContent from './SideBarContent';
-import useAuthState from '../states/useAuthState';
+import useAuthState from '../hooks/useAuthState';
 import { hideSideBar } from '../actions/auth';
 
 const SideBar = () => {

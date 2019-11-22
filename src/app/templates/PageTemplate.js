@@ -7,7 +7,7 @@ import {
 import { Notification } from 'grommet-icons';
 import AppBar from '../components/AppBar';
 import SideBar from '../components/SideBar';
-import useAuthState from '../states/useAuthState';
+import useAuthState from '../hooks/useAuthState';
 import { toggleSideBar } from '../actions/auth';
 
 const PageTemplate = ({

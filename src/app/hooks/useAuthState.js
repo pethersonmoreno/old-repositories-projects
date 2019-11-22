@@ -1,5 +1,4 @@
-import createUseSharedStateHook from './createUseSharedStateHook';
-
+import createUseSharedStateHook from './factories/createUseSharedStateHook';
 
 const initialState = {
   startedAuth: null,

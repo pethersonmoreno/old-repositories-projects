@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import peopleApi from '../../../api/people';
-import { getState } from '../../states/useAuthState';
+import { getState } from '../../hooks/useAuthState';
 
 const PeopleList = () => {
   const [list, setList] = useState([]);
