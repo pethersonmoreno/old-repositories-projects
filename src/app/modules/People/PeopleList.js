@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import peopleApi from '../../../api/people';
-import withAppStateActions from '../../hoc/withAppStateActions';
+import useAuthState from '../../states/useAuthState';
 
-const PeopleList = ({ token }) => {
+const PeopleList = () => {
+  const [state] = useAuthState();
+  const { token } = state;
   const [list, setList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +24,4 @@ const PeopleList = ({ token }) => {
   );
 };
 
-PeopleList.propTypes = {
-  token: PropTypes.string.isRequired,
-};
-
-export default withAppStateActions(PeopleList);
+export default PeopleList;

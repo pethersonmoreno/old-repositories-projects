@@ -1,59 +1,58 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Box, Button, Collapsible,
   Layer, ResponsiveContext
 } from 'grommet';
 import { FormClose } from 'grommet-icons';
 import SideBarContent from './SideBarContent';
-import withAppStateActions from '../hoc/withAppStateActions';
+import useAuthState from '../states/useAuthState';
+import { hideSideBar } from '../actions/auth';
 
-const SideBar = ({ showSidebar, hideSideBar }) => (
-  <ResponsiveContext.Consumer>
-    {size => ((!showSidebar || size !== 'small') ? (
-      <Collapsible direction="horizontal" open={showSidebar}>
-        <Box
-          flex
-          width="medium"
-          elevation="small"
-          background="light-2"
-          align="center"
-          justify="center"
-        >
-          <SideBarContent />
-        </Box>
-      </Collapsible>
-    )
-      : (
-        <Layer>
+const SideBar = () => {
+  const [state] = useAuthState();
+  const { showSidebar } = state;
+  return (
+    <ResponsiveContext.Consumer>
+      {size => ((!showSidebar || size !== 'small') ? (
+        <Collapsible direction="horizontal" open={showSidebar}>
           <Box
-            background="light-2"
-            tag="header"
-            justify="end"
-            align="center"
-            direction="row"
-          >
-            <Button
-              icon={<FormClose />}
-              onClick={hideSideBar}
-            />
-          </Box>
-          <Box
-            fill
+            flex
+            width="medium"
+            elevation="small"
             background="light-2"
             align="center"
             justify="center"
           >
             <SideBarContent />
           </Box>
-        </Layer>
-      ))}
-  </ResponsiveContext.Consumer>
-);
-
-SideBar.propTypes = {
-  showSidebar: PropTypes.bool.isRequired,
-  hideSideBar: PropTypes.func.isRequired,
+        </Collapsible>
+      )
+        : (
+          <Layer>
+            <Box
+              background="light-2"
+              tag="header"
+              justify="end"
+              align="center"
+              direction="row"
+            >
+              <Button
+                icon={<FormClose />}
+                onClick={hideSideBar}
+              />
+            </Box>
+            <Box
+              fill
+              background="light-2"
+              align="center"
+              justify="center"
+            >
+              <SideBarContent />
+            </Box>
+          </Layer>
+        ))}
+    </ResponsiveContext.Consumer>
+  );
 };
 
-export default withAppStateActions(SideBar);
+export default SideBar;

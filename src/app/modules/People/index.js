@@ -5,12 +5,12 @@ import {
 } from 'react-router-dom';
 import PeopleList from './PeopleList';
 import NotFound from '../../others/NotFound';
-import withAppStateActions from '../../hoc/withAppStateActions';
+import { setPageTitle } from '../../actions/auth';
 
-const Router = ({ match, setPageTitle }) => {
+const Router = ({ match }) => {
   useEffect(() => {
     setPageTitle('People');
-  }, [setPageTitle]);
+  }, []);
   return (
     <Switch>
       <Route exact path={match.path} component={PeopleList} />
@@ -24,7 +24,6 @@ Router.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired
   }).isRequired,
-  setPageTitle: PropTypes.func.isRequired,
 };
 
-export default withAppStateActions(Router);
+export default Router;

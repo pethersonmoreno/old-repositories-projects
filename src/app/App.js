@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import * as firebase from 'firebase/app';
 import { Grommet } from 'grommet';
 import MainRouter from './routers/MainRouter';
-import { getRedirectResult, isValidEmail, signInGoogleWithRedirect } from '../api/auth';
+import { getRedirectResult, isValidEmail } from '../api/auth';
 import AppContext from './contexts/AppContext';
 import Spinner from './components/Spinner';
 import useAuthState, { getState as getAuthState, setState as setAuthState } from './states/useAuthState';
+import { updateLoading } from './actions/auth';
 
 
 const updateIsValidEmail = async () => {
@@ -57,28 +58,6 @@ const captureSigInRedirectResult = async () => {
   }
 };
 
-const updateLoading = loading => {
-  localStorage.setItem('loading', JSON.stringify(loading));
-  return setAuthState({ loading });
-};
-
-const signIn = async () => {
-  updateLoading(true);
-  signInGoogleWithRedirect();
-};
-
-
-const toggleSideBar = () => {
-  setAuthState(prevState => ({ showSidebar: !prevState.showSidebar }));
-};
-
-const hideSideBar = () => {
-  setAuthState({ showSidebar: false });
-};
-
-const setPageTitle = pageTitle => {
-  setAuthState({ pageTitle });
-};
 const start = async () => {
   const startLoading = Promise.all([
     captureSigInRedirectResult(),
@@ -119,11 +98,7 @@ const App = () => {
   const { startedAuth, loading } = state;
   return (
     <AppContext.Provider value={{
-      ...state,
-      signIn,
-      toggleSideBar,
-      hideSideBar,
-      setPageTitle,
+      ...state
     }}
     >
       <Grommet theme={theme} full>
