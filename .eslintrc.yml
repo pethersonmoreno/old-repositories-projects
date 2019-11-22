@@ -6,12 +6,15 @@ plugins:
   - react
   - jsx-a11y
   - import
+  - react-hooks
   - prettier
 extends:
   - airbnb
   - eslint:recommended
   - plugin:react/recommended
 rules:
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn
   react/jsx-filename-extension:
     - error
     - extensions:
