@@ -3,7 +3,6 @@ import * as firebase from 'firebase/app';
 import { Grommet } from 'grommet';
 import MainRouter from './routers/MainRouter';
 import { getRedirectResult, isValidEmail } from '../api/auth';
-import AppContext from './contexts/AppContext';
 import Spinner from './components/Spinner';
 import useAuthState, { getState as getAuthState, setState as setAuthState } from './states/useAuthState';
 import { updateLoading } from './actions/auth';
@@ -97,19 +96,14 @@ const App = () => {
 
   const { startedAuth, loading } = state;
   return (
-    <AppContext.Provider value={{
-      ...state
-    }}
-    >
-      <Grommet theme={theme} full>
-        {(!startedAuth || loading) && (
+    <Grommet theme={theme} full>
+      {(!startedAuth || loading) && (
         <Spinner />
-        )}
-        {(startedAuth && !loading) && (
+      )}
+      {(startedAuth && !loading) && (
         <MainRouter />
-        )}
-      </Grommet>
-    </AppContext.Provider>
+      )}
+    </Grommet>
   );
 };
 
