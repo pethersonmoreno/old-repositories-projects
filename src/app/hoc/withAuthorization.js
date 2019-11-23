@@ -9,8 +9,7 @@ const authIsDifferent = (authState, authCompare) => Object.keys(authCompare).fin
   return value !== authCompare[key];
 });
 
-const verifyLoggedUser = (props, authState, authCompare, pathToGoIfDifferent) => {
-  const { history } = props;
+const verifyLoggedUser = (history, authState, authCompare, pathToGoIfDifferent) => {
   if (authIsDifferent(authState, authCompare)) {
     history.push(pathToGoIfDifferent);
   }
@@ -19,12 +18,13 @@ const verifyLoggedUser = (props, authState, authCompare, pathToGoIfDifferent) =>
 
 const withAuthorization = (authCompare, pathToGoIfDifferent) => WrappedComponent => {
   const WithAuthorizationWrapper = props => {
+    const { history } = props;
     const [authState, , unlinkState] = useAuthState();
     useEffect(() => {
       // Called just after component mount
-      verifyLoggedUser(props, authState, authCompare, pathToGoIfDifferent);
+      verifyLoggedUser(history, authState, authCompare, pathToGoIfDifferent);
       return unlinkState;
-    });
+    }, [authState, history, unlinkState]);
     if (authIsDifferent(authState, authCompare)) {
       return null;
     }

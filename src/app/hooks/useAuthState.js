@@ -1,21 +1,23 @@
 import createUseSharedStateHook from './factories/createUseSharedStateHook';
+import localStorage from '../../helpers/localStorage';
+
+const LOCAL_STORAGE_NAME = 'auth';
 
 const initialState = {
-  startedAuth: null,
-  loading: null,
+  loading: true,
   authenticated: false,
   userProfile: null,
   token: null,
-  isValidEmail: null,
+  isValidEmail: false,
   showSidebar: false,
   pageTitle: '',
 };
+const propertiesName = Object.keys(initialState);
 
 const currentState = {
   ...initialState,
-  ...JSON.parse(localStorage.getItem('auth'))
+  ...localStorage.getPartialItem(LOCAL_STORAGE_NAME, propertiesName)
 };
-
 
 const {
   getState,
@@ -25,7 +27,7 @@ const {
 
 const setState = data => {
   setStateGenerated(data);
-  localStorage.setItem('auth', JSON.stringify(getState()));
+  localStorage.setItem(LOCAL_STORAGE_NAME, JSON.stringify(getState()));
 };
 
 export {

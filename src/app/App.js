@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Grommet } from 'grommet';
 import MainRouter from './routers/MainRouter';
 import Spinner from './components/Spinner';
-import useAuthState from './hooks/useAuthState';
 import { start } from './actions/auth';
+import useAuthState from './hooks/useAuthState';
 
 
 const theme = {
@@ -19,24 +19,17 @@ const theme = {
   },
 };
 const App = () => {
-  const [state, , unlinkState] = useAuthState();
+  const [{ loading }, , unlinkAuthState] = useAuthState();
   useEffect(() => {
-    // Called just after component mount
     start();
-    return () => {
-      unlinkState();
-      // Called just before the component unmount
-    };
-  }, [unlinkState]);
-
-
-  const { startedAuth, loading } = state;
+    return unlinkAuthState;
+  }, [unlinkAuthState]);
   return (
     <Grommet theme={theme} full>
-      {(!startedAuth || loading) && (
+      {loading && (
         <Spinner />
       )}
-      {(startedAuth && !loading) && (
+      {!loading && (
         <MainRouter />
       )}
     </Grommet>

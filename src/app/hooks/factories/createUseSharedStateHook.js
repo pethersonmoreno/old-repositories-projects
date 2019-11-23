@@ -2,19 +2,33 @@
 import { useState, useEffect, useCallback } from 'react';
 
 
-const createSetState = data => {
-  const setState = newState => {
-    if (typeof newState === 'function') {
-      const newStateChangeFn = newState;
-      data.state = { ...data.state, ...newStateChangeFn(data.state) };
-    } else {
-      data.state = { ...data.state, ...newState };
-    }
-    data.setStateListeners.forEach(listener => {
-      listener(data.state);
-    });
-  };
-  return setState;
+const callSetStateListeners = data => data.setStateListeners.forEach(listener => {
+  listener(data.state);
+});
+const updateState = (data, newStateValue) => {
+  if (JSON.stringify(data.state) !== JSON.stringify(newStateValue)) {
+    data.state = newStateValue;
+    callSetStateListeners(data);
+  }
+};
+
+const createSetStateObject = data => newState => {
+  let newStateValue;
+  if (typeof newState === 'function') {
+    const newStateChangeFn = newState;
+    newStateValue = { ...data.state, ...newStateChangeFn(data.state) };
+  } else {
+    newStateValue = { ...data.state, ...newState };
+  }
+  updateState(data, newStateValue);
+};
+const createSetStateValue = data => newState => {
+  let newStateValue = newState;
+  if (typeof newState === 'function') {
+    const newStateChangeFn = newState;
+    newStateValue = newStateChangeFn(data.state);
+  }
+  updateState(data, newStateValue);
 };
 
 const createUseStateFunction = data => {
@@ -40,8 +54,13 @@ const createUseSharedStateHook = initialState => {
   const data = {
     state: initialState,
     setStateListeners: [],
+    initialState
   };
-  data.setState = createSetState(data);
+  if (typeof initialState === 'object' && initialState !== null) {
+    data.setState = createSetStateObject(data);
+  } else {
+    data.setState = createSetStateValue(data);
+  }
   const getState = () => data.state;
   const useStateFunction = createUseStateFunction(data);
   return {

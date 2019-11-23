@@ -1,49 +1,40 @@
 import * as firebase from 'firebase/app';
 import { signInGoogleWithRedirect, getRedirectResult, isValidEmail } from '../../api/auth';
-import { initialState, setState } from '../hooks/useAuthState';
+import { setState as setAuthState } from '../hooks/useAuthState';
 
 
 const signIn = async () => {
-  setState({ ...initialState, loading: true });
+  setAuthState({ loading: true });
   signInGoogleWithRedirect();
 };
 
 
 const toggleSideBar = () => {
-  setState(prevState => ({ showSidebar: !prevState.showSidebar }));
+  setAuthState(prevState => ({ showSidebar: !prevState.showSidebar }));
 };
 
 const hideSideBar = () => {
-  setState({ showSidebar: false });
+  setAuthState({ showSidebar: false });
 };
 
 const setPageTitle = pageTitle => {
-  setState({ pageTitle });
+  setAuthState({ pageTitle });
 };
 
 const updateUserProfile = async userProfile => {
   let token = null;
+  let isValidEmailBool = false;
   if (userProfile) {
     token = await userProfile.getIdToken();
-    const isValidEmailBool = token ? await isValidEmail(token) : false;
-    await setState({
-      authenticated: true,
-      userProfile,
-      token,
-      isValidEmail: isValidEmailBool,
-      startedAuth: true,
-      loading: false
-    });
-  } else {
-    await setState({
-      authenticated: false,
-      userProfile: null,
-      token: null,
-      isValidEmail: false,
-      startedAuth: true,
-      loading: false
-    });
+    isValidEmailBool = token ? await isValidEmail(token) : false;
   }
+  await setAuthState({
+    loading: false,
+    authenticated: !!userProfile,
+    userProfile,
+    token,
+    isValidEmail: isValidEmailBool,
+  });
 };
 
 const captureAuthChanges = () => {
