@@ -1,39 +1,53 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Form, FormField,
-  Button,
-  Grid
+  Form,
+  Button
 } from 'grommet';
 import peopleApi from '../../../api/people';
 import { getState } from '../../hooks/useAuthState';
+import { usePerson } from './hooks';
+import './PeopleForm.scss';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
   const handleChange = event => {
     setValue(event.target.value);
   };
-  return { value, onChange: handleChange };
+  return [value, handleChange, setValue];
 };
 
-const PeopleForm = () => {
-  const name = useInputValue('');
+
+const PeopleForm = ({ match: { params: { id } }, history }) => {
+  const [name, onChangeName, setName] = useInputValue('');
+  usePerson(id, setName);
+  const savePerson = async () => {
+    const { token } = getState();
+    if (id) {
+      await peopleApi.replace(token, id, { name });
+    } else {
+      await peopleApi.add(token, { name });
+    }
+    history.push('/people');
+  };
   return (
-    <Form style={{ width: 50 }}>
-      <Grid
-        rows={['xxsmall']}
-        columns={['small', 'small']}
-        gap="small"
-        areas={[
-          { name: 'field', start: [0, 0], end: [1, 0] },
-          { name: 'button', start: [1, 0], end: [1, 0] },
-        ]}
-      >
-        <FormField gridArea="field" name="name" label="Name" {...name} />
-        <Button gridArea="button" type="submit" primary label="Save" onClick={() => peopleApi.add(getState().token, { name: name.value })} />
-      </Grid>
+    <Form className="people-form">
+      <input autoFocus name="name" label="Name" value={name} onChange={onChangeName} />
+      <Button type="submit" label="Save" onClick={savePerson} />
     </Form>
   );
+};
+PeopleForm.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 

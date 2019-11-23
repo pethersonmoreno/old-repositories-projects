@@ -14,3 +14,17 @@ export const usePeopleList = () => {
   }, []);
   return list;
 };
+
+export const usePerson = (id, setName) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) {
+        return;
+      }
+      const { token } = getState();
+      const person = await peopleApi.get(token, id);
+      setName(person.name);
+    };
+    fetchData();
+  }, [id, setName]);
+};

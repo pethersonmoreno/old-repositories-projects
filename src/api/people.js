@@ -9,9 +9,29 @@ const getList = token =>
     })
     .then(resp => resp.data);
 
-const add = (token, people) =>
+const get = (token, id) =>
   axios
-    .post('/people', people,
+    .get(`/people/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(resp => resp.data);
+
+
+const add = (token, person) =>
+  axios
+    .post('/people', person,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    .then(resp => resp.data);
+
+const replace = (token, id, person) =>
+  axios
+    .put(`/people/${id}`, person,
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -21,6 +41,8 @@ const add = (token, people) =>
 
 const peopleApi = {
   getList,
-  add
+  get,
+  add,
+  replace
 };
 export default peopleApi;

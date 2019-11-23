@@ -6,6 +6,7 @@ import {
 import PeopleList from './PeopleList';
 import NotFound from '../../others/NotFound';
 import { setPageTitle } from '../../actions/auth';
+import PeopleForm from './PeopleForm';
 
 const Router = ({ match }) => {
   useEffect(() => {
@@ -14,7 +15,8 @@ const Router = ({ match }) => {
   return (
     <Switch>
       <Route exact path={match.path} component={PeopleList} />
-      <Route exact path={`${match.path}/teste`} component={() => <div>testando</div>} />
+      <Route exact path={`${match.path}/edit/:id`} component={PeopleForm} />
+      <Route exact path={`${match.path}/new`} component={PeopleForm} />
       <Route component={NotFound} />
     </Switch>
   );
