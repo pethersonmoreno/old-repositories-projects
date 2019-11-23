@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Table, TableHeader, TableBody, TableCell, TableRow,
   Button
 } from 'grommet';
 import { Edit } from 'grommet-icons';
-import peopleApi from '../../../api/people';
-import { getState } from '../../hooks/useAuthState';
 import PeopleForm from './PeopleForm';
+import { usePeopleList } from './hooks';
 
 const PeopleList = () => {
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const { token } = getState();
-      const listLoaded = await peopleApi.getList(token);
-      setList(listLoaded);
-    };
-    fetchData();
-  }, []);
+  const list = usePeopleList();
   return (
     <div>
       <PeopleForm />
