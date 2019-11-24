@@ -5,6 +5,7 @@ import {
   Form,
   Button
 } from 'grommet';
+import moment from 'moment';
 import api from '../../../api/cashFlows';
 import { getState } from '../../hooks/useAuthState';
 import {
@@ -41,12 +42,11 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const [value, onChangeValue, setValue] = useInputValue(0);
   const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
   const [cashFlowDescriptionId, onChangeCashFlowDescriptionId, setCashFlowDescriptionId] = useInputValue('');
-
   const accountsList = useAccountsList();
   const peopleList = usePeopleList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
   const setRegistry = useCallback(registry => {
-    setDateTime(registry.dateTime);
+    setDateTime(moment(registry.dateTime).utc().format('YYYY-MM-DD\\THH:mm'));
     setAccountId(registry.accountId);
     setInOut(registry.inOut);
     setCashFlowDescriptionId(registry.cashFlowDescriptionId);
