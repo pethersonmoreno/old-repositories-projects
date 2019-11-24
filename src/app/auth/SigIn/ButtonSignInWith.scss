@@ -1,0 +1,48 @@
+.buttonSign {
+  display: inline-flex;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  border-color: #e5e5e5;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 100ms linear, border-color 100ms linear, color 100ms linear, box-shadow 100ms linear;
+
+  & ::before,
+  & ::after {
+    box-sizing: border-box
+  }
+
+  &:focus,
+  &:active {
+    background-color: #ececec;
+    box-shadow: rgba(0, 0, 0, 0.16);
+  }
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    background-color: #f0f0f0;
+    border-color: #e3e3e3;
+    color: '#2e2e2e'
+  }
+
+  &:active {
+    box-shadow: rgba(0, 0, 0, 0.16);
+    background-color: #eaeaea;
+    border-color: #e3e3e3;
+    color: '#2e2e2e'
+  }
+
+  & img {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 16px;
+  }
+
+  & span {
+    display: inline-block;
+    font-size: 14px;
+    height: 18px;
+  }
+}

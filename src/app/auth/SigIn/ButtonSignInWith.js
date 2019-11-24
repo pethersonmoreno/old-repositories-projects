@@ -1,20 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Button.scss';
-import { Button } from 'react-md';
+import './ButtonSignInWith.scss';
 
 const ButtonSignInWith = ({
   children, imageSrc, alt, title, ...otherProps
 }) => (
-  <Button
-    raised
-    className="buttonSign"
-    {...otherProps}
-  >
+  <a className="buttonSign" role="button" tabIndex="0" {...otherProps}>
     <img src={imageSrc} alt={alt} title={title} />
-    {children}
-  </Button>
+    <span>{children}</span>
+  </a>
 );
 ButtonSignInWith.propTypes = {
   imageSrc: PropTypes.string.isRequired,
