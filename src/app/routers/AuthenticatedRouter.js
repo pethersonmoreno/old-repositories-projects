@@ -6,11 +6,13 @@ import {
 import NotFound from '../others/NotFound';
 import People from '../modules/People';
 import CashFlowDescriptions from '../modules/CashFlowDescriptions';
+import Accounts from '../modules/Accounts';
 
 const AuthenticatedRouter = ({ children }) => (
   <Switch>
     <Route path="/people" component={People} />
     <Route path="/cashFlowDescriptions" component={CashFlowDescriptions} />
+    <Route path="/accounts" component={Accounts} />
     {children}
     <Route component={NotFound} />
   </Switch>
