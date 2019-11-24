@@ -10,6 +10,7 @@
     "firebase": "^7.4.0",
     "grommet": "^2.8.0",
     "grommet-icons": "^4.4.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.9.0",
