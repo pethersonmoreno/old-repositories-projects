@@ -5,6 +5,7 @@ import { signOut } from '../../api/auth';
 
 const SideBarContent = () => (
   <Box fill>
+    <SidebarButton label="Cash Flows" to="/cashFlows" />
     <SidebarButton label="People" to="/people" />
     <SidebarButton label="Cash Flow Descriptions" to="/cashFlowDescriptions" />
     <SidebarButton label="Accounts" to="/accounts" />
