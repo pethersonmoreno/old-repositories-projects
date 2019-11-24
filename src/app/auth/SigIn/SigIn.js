@@ -1,33 +1,18 @@
 import React from 'react';
-import {
-  Box, Grommet, Heading
-} from 'grommet';
+import { Paper } from 'react-md';
 import FormSigIn from './FormSigIn';
 import withAuthorization from '../../hoc/withAuthorization';
 
-const theme = {
-  global: {
-    colors: {
-      brand: '#228BE6',
-    },
-    font: {
-      family: 'Roboto',
-      size: '18px',
-      height: '20px',
-    },
-  },
-};
 
 const SigIn = () =>
   (
-    <Grommet theme={theme} full>
-      <Box fill>
-        <Box flex align="center" justify="center">
-          <Heading>Cash Flow</Heading>
-          <FormSigIn />
-        </Box>
-      </Box>
-    </Grommet>
+    <Paper
+      zDepth={1}
+      raiseOnHover
+    >
+      <h1>Cash Flow</h1>
+      <FormSigIn />
+    </Paper>
   );
 
 export default withAuthorization({ authenticated: false }, '/notAuthorized')(SigIn);

@@ -1,9 +1,19 @@
 import './startConfig';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
+import WebFontLoader from 'webfontloader';
 import * as serviceWorker from './serviceWorker';
 import App from './app/App';
+// import AppReactMd from './AppReactMd';
+// import RoutingExample from './DrawerExample/RoutingExample';
+// import NewApp from './newApp/App';
+
+WebFontLoader.load({
+  google: {
+    families: ['Roboto:300,400,500,700', 'Material Icons'],
+  },
+});
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

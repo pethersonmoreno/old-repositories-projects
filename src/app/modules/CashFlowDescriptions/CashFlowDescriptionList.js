@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Table, TableHeader, TableBody, TableCell, TableRow,
-  Button
-} from 'grommet';
-import { Edit, AddCircle, Trash } from 'grommet-icons';
+  Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+} from 'react-md';
 import { useRegistriesList, useForceUpdate } from './hooks';
 import { getState } from '../../hooks/useAuthState';
 import api from '../../../api/cashFlowDescriptions';
@@ -25,41 +23,38 @@ const CashFlowDescriptionList = ({ match, history }) => {
     }
   };
   return (
-    <div>
-      <Button
-        icon={<AddCircle />}
-        onClick={goAdd}
-      />
-      <Table>
+    <Paper>
+      <Button icon onClick={goAdd}>add_circle</Button>
+      <DataTable plain>
         <TableHeader>
           <TableRow>
-            <TableCell scope="col" border="bottom">
-              Action
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Name
-            </TableCell>
+            <TableColumn>Action</TableColumn>
+            <TableColumn>Name</TableColumn>
           </TableRow>
         </TableHeader>
         <TableBody>
           {list.map(cashFlowDescription => (
             <TableRow key={cashFlowDescription.id}>
-              <TableCell scope="row">
+              <TableColumn>
                 <Button
-                  icon={<Edit />}
+                  icon
                   onClick={goEdit(cashFlowDescription)}
-                />
+                >
+                  edit
+                </Button>
                 <Button
-                  icon={<Trash />}
+                  icon
                   onClick={deleteRegistry(cashFlowDescription)}
-                />
-              </TableCell>
-              <TableCell scope="row">{cashFlowDescription.name}</TableCell>
+                >
+                  restore_from_trash
+                </Button>
+              </TableColumn>
+              <TableColumn>{cashFlowDescription.name}</TableColumn>
             </TableRow>
           ))}
         </TableBody>
-      </Table>
-    </div>
+      </DataTable>
+    </Paper>
   );
 };
 

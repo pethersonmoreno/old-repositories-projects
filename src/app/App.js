@@ -1,23 +1,11 @@
 import React, { useEffect } from 'react';
-import { Grommet } from 'grommet';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import MainRouter from './routers/MainRouter';
 import Spinner from './components/Spinner';
 import { start } from './actions/auth';
 import useAuthState from './hooks/useAuthState';
 
-
-const theme = {
-  global: {
-    colors: {
-      brand: '#228BE6',
-    },
-    font: {
-      family: 'Roboto',
-      size: '18px',
-      height: '20px',
-    },
-  },
-};
+const NavigationRouter = process.env.NODE_ENV !== 'development' ? HashRouter : BrowserRouter;
 const App = () => {
   const [{ loading }, , unlinkAuthState] = useAuthState();
   useEffect(() => {
@@ -25,14 +13,14 @@ const App = () => {
     return unlinkAuthState;
   }, [unlinkAuthState]);
   return (
-    <Grommet theme={theme} full>
+    <NavigationRouter basename={process.env.PUBLIC_URL}>
       {loading && (
-        <Spinner />
+      <Spinner />
       )}
       {!loading && (
-        <MainRouter />
+      <MainRouter />
       )}
-    </Grommet>
+    </NavigationRouter>
   );
 };
 

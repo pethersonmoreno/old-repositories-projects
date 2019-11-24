@@ -1,13 +1,14 @@
 import React from 'react';
-import {
-  Form
-} from 'grommet';
+import { Paper } from 'react-md';
 import ButtonSignInWith from './ButtonSignInWith';
 import googleIcon from './googleIcon.png';
 import { signIn } from '../../actions/auth';
 
 const FormSigIn = () => (
-  <Form>
+  <Paper
+    zDepth={0}
+    raiseOnHover
+  >
     <ButtonSignInWith
       imageSrc={googleIcon}
       alt="Google"
@@ -16,7 +17,7 @@ const FormSigIn = () => (
     >
       Continue with Google
     </ButtonSignInWith>
-  </Form>
+  </Paper>
 );
 
 export default FormSigIn;

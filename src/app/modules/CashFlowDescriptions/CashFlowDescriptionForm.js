@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Button
-} from 'grommet';
+import { Paper, Button } from 'react-md';
 import api from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
 import { useRegistry } from './hooks';
@@ -37,10 +34,10 @@ const CashFlowDescriptionForm = ({ match: { params: { id } }, history }) => {
     }
   };
   return (
-    <Form className="cash-flow-description-form">
+    <Paper className="cash-flow-description-form">
       <input autoFocus name="name" label="Name" value={name} onChange={onChangeName} />
-      <Button type="submit" label="Save" onClick={saveRegistry} />
-    </Form>
+      <Button raised onClick={saveRegistry}>Save</Button>
+    </Paper>
   );
 };
 CashFlowDescriptionForm.propTypes = {

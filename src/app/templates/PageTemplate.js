@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Button,
-  Heading,
-} from 'grommet';
-import { Notification } from 'grommet-icons';
+import { Button, Paper } from 'react-md';
 import AppBar from '../components/AppBar';
 import SideBar from '../components/SideBar';
 import useAuthState from '../hooks/useAuthState';
@@ -17,21 +13,15 @@ const PageTemplate = ({
   const { pageTitle } = state;
   useEffect(() => unlinkState);
   return (
-    <Box fill>
-      <AppBar>
-        <Heading level="3" margin="none">
-        Cash Flow
-          {pageTitle ? ` - ${pageTitle}` : ''}
-        </Heading>
-        <Button icon={<Notification />} onClick={toggleSideBar} />
-      </AppBar>
-      <Box direction="row" flex overflow={{ horizontal: 'hidden' }}>
-        <Box flex>
+    <Paper>
+      <AppBar title={`Cash Flow${pageTitle ? ` - ${pageTitle}` : ''}`} nav={<Button icon onClick={toggleSideBar}>favorite</Button>} />
+      <Paper>
+        <Paper style={{ marginTop: '80px' }}>
           {children}
-        </Box>
+        </Paper>
         <SideBar />
-      </Box>
-    </Box>
+      </Paper>
+    </Paper>
   );
 };
 

@@ -1,12 +1,19 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
-import {
-  Box, Button, Collapsible,
-  Layer, ResponsiveContext
-} from 'grommet';
-import { FormClose } from 'grommet-icons';
-import SideBarContent from './SideBarContent';
+import { Toolbar, Drawer } from 'react-md';
+import { Link } from 'react-router-dom';
 import useAuthState from '../hooks/useAuthState';
 import { hideSideBar } from '../actions/auth';
+import NavItemLink from './NavItemLink';
+import { signOut } from '../../api/auth';
+
+const menuItems = [
+  { label: 'Cash Flows', to: '/cashFlows' },
+  { label: 'People', to: '/people' },
+  { label: 'Cash Flow Descriptions', to: '/cashFlowDescriptions' },
+  { label: 'Accounts', to: '/accounts' },
+  { label: 'Sign Out', onClick: signOut },
+];
 
 const SideBar = () => {
   const [state, , unlinkState] = useAuthState();
@@ -14,46 +21,13 @@ const SideBar = () => {
 
   useEffect(() => unlinkState);
   return (
-    <ResponsiveContext.Consumer>
-      {size => ((!showSidebar || size !== 'small') ? (
-        <Collapsible direction="horizontal" open={showSidebar}>
-          <Box
-            flex
-            width="medium"
-            elevation="small"
-            background="light-2"
-            align="center"
-            justify="center"
-          >
-            <SideBarContent />
-          </Box>
-        </Collapsible>
-      )
-        : (
-          <Layer>
-            <Box
-              background="light-2"
-              tag="header"
-              justify="end"
-              align="center"
-              direction="row"
-            >
-              <Button
-                icon={<FormClose />}
-                onClick={hideSideBar}
-              />
-            </Box>
-            <Box
-              fill
-              background="light-2"
-              align="center"
-              justify="center"
-            >
-              <SideBarContent />
-            </Box>
-          </Layer>
-        ))}
-    </ResponsiveContext.Consumer>
+    <Drawer
+      type={Drawer.DrawerTypes.TEMPORARY}
+      visible={showSidebar}
+      onVisibilityChange={hideSideBar}
+      header={<Toolbar title={<Link to="/cashFlows">Menu</Link>} />}
+      navItems={menuItems.map(item => (<NavItemLink key={item.label} {...item} />))}
+    />
   );
 };
 

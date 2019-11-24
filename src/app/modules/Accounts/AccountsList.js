@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Table, TableHeader, TableBody, TableCell, TableRow,
-  Button
-} from 'grommet';
-import { Edit, AddCircle, Trash } from 'grommet-icons';
+  Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+} from 'react-md';
 import { useRegistriesList, useForceUpdate } from './hooks';
 import { getState } from '../../hooks/useAuthState';
 import api from '../../../api/accounts';
@@ -25,45 +23,40 @@ const AccountsList = ({ match, history }) => {
     }
   };
   return (
-    <div>
-      <Button
-        icon={<AddCircle />}
-        onClick={goAdd}
-      />
-      <Table>
+    <Paper>
+      <Button icon onClick={goAdd}>add_circle</Button>
+      <DataTable plain>
         <TableHeader>
           <TableRow>
-            <TableCell scope="col" border="bottom">
-              Action
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Description
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Current Value
-            </TableCell>
+            <TableColumn>Action</TableColumn>
+            <TableColumn>Description</TableColumn>
+            <TableColumn>Current Value</TableColumn>
           </TableRow>
         </TableHeader>
         <TableBody>
           {list.map(account => (
             <TableRow key={account.id}>
-              <TableCell scope="row">
+              <TableColumn>
                 <Button
-                  icon={<Edit />}
+                  icon
                   onClick={goEdit(account)}
-                />
+                >
+                  edit
+                </Button>
                 <Button
-                  icon={<Trash />}
+                  icon
                   onClick={deleteRegistry(account)}
-                />
-              </TableCell>
-              <TableCell scope="row">{account.description}</TableCell>
-              <TableCell scope="row">{account.currentValue}</TableCell>
+                >
+                  restore_from_trash
+                </Button>
+              </TableColumn>
+              <TableColumn>{account.description}</TableColumn>
+              <TableColumn>{account.currentValue}</TableColumn>
             </TableRow>
           ))}
         </TableBody>
-      </Table>
-    </div>
+      </DataTable>
+    </Paper>
   );
 };
 

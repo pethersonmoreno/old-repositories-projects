@@ -1,18 +1,23 @@
 import React from 'react';
 import SyncLoader from 'react-spinners/ClipLoader';
-import { Box } from 'grommet';
 
 const Spinner = () => (
-  <Box fill>
-    <Box flex align="center" justify="center">
+  <div style={{ fill: true }}>
+    <div
+      style={{
+        flex: 1,
+        align: 'center',
+        justify: 'center',
+      }}
+    >
       <SyncLoader
         sizeUnit="px"
         size={150}
         color="#123abc"
         loading
       />
-    </Box>
-  </Box>
+    </div>
+  </div>
 );
 
 export default Spinner;

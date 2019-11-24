@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Table, TableHeader, TableBody, TableCell, TableRow,
-  Button
-} from 'grommet';
-import { Edit, AddCircle, Trash } from 'grommet-icons';
 import moment from 'moment';
+import {
+  Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+} from 'react-md';
 import {
   useRegistriesList, useForceUpdate, useAccountsList, usePeopleList, useCashFlowDescriptionsList
 } from './hooks';
@@ -27,7 +25,9 @@ const getAccountDescription = (accountsList, peopleList, accountId) => {
 
 
 const getCashFlowDescription = (cashFlowDescriptionsList, cashFlowDescriptionId) => {
-  const cashFlowDescription = cashFlowDescriptionsList.find(cfd => cfd.id === cashFlowDescriptionId);
+  const cashFlowDescription = cashFlowDescriptionsList.find(
+    cfd => cfd.id === cashFlowDescriptionId
+  );
   if (cashFlowDescription) {
     return cashFlowDescription.name;
   }
@@ -52,58 +52,52 @@ const CashFlowsList = ({ match, history }) => {
       alert(getMessageFromError(error));
     }
   };
+
   return (
-    <div>
-      <Button
-        icon={<AddCircle />}
-        onClick={goAdd}
-      />
-      <Table>
+    <Paper>
+      <Button icon onClick={goAdd}>add_circle</Button>
+      <DataTable plain>
         <TableHeader>
           <TableRow>
-            <TableCell scope="col" border="bottom">
-              Action
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Date Time
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Account
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Input / Output
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Description
-            </TableCell>
-            <TableCell scope="col" border="bottom">
-              Value
-            </TableCell>
+            <TableColumn>Action</TableColumn>
+            <TableColumn>Date Time</TableColumn>
+            <TableColumn>Account</TableColumn>
+            <TableColumn>Input / Output</TableColumn>
+            <TableColumn>Description</TableColumn>
+            <TableColumn>Value</TableColumn>
           </TableRow>
         </TableHeader>
         <TableBody>
           {list.map(cashFlow => (
             <TableRow key={cashFlow.id}>
-              <TableCell scope="row">
+              <TableColumn>
                 <Button
-                  icon={<Edit />}
+                  icon
                   onClick={goEdit(cashFlow)}
-                />
+                >
+                  edit
+                </Button>
                 <Button
-                  icon={<Trash />}
+                  icon
                   onClick={deleteRegistry(cashFlow)}
-                />
-              </TableCell>
-              <TableCell scope="row">{moment(cashFlow.dateTime).format('DD/MM/YYYY HH:mm')}</TableCell>
-              <TableCell scope="row">{getAccountDescription(accountsList, peopleList, cashFlow.accountId)}</TableCell>
-              <TableCell scope="row">{cashFlow.inOut ? 'Output' : 'Input'}</TableCell>
-              <TableCell scope="row">{getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}</TableCell>
-              <TableCell scope="row">{cashFlow.value}</TableCell>
+                >
+                  restore_from_trash
+                </Button>
+              </TableColumn>
+              <TableColumn>{moment(cashFlow.dateTime).format('DD/MM/YYYY HH:mm')}</TableColumn>
+              <TableColumn>
+                {getAccountDescription(accountsList, peopleList, cashFlow.accountId)}
+              </TableColumn>
+              <TableColumn>{cashFlow.inOut ? 'Output' : 'Input'}</TableColumn>
+              <TableColumn>
+                {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
+              </TableColumn>
+              <TableColumn>{cashFlow.value}</TableColumn>
             </TableRow>
           ))}
         </TableBody>
-      </Table>
-    </div>
+      </DataTable>
+    </Paper>
   );
 };
 

@@ -1,10 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Form,
-  Button
-} from 'grommet';
+import { Button, Paper } from 'react-md';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api/cashFlows';
@@ -75,8 +72,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
     }
   };
   return (
-    <Form className="cash-flow-form">
-      {/* <input autoFocus placeholder="Date Time" type="datetime-local" name="dateTime" label="Date Time" value={dateTime} onChange={onChangeDateTime} /> */}
+    <Paper className="cash-flow-form">
       <DateTimePicker
         name="dateTime"
         placeholder="Date Time"
@@ -89,7 +85,12 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       <select placeholder="Account" value={accountId} onChange={onChangeAccountId}>
         <option value="">-- Account --</option>
         {accountsList.map(account => (
-          <option key={account.id} value={account.id}>{getAccountDescription(peopleList, account)}</option>
+          <option
+            key={account.id}
+            value={account.id}
+          >
+            {getAccountDescription(peopleList, account)}
+          </option>
         ))}
       </select>
       <br />
@@ -105,7 +106,12 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       <select placeholder="Cash Flow Description" value={cashFlowDescriptionId} onChange={onChangeCashFlowDescriptionId}>
         <option value="">-- Cash Flow Description --</option>
         {cashFlowDescriptionsList.map(cashFlowDescription => (
-          <option key={cashFlowDescription.id} value={cashFlowDescription.id}>{cashFlowDescription.name}</option>
+          <option
+            key={cashFlowDescription.id}
+            value={cashFlowDescription.id}
+          >
+            {cashFlowDescription.name}
+          </option>
         ))}
       </select>
       <br />
@@ -113,8 +119,8 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       <input placeholder="Value" name="value" type="number" label="Value" value={value} onChange={onChangeValue} />
       <br />
       <br />
-      <Button type="submit" label="Save" onClick={saveRegistry} />
-    </Form>
+      <Button raised onClick={saveRegistry}>Save</Button>
+    </Paper>
   );
 };
 CashFlowForm.propTypes = {
