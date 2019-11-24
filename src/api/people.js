@@ -40,10 +40,22 @@ const replace = (token, id, person) =>
       })
     .then(resp => resp.data);
 
+
+const deleteRequest = (token, id) =>
+  axios
+    .delete(`/people/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+    .then(resp => resp.data);
+
 const peopleApi = {
   getList,
   get,
   add,
-  replace
+  replace,
+  delete: deleteRequest
 };
 export default peopleApi;

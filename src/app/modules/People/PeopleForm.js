@@ -24,12 +24,16 @@ const PeopleForm = ({ match: { params: { id } }, history }) => {
   usePerson(id, setName);
   const savePerson = async () => {
     const { token } = getState();
-    if (id) {
-      await peopleApi.replace(token, id, { name });
-    } else {
-      await peopleApi.add(token, { name });
+    try {
+      if (id) {
+        await peopleApi.replace(token, id, { name });
+      } else {
+        await peopleApi.add(token, { name });
+      }
+      history.push('/people');
+    } catch (error) {
+      alert(error.message);
     }
-    history.push('/people');
   };
   return (
     <Form className="people-form">

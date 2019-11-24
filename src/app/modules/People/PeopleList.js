@@ -4,13 +4,26 @@ import {
   Table, TableHeader, TableBody, TableCell, TableRow,
   Button
 } from 'grommet';
-import { Edit, AddCircle } from 'grommet-icons';
-import { usePeopleList } from './hooks';
+import { Edit, AddCircle, Trash } from 'grommet-icons';
+import { usePeopleList, useForceUpdate } from './hooks';
+import { getState } from '../../hooks/useAuthState';
+import peopleApi from '../../../api/people';
+import getMessageFromError from '../../../helpers/getMessageFromError';
 
 const PeopleList = ({ match, history }) => {
-  const list = usePeopleList();
+  const [tick, forceUpdate] = useForceUpdate();
+  const list = usePeopleList(tick);
   const goAdd = () => { history.push(`${match.path}/new`); };
   const goEdit = person => () => { history.push(`${match.path}/edit/${person.id}`); };
+  const deletePerson = person => async () => {
+    const { token } = getState();
+    try {
+      await peopleApi.delete(token, person.id);
+      forceUpdate();
+    } catch (error) {
+      alert(getMessageFromError(error));
+    }
+  };
   return (
     <div>
       <Button
@@ -35,6 +48,10 @@ const PeopleList = ({ match, history }) => {
                 <Button
                   icon={<Edit />}
                   onClick={goEdit(person)}
+                />
+                <Button
+                  icon={<Trash />}
+                  onClick={deletePerson(person)}
                 />
               </TableCell>
               <TableCell scope="row">{person.name}</TableCell>
