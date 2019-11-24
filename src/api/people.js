@@ -1,8 +1,9 @@
+import queryString from 'query-string';
 import axios from './axios';
 
-const getList = token =>
+const getList = (token, query = {}) =>
   axios
-    .get('/people', {
+    .get(`/people?${queryString.stringify(query)}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

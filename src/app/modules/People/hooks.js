@@ -7,7 +7,7 @@ export const usePeopleList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { token } = getState();
-      const listLoaded = await peopleApi.getList(token);
+      const listLoaded = await peopleApi.getList(token, { orderBy: 'name', orderByDirection: 'asc' });
       setList(listLoaded);
     };
     fetchData();
