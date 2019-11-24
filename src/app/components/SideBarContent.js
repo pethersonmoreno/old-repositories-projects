@@ -5,7 +5,7 @@ import { signOut } from '../../api/auth';
 
 const SideBarContent = () => (
   <Box fill>
-    <SidebarButton label="Pessoas" to="/people" />
+    <SidebarButton label="People" to="/people" />
     <SidebarButton label="Sign Out" onClick={signOut} />
   </Box>
 );
