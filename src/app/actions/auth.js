@@ -1,5 +1,7 @@
 import * as firebase from 'firebase/app';
-import { signInGoogleWithRedirect, getRedirectResult, isValidEmail } from '../../api/auth';
+import {
+  signInGoogleWithRedirect, signOut, getRedirectResult, isValidEmail
+} from '../../api/auth';
 import { setState as setAuthState } from '../hooks/useAuthState';
 
 
@@ -25,8 +27,14 @@ const updateUserProfile = async userProfile => {
   let token = null;
   let isValidEmailBool = false;
   if (userProfile) {
-    token = await userProfile.getIdToken();
-    isValidEmailBool = token ? await isValidEmail(token) : false;
+    try {
+      token = await userProfile.getIdToken();
+      isValidEmailBool = token ? await isValidEmail(token) : false;
+    } catch (error) {
+      // TODO: Remove it after fix the bugs
+      signOut();
+      return;
+    }
   }
   await setAuthState({
     loading: false,
