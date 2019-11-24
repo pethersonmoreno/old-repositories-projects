@@ -34,4 +34,4 @@ const NotAuthorized = () =>
     </Grommet>
   );
 
-export default withAuthorization({ authenticated: true, isValidEmail: false }, '/people')(NotAuthorized);
+export default withAuthorization({ authenticated: true, isValidEmail: false }, '/cashFlows')(NotAuthorized);
