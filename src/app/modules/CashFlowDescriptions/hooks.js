@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import cashFlowDescriptionsApi from '../../../api/cashFlowDescriptions';
+import api from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
 
 export const useRegistriesList = tick => {
@@ -7,7 +7,7 @@ export const useRegistriesList = tick => {
   useEffect(() => {
     const fetchData = async () => {
       const { token } = getState();
-      const listLoaded = await cashFlowDescriptionsApi.getList(token, { orderBy: 'name', orderByDirection: 'asc' });
+      const listLoaded = await api.getList(token, { orderBy: 'name', orderByDirection: 'asc' });
       setList(listLoaded);
     };
     fetchData();
@@ -22,7 +22,7 @@ export const useRegistry = (id, setName) => {
         return;
       }
       const { token } = getState();
-      const person = await cashFlowDescriptionsApi.get(token, id);
+      const person = await api.get(token, id);
       setName(person.name);
     };
     fetchData();

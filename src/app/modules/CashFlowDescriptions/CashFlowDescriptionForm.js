@@ -5,10 +5,11 @@ import {
   Form,
   Button
 } from 'grommet';
-import cashFlowDescriptionsApi from '../../../api/cashFlowDescriptions';
+import api from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
 import { useRegistry } from './hooks';
 import './CashFlowDescriptionForm.scss';
+import getMessageFromError from '../../../helpers/getMessageFromError';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -26,13 +27,13 @@ const CashFlowDescriptionForm = ({ match: { params: { id } }, history }) => {
     const { token } = getState();
     try {
       if (id) {
-        await cashFlowDescriptionsApi.replace(token, id, { name });
+        await api.replace(token, id, { name });
       } else {
-        await cashFlowDescriptionsApi.add(token, { name });
+        await api.add(token, { name });
       }
       history.push('/cashFlowDescriptions');
     } catch (error) {
-      alert(error.message);
+      alert(getMessageFromError(error));
     }
   };
   return (

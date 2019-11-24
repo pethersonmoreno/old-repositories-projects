@@ -7,7 +7,7 @@ import {
 import { Edit, AddCircle, Trash } from 'grommet-icons';
 import { useRegistriesList, useForceUpdate } from './hooks';
 import { getState } from '../../hooks/useAuthState';
-import cashFlowDescriptionsApi from '../../../api/cashFlowDescriptions';
+import api from '../../../api/cashFlowDescriptions';
 import getMessageFromError from '../../../helpers/getMessageFromError';
 
 const CashFlowDescriptionList = ({ match, history }) => {
@@ -18,7 +18,7 @@ const CashFlowDescriptionList = ({ match, history }) => {
   const deleteRegistry = registry => async () => {
     const { token } = getState();
     try {
-      await cashFlowDescriptionsApi.delete(token, registry.id);
+      await api.delete(token, registry.id);
       forceUpdate();
     } catch (error) {
       alert(getMessageFromError(error));

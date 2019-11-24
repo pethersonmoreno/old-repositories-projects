@@ -5,10 +5,11 @@ import {
   Form,
   Button
 } from 'grommet';
-import peopleApi from '../../../api/people';
+import api from '../../../api/people';
 import { getState } from '../../hooks/useAuthState';
-import { usePerson } from './hooks';
+import { useRegistry } from './hooks';
 import './PeopleForm.scss';
+import getMessageFromError from '../../../helpers/getMessageFromError';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -21,24 +22,24 @@ const useInputValue = initialValue => {
 
 const PeopleForm = ({ match: { params: { id } }, history }) => {
   const [name, onChangeName, setName] = useInputValue('');
-  usePerson(id, setName);
-  const savePerson = async () => {
+  useRegistry(id, setName);
+  const saveRegistry = async () => {
     const { token } = getState();
     try {
       if (id) {
-        await peopleApi.replace(token, id, { name });
+        await api.replace(token, id, { name });
       } else {
-        await peopleApi.add(token, { name });
+        await api.add(token, { name });
       }
       history.push('/people');
     } catch (error) {
-      alert(error.message);
+      alert(getMessageFromError(error));
     }
   };
   return (
     <Form className="people-form">
       <input autoFocus name="name" label="Name" value={name} onChange={onChangeName} />
-      <Button type="submit" label="Save" onClick={savePerson} />
+      <Button type="submit" label="Save" onClick={saveRegistry} />
     </Form>
   );
 };
