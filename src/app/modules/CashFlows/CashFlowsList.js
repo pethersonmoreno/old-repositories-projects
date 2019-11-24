@@ -94,7 +94,7 @@ const CashFlowsList = ({ match, history }) => {
                   onClick={deleteRegistry(cashFlow)}
                 />
               </TableCell>
-              <TableCell scope="row">{moment(cashFlow.dateTime).utc().format('DD/MM/YYYY HH:mm')}</TableCell>
+              <TableCell scope="row">{moment(cashFlow.dateTime).format('DD/MM/YYYY HH:mm')}</TableCell>
               <TableCell scope="row">{getAccountDescription(accountsList, peopleList, cashFlow.accountId)}</TableCell>
               <TableCell scope="row">{cashFlow.inOut ? 'Output' : 'Input'}</TableCell>
               <TableCell scope="row">{getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}</TableCell>

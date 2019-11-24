@@ -5,6 +5,7 @@ import {
   Form,
   Button
 } from 'grommet';
+import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api/cashFlows';
 import { getState } from '../../hooks/useAuthState';
@@ -37,7 +38,7 @@ const inOutList = [
 
 
 const CashFlowForm = ({ match: { params: { id } }, history }) => {
-  const [dateTime, onChangeDateTime, setDateTime] = useInputValue('');
+  const [dateTime, setDateTime] = useState(new Date());
   const [inOut, onChangeInOut, setInOut] = useInputValue('');
   const [value, onChangeValue, setValue] = useInputValue(0);
   const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
@@ -46,7 +47,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const peopleList = usePeopleList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
   const setRegistry = useCallback(registry => {
-    setDateTime(moment(registry.dateTime).utc().format('YYYY-MM-DD\\THH:mm'));
+    setDateTime(new Date(registry.dateTime));
     setAccountId(registry.accountId);
     setInOut(registry.inOut);
     setCashFlowDescriptionId(registry.cashFlowDescriptionId);
@@ -60,7 +61,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
         accountId,
         inOut: inOut === 'true',
         value,
-        dateTime,
+        dateTime: moment(dateTime).toDate(),
         cashFlowDescriptionId,
       };
       if (id) {
@@ -75,7 +76,14 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   };
   return (
     <Form className="cash-flow-form">
-      <input autoFocus placeholder="Date Time" type="datetime-local" name="dateTime" label="Date Time" value={dateTime} onChange={onChangeDateTime} />
+      {/* <input autoFocus placeholder="Date Time" type="datetime-local" name="dateTime" label="Date Time" value={dateTime} onChange={onChangeDateTime} /> */}
+      <DateTimePicker
+        name="dateTime"
+        placeholder="Date Time"
+        format="dd/MM/yyyy HH:mm"
+        value={dateTime}
+        onChange={setDateTime}
+      />
       <br />
       <br />
       <select placeholder="Account" value={accountId} onChange={onChangeAccountId}>
