@@ -124,17 +124,6 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
         }}
         clearOnAutocomplete
       />
-      <select placeholder="Cash Flow Description" value={cashFlowDescriptionId} onChange={onChangeCashFlowDescriptionId}>
-        <option value="">-- Cash Flow Description --</option>
-        {cashFlowDescriptionsList.map(cashFlowDescription => (
-          <option
-            key={cashFlowDescription.id}
-            value={cashFlowDescription.id}
-          >
-            {cashFlowDescription.name}
-          </option>
-        ))}
-      </select>
       <br />
       <br />
       <input placeholder="Value" name="value" type="number" label="Value" value={valueMoney} onChange={onChangeValueMoney} />
