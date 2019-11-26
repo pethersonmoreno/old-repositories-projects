@@ -40,7 +40,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const [inOut, onChangeInOut, setInOut] = useInputValue('');
   const [valueMoney, onChangeValueMoney, setValueMoney] = useInputValue(0);
   const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
-  const [cashFlowDescriptionId, onChangeCashFlowDescriptionId, setCashFlowDescriptionId] = useInputValue('');
+  const [cashFlowDescriptionId,, setCashFlowDescriptionId] = useInputValue('');
   const [descriptionSearch, onChangeDescriptionSearch, setDescriptionSearch] = useInputValue('', false);
   const accountsList = useAccountsList();
   const peopleList = usePeopleList();
