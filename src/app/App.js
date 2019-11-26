@@ -4,6 +4,7 @@ import MainRouter from './routers/MainRouter';
 import Spinner from './components/Spinner';
 import { start } from './actions/auth';
 import useAuthState from './hooks/useAuthState';
+import Box from './components/Box';
 
 const NavigationRouter = process.env.NODE_ENV !== 'development' ? HashRouter : BrowserRouter;
 const App = () => {
@@ -15,7 +16,9 @@ const App = () => {
   return (
     <NavigationRouter basename={process.env.PUBLIC_URL}>
       {loading && (
-      <Spinner />
+        <Box center fill>
+          <Spinner />
+        </Box>
       )}
       {!loading && (
       <MainRouter />
