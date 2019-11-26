@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import { Toolbar, Drawer } from 'react-md';
-import { Link } from 'react-router-dom';
 import useAuthState from '../hooks/useAuthState';
 import { hideSideBar } from '../actions/auth';
 import NavItemLink from './NavItemLink';
