@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Paper } from 'react-md';
+import { Button, Paper, Autocomplete } from 'react-md';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api/cashFlows';
@@ -12,10 +12,11 @@ import {
 import './CashFlowForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
 
-const useInputValue = initialValue => {
+const useInputValue = (initialValue, withEventTarget = true) => {
   const [value, setValue] = useState(initialValue);
-  const handleChange = event => {
-    setValue(event.target.value);
+  const handleChange = eventValue => {
+    const newValue = (withEventTarget ? eventValue.target.value : eventValue);
+    setValue(newValue);
   };
   return [value, handleChange, setValue];
 };
@@ -37,19 +38,21 @@ const inOutList = [
 const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const [dateTime, setDateTime] = useState(new Date());
   const [inOut, onChangeInOut, setInOut] = useInputValue('');
-  const [value, onChangeValue, setValue] = useInputValue(0);
+  const [valueMoney, onChangeValueMoney, setValueMoney] = useInputValue(0);
   const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
   const [cashFlowDescriptionId, onChangeCashFlowDescriptionId, setCashFlowDescriptionId] = useInputValue('');
+  const [descriptionSearch, onChangeDescriptionSearch, setDescriptionSearch] = useInputValue('', false);
   const accountsList = useAccountsList();
   const peopleList = usePeopleList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
-  const setRegistry = useCallback(registry => {
+  const setRegistry = useCallback((registry, cashFlowDescription) => {
     setDateTime(new Date(registry.dateTime));
     setAccountId(registry.accountId);
     setInOut(registry.inOut);
     setCashFlowDescriptionId(registry.cashFlowDescriptionId);
-    setValue(registry.value);
-  }, [setDateTime, setAccountId, setInOut, setCashFlowDescriptionId, setValue]);
+    setValueMoney(registry.value);
+    setDescriptionSearch(cashFlowDescription.name);
+  }, [setAccountId, setInOut, setCashFlowDescriptionId, setValueMoney, setDescriptionSearch]);
   useRegistry(id, setRegistry);
   const saveRegistry = async () => {
     const { token } = getState();
@@ -57,7 +60,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       const registry = {
         accountId,
         inOut: inOut === 'true',
-        value,
+        value: valueMoney,
         dateTime: moment(dateTime).toDate(),
         cashFlowDescriptionId,
       };
@@ -103,6 +106,24 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       </select>
       <br />
       <br />
+      <Autocomplete
+        id="github-user-search"
+        label="Cash Flow Description"
+        placeholder="Chocolate, ..."
+        dataLabel="name"
+        dataValue="id"
+        value={descriptionSearch}
+        data={cashFlowDescriptionsList
+          .filter(c => c.name.toLowerCase().includes(descriptionSearch.toLowerCase()))}
+        filter={null}
+        onChange={onChangeDescriptionSearch}
+        onAutocomplete={(value, index, matches) => {
+          const cashFlowDescription = matches[index];
+          setCashFlowDescriptionId(cashFlowDescription.id);
+          setDescriptionSearch(cashFlowDescription.name);
+        }}
+        clearOnAutocomplete
+      />
       <select placeholder="Cash Flow Description" value={cashFlowDescriptionId} onChange={onChangeCashFlowDescriptionId}>
         <option value="">-- Cash Flow Description --</option>
         {cashFlowDescriptionsList.map(cashFlowDescription => (
@@ -116,7 +137,7 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       </select>
       <br />
       <br />
-      <input placeholder="Value" name="value" type="number" label="Value" value={value} onChange={onChangeValue} />
+      <input placeholder="Value" name="value" type="number" label="Value" value={valueMoney} onChange={onChangeValueMoney} />
       <br />
       <br />
       <Button raised onClick={saveRegistry}>Save</Button>

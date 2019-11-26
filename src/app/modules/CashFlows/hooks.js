@@ -63,7 +63,9 @@ export const useRegistry = (id, setRegistry) => {
       }
       const { token } = getState();
       const registry = await api.get(token, id);
-      setRegistry(registry);
+      const cashFlowDescription = await cashFlowDescriptionsApi
+        .get(token, registry.cashFlowDescriptionId);
+      setRegistry(registry, cashFlowDescription);
     };
     fetchData();
   }, [id, setRegistry]);
