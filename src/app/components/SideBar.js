@@ -25,7 +25,7 @@ const SideBar = () => {
       type={Drawer.DrawerTypes.TEMPORARY}
       visible={showSidebar}
       onVisibilityChange={hideSideBar}
-      header={<Toolbar title={<Link to="/cashFlows">Menu</Link>} />}
+      header={<Toolbar title="Menu" />}
       navItems={menuItems.map(item => (<NavItemLink key={item.label} {...item} />))}
     />
   );
