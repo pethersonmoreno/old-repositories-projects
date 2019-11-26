@@ -14,7 +14,7 @@ const PageTemplate = ({
   useEffect(() => unlinkState);
   return (
     <Paper>
-      <AppBar title={`Cash Flow${pageTitle ? ` - ${pageTitle}` : ''}`} nav={<Button icon onClick={toggleSideBar}>favorite</Button>} />
+      <AppBar title={`Cash Flow${pageTitle ? ` - ${pageTitle}` : ''}`} nav={<Button icon onClick={toggleSideBar}>menu</Button>} />
       <Paper>
         <Paper style={{ marginTop: '80px' }}>
           {children}
