@@ -1,25 +1,17 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Paper, Autocomplete } from 'react-md';
+import { Button, Paper } from 'react-md';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import api from '../../../api/cashFlows';
 import { getState } from '../../hooks/useAuthState';
 import {
-  useRegistry, usePeopleList, useCashFlowDescriptionsList, useAccountsList
+  useRegistry, usePeopleList, useCashFlowDescriptionsList, useAccountsList, useInputValue
 } from './hooks';
 import './CashFlowForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
-
-const useInputValue = (initialValue, withEventTarget = true) => {
-  const [value, setValue] = useState(initialValue);
-  const handleChange = eventValue => {
-    const newValue = (withEventTarget ? eventValue.target.value : eventValue);
-    setValue(newValue);
-  };
-  return [value, handleChange, setValue];
-};
+import AutoCompleteField from './AutoCompleteField';
 
 const getAccountDescription = (peopleList, account) => {
   const person = peopleList.find(p => p.id === account.personId);
@@ -40,19 +32,17 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const [inOut, onChangeInOut, setInOut] = useInputValue('');
   const [valueMoney, onChangeValueMoney, setValueMoney] = useInputValue(0);
   const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
-  const [cashFlowDescriptionId,, setCashFlowDescriptionId] = useInputValue('');
-  const [descriptionSearch, onChangeDescriptionSearch, setDescriptionSearch] = useInputValue('', false);
+  const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
   const accountsList = useAccountsList();
   const peopleList = usePeopleList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
-  const setRegistry = useCallback((registry, cashFlowDescription) => {
+  const setRegistry = useCallback(registry => {
     setDateTime(new Date(registry.dateTime));
     setAccountId(registry.accountId);
     setInOut(registry.inOut);
     setCashFlowDescriptionId(registry.cashFlowDescriptionId);
     setValueMoney(registry.value);
-    setDescriptionSearch(cashFlowDescription.name);
-  }, [setAccountId, setInOut, setCashFlowDescriptionId, setValueMoney, setDescriptionSearch]);
+  }, [setAccountId, setInOut, setCashFlowDescriptionId, setValueMoney]);
   useRegistry(id, setRegistry);
   const saveRegistry = async () => {
     const { token } = getState();
@@ -106,23 +96,15 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       </select>
       <br />
       <br />
-      <Autocomplete
-        id="github-user-search"
-        label="Cash Flow Description"
-        placeholder="Chocolate, ..."
+      <AutoCompleteField
+        id="cashFlowDescriptionId"
+        data={cashFlowDescriptionsList}
+        value={cashFlowDescriptionId}
+        setValue={setCashFlowDescriptionId}
         dataLabel="name"
         dataValue="id"
-        value={descriptionSearch}
-        data={cashFlowDescriptionsList
-          .filter(c => c.name.toLowerCase().includes(descriptionSearch.toLowerCase()))}
-        filter={null}
-        onChange={onChangeDescriptionSearch}
-        onAutocomplete={(value, index, matches) => {
-          const cashFlowDescription = matches[index];
-          setCashFlowDescriptionId(cashFlowDescription.id);
-          setDescriptionSearch(cashFlowDescription.name);
-        }}
-        clearOnAutocomplete
+        label="Cash Flow Description"
+        placeholder="Chocolate, ..."
       />
       <br />
       <br />

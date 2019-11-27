@@ -63,9 +63,7 @@ export const useRegistry = (id, setRegistry) => {
       }
       const { token } = getState();
       const registry = await api.get(token, id);
-      const cashFlowDescription = await cashFlowDescriptionsApi
-        .get(token, registry.cashFlowDescriptionId);
-      setRegistry(registry, cashFlowDescription);
+      setRegistry(registry);
     };
     fetchData();
   }, [id, setRegistry]);
@@ -77,4 +75,13 @@ export const useForceUpdate = () => {
     setTick(oldTick => oldTick + 1);
   }, []);
   return [tick, forceUpdate];
+};
+
+export const useInputValue = (initialValue, withEventTarget = true) => {
+  const [value, setValue] = useState(initialValue);
+  const handleChange = eventValue => {
+    const newValue = (withEventTarget ? eventValue.target.value : eventValue);
+    setValue(newValue);
+  };
+  return [value, handleChange, setValue];
 };
