@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '../../../api/cashFlows';
-import peopleApi from '../../../api/people';
 import accountsApi from '../../../api/accounts';
 import cashFlowDescriptionsApi from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
@@ -17,26 +16,24 @@ export const useRegistriesList = tick => {
   }, [tick]);
   return list;
 };
-
-export const usePeopleList = () => {
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const { token } = getState();
-      const listLoaded = await peopleApi.getList(token);
-      setList(listLoaded);
-    };
-    fetchData();
-  }, []);
-  return list;
+const getAccountDescription = (peopleList, account) => {
+  const person = peopleList.find(p => p.id === account.personId);
+  if (person) {
+    return `${account.description} (${person.name})`;
+  }
+  return account.description;
 };
-export const useAccountsList = () => {
+export const useAccountsFullDescriptionList = () => {
   const [list, setList] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const { token } = getState();
-      const listLoaded = await accountsApi.getList(token);
-      setList(listLoaded);
+      const accountsList = await accountsApi.getList(token);
+      const peopleList = await cashFlowDescriptionsApi.getList(token);
+      setList(accountsList.map(account => ({
+        label: getAccountDescription(peopleList, account),
+        value: account.id,
+      })));
     };
     fetchData();
   }, []);

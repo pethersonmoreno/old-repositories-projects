@@ -5,20 +5,16 @@ import {
   Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 import {
-  useRegistriesList, useForceUpdate, useAccountsList, usePeopleList, useCashFlowDescriptionsList
+  useRegistriesList, useForceUpdate, useAccountsFullDescriptionList, useCashFlowDescriptionsList
 } from './hooks';
 import { getState } from '../../hooks/useAuthState';
 import api from '../../../api/cashFlows';
 import getMessageFromError from '../../../helpers/getMessageFromError';
 
-const getAccountDescription = (accountsList, peopleList, accountId) => {
-  const account = accountsList.find(acc => acc.id === accountId);
+const getAccountDescription = (accountsListFullDescription, accountId) => {
+  const account = accountsListFullDescription.find(acc => acc.value === accountId);
   if (account) {
-    const person = peopleList.find(p => p.id === account.personId);
-    if (person) {
-      return `${account.description} (${person.name})`;
-    }
-    return account.description;
+    return account.label;
   }
   return '(Not found)';
 };
@@ -37,8 +33,7 @@ const getCashFlowDescription = (cashFlowDescriptionsList, cashFlowDescriptionId)
 const CashFlowsList = ({ match, history }) => {
   const [tick, forceUpdate] = useForceUpdate();
   const list = useRegistriesList(tick);
-  const accountsList = useAccountsList();
-  const peopleList = usePeopleList();
+  const accountsList = useAccountsFullDescriptionList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
 
   const goAdd = () => { history.push(`${match.path}/new`); };
@@ -86,7 +81,7 @@ const CashFlowsList = ({ match, history }) => {
               </TableColumn>
               <TableColumn>{moment(cashFlow.dateTime).format('DD/MM/YYYY HH:mm')}</TableColumn>
               <TableColumn>
-                {getAccountDescription(accountsList, peopleList, cashFlow.accountId)}
+                {getAccountDescription(accountsList, cashFlow.accountId)}
               </TableColumn>
               <TableColumn>{cashFlow.inOut ? 'Output' : 'Input'}</TableColumn>
               <TableColumn>

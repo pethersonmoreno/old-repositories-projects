@@ -7,19 +7,11 @@ import moment from 'moment';
 import api from '../../../api/cashFlows';
 import { getState } from '../../hooks/useAuthState';
 import {
-  useRegistry, usePeopleList, useCashFlowDescriptionsList, useAccountsList, useInputValue
+  useRegistry, useCashFlowDescriptionsList, useAccountsFullDescriptionList, useInputValue
 } from './hooks';
 import './CashFlowForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
 import AutoCompleteField from './AutoCompleteField';
-
-const getAccountDescription = (peopleList, account) => {
-  const person = peopleList.find(p => p.id === account.personId);
-  if (person) {
-    return `${account.description} (${person.name})`;
-  }
-  return account.description;
-};
 
 const inOutList = [
   { id: true, description: 'Output' },
@@ -31,10 +23,9 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
   const [dateTime, setDateTime] = useState(new Date());
   const [inOut, onChangeInOut, setInOut] = useInputValue('');
   const [valueMoney, onChangeValueMoney, setValueMoney] = useInputValue(0);
-  const [accountId, onChangeAccountId, setAccountId] = useInputValue('');
+  const [accountId, setAccountId] = useState('');
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
-  const accountsList = useAccountsList();
-  const peopleList = usePeopleList();
+  const accountsList = useAccountsFullDescriptionList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
   const setRegistry = useCallback(registry => {
     setDateTime(new Date(registry.dateTime));
@@ -75,17 +66,16 @@ const CashFlowForm = ({ match: { params: { id } }, history }) => {
       />
       <br />
       <br />
-      <select placeholder="Account" value={accountId} onChange={onChangeAccountId}>
-        <option value="">-- Account --</option>
-        {accountsList.map(account => (
-          <option
-            key={account.id}
-            value={account.id}
-          >
-            {getAccountDescription(peopleList, account)}
-          </option>
-        ))}
-      </select>
+      <AutoCompleteField
+        id="accountId"
+        data={accountsList}
+        value={accountId}
+        setValue={setAccountId}
+        dataLabel="label"
+        dataValue="value"
+        label="Account"
+        placeholder="Banespa, ..."
+      />
       <br />
       <br />
       <select placeholder="In / Out" value={inOut} onChange={onChangeInOut}>
