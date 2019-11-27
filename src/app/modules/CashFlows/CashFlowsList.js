@@ -36,7 +36,8 @@ const CashFlowsList = ({ match, history }) => {
   const accountsList = useAccountsFullDescriptionList();
   const cashFlowDescriptionsList = useCashFlowDescriptionsList();
 
-  const goAdd = () => { history.push(`${match.path}/new`); };
+  const goAddIncome = () => { history.push(`${match.path}/newIncome`); };
+  const goAddExpense = () => { history.push(`${match.path}/newExpense`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
   const deleteRegistry = registry => async () => {
     const { token } = getState();
@@ -50,7 +51,8 @@ const CashFlowsList = ({ match, history }) => {
 
   return (
     <Paper>
-      <Button icon onClick={goAdd}>add_circle</Button>
+      <Button icon onClick={goAddIncome}>add_circle</Button>
+      <Button icon onClick={goAddExpense}>add</Button>
       <DataTable plain>
         <TableHeader>
           <TableRow>

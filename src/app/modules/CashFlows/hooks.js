@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import moment from 'moment';
 import api from '../../../api/cashFlows';
 import accountsApi from '../../../api/accounts';
 import cashFlowDescriptionsApi from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
+import getMessageFromError from '../../../helpers/getMessageFromError';
 
 export const useRegistriesList = tick => {
   const [list, setList] = useState([]);
@@ -52,18 +54,22 @@ export const useCashFlowDescriptionsList = () => {
   return list;
 };
 
-export const useRegistry = (id, setRegistry) => {
+export const useRegistry = id => {
+  const [loading, setLoading] = useState(true);
+  const [registry, setRegistry] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       if (!id) {
         return;
       }
       const { token } = getState();
-      const registry = await api.get(token, id);
-      setRegistry(registry);
+      const registryLoaded = await api.get(token, id);
+      setRegistry(registryLoaded);
+      setLoading(false);
     };
     fetchData();
   }, [id, setRegistry]);
+  return [registry, loading];
 };
 
 export const useForceUpdate = () => {
@@ -81,4 +87,31 @@ export const useInputValue = (initialValue, withEventTarget = true) => {
     setValue(newValue);
   };
   return [value, handleChange, setValue];
+};
+
+export const saveRegistry = ({
+  accountId,
+  inOut,
+  value,
+  dateTime,
+  cashFlowDescriptionId,
+}, history, oldRegistry) => async () => {
+  const { token } = getState();
+  try {
+    const registry = {
+      accountId,
+      inOut,
+      value,
+      dateTime: moment(dateTime).toDate(),
+      cashFlowDescriptionId,
+    };
+    if (oldRegistry) {
+      await api.replace(token, oldRegistry.id, registry);
+    } else {
+      await api.add(token, registry);
+    }
+    history.push('/cashFlows');
+  } catch (error) {
+    alert(getMessageFromError(error));
+  }
 };
