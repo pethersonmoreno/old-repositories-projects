@@ -1,0 +1,29 @@
+.fabContainer {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+
+  &>button {
+    background: #03a9f4;
+    color: #fff;
+  }
+
+
+  &>.addMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: -160px;
+    right: -8px;
+
+    transition: 0.8s;
+
+    &>button {
+      margin-top: 8px;
+    }
+  }
+
+  &.showAddMenu>.addMenu {
+    bottom: 50px;
+  }
+}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import classNames from 'classnames';
 import {
   Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
@@ -10,6 +11,7 @@ import {
 import { getState } from '../../hooks/useAuthState';
 import api from '../../../api/cashFlows';
 import getMessageFromError from '../../../helpers/getMessageFromError';
+import './CashFlowsList.scss';
 
 const getAccountDescription = (accountsListFullDescription, accountId) => {
   const account = accountsListFullDescription.find(acc => acc.value === accountId);
@@ -31,6 +33,7 @@ const getCashFlowDescription = (cashFlowDescriptionsList, cashFlowDescriptionId)
 };
 
 const CashFlowsList = ({ match, history }) => {
+  const [showAddMenu, setShowAddMenu] = useState(false);
   const [tick, forceUpdate] = useForceUpdate();
   const list = useRegistriesList(tick);
   const accountsList = useAccountsFullDescriptionList();
@@ -51,8 +54,6 @@ const CashFlowsList = ({ match, history }) => {
 
   return (
     <Paper>
-      <Button icon onClick={goAddIncome}>add_circle</Button>
-      <Button icon onClick={goAddExpense}>add</Button>
       <DataTable plain>
         <TableHeader>
           <TableRow>
@@ -94,6 +95,17 @@ const CashFlowsList = ({ match, history }) => {
           ))}
         </TableBody>
       </DataTable>
+
+      <div className={classNames('fabContainer', {
+        showAddMenu
+      })}
+      >
+        <div className="addMenu">
+          <Button floating primary onClick={goAddIncome}>add</Button>
+          <Button floating secondary onClick={goAddExpense}>add</Button>
+        </div>
+        <Button floating mini onClick={() => setShowAddMenu(!showAddMenu)}>add</Button>
+      </div>
     </Paper>
   );
 };
