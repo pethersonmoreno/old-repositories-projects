@@ -1,23 +1,21 @@
-import queryString from 'query-string';
+// import queryString from 'query-string';
+// import { firestore } from './firebase';
 import axios from './axios';
+import getDocumentListPaginated from './firebaseUtil/getDocumentListPaginated';
+import getDocument from './firebaseUtil/getDocument';
 
-const getList = (token, query = {}) =>
-  axios
-    .get(`/people?${queryString.stringify(query)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(resp => resp.data);
+const getList = async (token, query = {}) => {
+  const {
+    page = 1,
+    perPage = 100,
+    orderBy = null,
+    orderByDirection = null
+  } = query;
+  return getDocumentListPaginated('people', page, perPage, orderBy, orderByDirection);
+};
 
 const get = (token, id) =>
-  axios
-    .get(`/people/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(resp => resp.data);
+  getDocument('people', id);
 
 
 const add = (token, person) =>
