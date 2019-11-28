@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, Button } from 'react-md';
 import api from '../../../api/cashFlowDescriptions';
 import { getState } from '../../hooks/useAuthState';
-import { useRegistry } from './hooks';
 import './CashFlowDescriptionForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
+import useCashFlowDescriptionsList from '../../hooks/useCashFlowDescriptionsList';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -19,7 +19,13 @@ const useInputValue = initialValue => {
 
 const CashFlowDescriptionForm = ({ match: { params: { id } }, history }) => {
   const [name, onChangeName, setName] = useInputValue('');
-  useRegistry(id, setName);
+  const [list] = useCashFlowDescriptionsList();
+  useEffect(() => {
+    const registry = list.find(p => p.id === id);
+    if (registry) {
+      setName(registry.name);
+    }
+  }, [id, list, setName]);
   const saveRegistry = async () => {
     const { token } = getState();
     try {

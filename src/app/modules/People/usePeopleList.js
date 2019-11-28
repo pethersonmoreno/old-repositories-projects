@@ -1,13 +1,14 @@
-import { firestore } from '../../../firebase';
-import mapDocumentToData from '../../../firebaseUtil/mapDocumentToData';
+import { useState, useEffect } from 'react';
+import { firestore } from '../../../api/firebase';
+import mapDocumentToData from '../../../api/firebaseUtil/mapDocumentToData';
 
 const usePeopleList = () => {
   const [list, setList] = useState([]);
   useEffect(() => {
     const unsubscribe = firestore
       .collection('people')
-      .onSnapshot((querySnapshot)=>{
-        const newList = querySnapshot.map(mapDocumentToData);
+      .onSnapshot(querySnapshot => {
+        const newList = querySnapshot.docs.map(mapDocumentToData);
         setList(newList);
       });
     return unsubscribe;

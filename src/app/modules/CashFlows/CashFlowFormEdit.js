@@ -1,19 +1,21 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  useRegistry
-} from './hooks';
 import './CashFlowForm.scss';
 import CashFlowExpenseForm from './CashFlowExpenseForm';
 import CashFlowIncomeForm from './CashFlowIncomeForm';
+import useCashFlowsList from '../../hooks/useCashFlowsList';
 
 
 const CashFlowForm = ({ match: { params: { id } }, history }) => {
-  const [registry, loading] = useRegistry(id);
-  if (loading) {
-    return null;
-  }
+  const [registry, setRegistry] = useState(null);
+  const [list] = useCashFlowsList();
+  useEffect(() => {
+    const registryFound = list.find(p => p.id === id);
+    if (registryFound) {
+      setRegistry(registryFound);
+    }
+  }, [id, list, setRegistry]);
   if (!registry) {
     return (<span>Not Found</span>);
   }

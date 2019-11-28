@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Paper } from 'react-md';
 import api from '../../../api/people';
 import { getState } from '../../hooks/useAuthState';
-import { useRegistry } from './hooks';
 import './PeopleForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
+import usePeopleList from '../../hooks/usePeopleList';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -19,7 +19,13 @@ const useInputValue = initialValue => {
 
 const PeopleForm = ({ match: { params: { id } }, history }) => {
   const [name, onChangeName, setName] = useInputValue('');
-  useRegistry(id, setName);
+  const [list] = usePeopleList();
+  useEffect(() => {
+    const person = list.find(p => p.id === id);
+    if (person) {
+      setName(person.name);
+    }
+  }, [id, list, setName]);
   const saveRegistry = async () => {
     const { token } = getState();
     try {

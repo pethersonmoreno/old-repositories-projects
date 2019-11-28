@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-autofocus */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, Button } from 'react-md';
 import api from '../../../api/accounts';
 import { getState } from '../../hooks/useAuthState';
-import { useRegistry, usePeopleList } from './hooks';
 import './AccountForm.scss';
 import getMessageFromError from '../../../helpers/getMessageFromError';
+import useAccountsList from '../../hooks/useAccountsList';
+import usePeopleList from '../../hooks/usePeopleList';
 
 const useInputValue = initialValue => {
   const [value, setValue] = useState(initialValue);
@@ -21,13 +22,16 @@ const AccountForm = ({ match: { params: { id } }, history }) => {
   const [description, onChangeDescription, setDescription] = useInputValue('');
   const [currentValue, onChangeCurrentValue, setCurrentValue] = useInputValue(0);
   const [personId, onChangePersonId, setPersonId] = useInputValue('');
-  const peopleList = usePeopleList();
-  const setRegistry = useCallback(registry => {
-    setDescription(registry.description);
-    setCurrentValue(registry.currentValue);
-    setPersonId(registry.personId);
-  }, [setCurrentValue, setDescription, setPersonId]);
-  useRegistry(id, setRegistry);
+  const [peopleList] = usePeopleList();
+  const [list] = useAccountsList();
+  useEffect(() => {
+    const registry = list.find(p => p.id === id);
+    if (registry) {
+      setDescription(registry.description);
+      setCurrentValue(registry.currentValue);
+      setPersonId(registry.personId);
+    }
+  }, [id, list, setCurrentValue, setDescription, setPersonId]);
   const saveRegistry = async () => {
     const { token } = getState();
     try {

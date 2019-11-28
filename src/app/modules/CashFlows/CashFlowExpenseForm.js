@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import { Button, Paper } from 'react-md';
 import DateTimePicker from 'react-datetime-picker';
 import {
-  useCashFlowDescriptionsList, useAccountsFullDescriptionList, useInputValue, saveRegistry
+  useInputValue, saveRegistry, getAccountsFulDescriptionList
 } from './hooks';
 import './CashFlowForm.scss';
 import AutoCompleteField from './AutoCompleteField';
+import useCashFlowDescriptionsList from '../../hooks/useCashFlowDescriptionsList';
+import usePeopleList from '../../hooks/usePeopleList';
+import useAccountsList from '../../hooks/useAccountsList';
 
 const initialValues = {
   dateTime: new Date(),
@@ -29,8 +32,10 @@ const CashFlowExpenseForm = ({ cashFlow, history }) => {
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState(
     cashFlow ? cashFlow.cashFlowDescriptionId : initialValues.cashFlowDescriptionId
   );
-  const accountsList = useAccountsFullDescriptionList();
-  const cashFlowDescriptionsList = useCashFlowDescriptionsList();
+  const [accountsList] = useAccountsList();
+  const [peopleList] = usePeopleList();
+  const accountsFullList = getAccountsFulDescriptionList(accountsList, peopleList);
+  const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
   return (
     <Paper className="cash-flow-form">
       <h2>
@@ -47,7 +52,7 @@ const CashFlowExpenseForm = ({ cashFlow, history }) => {
       />
       <AutoCompleteField
         id="accountId"
-        data={accountsList}
+        data={accountsFullList}
         value={accountId}
         setValue={setAccountId}
         dataLabel="label"
@@ -92,7 +97,7 @@ CashFlowExpenseForm.propTypes = {
   cashFlow: PropTypes.shape({
     inOut: PropTypes.oneOf([true]),
     id: PropTypes.string.isRequired,
-    dateTime: PropTypes.string.isRequired,
+    dateTime: PropTypes.instanceOf(Date).isRequired,
     value: PropTypes.number.isRequired,
     accountId: PropTypes.string.isRequired,
     cashFlowDescriptionId: PropTypes.string.isRequired,
