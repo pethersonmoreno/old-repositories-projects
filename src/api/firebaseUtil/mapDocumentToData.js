@@ -1,7 +1,8 @@
 const mapField = field => {
   if (
     field.toDate
-    && Object.getPrototypeOf(field).constructor.name === 'Timestamp'
+      && field.seconds !== undefined
+      && field.nanoseconds !== undefined
   ) {
     return field.toDate();
   }
