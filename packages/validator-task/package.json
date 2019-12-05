@@ -1,0 +1,26 @@
+{
+  "name": "validator-task",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Petherson Moreno <pethermoreno@gmail.com>",
+  "homepage": "https://github.com/pethersonmoreno/multirepo-example#readme",
+  "license": "MIT",
+  "main": "lib/validator-task.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pethersonmoreno/multirepo-example.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/multirepo-example/issues"
+  }
+}
