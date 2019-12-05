@@ -1,2 +1,2 @@
-# multirepo-example
-Multirepo project example
+# monorepo-example
+Monorepo project example
