@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "Petherson Moreno <pethermoreno@gmail.com>",
-  "homepage": "https://github.com/pethersonmoreno/multirepo-example#readme",
+  "homepage": "https://github.com/pethersonmoreno/monorepo-example#readme",
   "license": "MIT",
   "main": "lib/validator-task.js",
   "directories": {
@@ -15,12 +15,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pethersonmoreno/multirepo-example.git"
+    "url": "git+https://github.com/pethersonmoreno/monorepo-example.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
-    "url": "https://github.com/pethersonmoreno/multirepo-example/issues"
+    "url": "https://github.com/pethersonmoreno/monorepo-example/issues"
   }
 }
