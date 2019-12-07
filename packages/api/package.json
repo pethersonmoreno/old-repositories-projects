@@ -18,7 +18,10 @@
     "url": "https://github.com/pethersonmoreno/monorepo-example/issues"
   },
   "dependencies": {
-    "koa": "^2.11.0"
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-route": "^3.2.0",
+    "validator-task": "^0.0.0"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
