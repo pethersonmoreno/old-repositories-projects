@@ -22,5 +22,8 @@
   },
   "bugs": {
     "url": "https://github.com/pethersonmoreno/monorepo-example/issues"
+  },
+  "dependencies": {
+    "@hapi/joi": "^16.1.8"
   }
 }
