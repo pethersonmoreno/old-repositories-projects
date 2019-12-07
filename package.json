@@ -7,6 +7,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "bootstrap:hoist": "lerna bootstrap --hoist",
-    "start:api": "lerna run start --scope=api --stream"
+    "start:api": "lerna run start --scope=api --stream",
+    "start:frontend": "lerna run start --scope=frontend --stream"
   }
 }
