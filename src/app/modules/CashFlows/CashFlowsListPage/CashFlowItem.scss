@@ -1,0 +1,56 @@
+.cashFlowItem {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eeeeee;
+  }
+
+  &:focus {
+    background-color: #cccccc;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &>.descriptions {
+    flex: 1;
+    padding-left: 10px;
+
+    &>.description {
+      color: #000000;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    &>.account {
+      color: #999999;
+      font-size: 12px;
+    }
+  }
+
+  &>.valueType {
+    display: block;
+
+    &>.value {
+      color: #bb0000;
+      text-align: right;
+      font-size: 15px;
+      font-weight: bold;
+
+      &.received {
+        color: #00bb00;
+      }
+    }
+
+    &>.type {
+      text-align: right;
+      color: #999999;
+      font-size: 12px;
+    }
+  }
+
+  &>.actions {
+    margin: 10px 15px;
+  }
+}

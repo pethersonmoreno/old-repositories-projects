@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Switch, Route
 } from 'react-router-dom';
-import CashFlowsList from './CashFlowsList';
+import CashFlowsListPage from './CashFlowsListPage';
 import NotFound from '../../others/NotFound';
 import { setPageTitle } from '../../actions/auth';
 import CashFlowFormEdit from './CashFlowFormEdit';
@@ -16,7 +16,7 @@ const Router = ({ match }) => {
   }, []);
   return (
     <Switch>
-      <Route exact path={match.path} component={CashFlowsList} />
+      <Route exact path={match.path} component={CashFlowsListPage} />
       <Route exact path={`${match.path}/edit/:id`} component={CashFlowFormEdit} />
       <Route exact path={`${match.path}/newIncome`} component={CashFlowIncomeForm} />
       <Route exact path={`${match.path}/newExpense`} component={CashFlowExpenseForm} />
