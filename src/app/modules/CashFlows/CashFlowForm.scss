@@ -1,12 +1,11 @@
 .cash-flow-form {
   margin: 30px;
 
-  input,
-  select {
+  &>input,
+  &>select,
+  .react-datepicker__custom-input {
     font-size: 18px;
   }
 
-  button {
-    margin-left: 10px;
-  }
+  button {}
 }

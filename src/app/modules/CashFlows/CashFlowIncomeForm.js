@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Paper } from 'react-md';
-import DateTimePicker from 'react-datetime-picker';
 import {
   useInputValue, saveRegistry, getAccountsFulDescriptionList
 } from './hooks';
@@ -11,6 +10,7 @@ import AutoCompleteField from './AutoCompleteField';
 import useAccountsList from '../../hooks/useAccountsList';
 import usePeopleList from '../../hooks/usePeopleList';
 import useCashFlowDescriptionsList from '../../hooks/useCashFlowDescriptionsList';
+import DateTimePicker from '../../components/DateTimePicker';
 
 const initialValues = {
   dateTime: new Date(),
@@ -46,8 +46,7 @@ const CashFlowIncomeForm = ({ cashFlow, history }) => {
       <DateTimePicker
         name="dateTime"
         placeholder="Date Time"
-        format="dd/MM/yyyy HH:mm"
-        value={dateTime}
+        selected={dateTime}
         onChange={setDateTime}
       />
       <AutoCompleteField
