@@ -10,8 +10,8 @@ const DateTimePicker = ({
     placeholder={placeholder}
     selected={selected}
     onChange={onChange}
-    dateFormat="dd/MM/yyyy hh:mm"
     showTimeInput
+    dateFormat="dd/MM/yyyy hh:mm"
     timeInputLabel="Time:"
   />
 );

@@ -6,7 +6,7 @@ class CustomInput extends React.PureComponent {
   render() {
     const { value, onClick } = this.props;
     return (
-      <button type="button" className="react-datepicker__custom-input" onClick={onClick}>
+      <button type="button" className="datepicker__custom-input" onClick={onClick}>
         {value}
       </button>
     );
