@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 const useTouchPressable = ({
-  time, onPress, onLongPress,
+  longPressTime, onPress, onLongPress,
   onTouchStart: onTouchStartParam,
   onTouchEnd: onTouchEndParam,
   onTouchCancel: onTouchCancelParam,
@@ -17,9 +17,9 @@ const useTouchPressable = ({
     }
   }, [onLongPress, moved]);
   const startTimeout = useCallback(() => {
-    const newTimeout = window.setTimeout(longPressed, time);
+    const newTimeout = window.setTimeout(longPressed, longPressTime);
     setTimeout(newTimeout);
-  }, [longPressed, time]);
+  }, [longPressed, longPressTime]);
   const cancelTimeout = useCallback(() => {
     window.clearTimeout(timeout);
     setTimeout(null);

@@ -6,14 +6,14 @@ import TouchPressableView from './TouchPressableView';
 
 const TouchPressableController = ({
   children,
-  time,
+  longPressTime,
   onPress,
   onLongPress,
   disableSelectText
 }) => {
   const pressable = useTouchPressable({
     ...children.props,
-    time,
+    longPressTime,
     onPress,
     onLongPress
   });
@@ -31,13 +31,13 @@ const TouchPressableController = ({
 };
 TouchPressableController.propTypes = {
   children: PropTypes.node.isRequired,
-  time: PropTypes.number,
+  longPressTime: PropTypes.number,
   onPress: PropTypes.func,
   onLongPress: PropTypes.func,
   disableSelectText: PropTypes.bool,
 };
 TouchPressableController.defaultProps = {
-  time: 500,
+  longPressTime: 500,
   onPress: null,
   onLongPress: null,
   disableSelectText: false,
