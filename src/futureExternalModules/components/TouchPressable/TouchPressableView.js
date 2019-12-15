@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from 'react';
 
-const isTouch =() => {
+const isTouch = () => {
   try {
     document.createEvent('TouchEvent');
     return true;
   } catch (e) {
     return false;
   }
-}
-const usePressable = ({ time, onLongPress})=>{
+};
+const usePressable = ({ time, onLongPress, onTouchStart: onTouchStartPassed }) => {
   const [timeout, setTimeout] = useState(null);
   const [shouldShortPress, setShouldShortPress] = useState(false);
   const [moved, setMoved] = useState(false);
@@ -26,16 +26,17 @@ const usePressable = ({ time, onLongPress})=>{
     window.clearTimeout(timeout);
     setTimeout(null);
   }, [timeout]);
+  const onTouchStart = e => {
+    setShouldShortPress(true);
+    setMoved(false);
+    startTimeout();
+    if (typeof onTouchStartPassed === 'function') {
+      onTouchStartPassed(e);
+    }
+  };
+  return { onTouchStart };
 };
 
-onTouchStart = e => {
-  this.shouldShortPress = true;
-  this.moved = false;
-  this.startTimeout();
-  if (typeof this.props.onTouchStart === 'function') {
-    this.props.onTouchStart(e);
-  }
-};
 
 onTouchEnd = e => {
   this.cancelTimeout();
@@ -61,12 +62,14 @@ onMove = e => {
   }
 };
 
-const TouchPressableView = ({children})=>{
-
-
+// time=500 (default)
+const TouchPressableView = ({
+  time, children, onLongPress, onTouchStart
+}) => {
+  const pressable = usePressable({ time, onLongPress, onTouchStart });
   const props = {
     onContextMenu: e => e.preventDefault(),
-    onTouchStart: this.onTouchStart,
+    onTouchStart: pressable.onTouchStart,
     onTouchEnd: this.onTouchEnd,
     onTouchMove: this.onMove,
     onTouchCancel: this.onTouchCancel,
@@ -78,4 +81,6 @@ const TouchPressableView = ({children})=>{
   };
 
   return React.cloneElement(children, { ...children.props, ...props });
-}
+};
+
+export default TouchPressableView;
