@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 
 const useTouchPressable = ({
-  longPressTime, onPress, onLongPress,
+  longPressTime,
+  onShortPress,
+  onLongPress,
   onTouchStart: onTouchStartParam,
   onTouchEnd: onTouchEndParam,
   onTouchCancel: onTouchCancelParam,
@@ -34,8 +36,8 @@ const useTouchPressable = ({
   };
   const onTouchEnd = e => {
     cancelTimeout();
-    if (onPress && shouldShortPress && !moved) {
-      onPress();
+    if (onShortPress && shouldShortPress && !moved) {
+      onShortPress();
     }
     if (typeof onTouchEndParam === 'function') {
       onTouchEndParam(e);
