@@ -8,7 +8,7 @@ import useAccountsList from '../../../../utils/hooks/useAccountsList';
 import usePeopleList from '../../../../utils/hooks/usePeopleList';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import './CashFlowExpenseFormView.scss';
-import CashFlowIncomeFormView from '../CashFlowIncomeForm/CashFlowIncomeFormView';
+import CashFlowExpenseFormView from './CashFlowExpenseFormView';
 
 const initialValues = {
   dateTime: new Date(),
@@ -34,7 +34,7 @@ const CashFlowExpenseFormController = ({ cashFlow, history }) => {
   const accountsFullList = getAccountsFulDescriptionList(accountsList, peopleList);
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
   return (
-    <CashFlowIncomeFormView
+    <CashFlowExpenseFormView
       edit={!!cashFlow}
       dateTime={dateTime}
       setDateTime={setDateTime}

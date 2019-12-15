@@ -6,7 +6,7 @@ import AutoCompleteField from '../../../../utils/components/AutoCompleteField';
 import DateTimePicker from '../../../../utils/components/DateTimePicker';
 import './CashFlowExpenseFormView.scss';
 
-const inOut = false; // Input/Income
+const inOut = true; // Output/Expense
 const CashFlowExpenseFormView = ({
   edit,
   dateTime, setDateTime,
