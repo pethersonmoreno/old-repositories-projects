@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import usePressable from '../../hooks/usePressable';
+import useTouchPressable from '../../hooks/useTouchPressable';
 import TouchPressableView from './TouchPressableView';
 
 const TouchPressableController = ({
@@ -11,7 +11,7 @@ const TouchPressableController = ({
   onLongPress,
   disableSelectText
 }) => {
-  const pressable = usePressable({
+  const pressable = useTouchPressable({
     ...children.props,
     time,
     onPress,

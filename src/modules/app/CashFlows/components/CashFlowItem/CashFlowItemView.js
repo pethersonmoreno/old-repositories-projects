@@ -7,6 +7,7 @@ import {
 import runIfPressEnterOrSpace from '../../../../utils/helpers/runIfPressEnterOrSpace';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
 import './CashFlowItemView.scss';
+import TouchPressable from '../../../../../futureExternalModules/components/TouchPressable';
 
 const getAccountDescriptionWithFullDescription = (accountsListFullDescription, accountId) => {
   const account = accountsListFullDescription.find(acc => acc.value === accountId);
@@ -35,43 +36,47 @@ const CashFlowItemView = ({
   edit,
   remove
 }) => (
-  <div
-    className={`cashFlowItem ${className}`}
-    role="button"
-    tabIndex="0"
-    onKeyDown={runIfPressEnterOrSpace(edit)}
-    onClick={edit}
+  <TouchPressable
+    onLongPress={() => alert('todo: long press event')}
   >
-    <div className="descriptions">
-      <div className="description">
-        {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
+    <div
+      className={`cashFlowItem ${className}`}
+      role="button"
+      tabIndex="0"
+      onKeyDown={runIfPressEnterOrSpace(edit)}
+      onClick={edit}
+    >
+      <div className="descriptions">
+        <div className="description">
+          {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
+        </div>
+        <div className="account">
+          {getAccountDescriptionWithFullDescription(accountsFullList, cashFlow.accountId)}
+        </div>
       </div>
-      <div className="account">
-        {getAccountDescriptionWithFullDescription(accountsFullList, cashFlow.accountId)}
+      <div className="valueType">
+        <div className={classNames('value', {
+          received: !cashFlow.inOut
+        })}
+        >
+          {cashFlow.inOut ? '-' : ''}
+          {formatMoneyValue(cashFlow.value)}
+        </div>
+        <div className="type">{cashFlow.inOut ? 'paid' : 'received'}</div>
       </div>
-    </div>
-    <div className="valueType">
-      <div className={classNames('value', {
-        received: !cashFlow.inOut
-      })}
-      >
-        {cashFlow.inOut ? '-' : ''}
-        {formatMoneyValue(cashFlow.value)}
-      </div>
-      <div className="type">{cashFlow.inOut ? 'paid' : 'received'}</div>
-    </div>
-    <div className="actions">
-      <Button
-        floating
-        onClick={e => {
-          e.stopPropagation();
-          remove(cashFlow)();
-        }}
-      >
+      <div className="actions">
+        <Button
+          floating
+          onClick={e => {
+            e.stopPropagation();
+            remove(cashFlow)();
+          }}
+        >
           restore_from_trash
-      </Button>
+        </Button>
+      </div>
     </div>
-  </div>
+  </TouchPressable>
 );
 
 CashFlowItemView.propTypes = {

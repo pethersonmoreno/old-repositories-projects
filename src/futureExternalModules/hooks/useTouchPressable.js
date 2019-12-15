@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-const usePressable = ({
+const useTouchPressable = ({
   time, onPress, onLongPress,
   onTouchStart: onTouchStartParam,
   onTouchEnd: onTouchEndParam,
@@ -58,4 +58,4 @@ const usePressable = ({
   };
 };
 
-export default usePressable;
+export default useTouchPressable;
