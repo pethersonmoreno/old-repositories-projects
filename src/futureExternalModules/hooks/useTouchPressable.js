@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import usePressable from './usePressable';
 
 const useTouchPressable = ({
   longPressTime,
@@ -9,52 +9,20 @@ const useTouchPressable = ({
   onTouchCancel: onTouchCancelParam,
   onTouchMove: onTouchMoveParam,
 }) => {
-  const [timeout, setTimeout] = useState(null);
-  const [shouldShortPress, setShouldShortPress] = useState(false);
-  const [moved, setMoved] = useState(false);
-  const longPressed = useCallback(() => {
-    setShouldShortPress(false);
-    if (onLongPress && !moved) {
-      onLongPress();
-    }
-  }, [onLongPress, moved]);
-  const startTimeout = useCallback(() => {
-    const newTimeout = window.setTimeout(longPressed, longPressTime);
-    setTimeout(newTimeout);
-  }, [longPressed, longPressTime]);
-  const cancelTimeout = useCallback(() => {
-    window.clearTimeout(timeout);
-    setTimeout(null);
-  }, [timeout]);
-  const onTouchStart = e => {
-    setShouldShortPress(true);
-    setMoved(false);
-    startTimeout();
-    if (typeof onTouchStartParam === 'function') {
-      onTouchStartParam(e);
-    }
-  };
-  const onTouchEnd = e => {
-    cancelTimeout();
-    if (onShortPress && shouldShortPress && !moved) {
-      onShortPress();
-    }
-    if (typeof onTouchEndParam === 'function') {
-      onTouchEndParam(e);
-    }
-  };
-  const onTouchCancel = e => {
-    cancelTimeout();
-    if (typeof onTouchCancelParam === 'function') {
-      onTouchCancelParam(e);
-    }
-  };
-  const onTouchMove = e => {
-    setMoved(true);
-    if (typeof onTouchMoveParam === 'function') {
-      onTouchMoveParam(e);
-    }
-  };
+  const {
+    onPressStart: onTouchStart,
+    onPressEnd: onTouchEnd,
+    onPressCancel: onTouchCancel,
+    onPressMove: onTouchMove
+  } = usePressable({
+    longPressTime,
+    onShortPress,
+    onLongPress,
+    onPressStart: onTouchStartParam,
+    onPressEnd: onTouchEndParam,
+    onPressCancel: onTouchCancelParam,
+    onPressMove: onTouchMoveParam,
+  });
   return {
     onTouchStart, onTouchEnd, onTouchCancel, onTouchMove
   };
