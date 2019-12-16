@@ -15,7 +15,7 @@
 
   &>.descriptions {
     flex: 1;
-    padding-left: 10px;
+    padding: 15px 0 15px 10px;
 
     &>.description {
       color: #000000;
@@ -52,5 +52,9 @@
 
   &>.actions {
     margin: 10px 15px;
+
+    @media (max-width: 799px) {
+      display: none;
+    }
   }
 }
