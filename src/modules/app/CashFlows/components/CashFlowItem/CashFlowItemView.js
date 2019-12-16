@@ -7,7 +7,7 @@ import {
 import runIfPressEnterOrSpace from '../../../../utils/helpers/runIfPressEnterOrSpace';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
 import './CashFlowItemView.scss';
-import TouchPressable from '../../../../../futureExternalModules/components/TouchPressable';
+import PointerPressable from '../../../../../futureExternalModules/components/PointerPressable';
 
 const getAccountDescriptionWithFullDescription = (accountsListFullDescription, accountId) => {
   const account = accountsListFullDescription.find(acc => acc.value === accountId);
@@ -36,7 +36,7 @@ const CashFlowItemView = ({
   edit,
   remove
 }) => (
-  <TouchPressable
+  <PointerPressable
     onLongPress={() => alert('todo: long press event')}
   >
     <div
@@ -76,7 +76,7 @@ const CashFlowItemView = ({
         </Button>
       </div>
     </div>
-  </TouchPressable>
+  </PointerPressable>
 );
 
 CashFlowItemView.propTypes = {
