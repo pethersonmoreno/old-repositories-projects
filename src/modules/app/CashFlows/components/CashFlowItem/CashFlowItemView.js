@@ -35,20 +35,22 @@ const CashFlowItemView = ({
   accountsFullList,
   edit,
   remove
-}) => (
-  <PointerPressable
-    onShortPress={edit}
-    onLongPress={() => {
-      document.querySelector(`#menu-button-${cashFlow.id} > button`).click();
-    }}
-  >
+}) => {
+  const showMenuItem = () => document.querySelector(`#menu-button-${cashFlow.id} > button`).click();
+  return (
     <div
       className={`cashFlowItem ${className}`}
       role="button"
       tabIndex="0"
       onKeyDown={runIfPressEnterOrSpace(edit)}
     >
-      <div className="actions">
+      <div
+        className="actions"
+        role="button"
+        tabIndex="0"
+        onKeyDown={runIfPressEnterOrSpace(showMenuItem)}
+        onClick={showMenuItem}
+      >
         <MenuButton
           id={`menu-button-${cashFlow.id}`}
           icon
@@ -58,6 +60,7 @@ const CashFlowItemView = ({
               leftIcon={<FontIcon>restore_from_trash</FontIcon>}
               primaryText="Remove"
               onClick={e => {
+                e.preventDefault();
                 e.stopPropagation();
                 remove(cashFlow)();
               }}
@@ -68,33 +71,44 @@ const CashFlowItemView = ({
             x: MenuButton.HorizontalAnchors.INNER_LEFT,
             y: MenuButton.VerticalAnchors.CENTER,
           }}
-          onClick={e => e.stopPropagation()}
+          onClick={e => e.preventDefault()}
           onKeyDown={e => e.stopPropagation()}
         >
             more_vert
         </MenuButton>
       </div>
-      <div className="descriptions">
-        <div className="description">
-          {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
+
+      <PointerPressable
+        onShortPress={edit}
+        onLongPress={showMenuItem}
+      >
+        <div className="descriptions">
+          <div className="description">
+            {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
+          </div>
+          <div className="account">
+            {getAccountDescriptionWithFullDescription(accountsFullList, cashFlow.accountId)}
+          </div>
         </div>
-        <div className="account">
-          {getAccountDescriptionWithFullDescription(accountsFullList, cashFlow.accountId)}
+      </PointerPressable>
+      <PointerPressable
+        onShortPress={edit}
+        onLongPress={showMenuItem}
+      >
+        <div className="valueType">
+          <div className={classNames('value', {
+            received: !cashFlow.inOut
+          })}
+          >
+            {cashFlow.inOut ? '-' : ''}
+            {formatMoneyValue(cashFlow.value)}
+          </div>
+          <div className="type">{cashFlow.inOut ? 'paid' : 'received'}</div>
         </div>
-      </div>
-      <div className="valueType">
-        <div className={classNames('value', {
-          received: !cashFlow.inOut
-        })}
-        >
-          {cashFlow.inOut ? '-' : ''}
-          {formatMoneyValue(cashFlow.value)}
-        </div>
-        <div className="type">{cashFlow.inOut ? 'paid' : 'received'}</div>
-      </div>
+      </PointerPressable>
     </div>
-  </PointerPressable>
-);
+  );
+};
 
 CashFlowItemView.propTypes = {
   className: PropTypes.string,
