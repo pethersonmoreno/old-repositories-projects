@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {
-  Button
+  MenuButton, ListItem, FontIcon
 } from 'react-md';
 import runIfPressEnterOrSpace from '../../../../utils/helpers/runIfPressEnterOrSpace';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
@@ -37,15 +37,43 @@ const CashFlowItemView = ({
   remove
 }) => (
   <PointerPressable
-    onLongPress={() => alert('todo: long press event')}
+    onShortPress={edit}
+    onLongPress={() => {
+      document.querySelector(`#menu-button-${cashFlow.id} > button`).click();
+    }}
   >
     <div
       className={`cashFlowItem ${className}`}
       role="button"
       tabIndex="0"
       onKeyDown={runIfPressEnterOrSpace(edit)}
-      onClick={edit}
     >
+      <div className="actions">
+        <MenuButton
+          id={`menu-button-${cashFlow.id}`}
+          icon
+          menuItems={[
+            <ListItem
+              key={1}
+              leftIcon={<FontIcon>restore_from_trash</FontIcon>}
+              primaryText="Remove"
+              onClick={e => {
+                e.stopPropagation();
+                remove(cashFlow)();
+              }}
+            />,
+          ]}
+          position={MenuButton.Positions.TOP_LEFT}
+          anchor={{
+            x: MenuButton.HorizontalAnchors.INNER_LEFT,
+            y: MenuButton.VerticalAnchors.CENTER,
+          }}
+          onClick={e => e.stopPropagation()}
+          onKeyDown={e => e.stopPropagation()}
+        >
+            more_vert
+        </MenuButton>
+      </div>
       <div className="descriptions">
         <div className="description">
           {getCashFlowDescription(cashFlowDescriptionsList, cashFlow.cashFlowDescriptionId)}
@@ -63,17 +91,6 @@ const CashFlowItemView = ({
           {formatMoneyValue(cashFlow.value)}
         </div>
         <div className="type">{cashFlow.inOut ? 'paid' : 'received'}</div>
-      </div>
-      <div className="actions">
-        <Button
-          floating
-          onClick={e => {
-            e.stopPropagation();
-            remove(cashFlow)();
-          }}
-        >
-          restore_from_trash
-        </Button>
       </div>
     </div>
   </PointerPressable>
