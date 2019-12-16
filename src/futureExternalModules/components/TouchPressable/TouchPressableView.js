@@ -1,5 +1,6 @@
 import { cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import newStyleWithSelectTextDisabled from '../../helpers/newStyleWithSelectTextDisabled';
 
 const TouchPressableView = ({
   children,
@@ -11,10 +12,7 @@ const TouchPressableView = ({
 }) => {
   let { style } = children.props;
   if (disableSelectText) {
-    style = {
-      ...style,
-      WebkitUserSelect: 'none',
-    };
+    style = newStyleWithSelectTextDisabled(style);
   }
   return cloneElement(children, {
     ...children.props,

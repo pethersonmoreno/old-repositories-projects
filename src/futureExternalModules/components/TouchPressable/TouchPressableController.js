@@ -40,7 +40,7 @@ TouchPressableController.defaultProps = {
   longPressTime: 500,
   onShortPress: null,
   onLongPress: null,
-  disableSelectText: false,
+  disableSelectText: true,
 };
 
 export default TouchPressableController;
