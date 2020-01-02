@@ -7,6 +7,7 @@ import MenuDrawerView from './MenuDrawerView';
 
 const menuItems = [
   { label: 'Cash Flows', to: '/cashFlows' },
+  { label: 'Cash Flows Report', to: '/cashFlows/report' },
   { label: 'People', to: '/people' },
   { label: 'Cash Flow Descriptions', to: '/cashFlowDescriptions' },
   { label: 'Accounts', to: '/accounts' },
