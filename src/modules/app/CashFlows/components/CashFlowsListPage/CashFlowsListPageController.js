@@ -5,6 +5,7 @@ import { getState } from '../../../../auth/hooks/useAuthState';
 import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
 import useCashFlowsList from '../../../../utils/hooks/useCashFlowsList';
+import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 
 
@@ -12,11 +13,17 @@ const orderList = list => list.sort((flowA, flowB) => flowB.dateTime - flowA.dat
 
 const CashFlowsListPageController = ({ match, history }) => {
   const [monthDate, setMonthDate] = useState(new Date());
+  const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [list] = useCashFlowsList();
+  const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
   const monthDateString = moment(monthDate).format('YYYY-MM');
-  const listFiltered = list
+  let listFiltered = list
     .filter(cashFlow => moment(cashFlow.dateTime).format('YYYY-MM') === monthDateString);
+  if (cashFlowDescriptionId) {
+    listFiltered = listFiltered
+      .filter(cashFlow => cashFlow.cashFlowDescriptionId === cashFlowDescriptionId);
+  }
   const goAddIncome = () => { history.push(`${match.path}/newIncome`); };
   const goAddExpense = () => { history.push(`${match.path}/newExpense`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
@@ -34,6 +41,9 @@ const CashFlowsListPageController = ({ match, history }) => {
     <CashFlowsListPageView
       monthDate={monthDate}
       setMonthDate={setMonthDate}
+      cashFlowDescriptionId={cashFlowDescriptionId}
+      setCashFlowDescriptionId={setCashFlowDescriptionId}
+      cashFlowDescriptionsList={cashFlowDescriptionsList}
       orderedList={orderedList}
       addIncome={goAddIncome}
       addExpense={goAddExpense}

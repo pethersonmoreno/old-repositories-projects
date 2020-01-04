@@ -7,9 +7,12 @@ import {
 } from 'react-md';
 import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
+import AutoCompleteField from '../../../../utils/components/AutoCompleteField';
 
 const CashFlowsListPageView = ({
   monthDate, setMonthDate,
+  cashFlowDescriptionId, setCashFlowDescriptionId,
+  cashFlowDescriptionsList,
   orderedList,
   addIncome,
   addExpense,
@@ -19,15 +22,33 @@ const CashFlowsListPageView = ({
 
 }) => (
   <Paper>
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div>
       Month:
-      {' '}
-      <ReactDatePicker
-        selected={monthDate}
-        onChange={date => setMonthDate(date)}
-        dateFormat="yyyy-MM"
-        showMonthYearPicker
-      />
+        {' '}
+        <ReactDatePicker
+          selected={monthDate}
+          onChange={date => setMonthDate(date)}
+          dateFormat="yyyy-MM"
+          showMonthYearPicker
+        />
+      </div>
+      <div style={{ margin: '0 3px 0 10px' }}>
+        Description:
+        {' '}
+      </div>
+      <div>
+        <AutoCompleteField
+          id="cashFlowDescriptionId"
+          data={cashFlowDescriptionsList}
+          value={cashFlowDescriptionId}
+          setValue={setCashFlowDescriptionId}
+          dataLabel="name"
+          dataValue="id"
+          label=""
+          placeholder=""
+        />
+      </div>
     </div>
     <CashFlowsList list={orderedList} edit={edit} remove={remove} />
     <div className={classNames('fabContainer', {
@@ -44,8 +65,14 @@ const CashFlowsListPageView = ({
 );
 
 CashFlowsListPageView.propTypes = {
-  monthDate: PropTypes.string.isRequired,
+  monthDate: PropTypes.instanceOf(Date).isRequired,
   setMonthDate: PropTypes.func.isRequired,
+  cashFlowDescriptionId: PropTypes.string,
+  setCashFlowDescriptionId: PropTypes.func.isRequired,
+  cashFlowDescriptionsList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
   orderedList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     inOut: PropTypes.bool.isRequired,
@@ -60,6 +87,9 @@ CashFlowsListPageView.propTypes = {
   remove: PropTypes.func.isRequired,
   showAddMenu: PropTypes.bool.isRequired,
   setShowAddMenu: PropTypes.func.isRequired,
+};
+CashFlowsListPageView.defaultProps = {
+  cashFlowDescriptionId: null,
 };
 
 export default CashFlowsListPageView;
