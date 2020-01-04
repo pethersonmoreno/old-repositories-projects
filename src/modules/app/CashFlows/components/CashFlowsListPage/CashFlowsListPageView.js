@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ReactDatePicker from 'react-datepicker';
 import {
   Paper, Button
 } from 'react-md';
@@ -8,6 +9,7 @@ import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
 
 const CashFlowsListPageView = ({
+  monthDate, setMonthDate,
   orderedList,
   addIncome,
   addExpense,
@@ -17,6 +19,16 @@ const CashFlowsListPageView = ({
 
 }) => (
   <Paper>
+    <div>
+      Month:
+      {' '}
+      <ReactDatePicker
+        selected={monthDate}
+        onChange={date => setMonthDate(date)}
+        dateFormat="yyyy-MM"
+        showMonthYearPicker
+      />
+    </div>
     <CashFlowsList list={orderedList} edit={edit} remove={remove} />
     <div className={classNames('fabContainer', {
       showAddMenu
@@ -32,6 +44,8 @@ const CashFlowsListPageView = ({
 );
 
 CashFlowsListPageView.propTypes = {
+  monthDate: PropTypes.string.isRequired,
+  setMonthDate: PropTypes.func.isRequired,
   orderedList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     inOut: PropTypes.bool.isRequired,

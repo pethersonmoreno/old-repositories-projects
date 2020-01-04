@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { getState } from '../../../../auth/hooks/useAuthState';
 import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
@@ -10,8 +11,12 @@ import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 const orderList = list => list.sort((flowA, flowB) => flowB.dateTime - flowA.dateTime);
 
 const CashFlowsListPageController = ({ match, history }) => {
+  const [monthDate, setMonthDate] = useState(new Date());
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [list] = useCashFlowsList();
+  const monthDateString = moment(monthDate).format('YYYY-MM');
+  const listFiltered = list
+    .filter(cashFlow => moment(cashFlow.dateTime).format('YYYY-MM') === monthDateString);
   const goAddIncome = () => { history.push(`${match.path}/newIncome`); };
   const goAddExpense = () => { history.push(`${match.path}/newExpense`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
@@ -23,10 +28,12 @@ const CashFlowsListPageController = ({ match, history }) => {
       alert(getMessageFromError(error));
     }
   };
-  const orderedList = orderList(list);
+  const orderedList = orderList(listFiltered);
 
   return (
     <CashFlowsListPageView
+      monthDate={monthDate}
+      setMonthDate={setMonthDate}
       orderedList={orderedList}
       addIncome={goAddIncome}
       addExpense={goAddExpense}
