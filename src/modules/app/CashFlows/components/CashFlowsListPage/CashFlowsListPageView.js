@@ -22,8 +22,8 @@ const CashFlowsListPageView = ({
 
 }) => (
   <Paper>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div>
+    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ marginRight: 10 }}>
       Month:
         {' '}
         <ReactDatePicker
@@ -33,21 +33,23 @@ const CashFlowsListPageView = ({
           showMonthYearPicker
         />
       </div>
-      <div style={{ margin: '0 3px 0 10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginRight: 3 }}>
         Description:
-        {' '}
-      </div>
-      <div>
-        <AutoCompleteField
-          id="cashFlowDescriptionId"
-          data={cashFlowDescriptionsList}
-          value={cashFlowDescriptionId}
-          setValue={setCashFlowDescriptionId}
-          dataLabel="name"
-          dataValue="id"
-          label=""
-          placeholder=""
-        />
+          {' '}
+        </div>
+        <div>
+          <AutoCompleteField
+            id="cashFlowDescriptionId"
+            data={cashFlowDescriptionsList}
+            value={cashFlowDescriptionId}
+            setValue={setCashFlowDescriptionId}
+            dataLabel="name"
+            dataValue="id"
+            label=""
+            placeholder=""
+          />
+        </div>
       </div>
     </div>
     <CashFlowsList list={orderedList} edit={edit} remove={remove} />
