@@ -1,3 +1,3 @@
-import RootRouter from './RootRouterView';
+import RootRouter from './RootRouterController';
 
 export default RootRouter;
