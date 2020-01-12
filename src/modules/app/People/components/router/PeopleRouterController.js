@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SwitchRouterRoutes from '../../../../utils/components/SwitchRouterRoutes';
 import NotFound from '../../../../utils/components/NotFound';
-import PeopleList from '../PeopleList';
-import PersonForm from '../PersonForm';
+import PeopleList from '../list';
+import PersonForm from '../form';
 import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
+import useSubscribePeopleFirestore from '../../hooks/useSubscribePeopleFirestore';
 
 const PeopleRouterController = ({ match }) => {
   useSetPageTitle('People');
+  useSubscribePeopleFirestore();
   const routes = [
     { path: match.path, exact: true, component: PeopleList },
     { path: `${match.path}/edit/:id`, exact: true, component: PersonForm },

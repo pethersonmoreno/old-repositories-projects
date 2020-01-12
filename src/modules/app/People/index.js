@@ -1,3 +1,3 @@
-import PeopleRouter from './components/PeopleRouter';
+import { PeopleRouter } from './components';
 
 export default PeopleRouter;

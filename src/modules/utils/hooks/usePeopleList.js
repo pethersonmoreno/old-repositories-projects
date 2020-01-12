@@ -1,14 +1,6 @@
-import createUseSharedCollectionStateSubscriberHook from '../hookFactories/createUseSharedCollectionStateSubscriberHook';
+import { usePeopleList } from '../../app/People/selectors/selectorsPeople';
 
-const {
-  getState,
-  useState: usePeopleList,
-  unsubscribeOnUnmount: unsubscribePeopleList,
-} = createUseSharedCollectionStateSubscriberHook('people');
-
-export {
-  getState,
-  unsubscribePeopleList,
+export default () => {
+  const list = usePeopleList();
+  return [list];
 };
-
-export default usePeopleList;

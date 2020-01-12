@@ -8,9 +8,11 @@ import CashFlowsReport from '../CashFlowsReport';
 import CashFlowIncomeForm from '../CashFlowIncomeForm';
 import CashFlowExpenseForm from '../CashFlowExpenseForm';
 import CashFlowFormEdit from '../CashFlowFormEdit';
+import useSubscribePeopleFirestore from '../../../People/hooks/useSubscribePeopleFirestore';
 
 const CashFlowsRouterController = ({ match }) => {
   useSetPageTitle('Cash Flows');
+  useSubscribePeopleFirestore();
   const routes = [
     { path: match.path, exact: true, component: CashFlowsListPage },
     { path: `${match.path}/report`, exact: true, component: CashFlowsReport },

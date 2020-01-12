@@ -5,9 +5,11 @@ import NotFound from '../../../../utils/components/NotFound';
 import AccountsList from '../AccountsList';
 import AccountForm from '../AccountForm';
 import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
+import useSubscribePeopleFirestore from '../../../People/hooks/useSubscribePeopleFirestore';
 
 const AccountsRouterController = ({ match }) => {
   useSetPageTitle('Accounts');
+  useSubscribePeopleFirestore();
   const routes = [
     { path: match.path, exact: true, component: AccountsList },
     { path: `${match.path}/edit/:id`, exact: true, component: AccountForm },

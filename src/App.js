@@ -1,16 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import MainRouter from './modules/router/components/MainRouter';
-import RootRouter from './modules/router/components/RootRouter';
+import { RootRouter } from './modules/router/components';
 import './modules/utils/styles/index.scss';
-import { DataProvider } from './redux/data';
+import store from './store';
 
 
 const App = () => (
-  <DataProvider>
+  <Provider store={store}>
     <RootRouter>
       <MainRouter />
     </RootRouter>
-  </DataProvider>
+  </Provider>
 );
 
 export default App;

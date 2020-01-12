@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { setPageTitle } from '../actions';
 
-const useSetPageTitle = () => {
+const useSetPageTitle = title => {
   useEffect(() => {
-    setPageTitle('Accounts');
-  }, []);
+    setPageTitle(title);
+  }, [title]);
 };
 
 export default useSetPageTitle;

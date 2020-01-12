@@ -19,4 +19,4 @@ RootRouterController.propTypes = {
   ]).isRequired
 };
 
-export default RootRouterView;
+export default RootRouterController;

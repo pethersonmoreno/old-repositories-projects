@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppCoverView from './AppCoverView';
 import useAppState from '../../hooks/useAppState';
 import { toggleMenu } from '../../actions';
-import { unsubscribePeopleList } from '../../../utils/hooks/usePeopleList';
 import { unsubscribeAccountsList } from '../../../utils/hooks/useAccountsList';
 import { unsubscribeCashFlowDescriptionsList } from '../../../utils/hooks/useCashFlowDescriptionsList';
 import { unsubscribeCashFlowsList } from '../../../utils/hooks/useCashFlowsList';
@@ -12,7 +11,6 @@ const AppCoverController = ({
   children
 }) => {
   useEffect(() => () => {
-    unsubscribePeopleList();
     unsubscribeAccountsList();
     unsubscribeCashFlowDescriptionsList();
     unsubscribeCashFlowsList();
