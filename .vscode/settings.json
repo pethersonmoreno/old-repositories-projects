@@ -27,5 +27,8 @@
     "editor.defaultFormatter": null,
     "editor.formatOnSave": false
   },
-  "jest.autoEnable": false
+  "jest.autoEnable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
