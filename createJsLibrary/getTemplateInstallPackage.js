@@ -41,6 +41,8 @@ const getTemplateInstallPackage = (template, originalDirectory) => {
         templateToInstall = `${scope}${templateToInstall}-${templateName}`;
       }
     }
+  } else {
+    templateToInstall += '-js';
   }
 
   return Promise.resolve(templateToInstall);
