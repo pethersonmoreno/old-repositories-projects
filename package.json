@@ -1,5 +1,5 @@
 {
-  "name": "create-jslib",
+  "name": "create-libjs",
   "version": "0.0.1",
   "keywords": [
     "library",
@@ -17,7 +17,7 @@
     "package-lock.json"
   ],
   "bin": {
-    "create-jslib": "./index.js"
+    "create-libjs": "./index.js"
   },
   "dependencies": {
     "chalk": "3.0.0",

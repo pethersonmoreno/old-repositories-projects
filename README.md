@@ -1,4 +1,4 @@
-# create-jslib
+# create-libjs
 
 Used to create a new library
 
