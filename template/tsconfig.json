@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "moduleResolution": "node",
+      "target": "es5",
+      "lib": ["es5"],
+      "strict": true,
+      "sourceMap": true,
+      "declaration": true,
+      "outDir": "dist",
+      "typeRoots": [
+        "node_modules/@types"
+      ]
+    },
+    "include": [
+      "src"
+    ]
+  }
