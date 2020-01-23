@@ -13,7 +13,7 @@
   },
   "files": [
     "index.js",
-    "createJsLib.js",
+    "createLibJs",
     "package-lock.json"
   ],
   "bin": {
