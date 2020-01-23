@@ -1,8 +1,7 @@
 {
-  "name": "cjl-template",
+  "name": "cjl-template-js",
   "version": "0.0.1",
   "keywords": [
-    "react",
     "create-jslibrary",
     "template"
   ],

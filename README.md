@@ -1,4 +1,4 @@
-# cjl-template
+# cjl-template-js
 
 Template js to use with create-jslibrary
 
