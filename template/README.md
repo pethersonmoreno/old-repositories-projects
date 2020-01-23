@@ -1,6 +1,6 @@
 # JS Library
 
-This project was bootstrapped with [Create JSLibrary](https://github.com/pethersonmorneo/create-jslibrary).
+This project was bootstrapped with [Create JS Library](https://github.com/pethersonmorneo/create-libjs).
 
 ## Available Scripts
 
