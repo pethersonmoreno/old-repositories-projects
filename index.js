@@ -13,7 +13,7 @@ if (major < 8) {
     'You are running Node ' +
       currentNodeVersion +
       '.\n' +
-      'Create JsLibrary requires Node 8 or higher. \n' +
+      'Create JS Library (create-libjs) requires Node 8 or higher. \n' +
       'Please update your version of Node.',
   );
   process.exit(1);

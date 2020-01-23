@@ -1,5 +1,5 @@
 // Project based on create-react-app project
 
-const createJsLibrary = require('./createJsLibrary');
+const createLibJs = require('./createLibJs');
 
-createJsLibrary();
+createLibJs();

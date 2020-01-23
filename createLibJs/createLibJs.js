@@ -1,9 +1,9 @@
 const createProgram = require('./createProgram');
 const createApp = require('./createApp');
 
-const createJsLibrary = () => {
+const createLibJs = () => {
   const { projectName, program } = createProgram();
   createApp(projectName, program.verbose, program.template, program.typescript);
 };
 
-module.exports = createJsLibrary;
+module.exports = createLibJs;
