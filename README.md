@@ -1,4 +1,4 @@
-# cjl-template
+# cjl-template-typescript
 
 This is the official base template for [Create React App](https://github.com/pethersonmoreno/create-jslibrary).
 
