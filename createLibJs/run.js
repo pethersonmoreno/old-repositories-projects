@@ -1,10 +1,10 @@
 const os = require('os');
-const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs-extra');
 const spawn = require('cross-spawn');
 const getPackageInfo = require('./getPackageInfo');
 const getTemplateInstallPackage = require('./getTemplateInstallPackage');
+const abortInstall = require('./abortInstall');
 
 const install = (dependencies, verbose, isDev = false) => {
   return new Promise((resolve, reject) => {
@@ -77,7 +77,8 @@ const run = async (root, appName, verbose, originalDirectory, template) => {
   } catch (error) {
     console.error('Fail to get template package: ', error);
     process.chdir(root);
-    process.exit(1);
+    abortInstall(root, appName, error);
+    return;
   }
   const localTemplatePath = path.resolve(
     tmpPackageTemplatePath,
@@ -145,41 +146,7 @@ const run = async (root, appName, verbose, originalDirectory, template) => {
     }
     fs.removeSync(tmpPackageTemplatePath);
   } catch (reason) {
-    console.log();
-    console.log('Aborting installation.');
-    if (reason.command) {
-      console.log(`  ${chalk.cyan(reason.command)} has failed.`);
-    } else {
-      console.log(chalk.red('Unexpected error. Please report it as a bug:'));
-      console.log(reason);
-    }
-    console.log();
-
-    // On 'exit' we will delete these files from target directory.
-    const knownGeneratedFiles = ['package.json', 'node_modules'];
-    const currentFiles = fs.readdirSync(path.join(root));
-    currentFiles.forEach(file => {
-      knownGeneratedFiles.forEach(fileToMatch => {
-        // This removes all knownGeneratedFiles.
-        if (file === fileToMatch) {
-          console.log(`Deleting generated file... ${chalk.cyan(file)}`);
-          fs.removeSync(path.join(root, file));
-        }
-      });
-    });
-    const remainingFiles = fs.readdirSync(path.join(root));
-    if (!remainingFiles.length) {
-      // Delete target folder if empty
-      console.log(
-        `Deleting ${chalk.cyan(`${appName}/`)} from ${chalk.cyan(
-          path.resolve(root, '..'),
-        )}`,
-      );
-      process.chdir(path.resolve(root, '..'));
-      fs.removeSync(path.join(root));
-    }
-    console.log('Done.');
-    process.exit(1);
+    abortInstall(root, appName, reason);
   }
 };
 

@@ -94,6 +94,7 @@ const getPackageInfo = installPackage => {
     });
   } else if (installPackage.match(/^file:/)) {
     const installPackagePath = installPackage.match(/^file:(.*)?$/)[1];
+    console.log('installPackagePath: ', installPackagePath);
     const { name, version } = require(path.join(
       installPackagePath,
       'package.json',
