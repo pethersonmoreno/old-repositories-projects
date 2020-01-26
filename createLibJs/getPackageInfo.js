@@ -61,11 +61,9 @@ const getPackageInfo = installPackage => {
           'package.json',
         ));
         obj.cleanup();
-        return { name, version };
+        return { name, version, install: installPackage };
       })
       .catch(err => {
-        // The package name could be with or without semver version, e.g. react-scripts-0.2.0-alpha.1.tgz
-        // However, this function returns package name only without semver version.
         console.log(
           `Could not extract the package name from the archive: ${err.message}`,
         );
@@ -77,30 +75,41 @@ const getPackageInfo = installPackage => {
             assumedProjectName,
           )}"`,
         );
-        return Promise.resolve({ name: assumedProjectName });
+        return Promise.resolve({
+          name: assumedProjectName,
+          install: installPackage,
+        });
       });
   } else if (installPackage.startsWith('git+')) {
-    // Pull package name out of git urls e.g:
-    // git+https://github.com/mycompany/react-scripts.git
-    // git+ssh://github.com/mycompany/react-scripts.git#v1.2.3
     return Promise.resolve({
       name: installPackage.match(/([^/]+)\.git(#.*)?$/)[1],
+      install: installPackage,
     });
   } else if (installPackage.match(/.+@/)) {
     // Do not match @scope/ when stripping off @version or @tag
+
+    const name =
+      installPackage.charAt(0) + installPackage.substr(1).split('@')[0];
+    const version = installPackage.split('@')[1];
     return Promise.resolve({
-      name: installPackage.charAt(0) + installPackage.substr(1).split('@')[0],
-      version: installPackage.split('@')[1],
+      name,
+      version,
+      install: `${name}${version ? '@' + version : ''}`,
     });
   } else if (installPackage.match(/^file:/)) {
     const installPackagePath = installPackage.match(/^file:(.*)?$/)[1];
+    console.log('installPackagePath: ', installPackagePath);
     const { name, version } = require(path.join(
       installPackagePath,
       'package.json',
     ));
-    return Promise.resolve({ name, version });
+    return Promise.resolve({
+      name,
+      version,
+      local: path.resolve(installPackagePath),
+    });
   }
-  return Promise.resolve({ name: installPackage });
+  return Promise.resolve({ name: installPackage, install: installPackage });
 };
 
 module.exports = getPackageInfo;

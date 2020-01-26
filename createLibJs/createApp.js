@@ -9,7 +9,13 @@ const checkAppName = require('./checkAppName');
 const checkNpmVersion = require('./checkNpmVersion');
 const run = require('./run');
 
-const createApp = (name, verbose, template, useTypeScript) => {
+const createApp = async (
+  name,
+  packageManager,
+  verbose,
+  template,
+  useTypeScript,
+) => {
   const unsupportedNodeVersion = !semver.satisfies(process.version, '>=8.10.0');
   if (unsupportedNodeVersion) {
     console.error(
@@ -68,7 +74,14 @@ const createApp = (name, verbose, template, useTypeScript) => {
     }
   }
 
-  run(root, appName, verbose, originalDirectory, template);
+  await run(
+    root,
+    appName,
+    packageManager,
+    verbose,
+    originalDirectory,
+    template,
+  );
 };
 
 module.exports = createApp;

@@ -1,11 +1,22 @@
+const execSync = require('child_process').execSync;
 const chalk = require('chalk');
+const inquirer = require('inquirer');
 const commander = require('commander');
 
 const envinfo = require('envinfo');
 
 const packageJson = require('../package.json');
 
-const createProgram = () => {
+const canUseYarn = () => {
+  try {
+    execSync('yarnpkg --version', { stdio: 'ignore' });
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const createProgram = async () => {
   let projectName;
 
   const program = new commander.Command(packageJson.name)
@@ -41,7 +52,7 @@ const createProgram = () => {
       .run(
         {
           System: ['OS', 'CPU'],
-          Binaries: ['Node', 'npm'],
+          Binaries: ['Node', 'npm', 'Yarn'],
           Browsers: [
             'Chrome',
             'Edge',
@@ -49,8 +60,8 @@ const createProgram = () => {
             'Firefox',
             'Safari',
           ],
-          npmPackages: ['react', 'react-dom', 'react-scripts'],
-          npmGlobalPackages: ['create-react-app'],
+          npmPackages: [],
+          npmGlobalPackages: ['create-libjs'],
         },
         {
           duplicates: true,
@@ -74,9 +85,23 @@ const createProgram = () => {
     );
     process.exit(1);
   }
+  let packageManager = 'npm';
+  if (canUseYarn()) {
+    const { useYarn } = await inquirer.prompt({
+      type: 'confirm',
+      name: 'useYarn',
+      message:
+        'You have Yarn installed in your system, would you like to used it?',
+      default: false,
+    });
+    if (useYarn) {
+      packageManager = 'yarn';
+    }
+  }
   return {
     projectName,
     program,
+    packageManager,
   };
 };
 
