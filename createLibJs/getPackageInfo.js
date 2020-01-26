@@ -80,7 +80,10 @@ const getPackageInfo = installPackage => {
           install: installPackage,
         });
       });
-  } else if (installPackage.startsWith('git+')) {
+  } else if (
+    installPackage.startsWith('git+') ||
+    installPackage.startsWith('http')
+  ) {
     return Promise.resolve({
       name: installPackage.match(/([^/]+)\.git(#.*)?$/)[1],
       install: installPackage,
@@ -98,7 +101,6 @@ const getPackageInfo = installPackage => {
     });
   } else if (installPackage.match(/^file:/)) {
     const installPackagePath = installPackage.match(/^file:(.*)?$/)[1];
-    console.log('installPackagePath: ', installPackagePath);
     const { name, version } = require(path.join(
       installPackagePath,
       'package.json',

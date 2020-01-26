@@ -60,17 +60,15 @@ const runScript = (packageManager, scriptName, verbose) => {
     if (verbose) {
       args.push('--verbose');
     }
-    spawn('pwd', [], { stdio: 'inherit' }).on('close', codec => {
-      const child = spawn(command, args, { stdio: 'inherit' });
-      child.on('close', code => {
-        if (code !== 0) {
-          reject({
-            command: `${command} ${args.join(' ')}`,
-          });
-          return;
-        }
-        resolve();
-      });
+    const child = spawn(command, args, { stdio: 'inherit' });
+    child.on('close', code => {
+      if (code !== 0) {
+        reject({
+          command: `${command} ${args.join(' ')}`,
+        });
+        return;
+      }
+      resolve();
     });
   });
 };
