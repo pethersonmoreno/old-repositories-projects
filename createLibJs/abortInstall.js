@@ -14,7 +14,7 @@ const abortInstall = (root, appName, reason) => {
   console.log();
 
   // On 'exit' we will delete these files from target directory.
-  const knownGeneratedFiles = ['package.json', 'node_modules'];
+  const knownGeneratedFiles = ['package.json', 'node_modules', 'tmp-template'];
   const currentFiles = fs.readdirSync(path.join(root));
   currentFiles.forEach(file => {
     knownGeneratedFiles.forEach(fileToMatch => {
