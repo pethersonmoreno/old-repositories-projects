@@ -1,13 +1,12 @@
 const execSync = require('child_process').execSync;
 const chalk = require('chalk');
-const inquirer = require('inquirer');
 const commander = require('commander');
 
 const envinfo = require('envinfo');
 
 const packageJson = require('../package.json');
 
-const canUseYarn = () => {
+const shouldUseYarn = () => {
   try {
     execSync('yarnpkg --version', { stdio: 'ignore' });
     return true;
@@ -32,6 +31,7 @@ const createProgram = async () => {
       '--template <path-to-template>',
       'specify a template for the created project',
     )
+    .option('--use-npm')
     .option('--typescript')
     .allowUnknownOption()
     .on('--help', () => {
@@ -86,17 +86,8 @@ const createProgram = async () => {
     process.exit(1);
   }
   let packageManager = 'npm';
-  if (canUseYarn()) {
-    const { useYarn } = await inquirer.prompt({
-      type: 'confirm',
-      name: 'useYarn',
-      message:
-        'You have Yarn installed in your system, would you like to used it?',
-      default: false,
-    });
-    if (useYarn) {
-      packageManager = 'yarn';
-    }
+  if (!program.useNpm && shouldUseYarn()) {
+    packageManager = 'yarn';
   }
   return {
     projectName,
