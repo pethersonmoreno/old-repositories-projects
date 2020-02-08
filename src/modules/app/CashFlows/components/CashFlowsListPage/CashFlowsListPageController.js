@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
-import useCashFlowsList from '../../../../utils/hooks/useCashFlowsList';
+import { useCashFlowListMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
@@ -17,9 +17,9 @@ const CashFlowsListPageController = ({ match, history }) => {
   const [monthDate, setMonthDate] = useState(new Date());
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
   const [showAddMenu, setShowAddMenu] = useState(false);
-  const [list] = useCashFlowsList();
+  const monthDateString = moment(monthDate).format('YYYY-MM');
+  const list = useCashFlowListMonth(monthDateString);
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
-  const monthDateString = moment(new Date(monthDate)).format('YYYY-MM');
   let listFiltered = list
     .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
   if (cashFlowDescriptionId) {

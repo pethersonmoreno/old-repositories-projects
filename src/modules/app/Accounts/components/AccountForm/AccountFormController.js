@@ -5,7 +5,7 @@ import AccountFormView from './AccountFormView';
 import usePeopleList from '../../../../utils/hooks/usePeopleList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import api from '../../../../utils/api/accounts';
-import useAccountsList from '../../../../utils/hooks/useAccountsList';
+import { useAccount } from '../../selectors/selectorsAccounts';
 import useInputValue from '../../../../utils/hooks/useInputValue';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
@@ -15,26 +15,25 @@ const AccountFormController = ({ match: { params: { id } }, history }) => {
   const [currentValue, onChangeCurrentValue, setCurrentValue] = useInputValue(0);
   const [personId, onChangePersonId, setPersonId] = useInputValue('');
   const [peopleList] = usePeopleList();
-  const [list] = useAccountsList();
+  const registry = useAccount(id);
   useEffect(() => {
-    const registry = list.find(p => p.id === id);
     if (registry) {
       setDescription(registry.description);
       setCurrentValue(registry.currentValue);
       setPersonId(registry.personId);
     }
-  }, [id, list, setCurrentValue, setDescription, setPersonId]);
+  }, [registry, setCurrentValue, setDescription, setPersonId]);
   const saveRegistry = async () => {
     try {
-      const registry = {
+      const registryToSave = {
         personId,
         description,
         currentValue,
       };
       if (id) {
-        await api.replace(token, id, registry);
+        await api.replace(token, id, registryToSave);
       } else {
-        await api.add(token, registry);
+        await api.add(token, registryToSave);
       }
       history.push('/accounts');
     } catch (error) {

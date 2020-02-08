@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import useCashFlowsList from '../../../../utils/hooks/useCashFlowsList';
+import { useCashFlow } from '../../selectors/selectorsCashFlows';
 import CashFlowExpenseForm from '../CashFlowExpenseForm';
 import CashFlowIncomeForm from '../CashFlowIncomeForm';
 import NotFound from '../../../../utils/components/NotFound';
@@ -9,13 +9,12 @@ import NotFound from '../../../../utils/components/NotFound';
 
 const CashFlowFormEditController = ({ match: { params: { id } }, history }) => {
   const [registry, setRegistry] = useState(null);
-  const [list] = useCashFlowsList();
+  const registryFound = useCashFlow(id);
   useEffect(() => {
-    const registryFound = list.find(p => p.id === id);
     if (registryFound) {
-      setRegistry(registryFound);
+      setRegistry({ ...registryFound });
     }
-  }, [id, list, setRegistry]);
+  }, [id, registryFound, setRegistry]);
   if (!registry) {
     return (<NotFound />);
   }

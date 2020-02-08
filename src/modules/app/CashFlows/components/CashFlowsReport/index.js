@@ -4,7 +4,7 @@ import moment from 'moment';
 import {
   Paper, DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
-import useCashFlowsList from '../../../../utils/hooks/useCashFlowsList';
+import { useCashFlowListMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
 import './CashFlowsReport.scss';
@@ -45,8 +45,8 @@ const groupByDescription = list => list
 const CashFlowsReport = () => {
   const [monthDate, setMonthDate] = useState(new Date());
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
-  const [list] = useCashFlowsList();
-  const monthDateString = moment(new Date(monthDate)).format('YYYY-MM');
+  const monthDateString = moment(monthDate).format('YYYY-MM');
+  const list = useCashFlowListMonth(monthDateString);
   const listFiltered = list
     .filter(cashFlow => !listIgnoreDescriptions.find(id => cashFlow.cashFlowDescriptionId === id))
     .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
