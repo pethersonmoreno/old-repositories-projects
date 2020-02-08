@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import getAccountsFulDescriptionList from '../../helpers/getAccountsFulDescriptionList';
-import saveCashFlow from '../../hooks/saveCashFlow';
+import useSaveCashFlow from '../../hooks/useSaveCashFlow';
 import useInputValue from '../../../../utils/hooks/useInputValue';
 import useAccountsList from '../../../../utils/hooks/useAccountsList';
 import usePeopleList from '../../../../utils/hooks/usePeopleList';
@@ -16,6 +16,7 @@ const initialValues = {
   cashFlowDescriptionId: '',
 };
 const CashFlowIncomeFormController = ({ cashFlow, history }) => {
+  const saveCashFlow = useSaveCashFlow();
   const [dateTime, setDateTime] = useState(
     cashFlow ? new Date(cashFlow.dateTime) : initialValues.dateTime
   );

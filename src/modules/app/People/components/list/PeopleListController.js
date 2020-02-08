@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getState } from '../../../../auth/hooks/useAuthState';
 import api from '../../../../utils/api/people';
 import PeopleListView from './PeopleListView';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
+import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
 const PeopleListController = ({ match, history }) => {
+  const token = useToken();
   const list = useSelector(state => state.people);
   const goAdd = () => { history.push(`${match.path}/new`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
   const deleteRegistry = registry => async () => {
-    const { token } = getState();
     try {
       await api.delete(token, registry.id);
     } catch (error) {

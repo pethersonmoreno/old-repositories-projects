@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getState } from '../../../../auth/hooks/useAuthState';
 import api from '../../../../utils/api/accounts';
 import useAccountsList from '../../../../utils/hooks/useAccountsList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import AccountsListView from './AccountsListView';
+import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
 const AccountsListController = ({ match, history }) => {
+  const token = useToken();
   const [list] = useAccountsList();
   const goAdd = () => { history.push(`${match.path}/new`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
   const deleteRegistry = registry => async () => {
-    const { token } = getState();
     try {
       await api.delete(token, registry.id);
     } catch (error) {

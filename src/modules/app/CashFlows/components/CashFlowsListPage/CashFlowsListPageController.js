@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { getState } from '../../../../auth/hooks/useAuthState';
 import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
 import useCashFlowsList from '../../../../utils/hooks/useCashFlowsList';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
+import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
 
 const orderList = list =>
   list.sort((flowA, flowB) => flowB.dateTime - flowA.dateTime);
 
 const CashFlowsListPageController = ({ match, history }) => {
+  const token = useToken();
   const [monthDate, setMonthDate] = useState(new Date());
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
   const [showAddMenu, setShowAddMenu] = useState(false);
@@ -29,7 +30,6 @@ const CashFlowsListPageController = ({ match, history }) => {
   const goAddExpense = () => { history.push(`${match.path}/newExpense`); };
   const goEdit = registry => () => { history.push(`${match.path}/edit/${registry.id}`); };
   const removeRegistry = registry => async () => {
-    const { token } = getState();
     try {
       await api.delete(token, registry.id);
     } catch (error) {

@@ -3,13 +3,14 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AccountFormView from './AccountFormView';
 import usePeopleList from '../../../../utils/hooks/usePeopleList';
-import { getState as getAuthState } from '../../../../auth/hooks/useAuthState';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import api from '../../../../utils/api/accounts';
 import useAccountsList from '../../../../utils/hooks/useAccountsList';
 import useInputValue from '../../../../utils/hooks/useInputValue';
+import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
 const AccountFormController = ({ match: { params: { id } }, history }) => {
+  const token = useToken();
   const [description, onChangeDescription, setDescription] = useInputValue('');
   const [currentValue, onChangeCurrentValue, setCurrentValue] = useInputValue(0);
   const [personId, onChangePersonId, setPersonId] = useInputValue('');
@@ -24,7 +25,6 @@ const AccountFormController = ({ match: { params: { id } }, history }) => {
     }
   }, [id, list, setCurrentValue, setDescription, setPersonId]);
   const saveRegistry = async () => {
-    const { token } = getAuthState();
     try {
       const registry = {
         personId,

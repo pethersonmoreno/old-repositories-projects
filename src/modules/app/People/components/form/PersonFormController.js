@@ -2,14 +2,15 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import api from '../../../../utils/api/people';
-import { getState } from '../../../../auth/hooks/useAuthState';
 import PersonFormView from './PersonFormView';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import useInputValue from '../../../../utils/hooks/useInputValue';
 import { usePerson } from '../../selectors/selectorsPeople';
+import { useToken } from '../../../../auth/selectors/selectorsAuth';
 
 
 const PersonFormController = ({ match: { params: { id } }, history }) => {
+  const token = useToken();
   const [name, onChangeName, setName] = useInputValue('');
   const person = usePerson(id);
   useEffect(() => {
@@ -18,7 +19,6 @@ const PersonFormController = ({ match: { params: { id } }, history }) => {
     }
   }, [person, setName]);
   const saveRegistry = async () => {
-    const { token } = getState();
     try {
       if (id) {
         await api.replace(token, id, { name });

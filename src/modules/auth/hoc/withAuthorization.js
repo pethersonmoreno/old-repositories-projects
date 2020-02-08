@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import useAuthState from '../hooks/useAuthState';
+import { useAuthState } from '../selectors/selectorsAuth';
 
 const authIsDifferent = (authState, authCompare) => Object.keys(authCompare).find(key => {
   const { [key]: value } = authState;
@@ -19,11 +19,10 @@ const verifyLoggedUser = (history, authState, authCompare, pathToGoIfDifferent) 
 const withAuthorization = (authCompare, pathToGoIfDifferent) => WrappedComponent => {
   const WithAuthorizationWrapper = props => {
     const { history } = props;
-    const [authState, , unlinkState] = useAuthState();
+    const authState = useAuthState();
     useEffect(() => {
       verifyLoggedUser(history, authState, authCompare, pathToGoIfDifferent);
-      return unlinkState;
-    }, [authState, history, unlinkState]);
+    }, [authState, history]);
     if (authIsDifferent(authState, authCompare)) {
       return null;
     }

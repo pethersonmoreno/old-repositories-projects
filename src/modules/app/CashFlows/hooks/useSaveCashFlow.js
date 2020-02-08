@@ -1,16 +1,15 @@
 import moment from 'moment';
-import { getState } from '../../../auth/hooks/useAuthState';
+import { useToken } from '../../../auth/selectors/selectorsAuth';
 import api from '../../../utils/api/cashFlows';
 import getMessageFromError from '../../../utils/helpers/getMessageFromError';
 
-const saveCashFlow = ({
+const prepareSaveCashFlow = token => ({
   accountId,
   inOut,
   value,
   dateTime,
   cashFlowDescriptionId,
 }, history, oldRegistry) => async () => {
-  const { token } = getState();
   try {
     const registry = {
       accountId,
@@ -29,5 +28,10 @@ const saveCashFlow = ({
     alert(getMessageFromError(error));
   }
 };
+const useSaveCashFlow = () => {
+  const token = useToken();
+  const saveCashFlow = prepareSaveCashFlow(token);
+  return saveCashFlow;
+};
 
-export default saveCashFlow;
+export default useSaveCashFlow;
