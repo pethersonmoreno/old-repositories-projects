@@ -5,7 +5,7 @@ import NotFound from '../../../../utils/components/NotFound';
 import AccountsList from '../AccountsList';
 import AccountForm from '../AccountForm';
 import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
-import useSubscribePeopleFirestore from '../../../People/hooks/useSubscribePeopleFirestore';
+import useSubscribePeopleFirestore from '../../../../utils/hooks/useSubscribePeopleFirestore';
 
 const AccountsRouterController = ({ match }) => {
   useSetPageTitle('Accounts');

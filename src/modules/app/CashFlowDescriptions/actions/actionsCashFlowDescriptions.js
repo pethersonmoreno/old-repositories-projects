@@ -1,6 +1,6 @@
 import { types } from '../constants';
 
-export const getCashFlowDescriptions = cashFlowDescriptions => ({
+export const getDescriptions = cashFlowDescriptions => ({
   type: types.GET_CASH_FLOW_DESCRIPTIONS,
   payload: cashFlowDescriptions
 });

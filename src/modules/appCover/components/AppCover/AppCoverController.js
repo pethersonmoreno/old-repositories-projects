@@ -4,7 +4,6 @@ import AppCoverView from './AppCoverView';
 import useAppState from '../../hooks/useAppState';
 import { toggleMenu } from '../../actions';
 import { unsubscribeAccountsList } from '../../../utils/hooks/useAccountsList';
-import { unsubscribeCashFlowDescriptionsList } from '../../../utils/hooks/useCashFlowDescriptionsList';
 import { unsubscribeCashFlowsList } from '../../../utils/hooks/useCashFlowsList';
 
 const AppCoverController = ({
@@ -12,7 +11,6 @@ const AppCoverController = ({
 }) => {
   useEffect(() => () => {
     unsubscribeAccountsList();
-    unsubscribeCashFlowDescriptionsList();
     unsubscribeCashFlowsList();
   }, []);
   const [{ pageTitle }, , unlinkState] = useAppState();

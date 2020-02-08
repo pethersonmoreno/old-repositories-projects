@@ -2,9 +2,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { loadState, saveState } from './localStorage';
 import logger from './middlewares/logger';
 import reducerPeople from '../modules/app/People/reducer/reducerPeople';
+import reducerCashFlowDescriptions from '../modules/app/CashFlowDescriptions/reducer/reducerCashFlowDescriptions';
 
 const reducers = {
   people: reducerPeople,
+  cashFlowDescriptions: reducerCashFlowDescriptions,
 };
 
 const rootReducer = combineReducers(reducers);

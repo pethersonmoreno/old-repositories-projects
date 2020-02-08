@@ -9,7 +9,7 @@ const useSubscribeCashFlowDescriptionsFirestore = () => {
   useEffect(() => {
     const unsubscribeFirestore = subscribeFirestore(
       COLLECTION_NAME,
-      list => dispatch(actions.getCashFlowDescriptions(list)),
+      list => dispatch(actions.getDescriptions(list)),
     );
     return unsubscribeFirestore;
   }, [dispatch]);
