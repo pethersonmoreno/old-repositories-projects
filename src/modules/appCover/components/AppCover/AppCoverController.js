@@ -1,21 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import AppCoverView from './AppCoverView';
 import { toggleMenu } from '../../actions/actionsApp';
-import { unsubscribeCashFlowsList } from '../../../utils/hooks/useCashFlowsList';
 import { usePageTitle } from '../../selectors/selectorsApp';
 
 const AppCoverController = ({
   children
 }) => {
   const dispatch = useDispatch();
-  useEffect(() => () => {
-    unsubscribeCashFlowsList();
-  }, []);
   const pageTitle = usePageTitle();
 
-  const title = `Cash Flow${pageTitle ? ` - ${pageTitle}` : ''}`;
+  const title = pageTitle || 'Cash Flow';
   return (
     <AppCoverView
       openMenu={() => dispatch(toggleMenu())}

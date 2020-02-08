@@ -1,14 +1,6 @@
-import createUseSharedCollectionStateSubscriberHook from '../hookFactories/createUseSharedCollectionStateSubscriberHook';
+import { useCashFlowsList } from '../../app/CashFlows/selectors/selectorsCashFlows';
 
-const {
-  getState,
-  useState: useCashFlowsList,
-  unsubscribeOnUnmount: unsubscribeCashFlowsList,
-} = createUseSharedCollectionStateSubscriberHook('cashFlows');
-
-export {
-  getState,
-  unsubscribeCashFlowsList,
+export default () => {
+  const list = useCashFlowsList();
+  return [list];
 };
-
-export default useCashFlowsList;

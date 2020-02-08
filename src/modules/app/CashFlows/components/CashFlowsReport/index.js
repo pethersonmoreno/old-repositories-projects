@@ -46,10 +46,10 @@ const CashFlowsReport = () => {
   const [monthDate, setMonthDate] = useState(new Date());
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
   const [list] = useCashFlowsList();
-  const monthDateString = moment(monthDate).format('YYYY-MM');
+  const monthDateString = moment(new Date(monthDate)).format('YYYY-MM');
   const listFiltered = list
     .filter(cashFlow => !listIgnoreDescriptions.find(id => cashFlow.cashFlowDescriptionId === id))
-    .filter(cashFlow => moment(cashFlow.dateTime).format('YYYY-MM') === monthDateString);
+    .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
   const groupedList = groupByDescription(listFiltered);
   const negativeDescriptions = orderListValue(groupedList.filter(group => group.value < 0), false);
   const positiveDescriptions = orderListValue(groupedList.filter(group => group.value >= 0), true);

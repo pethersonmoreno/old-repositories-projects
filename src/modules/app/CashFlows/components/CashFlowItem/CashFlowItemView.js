@@ -115,7 +115,7 @@ CashFlowItemView.propTypes = {
   cashFlow: PropTypes.shape({
     id: PropTypes.string.isRequired,
     inOut: PropTypes.bool.isRequired,
-    dateTime: PropTypes.instanceOf(Date).isRequired,
+    dateTime: PropTypes.string.isRequired,
     accountId: PropTypes.string.isRequired,
     cashFlowDescriptionId: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,

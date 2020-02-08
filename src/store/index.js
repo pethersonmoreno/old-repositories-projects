@@ -5,12 +5,14 @@ import reducerApp from '../modules/appCover/reducer/reducerApp';
 import reducerPeople from '../modules/app/People/reducer/reducerPeople';
 import reducerAccounts from '../modules/app/Accounts/reducer/reducerAccounts';
 import reducerCashFlowDescriptions from '../modules/app/CashFlowDescriptions/reducer/reducerCashFlowDescriptions';
+import reducerCashFlows from '../modules/app/CashFlows/reducer/reducerCashFlows';
 
 const reducers = {
   app: reducerApp,
   people: reducerPeople,
   accounts: reducerAccounts,
   cashFlowDescriptions: reducerCashFlowDescriptions,
+  cashFlows: reducerCashFlows,
 };
 
 const rootReducer = combineReducers(reducers);

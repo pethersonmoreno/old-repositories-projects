@@ -57,7 +57,7 @@ CashFlowExpenseFormController.propTypes = {
   cashFlow: PropTypes.shape({
     inOut: PropTypes.oneOf([true]),
     id: PropTypes.string.isRequired,
-    dateTime: PropTypes.instanceOf(Date).isRequired,
+    dateTime: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     accountId: PropTypes.string.isRequired,
     cashFlowDescriptionId: PropTypes.string.isRequired,

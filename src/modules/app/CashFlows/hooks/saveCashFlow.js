@@ -16,7 +16,7 @@ const saveCashFlow = ({
       accountId,
       inOut,
       value,
-      dateTime: moment(dateTime).toDate(),
+      dateTime: moment(new Date(dateTime)).toDate(),
       cashFlowDescriptionId,
     };
     if (oldRegistry) {

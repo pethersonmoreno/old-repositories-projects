@@ -9,7 +9,8 @@ import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDesc
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 
 
-const orderList = list => list.sort((flowA, flowB) => flowB.dateTime - flowA.dateTime);
+const orderList = list =>
+  list.sort((flowA, flowB) => flowB.dateTime - flowA.dateTime);
 
 const CashFlowsListPageController = ({ match, history }) => {
   const [monthDate, setMonthDate] = useState(new Date());
@@ -17,9 +18,9 @@ const CashFlowsListPageController = ({ match, history }) => {
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [list] = useCashFlowsList();
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
-  const monthDateString = moment(monthDate).format('YYYY-MM');
+  const monthDateString = moment(new Date(monthDate)).format('YYYY-MM');
   let listFiltered = list
-    .filter(cashFlow => moment(cashFlow.dateTime).format('YYYY-MM') === monthDateString);
+    .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
   if (cashFlowDescriptionId) {
     listFiltered = listFiltered
       .filter(cashFlow => cashFlow.cashFlowDescriptionId === cashFlowDescriptionId);

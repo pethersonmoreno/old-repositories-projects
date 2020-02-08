@@ -7,8 +7,8 @@ import './CashFlowsListView.scss';
 const CashFlowsListView = ({ listsByDates, edit, remove }) => (
   <div className="cashFlowsList">
     {listsByDates.map(group => (
-      <div key={group.date} className="group">
-        <div className="date">{moment(group.date).format('DD/MM/YYYY')}</div>
+      <div key={group.id} className="group">
+        <div className="date">{moment(new Date(group.date)).format('DD/MM/YYYY')}</div>
         {group.items.map(cashFlow => (
           <CashFlowItem
             key={cashFlow.id}
@@ -29,7 +29,7 @@ CashFlowsListView.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       inOut: PropTypes.bool.isRequired,
-      dateTime: PropTypes.instanceOf(Date).isRequired,
+      dateTime: PropTypes.string.isRequired,
       accountId: PropTypes.string.isRequired,
       cashFlowDescriptionId: PropTypes.string.isRequired,
       value: PropTypes.number.isRequired,
