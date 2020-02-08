@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { signOut } from '../../../utils/api/auth';
-import { hideMenu } from '../../actions';
-import useAppState from '../../hooks/useAppState';
+import { hideMenu } from '../../actions/actionsApp';
+import { useShowMenu } from '../../selectors/selectorsApp';
 import MenuDrawerView from './MenuDrawerView';
 
 const menuItems = [
@@ -15,13 +16,12 @@ const menuItems = [
 ];
 
 const MenuDrawerController = () => {
-  const [{ showMenu }, , unlinkState] = useAppState();
-
-  useEffect(() => unlinkState, [unlinkState]);
+  const dispatch = useDispatch();
+  const showMenu = useShowMenu();
   return (
     <MenuDrawerView
       visible={showMenu}
-      onVisibilityChange={hideMenu}
+      onVisibilityChange={() => dispatch(hideMenu())}
       menuItems={menuItems}
     />
   );

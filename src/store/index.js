@@ -1,10 +1,12 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { loadState, saveState } from './localStorage';
 import logger from './middlewares/logger';
+import reducerApp from '../modules/appCover/reducer/reducerApp';
 import reducerPeople from '../modules/app/People/reducer/reducerPeople';
 import reducerCashFlowDescriptions from '../modules/app/CashFlowDescriptions/reducer/reducerCashFlowDescriptions';
 
 const reducers = {
+  app: reducerApp,
   people: reducerPeople,
   cashFlowDescriptions: reducerCashFlowDescriptions,
 };

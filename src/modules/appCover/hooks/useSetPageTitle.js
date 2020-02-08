@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { setPageTitle } from '../actions';
+import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../actions/actionsApp';
 
 const useSetPageTitle = title => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    setPageTitle(title);
-  }, [title]);
+    dispatch(setPageTitle(title));
+  }, [dispatch, title]);
 };
 
 export default useSetPageTitle;
