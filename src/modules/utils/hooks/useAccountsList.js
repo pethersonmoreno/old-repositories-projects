@@ -1,14 +1,6 @@
-import createUseSharedCollectionStateSubscriberHook from '../hookFactories/createUseSharedCollectionStateSubscriberHook';
+import { useAccountsList } from '../../app/Accounts/selectors/selectorsAccounts';
 
-const {
-  getState,
-  useState: useAccountsList,
-  unsubscribeOnUnmount: unsubscribeAccountsList,
-} = createUseSharedCollectionStateSubscriberHook('accounts');
-
-export {
-  getState,
-  unsubscribeAccountsList,
+export default () => {
+  const list = useAccountsList();
+  return [list];
 };
-
-export default useAccountsList;

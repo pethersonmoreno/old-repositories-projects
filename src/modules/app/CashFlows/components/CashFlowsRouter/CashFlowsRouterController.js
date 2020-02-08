@@ -10,10 +10,12 @@ import CashFlowExpenseForm from '../CashFlowExpenseForm';
 import CashFlowFormEdit from '../CashFlowFormEdit';
 import useSubscribePeopleFirestore from '../../../../utils/hooks/useSubscribePeopleFirestore';
 import useSubscribeCashFlowDescriptionsFirestore from '../../../../utils/hooks/useSubscribeCashFlowDescriptionsFirestore';
+import useSubscribeAccountsFirestore from '../../../../utils/hooks/useSubscribeAccountsFirestore';
 
 const CashFlowsRouterController = ({ match }) => {
   useSetPageTitle('Cash Flows');
   useSubscribePeopleFirestore();
+  useSubscribeAccountsFirestore();
   useSubscribeCashFlowDescriptionsFirestore();
   const routes = [
     { path: match.path, exact: true, component: CashFlowsListPage },

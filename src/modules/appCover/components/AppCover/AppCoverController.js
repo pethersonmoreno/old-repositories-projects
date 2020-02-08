@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import AppCoverView from './AppCoverView';
 import { toggleMenu } from '../../actions/actionsApp';
-import { unsubscribeAccountsList } from '../../../utils/hooks/useAccountsList';
 import { unsubscribeCashFlowsList } from '../../../utils/hooks/useCashFlowsList';
 import { usePageTitle } from '../../selectors/selectorsApp';
 
@@ -12,7 +11,6 @@ const AppCoverController = ({
 }) => {
   const dispatch = useDispatch();
   useEffect(() => () => {
-    unsubscribeAccountsList();
     unsubscribeCashFlowsList();
   }, []);
   const pageTitle = usePageTitle();

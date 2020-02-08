@@ -3,11 +3,13 @@ import { loadState, saveState } from './localStorage';
 import logger from './middlewares/logger';
 import reducerApp from '../modules/appCover/reducer/reducerApp';
 import reducerPeople from '../modules/app/People/reducer/reducerPeople';
+import reducerAccounts from '../modules/app/Accounts/reducer/reducerAccounts';
 import reducerCashFlowDescriptions from '../modules/app/CashFlowDescriptions/reducer/reducerCashFlowDescriptions';
 
 const reducers = {
   app: reducerApp,
   people: reducerPeople,
+  accounts: reducerAccounts,
   cashFlowDescriptions: reducerCashFlowDescriptions,
 };
 
