@@ -49,7 +49,7 @@ const captureSigInRedirectResult = async dispatch => {
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const loadingAuth = useLoading();
+  const loading = useLoading();
   useEffect(() => {
     const start = async () => {
       await captureSigInRedirectResult(dispatch);
@@ -57,7 +57,7 @@ const useAuth = () => {
     };
     start();
   }, [dispatch]);
-  return { loadingAuth };
+  return [loading];
 };
 
 export default useAuth;

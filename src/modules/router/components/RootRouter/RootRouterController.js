@@ -5,9 +5,9 @@ import RootRouterView from './RootRouterView';
 
 const RootRouterController = ({ children }) => {
   const basename = process.env.PUBLIC_URL;
-  const { loadingAuth } = useAuth();
+  const [loading] = useAuth();
   return (
-    <RootRouterView basename={basename} loading={loadingAuth}>
+    <RootRouterView basename={basename} loading={loading}>
       {children}
     </RootRouterView>
   );
