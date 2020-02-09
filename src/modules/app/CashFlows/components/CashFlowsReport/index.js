@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDatePicker from 'react-datepicker';
-import moment from 'moment';
+import { useDispatch } from 'react-redux';
 import {
   Paper, DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
-import { useCashFlowListMonth } from '../../selectors/selectorsCashFlows';
+import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
+import * as actions from '../../actions/actionsCashFlows';
 import './CashFlowsReport.scss';
 
 const listIgnoreDescriptions = [
@@ -43,13 +44,12 @@ const groupByDescription = list => list
   }, []);
 
 const CashFlowsReport = () => {
-  const [monthDate, setMonthDate] = useState(new Date());
+  const dispatch = useDispatch();
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
-  const monthDateString = moment(monthDate).format('YYYY-MM');
-  const list = useCashFlowListMonth(monthDateString);
+  const monthDate = useCashFlowsCurrentMonth();
+  const list = useCashFlowListMonth(monthDate);
   const listFiltered = list
-    .filter(cashFlow => !listIgnoreDescriptions.find(id => cashFlow.cashFlowDescriptionId === id))
-    .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
+    .filter(cashFlow => !listIgnoreDescriptions.find(id => cashFlow.cashFlowDescriptionId === id));
   const groupedList = groupByDescription(listFiltered);
   const negativeDescriptions = orderListValue(groupedList.filter(group => group.value < 0), false);
   const positiveDescriptions = orderListValue(groupedList.filter(group => group.value >= 0), true);
@@ -59,8 +59,8 @@ const CashFlowsReport = () => {
         Month:
         {' '}
         <ReactDatePicker
-          selected={monthDate}
-          onChange={date => setMonthDate(date)}
+          selected={new Date(`${monthDate}-02`)}
+          onChange={month => dispatch(actions.setCashFlowsCurrentMonth(month))}
           dateFormat="yyyy-MM"
           showMonthYearPicker
         />

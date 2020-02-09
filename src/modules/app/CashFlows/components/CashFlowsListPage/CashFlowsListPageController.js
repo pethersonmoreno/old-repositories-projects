@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import { useDispatch } from 'react-redux';
 import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
-import { useCashFlowListMonth } from '../../selectors/selectorsCashFlows';
+import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
+import * as actions from '../../actions/actionsCashFlows';
 
 
 const orderList = list =>
   list.sort((flowA, flowB) => flowB.dateTime - flowA.dateTime);
 
 const CashFlowsListPageController = ({ match, history }) => {
+  const dispatch = useDispatch();
   const token = useToken();
-  const [monthDate, setMonthDate] = useState(new Date());
+  const monthDate = useCashFlowsCurrentMonth();
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
   const [showAddMenu, setShowAddMenu] = useState(false);
-  const monthDateString = moment(monthDate).format('YYYY-MM');
-  const list = useCashFlowListMonth(monthDateString);
+  const list = useCashFlowListMonth(monthDate);
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
-  let listFiltered = list
-    .filter(cashFlow => moment(new Date(cashFlow.dateTime)).format('YYYY-MM') === monthDateString);
+  let listFiltered = list;
   if (cashFlowDescriptionId) {
-    listFiltered = listFiltered
+    listFiltered = list
       .filter(cashFlow => cashFlow.cashFlowDescriptionId === cashFlowDescriptionId);
   }
   const goAddIncome = () => { history.push(`${match.path}/newIncome`); };
@@ -40,8 +40,8 @@ const CashFlowsListPageController = ({ match, history }) => {
 
   return (
     <CashFlowsListPageView
-      monthDate={monthDate}
-      setMonthDate={setMonthDate}
+      monthDate={new Date(`${monthDate}-02`)}
+      setMonthDate={month => dispatch(actions.setCashFlowsCurrentMonth(month))}
       cashFlowDescriptionId={cashFlowDescriptionId}
       setCashFlowDescriptionId={setCashFlowDescriptionId}
       cashFlowDescriptionsList={cashFlowDescriptionsList}
