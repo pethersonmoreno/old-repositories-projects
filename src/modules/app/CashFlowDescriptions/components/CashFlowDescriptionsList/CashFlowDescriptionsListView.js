@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+  DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 
 const CashFlowDescriptionsListView = ({

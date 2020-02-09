@@ -2,8 +2,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
-import { FontIcon, ListItem, Button } from 'react-md';
+import { FontIcon, ListItem } from 'react-md';
 
+// eslint-disable-next-line react/prop-types
+const ButtonTmp = ({ children, onClick }) => (
+  <button type="button" className="cf-btn cf-btn--block cf-btn--text" onClick={onClick}>{children}</button>
+);
 /**
  * Due to the fact that react-router uses context and most of the components
  * in react-md use PureComponent, the matching won't work as expected since
@@ -33,7 +37,7 @@ const MenuItemController = ({
       }
       return (
         <ListItem
-          component={Button}
+          component={ButtonTmp}
           flat
           active={!!match}
           onClick={onClick}

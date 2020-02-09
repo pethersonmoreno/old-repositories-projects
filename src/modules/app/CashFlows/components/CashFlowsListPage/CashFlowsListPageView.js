@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactDatePicker from 'react-datepicker';
-import {
-  Button
-} from 'react-md';
 import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
 import AutoCompleteField from '../../../../utils/components/AutoCompleteField';
@@ -58,10 +55,10 @@ const CashFlowsListPageView = ({
     })}
     >
       <div className="addMenu">
-        <Button floating primary onClick={addIncome}>add</Button>
-        <Button floating secondary onClick={addExpense}>add</Button>
+        <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-paper cf-paper--2 cf-background--primary cf-btn--block" onClick={addIncome}><i className="material-icons">add</i></button>
+        <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-paper cf-paper--2 cf-background--secondary cf-btn--block" onClick={addExpense}><i className="material-icons">add</i></button>
       </div>
-      <Button floating mini onClick={() => setShowAddMenu(!showAddMenu)}>add</Button>
+      <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-btn--floating-mini cf-paper cf-paper--2 cf-btn--block" onClick={() => setShowAddMenu(!showAddMenu)}><i className="material-icons">add</i></button>
     </div>
   </div>
 );

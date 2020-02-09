@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Paper } from 'react-md';
 import ButtonSigninWith from '../ButtonSigninWith';
 import googleIcon from './googleIcon.png';
 import './Signin.scss';

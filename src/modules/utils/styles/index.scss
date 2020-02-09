@@ -55,10 +55,6 @@ code {
 
 /* Prefix css components: cf */
 
-.cf-paper {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-}
-
 button.cf-btn {
   background: transparent;
   border: 0;
@@ -90,6 +86,30 @@ button.cf-btn {
     }
   }
 
+  &.cf-btn--floating {
+    height: 56px;
+    padding: 16px;
+    transition-property: background, box-shadow, color;
+    width: 56px;
+
+    @media screen and (min-width: 1025px) {
+      height: 48px;
+      padding: 14px;
+      width: 48px;
+    }
+  }
+
+  &.cf-btn--floating-mini {
+    height: 40px;
+    padding: 8px;
+    width: 40px;
+
+    @media screen and (min-width: 1025px) {
+      height: 40px;
+      padding: 10px;
+      width: 40px;
+    }
+  }
 
   &.cf-btn--text {
     border-radius: 2px;
@@ -167,4 +187,35 @@ button.cf-btn {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
     transition: background 0.15s, box-shadow 0.3s, color 0.15s;
   }
+}
+
+
+.cf-background--primary {
+  background: #009688 !important;
+  color: #fff !important;
+
+  &:hover {
+    @media screen and (min-width: 1025px) {
+      background: rgba(0, 150, 136, 0.9) !important;
+    }
+  }
+}
+
+.cf-background--secondary {
+  background: #d500f9 !important;
+  color: #fff !important;
+
+  &:hover {
+    @media screen and (min-width: 1025px) {
+      background: rgba(213, 0, 249, 0.9) !important;
+    }
+  }
+}
+
+.cf-paper {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.cf-paper--2 {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
