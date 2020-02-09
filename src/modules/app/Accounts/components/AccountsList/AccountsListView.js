@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Paper, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+  Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 
 const AccountsListView = ({
   add, edit, remove, list
 }) => (
-  <Paper>
+  <div className="cf-paper">
     <Button icon onClick={add}>add_circle</Button>
     <DataTable plain>
       <TableHeader>
@@ -40,7 +40,7 @@ const AccountsListView = ({
         ))}
       </TableBody>
     </DataTable>
-  </Paper>
+  </div>
 );
 
 AccountsListView.propTypes = {

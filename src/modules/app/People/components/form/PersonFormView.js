@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Paper } from 'react-md';
-
 
 const PersonFormView = ({ name, onChangeName, save }) => (
-  <Paper className="people-form">
+  <div className="cf-paper people-form">
     <input autoFocus name="name" label="Name" value={name} onChange={onChangeName} />
-    <Button raised onClick={save}>Save</Button>
-  </Paper>
+    <button type="button" className="cf-btn cf-btn--block cf-btn--text cf-btn--raised" onClick={save}>Save</button>
+  </div>
 );
 PersonFormView.propTypes = {
   name: PropTypes.string.isRequired,

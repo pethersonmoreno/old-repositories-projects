@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useDispatch } from 'react-redux';
 import {
-  Paper, DataTable, TableHeader, TableRow, TableColumn, TableBody
+  DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
@@ -54,7 +54,7 @@ const CashFlowsReport = () => {
   const negativeDescriptions = orderListValue(groupedList.filter(group => group.value < 0), false);
   const positiveDescriptions = orderListValue(groupedList.filter(group => group.value >= 0), true);
   return (
-    <Paper>
+    <div className="cf-paper">
       <div>
         Month:
         {' '}
@@ -120,7 +120,7 @@ const CashFlowsReport = () => {
           </TableRow>
         </TableBody>
       </DataTable>
-    </Paper>
+    </div>
   );
 };
 

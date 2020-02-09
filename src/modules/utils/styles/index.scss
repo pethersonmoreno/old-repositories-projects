@@ -22,3 +22,55 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* Prefix css components: cf */
+
+.cf-paper {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+button.cf-btn {
+  background: transparent;
+  border: 0;
+  position: relative;
+  transition-duration: 0.15s;
+  transition-property: "background, color";
+
+  &:hover {
+    cursor: pointer;
+    background: rgba(153, 153, 153, 0.12);
+  }
+
+  &.cf-btn--text {
+    border-radius: 2px;
+    font-weight: 500;
+    min-width: 88px;
+    padding: 8px 16px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.87);
+
+    @media screen and (min-width: 320px) {
+      height: 36px;
+      margin-bottom: 6px;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    @media screen and (min-width: 1025px) {
+      height: 32px;
+      margin-bottom: 0;
+      margin-top: 0;
+      font-size: 13px;
+    }
+  }
+
+  &.cf-btn--block {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+
+  &.cf-btn--raised {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    transition: background 0.15s, box-shadow 0.3s, color 0.15s;
+  }
+}

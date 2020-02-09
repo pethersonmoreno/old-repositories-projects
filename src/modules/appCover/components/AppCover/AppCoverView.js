@@ -10,18 +10,18 @@ const AppCoverView = ({
   openMenu,
   children
 }) => (
-  <Paper>
+  <div className="cf-paper">
     <AppBar
       title={title}
       nav={<MenuButton onClick={openMenu} />}
     />
-    <Paper>
-      <Paper style={{ marginTop: '80px' }}>
+    <div className="cf-paper">
+      <div className="cf-paper" style={{ marginTop: '80px' }}>
         {children}
-      </Paper>
+      </div>
       <MenuDrawer />
-    </Paper>
-  </Paper>
+    </div>
+  </div>
 );
 
 AppCoverView.propTypes = {

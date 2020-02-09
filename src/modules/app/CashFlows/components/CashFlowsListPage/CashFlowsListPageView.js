@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactDatePicker from 'react-datepicker';
 import {
-  Paper, Button
+  Button
 } from 'react-md';
 import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
@@ -21,7 +21,7 @@ const CashFlowsListPageView = ({
   showAddMenu, setShowAddMenu,
 
 }) => (
-  <Paper>
+  <div className="cf-paper">
     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
       <div style={{ marginRight: 10 }}>
       Month:
@@ -63,7 +63,7 @@ const CashFlowsListPageView = ({
       </div>
       <Button floating mini onClick={() => setShowAddMenu(!showAddMenu)}>add</Button>
     </div>
-  </Paper>
+  </div>
 );
 
 CashFlowsListPageView.propTypes = {

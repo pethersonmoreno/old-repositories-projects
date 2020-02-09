@@ -14,8 +14,8 @@ const Signin = () => {
   const dispatch = useDispatch();
   return (
     <Box center fill>
-      <Paper
-        className="signin"
+      <div
+        className="cf-paper signin"
         zDepth={0}
         raiseOnHover
       >
@@ -31,7 +31,7 @@ const Signin = () => {
         >
           Continue with Google
         </ButtonSigninWith>
-      </Paper>
+      </div>
     </Box>
   );
 };

@@ -7,7 +7,7 @@ import {
 const CashFlowDescriptionsListView = ({
   add, edit, remove, list
 }) => (
-  <Paper>
+  <div className="cf-paper">
     <Button icon onClick={add}>add_circle</Button>
     <DataTable plain>
       <TableHeader>
@@ -38,7 +38,7 @@ const CashFlowDescriptionsListView = ({
         ))}
       </TableBody>
     </DataTable>
-  </Paper>
+  </div>
 );
 
 CashFlowDescriptionsListView.propTypes = {
