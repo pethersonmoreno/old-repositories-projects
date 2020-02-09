@@ -8,7 +8,7 @@ const CashFlowDescriptionsListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
-    <Button icon onClick={add}>add_circle</Button>
+    <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
     <DataTable plain>
       <TableHeader>
         <TableRow>
@@ -20,18 +20,21 @@ const CashFlowDescriptionsListView = ({
         {list.map(cashFlowDescription => (
           <TableRow key={cashFlowDescription.id}>
             <TableColumn>
-              <Button
-                icon
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={edit(cashFlowDescription)}
               >
-                  edit
-              </Button>
-              <Button
-                icon
+                <i className="material-icons">edit</i>
+              </button>
+
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={remove(cashFlowDescription)}
               >
-                  restore_from_trash
-              </Button>
+                <i className="material-icons">restore_from_trash</i>
+              </button>
             </TableColumn>
             <TableColumn>{cashFlowDescription.name}</TableColumn>
           </TableRow>

@@ -2,6 +2,10 @@
 
 @include react-md-everything;
 
+
+// Google Font Material Icons
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
 html,
 body,
 #root {
@@ -23,6 +27,32 @@ code {
     monospace;
 }
 
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
 /* Prefix css components: cf */
 
 .cf-paper {
@@ -34,12 +64,32 @@ button.cf-btn {
   border: 0;
   position: relative;
   transition-duration: 0.15s;
-  transition-property: "background, color";
+  transition-property: background, color;
 
   &:hover {
     cursor: pointer;
     background: rgba(153, 153, 153, 0.12);
   }
+
+  &.cf-btn--icon {
+    border-radius: 50%;
+    color: rgba(0, 0, 0, 0.54);
+    height: 48px;
+    padding: 12px;
+    width: 48px;
+
+    @media screen and (min-width: 1025px) {
+      height: 40px;
+      width: 40px;
+      padding: 10px;
+    }
+
+    i,
+    span {
+      font-size: 20px;
+    }
+  }
+
 
   &.cf-btn--text {
     border-radius: 2px;
@@ -61,6 +111,50 @@ button.cf-btn {
       margin-bottom: 0;
       margin-top: 0;
       font-size: 13px;
+    }
+  }
+
+  &.cf-text--inherit {
+    color: inherit;
+
+    i,
+    span {
+      color: inherit;
+    }
+  }
+
+  &.cf-btn--toolbar {
+    @media screen and (min-width: 320px) {
+      margin-bottom: 4px;
+      margin-top: 4px;
+    }
+
+    @media screen and (min-width: 768px) {
+      margin-bottom: 8px;
+      margin-top: 8px;
+    }
+
+    @media screen and (min-width: 1025px) {
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+  }
+
+  &.cf-toolbar--action-left {
+    @media screen and (min-width: 320px) {
+      margin-left: 4px;
+    }
+
+    @media screen and (min-aspect-ratio: 13/9) and (min-width: 320px) {
+      margin-left: 4px;
+    }
+
+    @media screen and (min-width: 768px) {
+      margin-left: 12px;
+    }
+
+    @media screen and (min-width: 1025px) {
+      margin-left: 14px;
     }
   }
 

@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+  DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 
 const PeopleListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
-    <Button icon onClick={add}>add_circle</Button>
+    <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
     <DataTable plain>
       <TableHeader>
         <TableRow>
@@ -20,18 +20,21 @@ const PeopleListView = ({
         {list.map(person => (
           <TableRow key={person.id}>
             <TableColumn>
-              <Button
-                icon
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={edit(person)}
               >
-                edit
-              </Button>
-              <Button
-                icon
+                <i className="material-icons">edit</i>
+              </button>
+
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={remove(person)}
               >
-                restore_from_trash
-              </Button>
+                <i className="material-icons">restore_from_trash</i>
+              </button>
             </TableColumn>
             <TableColumn>{person.name}</TableColumn>
           </TableRow>

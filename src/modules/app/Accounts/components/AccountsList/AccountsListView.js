@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, DataTable, TableHeader, TableRow, TableColumn, TableBody
+  DataTable, TableHeader, TableRow, TableColumn, TableBody
 } from 'react-md';
 
 const AccountsListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
-    <Button icon onClick={add}>add_circle</Button>
+    <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
     <DataTable plain>
       <TableHeader>
         <TableRow>
@@ -21,18 +21,21 @@ const AccountsListView = ({
         {list.map(account => (
           <TableRow key={account.id}>
             <TableColumn>
-              <Button
-                icon
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={edit(account)}
               >
-                  edit
-              </Button>
-              <Button
-                icon
+                <i className="material-icons">edit</i>
+              </button>
+
+              <button
+                type="button"
+                className="cf-btn cf-btn--block cf-btn--icon"
                 onClick={remove(account)}
               >
-                  restore_from_trash
-              </Button>
+                <i className="material-icons">restore_from_trash</i>
+              </button>
             </TableColumn>
             <TableColumn>{account.description}</TableColumn>
             <TableColumn>{account.currentValue}</TableColumn>

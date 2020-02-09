@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper } from 'react-md';
 import AppBar from '../AppBar';
 import MenuDrawer from '../MenuDrawer';
 import MenuButton from './MenuButton';
@@ -13,7 +12,7 @@ const AppCoverView = ({
   <div className="cf-paper">
     <AppBar
       title={title}
-      nav={<MenuButton onClick={openMenu} />}
+      nav={(<MenuButton onClick={openMenu} />)}
     />
     <div className="cf-paper">
       <div className="cf-paper" style={{ marginTop: '80px' }}>
