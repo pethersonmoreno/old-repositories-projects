@@ -28,7 +28,8 @@ const PersonFormController = ({ match: { params: { id } }, history }) => {
         await api.replace(token, id, { name });
         dispatch(actions.updatePerson(personDto));
       } else {
-        await api.add(token, { name });
+        const { id: newId } = await api.add(token, { name });
+        personDto.id = newId;
         dispatch(actions.addPerson(personDto));
       }
       history.push('/people');
