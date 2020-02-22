@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import AccountFormView from './AccountFormView';
 import usePeopleList from '../../../../utils/hooks/usePeopleList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
@@ -8,8 +9,10 @@ import api from '../../../../utils/api/accounts';
 import { useAccount } from '../../selectors/selectorsAccounts';
 import useInputValue from '../../../../utils/hooks/useInputValue';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
+import * as actions from '../../actions/actionsAccounts';
 
 const AccountFormController = ({ match: { params: { id } }, history }) => {
+  const dispatch = useDispatch();
   const token = useToken();
   const [description, onChangeDescription, setDescription] = useInputValue('');
   const [currentValue, onChangeCurrentValue, setCurrentValue] = useInputValue(0);
@@ -32,8 +35,10 @@ const AccountFormController = ({ match: { params: { id } }, history }) => {
       };
       if (id) {
         await api.replace(token, id, registryToSave);
+        dispatch(actions.updateAccount({ ...registryToSave, id }));
       } else {
-        await api.add(token, registryToSave);
+        const { id: newId } = await api.add(token, registryToSave);
+        dispatch(actions.addAccount({ ...registryToSave, id: newId }));
       }
       history.push('/accounts');
     } catch (error) {
