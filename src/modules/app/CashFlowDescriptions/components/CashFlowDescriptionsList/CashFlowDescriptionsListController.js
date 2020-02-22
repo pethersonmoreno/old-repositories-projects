@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import api from '../../../../utils/api/cashFlowDescriptions';
 import CashFlowDescriptionsListView from './CashFlowDescriptionsListView';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import { useCashFlowDescriptionsList } from '../../selectors/selectorsCashFlowDescriptions';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
+import * as actions from '../../actions/actionsCashFlowDescriptions';
+
 
 const CashFlowDescriptionsListController = ({ match, history }) => {
+  const dispatch = useDispatch();
   const token = useToken();
   const list = useCashFlowDescriptionsList();
   const goAdd = () => { history.push(`${match.path}/new`); };
@@ -14,6 +18,7 @@ const CashFlowDescriptionsListController = ({ match, history }) => {
   const deleteRegistry = registry => async () => {
     try {
       await api.delete(token, registry.id);
+      dispatch(actions.removeDescription(registry.id));
     } catch (error) {
       alert(getMessageFromError(error));
     }
