@@ -14,3 +14,8 @@ export const addPerson = person => ({
   type: types.ADD_PERSON,
   payload: person
 });
+
+export const removePerson = id => ({
+  type: types.ADD_PERSON,
+  payload: { id }
+});

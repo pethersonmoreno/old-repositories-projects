@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import api from '../../../../utils/api/people';
 import PeopleListView from './PeopleListView';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
+import * as actions from '../../actions/actionsPeople';
 
 const PeopleListController = ({ match, history }) => {
+  const dispatch = useDispatch();
   const token = useToken();
   const list = useSelector(state => state.people);
   const goAdd = () => { history.push(`${match.path}/new`); };
@@ -14,6 +16,7 @@ const PeopleListController = ({ match, history }) => {
   const deleteRegistry = registry => async () => {
     try {
       await api.delete(token, registry.id);
+      dispatch(actions.removePerson(registry.id));
     } catch (error) {
       alert(getMessageFromError(error));
     }
