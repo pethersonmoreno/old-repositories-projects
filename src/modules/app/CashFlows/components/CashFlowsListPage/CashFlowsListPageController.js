@@ -32,6 +32,7 @@ const CashFlowsListPageController = ({ match, history }) => {
   const removeRegistry = registry => async () => {
     try {
       await api.delete(token, registry.id);
+      dispatch(actions.removeCashFlow(registry.id));
     } catch (error) {
       alert(getMessageFromError(error));
     }

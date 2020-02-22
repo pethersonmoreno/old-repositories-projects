@@ -18,6 +18,20 @@ const reducerCashFlows = (state = initialState, action) => {
       currentMonth: moment(action.payload.month).format('YYYY-MM'),
     };
   }
+  if (action.type === types.UPDATE_CASH_FLOW) {
+    return state.list.map(cashFlow => {
+      if (cashFlow.id === action.payload.id) {
+        return { ...cashFlow, ...action.payload };
+      }
+      return cashFlow;
+    });
+  }
+  if (action.type === types.ADD_CASH_FLOW) {
+    return [...state.list, action.payload];
+  }
+  if (action.type === types.REMOVE_CASH_FLOW) {
+    return state.list.filter(cashFlow => cashFlow.id !== action.payload.id);
+  }
   return state;
 };
 

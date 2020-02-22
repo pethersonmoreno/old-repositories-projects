@@ -1,7 +1,9 @@
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 import { useToken } from '../../../auth/selectors/selectorsAuth';
 import api from '../../../utils/api/cashFlows';
 import getMessageFromError from '../../../utils/helpers/getMessageFromError';
+import * as actions from '../actions/actionsCashFlows';
 
 const prepareSaveCashFlow = token => ({
   accountId,
@@ -10,6 +12,7 @@ const prepareSaveCashFlow = token => ({
   dateTime,
   cashFlowDescriptionId,
 }, history, oldRegistry) => async () => {
+  const dispatch = useDispatch();
   try {
     const registry = {
       accountId,
@@ -20,8 +23,10 @@ const prepareSaveCashFlow = token => ({
     };
     if (oldRegistry) {
       await api.replace(token, oldRegistry.id, registry);
+      dispatch(actions.updateCashFlow({ ...registry, id: oldRegistry.id }));
     } else {
-      await api.add(token, registry);
+      const { id: newId } = await api.add(token, registry);
+      dispatch(actions.addCashFlow({ ...registry, id: newId }));
     }
     history.push('/cashFlows');
   } catch (error) {
