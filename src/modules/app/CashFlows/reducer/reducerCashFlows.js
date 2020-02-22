@@ -5,6 +5,11 @@ const initialState = {
   list: [],
   currentMonth: moment(new Date()).format('YYYY-MM'),
 };
+
+const prepareData = data => ({
+  ...data,
+  dateTime: data.dateTime instanceof Date ? data.dateTime.toString() : data.dateTime,
+});
 const reducerCashFlows = (state = initialState, action) => {
   if (action.type === types.GET_CASH_FLOWS) {
     return {
@@ -19,18 +24,30 @@ const reducerCashFlows = (state = initialState, action) => {
     };
   }
   if (action.type === types.UPDATE_CASH_FLOW) {
-    return state.list.map(cashFlow => {
-      if (cashFlow.id === action.payload.id) {
-        return { ...cashFlow, ...action.payload };
-      }
-      return cashFlow;
-    });
+    return {
+      ...state,
+      list: state.list.map(cashFlow => {
+        if (cashFlow.id === action.payload.id) {
+          return { ...cashFlow, ...prepareData(action.payload) };
+        }
+        return cashFlow;
+      }),
+    };
   }
   if (action.type === types.ADD_CASH_FLOW) {
-    return [...state.list, action.payload];
+    if (!state.list.find(cashFlow => cashFlow.id !== action.payload.id)) {
+      return {
+        ...state,
+        list: [...state.list, prepareData(action.payload)],
+      };
+    }
+    return state;
   }
   if (action.type === types.REMOVE_CASH_FLOW) {
-    return state.list.filter(cashFlow => cashFlow.id !== action.payload.id);
+    return {
+      ...state,
+      list: state.list.filter(cashFlow => cashFlow.id !== action.payload.id),
+    };
   }
   return state;
 };

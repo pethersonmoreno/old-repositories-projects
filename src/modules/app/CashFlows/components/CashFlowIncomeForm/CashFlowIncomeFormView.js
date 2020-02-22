@@ -68,7 +68,7 @@ const CashFlowIncomeFormView = ({
 );
 CashFlowIncomeFormView.propTypes = {
   edit: PropTypes.bool.isRequired,
-  dateTime: PropTypes.instanceOf(Date).isRequired,
+  dateTime: PropTypes.oneOfType([PropTypes.instanceOf(Date), PropTypes.string]).isRequired,
   setDateTime: PropTypes.func.isRequired,
   accountId: PropTypes.string.isRequired,
   setAccountId: PropTypes.func.isRequired,
@@ -82,7 +82,7 @@ CashFlowIncomeFormView.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   onChangeValue: PropTypes.func.isRequired,
   save: PropTypes.func.isRequired,
 };

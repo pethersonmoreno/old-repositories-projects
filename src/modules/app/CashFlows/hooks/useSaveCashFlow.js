@@ -11,27 +11,29 @@ const prepareSaveCashFlow = token => ({
   value,
   dateTime,
   cashFlowDescriptionId,
-}, history, oldRegistry) => async () => {
+}, history, oldRegistry) => {
   const dispatch = useDispatch();
-  try {
-    const registry = {
-      accountId,
-      inOut,
-      value,
-      dateTime: moment(new Date(dateTime)).toDate(),
-      cashFlowDescriptionId,
-    };
-    if (oldRegistry) {
-      await api.replace(token, oldRegistry.id, registry);
-      dispatch(actions.updateCashFlow({ ...registry, id: oldRegistry.id }));
-    } else {
-      const { id: newId } = await api.add(token, registry);
-      dispatch(actions.addCashFlow({ ...registry, id: newId }));
+  return async () => {
+    try {
+      const registry = {
+        accountId,
+        inOut,
+        value: parseFloat(value),
+        dateTime: moment(new Date(dateTime)).toDate(),
+        cashFlowDescriptionId,
+      };
+      if (oldRegistry) {
+        await api.replace(token, oldRegistry.id, registry);
+        dispatch(actions.updateCashFlow({ ...registry, id: oldRegistry.id }));
+      } else {
+        const { id: newId } = await api.add(token, registry);
+        dispatch(actions.addCashFlow({ ...registry, id: newId }));
+      }
+      history.push('/cashFlows');
+    } catch (error) {
+      alert(getMessageFromError(error));
     }
-    history.push('/cashFlows');
-  } catch (error) {
-    alert(getMessageFromError(error));
-  }
+  };
 };
 const useSaveCashFlow = () => {
   const token = useToken();

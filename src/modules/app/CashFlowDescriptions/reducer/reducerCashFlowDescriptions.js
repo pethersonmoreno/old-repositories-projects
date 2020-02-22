@@ -13,7 +13,10 @@ const reducerCashFlowDescriptions = (state = [], action) => {
     });
   }
   if (action.type === types.ADD_DESCRIPTION) {
-    return [...state, action.payload];
+    if (!state.find(description => description.id !== action.payload.id)) {
+      return [...state, action.payload];
+    }
+    return state;
   }
   if (action.type === types.REMOVE_DESCRIPTION) {
     return state.filter(description => description.id !== action.payload.id);

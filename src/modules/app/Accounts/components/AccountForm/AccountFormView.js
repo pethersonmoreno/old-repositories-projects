@@ -30,7 +30,7 @@ const AccountFormView = ({
 AccountFormView.propTypes = {
   description: PropTypes.string.isRequired,
   onChangeDescription: PropTypes.func.isRequired,
-  currentValue: PropTypes.number.isRequired,
+  currentValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   onChangeCurrentValue: PropTypes.func.isRequired,
   personId: PropTypes.string.isRequired,
   onChangePersonId: PropTypes.func.isRequired,
