@@ -9,7 +9,7 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.4.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "query-string": "^6.9.0",
     "react": "^16.12.0",
