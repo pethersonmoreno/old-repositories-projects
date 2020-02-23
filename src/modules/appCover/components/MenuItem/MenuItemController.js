@@ -30,6 +30,7 @@ const MenuItemController = ({
             component={Link}
             active={!!match}
             to={to}
+            onClick={onClick}
             primaryText={label}
             leftIcon={leftIcon}
           />

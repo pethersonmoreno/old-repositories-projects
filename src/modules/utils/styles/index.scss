@@ -220,6 +220,10 @@ button.cf-btn {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
 
+.cf-paper--5 {
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
 
 table.cf-table {
   width: 100%;
@@ -263,5 +267,25 @@ table.cf-table {
     th:first-child,td:first-child{
       padding-left: 24px;
     }
+  }
+}
+
+.cf-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  background: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+
+  @media screen and (min-width: 320px){
+    padding-bottom: 8px;
+    padding-top: 8px;
+  }
+
+  &.cf-list--drawer {
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    overflow-y: auto;
   }
 }
