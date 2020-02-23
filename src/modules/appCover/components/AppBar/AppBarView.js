@@ -1,10 +1,13 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar } from 'react-md';
+import './AppBarView.scss';
 
-const AppBarView = ({ title, nav, ...otherProps }) => (
-  <Toolbar colored fixed title={title} nav={nav} {...otherProps} />
+const AppBarView = ({ title, nav }) => (
+  <header className="cf-appbar cf-paper--2">
+    {nav}
+    <h2 className="md-title md-title--toolbar">{title}</h2>
+  </header>
 );
 AppBarView.propTypes = {
   title: PropTypes.string.isRequired,
