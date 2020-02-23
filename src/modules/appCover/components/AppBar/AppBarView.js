@@ -6,7 +6,7 @@ import './AppBarView.scss';
 const AppBarView = ({ title, nav }) => (
   <header className="cf-appbar cf-paper--2">
     {nav}
-    <h2 className="md-title md-title--toolbar">{title}</h2>
+    <h2>{title}</h2>
   </header>
 );
 AppBarView.propTypes = {
