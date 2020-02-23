@@ -1,25 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  DataTable, TableHeader, TableRow, TableColumn, TableBody
-} from 'react-md';
 
 const CashFlowDescriptionsListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
     <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
-    <DataTable plain>
-      <TableHeader>
-        <TableRow>
-          <TableColumn>Action</TableColumn>
-          <TableColumn>Name</TableColumn>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <table className="cf-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
         {list.map(cashFlowDescription => (
-          <TableRow key={cashFlowDescription.id}>
-            <TableColumn>
+          <tr key={cashFlowDescription.id}>
+            <td>
               <button
                 type="button"
                 className="cf-btn cf-btn--block cf-btn--icon"
@@ -35,12 +32,12 @@ const CashFlowDescriptionsListView = ({
               >
                 <i className="material-icons">restore_from_trash</i>
               </button>
-            </TableColumn>
-            <TableColumn>{cashFlowDescription.name}</TableColumn>
-          </TableRow>
+            </td>
+            <td>{cashFlowDescription.name}</td>
+          </tr>
         ))}
-      </TableBody>
-    </DataTable>
+      </tbody>
+    </table>
   </div>
 );
 

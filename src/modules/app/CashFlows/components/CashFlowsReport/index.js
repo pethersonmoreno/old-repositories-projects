@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useDispatch } from 'react-redux';
-import {
-  DataTable, TableHeader, TableRow, TableColumn, TableBody
-} from 'react-md';
 import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
@@ -66,60 +63,60 @@ const CashFlowsReport = () => {
         />
       </div>
       <h2>Negative Descriptions</h2>
-      <DataTable plain>
-        <TableHeader>
-          <TableRow>
-            <TableColumn>Description</TableColumn>
-            <TableColumn>Value</TableColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      <table className="cf-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
           {negativeDescriptions.map(group => (
-            <TableRow key={group.cashFlowDescriptionId}>
-              <TableColumn>
+            <tr key={group.cashFlowDescriptionId}>
+              <td>
                 {getCashFlowDescription(cashFlowDescriptionsList, group.cashFlowDescriptionId)}
-              </TableColumn>
-              <TableColumn>{formatMoneyValue(group.value)}</TableColumn>
-            </TableRow>
+              </td>
+              <td>{formatMoneyValue(group.value)}</td>
+            </tr>
           ))}
-        </TableBody>
-      </DataTable>
+        </tbody>
+      </table>
       <h2>Positive Descriptions</h2>
-      <DataTable plain>
-        <TableHeader>
-          <TableRow>
-            <TableColumn>Description</TableColumn>
-            <TableColumn>Value</TableColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      <table className="cf-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
           {positiveDescriptions.map(group => (
-            <TableRow key={group.cashFlowDescriptionId}>
-              <TableColumn>
+            <tr key={group.cashFlowDescriptionId}>
+              <td>
                 {getCashFlowDescription(cashFlowDescriptionsList, group.cashFlowDescriptionId)}
-              </TableColumn>
-              <TableColumn>{formatMoneyValue(group.value)}</TableColumn>
-            </TableRow>
+              </td>
+              <td>{formatMoneyValue(group.value)}</td>
+            </tr>
           ))}
-        </TableBody>
-      </DataTable>
+        </tbody>
+      </table>
       <h2>Total</h2>
-      <DataTable plain>
-        <TableBody>
-          <TableRow>
-            <TableColumn>Negative</TableColumn>
-            <TableColumn>
+      <table className="cf-table">
+        <tbody>
+          <tr>
+            <td>Negative</td>
+            <td>
               {formatMoneyValue(negativeDescriptions.reduce((sum, group) => sum + group.value, 0))}
-            </TableColumn>
-          </TableRow>
-          <TableRow>
-            <TableColumn>Positive</TableColumn>
-            <TableColumn>
+            </td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>
               {formatMoneyValue(positiveDescriptions.reduce((sum, group) => sum + group.value, 0))}
-            </TableColumn>
-          </TableRow>
-        </TableBody>
-      </DataTable>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

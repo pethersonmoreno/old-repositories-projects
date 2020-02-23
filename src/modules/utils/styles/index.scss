@@ -219,3 +219,48 @@ button.cf-btn {
 .cf-paper--2 {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
 }
+
+
+table.cf-table {
+  width: 100%;
+  border-collapse: collapse;
+  max-width: 100%;
+  thead tr, tbody tr:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  tbody tr{
+    transition-duration: 0.15s;
+    transition-property: background;
+  }
+  tbody tr:hover {
+    @media (min-device-width: 1025px){
+      background: #eee;
+    }
+  }
+  tr {
+    th,td{
+      line-height: normal;
+      padding-bottom: 0;
+      padding-right: 56px;
+      padding-top: 0;
+      vertical-align: middle;
+    }
+    th{
+      font-size: 12px;
+      font-weight: 500;
+      height: 56px;
+
+      white-space: nowrap;
+
+      color: rgba(0, 0, 0, 0.54);
+      text-align: left;
+    }
+    td {
+      white-space: normal;
+      color: rgba(0, 0, 0, 0.87);
+    }
+    th:first-child,td:first-child{
+      padding-left: 24px;
+    }
+  }
+}

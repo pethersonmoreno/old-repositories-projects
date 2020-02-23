@@ -1,26 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  DataTable, TableHeader, TableRow, TableColumn, TableBody
-} from 'react-md';
 
 const AccountsListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
     <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
-    <DataTable plain>
-      <TableHeader>
-        <TableRow>
-          <TableColumn>Action</TableColumn>
-          <TableColumn>Description</TableColumn>
-          <TableColumn>Current Value</TableColumn>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <table className="cf-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+          <th>Current Value</th>
+        </tr>
+      </thead>
+      <tbody>
         {list.map(account => (
-          <TableRow key={account.id}>
-            <TableColumn>
+          <tr key={account.id}>
+            <td>
               <button
                 type="button"
                 className="cf-btn cf-btn--block cf-btn--icon"
@@ -36,13 +33,13 @@ const AccountsListView = ({
               >
                 <i className="material-icons">restore_from_trash</i>
               </button>
-            </TableColumn>
-            <TableColumn>{account.description}</TableColumn>
-            <TableColumn>{account.currentValue}</TableColumn>
-          </TableRow>
+            </td>
+            <td>{account.description}</td>
+            <td>{account.currentValue}</td>
+          </tr>
         ))}
-      </TableBody>
-    </DataTable>
+      </tbody>
+    </table>
   </div>
 );
 
