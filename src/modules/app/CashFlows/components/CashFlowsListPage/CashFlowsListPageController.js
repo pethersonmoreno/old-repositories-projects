@@ -5,6 +5,9 @@ import api from '../../../../utils/api/cashFlows';
 import CashFlowsListPageView from './CashFlowsListPageView';
 import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
+import useAccountsList from '../../../../utils/hooks/useAccountsList';
+import usePeopleList from '../../../../utils/hooks/usePeopleList';
+import getAccountsFulDescriptionList from '../../helpers/getAccountsFulDescriptionList';
 import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
 import * as actions from '../../actions/actionsCashFlows';
@@ -18,13 +21,21 @@ const CashFlowsListPageController = ({ match, history }) => {
   const token = useToken();
   const monthDate = useCashFlowsCurrentMonth();
   const [cashFlowDescriptionId, setCashFlowDescriptionId] = useState('');
+  const [accountId, setAccountId] = useState('');
   const [showAddMenu, setShowAddMenu] = useState(false);
   const list = useCashFlowListMonth(monthDate);
   const [cashFlowDescriptionsList] = useCashFlowDescriptionsList();
+  const [accountsList] = useAccountsList();
+  const [peopleList] = usePeopleList();
+  const accountsFullList = getAccountsFulDescriptionList(accountsList, peopleList);
   let listFiltered = list;
   if (cashFlowDescriptionId) {
-    listFiltered = list
+    listFiltered = listFiltered
       .filter(cashFlow => cashFlow.cashFlowDescriptionId === cashFlowDescriptionId);
+  }
+  if (accountId) {
+    listFiltered = listFiltered
+      .filter(cashFlow => cashFlow.accountId === accountId);
   }
   const goAddIncome = () => { history.push(`${match.path}/newIncome`); };
   const goAddExpense = () => { history.push(`${match.path}/newExpense`); };
@@ -46,6 +57,9 @@ const CashFlowsListPageController = ({ match, history }) => {
       cashFlowDescriptionId={cashFlowDescriptionId}
       setCashFlowDescriptionId={setCashFlowDescriptionId}
       cashFlowDescriptionsList={cashFlowDescriptionsList}
+      accountId={accountId}
+      setAccountId={setAccountId}
+      accountsFullList={accountsFullList}
       orderedList={orderedList}
       addIncome={goAddIncome}
       addExpense={goAddExpense}

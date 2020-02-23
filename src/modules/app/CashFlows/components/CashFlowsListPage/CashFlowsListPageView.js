@@ -10,6 +10,8 @@ const CashFlowsListPageView = ({
   monthDate, setMonthDate,
   cashFlowDescriptionId, setCashFlowDescriptionId,
   cashFlowDescriptionsList,
+  accountId, setAccountId,
+  accountsFullList,
   orderedList,
   addIncome,
   addExpense,
@@ -30,7 +32,7 @@ const CashFlowsListPageView = ({
           showMonthYearPicker
         />
       </div>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginRight: 10 }}>
         <div style={{ marginRight: 3 }}>
         Description:
           {' '}
@@ -43,6 +45,24 @@ const CashFlowsListPageView = ({
             setValue={setCashFlowDescriptionId}
             dataLabel="name"
             dataValue="id"
+            label=""
+            placeholder=""
+          />
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginRight: 3 }}>
+        Account:
+          {' '}
+        </div>
+        <div>
+          <AutoCompleteField
+            id="accountId"
+            data={[...(cashFlowDescriptionId ? [{ value: '', label: '--- Remover Seleção ---' }] : []), ...accountsFullList]}
+            value={accountId}
+            setValue={setAccountId}
+            dataLabel="label"
+            dataValue="value"
             label=""
             placeholder=""
           />
@@ -72,6 +92,12 @@ CashFlowsListPageView.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
+  accountId: PropTypes.string,
+  setAccountId: PropTypes.func.isRequired,
+  accountsFullList: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+  })).isRequired,
   orderedList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     inOut: PropTypes.bool.isRequired,
@@ -89,6 +115,7 @@ CashFlowsListPageView.propTypes = {
 };
 CashFlowsListPageView.defaultProps = {
   cashFlowDescriptionId: null,
+  accountId: null,
 };
 
 export default CashFlowsListPageView;
