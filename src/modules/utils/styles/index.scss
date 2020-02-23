@@ -239,16 +239,17 @@ table.cf-table {
   }
   tr {
     th,td{
+      height: 56px;
       line-height: normal;
       padding-bottom: 0;
       padding-right: 56px;
       padding-top: 0;
       vertical-align: middle;
+
     }
     th{
       font-size: 12px;
       font-weight: 500;
-      height: 56px;
 
       white-space: nowrap;
 
