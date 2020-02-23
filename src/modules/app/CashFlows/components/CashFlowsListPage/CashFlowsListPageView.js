@@ -38,7 +38,7 @@ const CashFlowsListPageView = ({
         <div>
           <AutoCompleteField
             id="cashFlowDescriptionId"
-            data={cashFlowDescriptionsList}
+            data={[...(cashFlowDescriptionId ? [{ id: '', name: '--- Remover Seleção ---' }] : []), ...cashFlowDescriptionsList]}
             value={cashFlowDescriptionId}
             setValue={setCashFlowDescriptionId}
             dataLabel="name"
