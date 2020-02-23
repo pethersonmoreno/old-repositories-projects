@@ -2,7 +2,7 @@ import { types } from '../constants';
 
 const prepareData = data => ({
   ...data,
-  currentValue: data.currentValue instanceof String
+  currentValue: typeof data.currentValue === 'string' || data.currentValue instanceof String
     ? parseFloat(data.currentValue, 10) : data.currentValue,
 });
 const reducerAccounts = (state = [], action) => {
