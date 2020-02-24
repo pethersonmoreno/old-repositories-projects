@@ -11,30 +11,30 @@ const MenuItemController = ({
     {({ match }) => {
       if (to) {
         return (
-          <li className="md-list-item">
+          <li className="cf-list-item">
             <Link
-              className="md-fake-btn md-pointer--hover md-fake-btn--no-outline md-list-tile md-text"
+              className="cf-fake-btn cf-pointer--hover cf-fake-btn--no-outline cf-list-tile cf-text"
               to={to}
               onClick={onClick}
             >
-              <div className="md-ink-container" />
-              <div className="md-tile-content">
-                <div className={`md-tile-text--primary ${match ? 'md-text--theme-primary' : 'md-text'}`}>{label}</div>
+              <div className="cf-ink-container" />
+              <div className="cf-tile-content">
+                <div className={`cf-tile-text--primary ${match ? 'cf-text--theme-primary' : 'cf-text'}`}>{label}</div>
               </div>
             </Link>
           </li>
         );
       }
       return (
-        <li className="md-list-item">
+        <li className="cf-list-item">
           <button
             type="button"
-            className="cf-btn cf-btn--block cf-btn--text"
+            className="cf-fake-btn cf-list-tile cf-btn cf-btn--block cf-btn--text"
             onClick={onClick}
           >
-            <div className="md-ink-container" />
-            <div className="md-tile-content">
-              <div className={`md-tile-text--primary ${match ? 'md-text--theme-primary' : 'md-text'}`}>{label}</div>
+            <div className="cf-ink-container" />
+            <div className="cf-tile-content">
+              <div className={`cf-tile-text--primary ${match ? 'cf-text--theme-primary' : 'cf-text'}`}>{label}</div>
             </div>
           </button>
         </li>

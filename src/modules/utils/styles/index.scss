@@ -6,6 +6,13 @@
 // Google Font Material Icons
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
 html,
 body,
 #root {
@@ -287,5 +294,66 @@ table.cf-table {
     -webkit-overflow-scrolling: touch;
     height: 100%;
     overflow-y: auto;
+  }
+}
+
+.cf-text {
+  color: rgba(0, 0, 0, 0.87);
+}
+.cf-text--theme-primary {
+  color: #009688;
+}
+.cf-pointer--hover:hover {
+  cursor: pointer;
+}
+
+.cf-tile-text--primary {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  @media screen and (min-width: 320px){
+    font-size: 16px;
+  }
+}
+.cf-fake-btn {
+  background: transparent;
+  position: relative;
+
+  &.cf-fake-btn--no-outline {
+    outline-style: none;
+  }
+}
+
+.cf-list-tile {
+  align-items: center;
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-decoration: none;
+  transition-duration: 0.15s;
+  transition-property: background;
+
+  @media screen and (min-width: 320px){
+      height: 48px;
+  }
+  &.cf-list-tile--active,
+  &.cf-list-tile:hover {
+      background: rgba(0, 0, 0, 0.12);
+  }
+  &>.cf-ink-container {
+    border-radius: inherit;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  &>.cf-tile-content {
+    flex-grow: 1;
+    overflow: hidden;
   }
 }
