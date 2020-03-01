@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "cash-flow-frontend": "git@github.com:pethersonmoreno/cash-flow-frontend.git",
+    "newschool-backend": "git@github.com:pethersonmoreno/newschool-backend.git",
+    "newschool-frontend": "git@github.com:pethersonmoreno/newschool-frontend.git"
+  }
+}
