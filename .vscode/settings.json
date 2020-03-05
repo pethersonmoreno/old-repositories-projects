@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "cash-flow-frontend": true,
+        "cash-flow-api": true,
+        "newschool-backend": true,
+        "newschool-frontend": true,
+        "nodeschool-campinas": true,
+        "nodeschool-campinas-gatsby": true
+    }
+}
