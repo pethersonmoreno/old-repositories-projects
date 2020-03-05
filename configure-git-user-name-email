@@ -1,5 +1,6 @@
 #!/bin/sh
 git config user.email "pethermoreno@gmail.com"
 git config user.name "Petherson Moreno"
-meta git config user.email "pethermoreno@gmail.com"
-meta git config user.name "Petherson Moreno"
+#meta loop 'ls -l'
+meta loop 'git config user.email "pethermoreno@gmail.com"'
+meta loop 'git config user.name "Petherson Moreno"'
