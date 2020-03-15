@@ -57,6 +57,7 @@
     "webgl-analytical-geometry": "git://github.com/pethersonmoreno/webgl-analytical-geometry.git",
     "webgl_tests": "git://github.com/pethersonmoreno/webgl_tests.git",
     "whatsapplink": "git://github.com/pethersonmoreno/whatsapplink.git",
-    "linux-scripts": "git@github.com:pethersonmoreno/linux-scripts.git"
+    "linux-scripts": "git@github.com:pethersonmoreno/linux-scripts.git",
+    "svelte-study": "git@github.com:pethersonmoreno/svelte-study.git"
   }
 }

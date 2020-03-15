@@ -57,6 +57,7 @@
         "webgl-analytical-geometry": true,
         "webgl_tests": true,
         "whatsapplink": true,
-        "linux-scripts": true
+        "linux-scripts": true,
+        "svelte-study": true
     }
 }
