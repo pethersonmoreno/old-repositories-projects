@@ -5,6 +5,7 @@
         "newschool-backend": true,
         "newschool-frontend": true,
         "nodeschool-campinas": true,
-        "nodeschool-campinas-gatsby": true
+        "nodeschool-campinas-gatsby": true,
+        "svelte-study": true
     }
 }
