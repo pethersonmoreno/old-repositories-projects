@@ -6,6 +6,7 @@
     "newschool-frontend": "git@github.com:pethersonmoreno/newschool-frontend.git",
     "nodeschool-campinas": "git@github.com:pethersonmoreno/nodeschool-campinas.git",
     "nodeschool-campinas-gatsby": "git@github.com:pethersonmoreno/nodeschool-campinas-gatsby.git",
-    "svelte-study": "git@github.com:pethersonmoreno/svelte-study.git"
+    "svelte-study": "git@github.com:pethersonmoreno/svelte-study.git",
+    "linux-scripts": "git@github.com:pethersonmoreno/linux-scripts.git"
   }
 }

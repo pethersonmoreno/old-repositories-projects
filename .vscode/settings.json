@@ -6,6 +6,7 @@
         "newschool-frontend": true,
         "nodeschool-campinas": true,
         "nodeschool-campinas-gatsby": true,
-        "svelte-study": true
+        "svelte-study": true,
+        "linux-scripts": true
     }
 }
