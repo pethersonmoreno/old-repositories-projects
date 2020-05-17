@@ -31,4 +31,16 @@ header.cf-appbar{
             margin-left: 20px;
         }
     }
+    @media screen and (min-width: 1024.01px){
+        &>button{
+            display: none !important;
+        }
+        transform: translateX(200px);
+    }
+}
+
+@media screen and (min-width: 1024.01px){
+    #root{
+        margin-left: 200px;
+    }
 }

@@ -15,6 +15,8 @@ const MenuDrawerView = ({ visible, onVisibilityChange, menuItems }) => {
       }, 300);
     }
   }, [visible]);
+  console.log('visible: ', visible);
+  console.log('showing: ', showing);
   return (
     <div>
       {showing && <div className={`cf-overlay ${visible ? 'cf-overlay--active' : ''}`} onClick={onVisibilityChange} onKeyPress={onVisibilityChange} role="button" aria-label="Close Menu" tabIndex="0" />}
