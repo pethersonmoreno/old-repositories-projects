@@ -7,7 +7,6 @@ const startListenAuthChanges = () => {
     return new Promise((resolve, reject) => {
       let executedBefore = false;
       listenChangesCallback = user => {
-        console.log('auth changes');
         if (!executedBefore) {
           executedBefore = true;
           resolve(user);
