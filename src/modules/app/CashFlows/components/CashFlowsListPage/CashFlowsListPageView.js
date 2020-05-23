@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import ReactDatePicker from 'react-datepicker';
 import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
-import AutoCompleteField from '../../../../utils/components/AutoCompleteField';
+import SelectField from '../../../../utils/components/SelectField';
 
 const CashFlowsListPageView = ({
   monthDate, setMonthDate,
@@ -38,7 +38,7 @@ const CashFlowsListPageView = ({
           {' '}
         </div>
         <div>
-          <AutoCompleteField
+          <SelectField
             id="cashFlowDescriptionId"
             data={[...(cashFlowDescriptionId ? [{ id: '', name: '--- Remover Seleção ---' }] : []), ...cashFlowDescriptionsList]}
             value={cashFlowDescriptionId}
@@ -56,7 +56,7 @@ const CashFlowsListPageView = ({
           {' '}
         </div>
         <div>
-          <AutoCompleteField
+          <SelectField
             id="accountId"
             data={[...(cashFlowDescriptionId ? [{ value: '', label: '--- Remover Seleção ---' }] : []), ...accountsFullList]}
             value={accountId}

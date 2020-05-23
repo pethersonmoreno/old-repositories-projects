@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {
-  MenuButton, ListItem, FontIcon
-} from 'react-md';
 import runIfPressEnterOrSpace from '../../../../utils/helpers/runIfPressEnterOrSpace';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
 import './CashFlowItemView.scss';
@@ -51,7 +48,17 @@ const CashFlowItemView = ({
         onKeyDown={runIfPressEnterOrSpace(showMenuItem)}
         onClick={showMenuItem}
       >
-        <MenuButton
+        <button
+          type="button"
+          onClick={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            remove(cashFlow)();
+          }}
+        >
+          Remove
+        </button>
+        {/* <MenuButton
           id={`menu-button-${cashFlow.id}`}
           icon
           menuItems={[
@@ -75,7 +82,7 @@ const CashFlowItemView = ({
           onKeyDown={e => e.stopPropagation()}
         >
             more_vert
-        </MenuButton>
+        </MenuButton> */}
       </div>
 
       <PointerPressable

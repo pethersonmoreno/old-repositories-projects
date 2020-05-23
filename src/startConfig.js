@@ -6,7 +6,9 @@ const warnsStartsToIgnore = [
   'Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See ',
   'Warning: componentWillUpdate has been renamed, and is not recommended for use. See '
 ];
+// eslint-disable-next-line no-console
 const originalConsoleWarn = console.warn;
+// eslint-disable-next-line no-console
 console.warn = (...params) => {
   if (!warnsStartsToIgnore.find(warnStart => params[0].startsWith(warnStart))) {
     originalConsoleWarn(...params);

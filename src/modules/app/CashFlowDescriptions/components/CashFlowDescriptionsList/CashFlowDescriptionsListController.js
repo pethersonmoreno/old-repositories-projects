@@ -20,6 +20,7 @@ const CashFlowDescriptionsListController = ({ match, history }) => {
       await api.delete(token, registry.id);
       dispatch(actions.removeDescription(registry.id));
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

@@ -42,6 +42,7 @@ const AccountFormController = ({ match: { params: { id } }, history }) => {
       }
       history.push('/accounts');
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

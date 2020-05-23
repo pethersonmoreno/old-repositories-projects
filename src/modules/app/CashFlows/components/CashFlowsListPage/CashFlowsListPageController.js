@@ -45,6 +45,7 @@ const CashFlowsListPageController = ({ match, history }) => {
       await api.delete(token, registry.id);
       dispatch(actions.removeCashFlow(registry.id));
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

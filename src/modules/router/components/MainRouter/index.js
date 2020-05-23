@@ -1,3 +1,3 @@
-import MainRouter from "./MainRouterController";
+import MainRouter from './MainRouterController';
 
 export default MainRouter;

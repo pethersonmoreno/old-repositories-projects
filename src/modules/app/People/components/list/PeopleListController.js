@@ -18,6 +18,7 @@ const PeopleListController = ({ match, history }) => {
       await api.delete(token, registry.id);
       dispatch(actions.removePerson(registry.id));
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

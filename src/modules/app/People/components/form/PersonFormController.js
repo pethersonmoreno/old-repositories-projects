@@ -34,6 +34,7 @@ const PersonFormController = ({ match: { params: { id } }, history }) => {
       }
       history.push('/people');
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

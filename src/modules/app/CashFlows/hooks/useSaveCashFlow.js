@@ -31,6 +31,7 @@ const prepareSaveCashFlow = token => ({
       }
       history.push('/cashFlows');
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

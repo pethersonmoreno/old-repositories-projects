@@ -33,6 +33,7 @@ const CashFlowDescriptionFormController = ({ match: { params: { id } }, history 
       }
       history.push('/cashFlowDescriptions');
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert(getMessageFromError(error));
     }
   };

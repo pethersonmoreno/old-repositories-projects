@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 import PropTypes from 'prop-types';
-import AutoCompleteField from '../../../../utils/components/AutoCompleteField';
+import SelectField from '../../../../utils/components/SelectField';
 import DateTimePicker from '../../../../utils/components/DateTimePicker';
 import './CashFlowIncomeFormView.scss';
 
@@ -26,7 +26,7 @@ const CashFlowIncomeFormView = ({
       selected={dateTime}
       onChange={setDateTime}
     />
-    <AutoCompleteField
+    <SelectField
       id="accountId"
       data={accountsFullList}
       value={accountId}
@@ -36,7 +36,7 @@ const CashFlowIncomeFormView = ({
       label="Account"
       placeholder="Banespa, ..."
     />
-    <AutoCompleteField
+    <SelectField
       id="cashFlowDescriptionId"
       data={cashFlowDescriptionsList}
       value={cashFlowDescriptionId}

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { auth as authApi } from '../../../api';
+import { auth as authApi } from '../api';
 
 let listenChangesCallback = null;
 const startListenAuthChanges = () => {
