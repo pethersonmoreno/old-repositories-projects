@@ -8,6 +8,6 @@
     "nodeschool-campinas-gatsby": "git@github.com:pethersonmoreno/nodeschool-campinas-gatsby.git",
     "svelte-study": "git@github.com:pethersonmoreno/svelte-study.git",
     "linux-scripts": "git@github.com:pethersonmoreno/linux-scripts.git",
-    "moreno-guideline": "git@github.com:morenobr/moreno-guideline.git"
+    "moreno-guideline-react": "git@github.com:morenobr/moreno-guideline-react.git"
   }
 }
