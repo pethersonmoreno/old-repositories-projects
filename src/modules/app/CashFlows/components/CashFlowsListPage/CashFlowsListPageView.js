@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ReactDatePicker from 'react-datepicker';
+import { FloatingActionButton } from '@morenobr/guideline-react';
 import CashFlowsList from '../CashFlowsList';
 import './CashFlowsListPageView.scss';
 import SelectField from '../../../../utils/components/SelectField';
@@ -75,10 +76,10 @@ const CashFlowsListPageView = ({
     })}
     >
       <div className="addMenu">
-        <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-paper cf-paper--2 cf-background--primary cf-btn--block" onClick={addIncome}><i className="material-icons">add</i></button>
-        <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-paper cf-paper--2 cf-background--secondary cf-btn--block" onClick={addExpense}><i className="material-icons">add</i></button>
+        <FloatingActionButton className="cf-background--primary" icon="add" onClick={addIncome} />
+        <FloatingActionButton className="cf-background--secondary" icon="add" onClick={addExpense} />
       </div>
-      <button type="button" className="cf-btn cf-btn--icon cf-btn--floating cf-btn--floating-mini cf-paper cf-paper--2 cf-btn--block" onClick={() => setShowAddMenu(!showAddMenu)}><i className="material-icons">add</i></button>
+      <FloatingActionButton mini icon="add" onClick={() => setShowAddMenu(!showAddMenu)} />
     </div>
   </div>
 );

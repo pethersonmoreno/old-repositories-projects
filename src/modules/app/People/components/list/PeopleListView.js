@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { IconButton, FloatingActionButton } from '@morenobr/guideline-react';
 
 const PeopleListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
-    <button type="button" className="cf-btn cf-btn--block cf-btn--icon" onClick={add}><i className="material-icons">add_circle</i></button>
     <table className="cf-table">
       <thead>
         <tr>
@@ -17,27 +17,15 @@ const PeopleListView = ({
         {list.map(person => (
           <tr key={person.id}>
             <td>
-              <button
-                type="button"
-                className="cf-btn cf-btn--block cf-btn--icon"
-                onClick={edit(person)}
-              >
-                <i className="material-icons">edit</i>
-              </button>
-
-              <button
-                type="button"
-                className="cf-btn cf-btn--block cf-btn--icon"
-                onClick={remove(person)}
-              >
-                <i className="material-icons">restore_from_trash</i>
-              </button>
+              <IconButton icon="edit" onClick={edit(person)} />
+              <IconButton icon="restore_from_trash" onClick={remove(person)} />
             </td>
             <td>{person.name}</td>
           </tr>
         ))}
       </tbody>
     </table>
+    <FloatingActionButton icon="add" onClick={add} />
   </div>
 );
 

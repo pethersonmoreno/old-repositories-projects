@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@morenobr/guideline-react';
 import './AccountFormView.scss';
 
 const AccountFormView = ({
@@ -24,7 +25,7 @@ const AccountFormView = ({
     </select>
     <br />
     <br />
-    <button type="button" className="cf-btn cf-btn--block cf-btn--text cf-btn--raised" onClick={save}>Save</button>
+    <Button raised label="Save" onClick={save} />
   </div>
 );
 AccountFormView.propTypes = {

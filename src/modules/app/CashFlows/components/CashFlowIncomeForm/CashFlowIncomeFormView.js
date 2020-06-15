@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@morenobr/guideline-react';
 import SelectField from '../../../../utils/components/SelectField';
 import DateTimePicker from '../../../../utils/components/DateTimePicker';
 import './CashFlowIncomeFormView.scss';
@@ -51,9 +52,9 @@ const CashFlowIncomeFormView = ({
     <input placeholder="Value" name="value" type="number" label="Value" value={value} onChange={onChangeValue} />
     <br />
     <br />
-    <button
-      type="button"
-      className="cf-btn cf-btn--block cf-btn--text cf-btn--raised"
+    <Button
+      raised
+      label={edit ? 'Update' : 'Create'}
       onClick={save({
         accountId,
         inOut,
@@ -61,9 +62,7 @@ const CashFlowIncomeFormView = ({
         dateTime,
         cashFlowDescriptionId,
       })}
-    >
-      {edit ? 'Update' : 'Create'}
-    </button>
+    />
   </div>
 );
 CashFlowIncomeFormView.propTypes = {

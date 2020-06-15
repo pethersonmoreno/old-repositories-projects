@@ -2,8 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import MainRouter from './modules/router/components/MainRouter';
 import { RootRouter } from './modules/router/components';
-import './modules/utils/styles/index.scss';
 import store from './store';
+import '@morenobr/guideline-style/all.min.css';
+import './modules/utils/styles/index.scss';
 
 
 const App = () => (

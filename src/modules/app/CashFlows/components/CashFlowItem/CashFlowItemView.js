@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { IconButton } from '@morenobr/guideline-react';
 import runIfPressEnterOrSpace from '../../../../utils/helpers/runIfPressEnterOrSpace';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
 import './CashFlowItemView.scss';
@@ -48,16 +49,14 @@ const CashFlowItemView = ({
         onKeyDown={runIfPressEnterOrSpace(showMenuItem)}
         onClick={showMenuItem}
       >
-        <button
-          type="button"
+        <IconButton
+          icon="delete"
           onClick={e => {
             e.preventDefault();
             e.stopPropagation();
             remove(cashFlow)();
           }}
-        >
-          Remove
-        </button>
+        />
         {/* <MenuButton
           id={`menu-button-${cashFlow.id}`}
           icon
