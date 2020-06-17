@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { useDispatch } from 'react-redux';
+import {
+  List, ListItem, ListDivider
+} from '@morenobr/guideline-react';
 import { useCashFlowListMonth, useCashFlowsCurrentMonth } from '../../selectors/selectorsCashFlows';
 import useCashFlowDescriptionsList from '../../../../utils/hooks/useCashFlowDescriptionsList';
 import formatMoneyValue from '../../../../utils/helpers/formatMoneyValue';
@@ -62,61 +65,73 @@ const CashFlowsReport = () => {
           showMonthYearPicker
         />
       </div>
-      <h2>Negative Descriptions</h2>
-      <table className="cf-table">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {negativeDescriptions.map(group => (
-            <tr key={group.cashFlowDescriptionId}>
-              <td>
-                {getCashFlowDescription(cashFlowDescriptionsList, group.cashFlowDescriptionId)}
-              </td>
-              <td>{formatMoneyValue(group.value)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2>Positive Descriptions</h2>
-      <table className="cf-table">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {positiveDescriptions.map(group => (
-            <tr key={group.cashFlowDescriptionId}>
-              <td>
-                {getCashFlowDescription(cashFlowDescriptionsList, group.cashFlowDescriptionId)}
-              </td>
-              <td>{formatMoneyValue(group.value)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <h2>Total</h2>
-      <table className="cf-table">
-        <tbody>
-          <tr>
-            <td>Negative</td>
-            <td>
+      <ListDivider />
+      {negativeDescriptions.length > 0 && (
+        <>
+          <List nonInteractive>
+            <ListItem
+              text={<h2>Negative Descriptions</h2>}
+            />
+            {negativeDescriptions.map((group, index) => (
+              <>
+                {index > 0 && <ListDivider asItem />}
+                <ListItem
+                  key={group.cashFlowDescriptionId}
+                  text={getCashFlowDescription(
+                    cashFlowDescriptionsList, group.cashFlowDescriptionId
+                  )}
+                  contentRight={<span>{formatMoneyValue(group.value)}</span>}
+                />
+              </>
+            ))}
+          </List>
+          <ListDivider />
+        </>
+      )}
+      {positiveDescriptions.length > 0 && (
+        <>
+          <List nonInteractive>
+            <ListItem
+              text={<h2>Positive Descriptions</h2>}
+            />
+            {positiveDescriptions.map((group, index) => (
+              <>
+                {index > 0 && <ListDivider asItem />}
+                <ListItem
+                  key={group.cashFlowDescriptionId}
+                  text={getCashFlowDescription(
+                    cashFlowDescriptionsList, group.cashFlowDescriptionId
+                  )}
+                  contentRight={<span>{formatMoneyValue(group.value)}</span>}
+                />
+              </>
+            ))}
+          </List>
+          <ListDivider />
+        </>
+      )}
+      <List nonInteractive>
+        <ListItem
+          text={<h2>Total</h2>}
+        />
+        <ListItem
+          text="Negative"
+          contentRight={(
+            <span>
               {formatMoneyValue(negativeDescriptions.reduce((sum, group) => sum + group.value, 0))}
-            </td>
-          </tr>
-          <tr>
-            <td>Positive</td>
-            <td>
+            </span>
+          )}
+        />
+        <ListDivider asItem />
+        <ListItem
+          text="Positive"
+          contentRight={(
+            <span>
               {formatMoneyValue(positiveDescriptions.reduce((sum, group) => sum + group.value, 0))}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </span>
+          )}
+        />
+      </List>
     </div>
   );
 };

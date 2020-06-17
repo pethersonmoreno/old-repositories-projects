@@ -16,9 +16,7 @@ const AppContent = ({
       navigationIconButton={drawerAlwaysVisible ? undefined : <IconButton aria-label="Open navigation menu" icon="menu" onClick={openMenu} />}
     />
     <div className="cf-paper">
-      <div className="cf-paper" style={{ marginTop: '80px' }}>
-        {children}
-      </div>
+      {children}
     </div>
   </div>
 );

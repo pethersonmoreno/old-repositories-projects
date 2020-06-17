@@ -1,68 +1,51 @@
 .cashFlowItem {
-  cursor: pointer;
+  >.text{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  &:hover {
-    background-color: #eeeeee;
-  }
+    &>.descriptions {
+      display: block;
+      flex: 1;
+      padding: 15px 0;
 
-  &:focus {
-    background-color: #cccccc;
-  }
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &>.actions {
-
-    @media (max-width: 799px) {
-      width: 0px;
-
-      button {
-        visibility: hidden
+      &>.description {
+        display: block;
+        color: #000000;
+        font-size: 15px;
+        font-weight: bold;
       }
 
-      .md-layover-child {
-        z-index: unset;
-      }
-    }
-  }
-
-  &>.descriptions {
-    flex: 1;
-    padding: 15px 0 15px 10px;
-
-    &>.description {
-      color: #000000;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    &>.account {
-      color: #999999;
-      font-size: 12px;
-    }
-  }
-
-  &>.valueType {
-    display: block;
-    padding: 15px 10px 15px 0;
-
-    &>.value {
-      color: #bb0000;
-      text-align: right;
-      font-size: 15px;
-      font-weight: bold;
-
-      &.received {
-        color: #00bb00;
+      &>.account {
+        display: block;
+        color: #999999;
+        font-size: 12px;
       }
     }
 
-    &>.type {
-      text-align: right;
-      color: #999999;
-      font-size: 12px;
+    &>.valueType {
+      display: block;
+      padding: 15px 10px 15px 0;
+
+      &>.value {
+        display: block;
+        color: #bb0000;
+        text-align: right;
+        font-size: 15px;
+        font-weight: bold;
+
+        &.received {
+          color: #00bb00;
+        }
+      }
+
+      &>.type {
+        display: block;
+        text-align: right;
+        color: #999999;
+        font-size: 12px;
+      }
     }
   }
 }

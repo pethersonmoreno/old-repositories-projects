@@ -1,31 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FloatingActionButton, IconButton } from '@morenobr/guideline-react';
+import {
+  IconButton, List, ListItem, ListDivider
+} from '@morenobr/guideline-react';
 
 const CashFlowDescriptionsListView = ({
   add, edit, remove, list
 }) => (
   <div className="cf-paper">
-    <table className="cf-table">
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {list.map(cashFlowDescription => (
-          <tr key={cashFlowDescription.id}>
-            <td>
-              <IconButton icon="edit" onClick={edit(cashFlowDescription)} />
-              <IconButton icon="restore_from_trash" onClick={remove(cashFlowDescription)} />
-            </td>
-            <td>{cashFlowDescription.name}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <FloatingActionButton icon="add" onClick={add} />
+    <List>
+      <ListItem
+        text="Description"
+        disabled
+        contentRight={<IconButton secondary icon="add_circle" onClick={add} />}
+      />
+      {list.map((cashFlowDescription, index) => (
+        <>
+          {index > 0 && <ListDivider asItem />}
+          <ListItem
+            key={cashFlowDescription.id}
+            text={cashFlowDescription.name}
+            onClick={edit(cashFlowDescription)}
+            contentRight={<IconButton primary icon="delete" onClick={remove(cashFlowDescription)} />}
+          />
+        </>
+      ))}
+    </List>
   </div>
 );
 
