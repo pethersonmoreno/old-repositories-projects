@@ -10,8 +10,9 @@ import { useAccount } from '../../selectors/selectorsAccounts';
 import useInputValue from '../../../../utils/hooks/useInputValue';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
 import * as actions from '../../actions/actionsAccounts';
+import AppContentWithMenuButton from '../../../../common/AppContentWithMenuButton';
 
-const AccountFormController = ({ match: { params: { id } }, history }) => {
+const AccountFormController = ({ match: { params: { id } }, history, ...otherProps }) => {
   const dispatch = useDispatch();
   const token = useToken();
   const [description, onChangeDescription, setDescription] = useInputValue('');
@@ -47,16 +48,19 @@ const AccountFormController = ({ match: { params: { id } }, history }) => {
     }
   };
   return (
-    <AccountFormView
-      description={description}
-      onChangeDescription={onChangeDescription}
-      currentValue={currentValue}
-      onChangeCurrentValue={onChangeCurrentValue}
-      personId={personId}
-      onChangePersonId={onChangePersonId}
-      peopleList={peopleList}
-      save={saveRegistry}
-    />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <AppContentWithMenuButton {...otherProps} title={`Account ${description}`} contextBack="/accounts">
+      <AccountFormView
+        description={description}
+        onChangeDescription={onChangeDescription}
+        currentValue={currentValue}
+        onChangeCurrentValue={onChangeCurrentValue}
+        personId={personId}
+        onChangePersonId={onChangePersonId}
+        peopleList={peopleList}
+        save={saveRegistry}
+      />
+    </AppContentWithMenuButton>
   );
 };
 AccountFormController.propTypes = {

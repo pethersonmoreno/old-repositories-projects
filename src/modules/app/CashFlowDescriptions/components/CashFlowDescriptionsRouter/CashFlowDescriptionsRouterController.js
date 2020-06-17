@@ -4,11 +4,10 @@ import SwitchRouterRoutes from '../../../../utils/components/SwitchRouterRoutes'
 import NotFound from '../../../../utils/components/NotFound';
 import CashFlowDescriptionsList from '../CashFlowDescriptionsList';
 import CashFlowDescriptionForm from '../CashFlowDescriptionForm';
-import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
 import useSubscribeCashFlowDescriptionsFirestore from '../../hooks/useSubscribeCashFlowDescriptionsFirestore';
+import AppContentWithMenuButton from '../../../../common/AppContentWithMenuButton';
 
-const CashFlowDescriptionsRouterController = ({ match }) => {
-  useSetPageTitle('Cash Flow Descriptions');
+const CashFlowDescriptionsRouterController = ({ match, ...otherProps }) => {
   useSubscribeCashFlowDescriptionsFirestore();
   const routes = [
     { path: match.path, exact: true, component: CashFlowDescriptionsList },
@@ -17,7 +16,10 @@ const CashFlowDescriptionsRouterController = ({ match }) => {
     { component: NotFound }
   ];
   return (
-    <SwitchRouterRoutes routes={routes} />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <AppContentWithMenuButton {...otherProps} title="Cash Flow Descriptions">
+      <SwitchRouterRoutes routes={routes} />
+    </AppContentWithMenuButton>
   );
 };
 

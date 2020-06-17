@@ -7,8 +7,9 @@ import getMessageFromError from '../../../../utils/helpers/getMessageFromError';
 import AccountsListView from './AccountsListView';
 import { useToken } from '../../../../auth/selectors/selectorsAuth';
 import * as actions from '../../actions/actionsAccounts';
+import AppContentWithMenuButton from '../../../../common/AppContentWithMenuButton';
 
-const AccountsListController = ({ match, history }) => {
+const AccountsListController = ({ match, history, ...otherProps }) => {
   const dispatch = useDispatch();
   const token = useToken();
   const [list] = useAccountsList();
@@ -24,12 +25,15 @@ const AccountsListController = ({ match, history }) => {
     }
   };
   return (
-    <AccountsListView
-      add={goAdd}
-      edit={goEdit}
-      remove={deleteRegistry}
-      list={list}
-    />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <AppContentWithMenuButton {...otherProps} title="Accounts">
+      <AccountsListView
+        add={goAdd}
+        edit={goEdit}
+        remove={deleteRegistry}
+        list={list}
+      />
+    </AppContentWithMenuButton>
   );
 };
 

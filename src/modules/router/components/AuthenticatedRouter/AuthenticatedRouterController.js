@@ -3,7 +3,7 @@ import SwitchRouterRoutes from '../../../utils/components/SwitchRouterRoutes';
 import { authenticatedRoutes } from '../../constants';
 import NotFound from '../../../utils/components/NotFound';
 
-const AuthenticatedRouterController = () => {
+const AuthenticatedRouterController = props => {
   const routes = [
     ...Object.keys(authenticatedRoutes).map(key => ({
       path: key,
@@ -12,7 +12,8 @@ const AuthenticatedRouterController = () => {
     { component: NotFound }
   ];
   return (
-    <SwitchRouterRoutes routes={routes} />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <SwitchRouterRoutes {...props} routes={routes} />
   );
 };
 

@@ -4,12 +4,10 @@ import SwitchRouterRoutes from '../../../../utils/components/SwitchRouterRoutes'
 import NotFound from '../../../../utils/components/NotFound';
 import AccountsList from '../AccountsList';
 import AccountForm from '../AccountForm';
-import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
 import useSubscribePeopleFirestore from '../../../../utils/hooks/useSubscribePeopleFirestore';
 import useSubscribeAccountsFirestore from '../../hooks/useSubscribeAccountsFirestore';
 
-const AccountsRouterController = ({ match }) => {
-  useSetPageTitle('Accounts');
+const AccountsRouterController = ({ match, ...otherProps }) => {
   useSubscribePeopleFirestore();
   useSubscribeAccountsFirestore();
   const routes = [
@@ -19,7 +17,8 @@ const AccountsRouterController = ({ match }) => {
     { component: NotFound }
   ];
   return (
-    <SwitchRouterRoutes routes={routes} />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <SwitchRouterRoutes {...otherProps} routes={routes} />
   );
 };
 

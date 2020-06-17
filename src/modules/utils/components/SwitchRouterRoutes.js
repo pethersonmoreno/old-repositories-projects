@@ -4,24 +4,22 @@ import {
   Switch, Route, Redirect
 } from 'react-router-dom';
 
-const SwitchRouterRoutes = ({ routes }) => (
+const SwitchRouterRoutes = ({ routes, ...otherProps }) => (
   <Switch>
-    {routes.map(route => {
-      let render;
-      if (route.redirectTo) {
-        const redirectRender = () => <Redirect to={route.redirectTo} />;
-        render = redirectRender;
-      }
-      return (
-        <Route
-          key={route}
-          path={route.path}
-          exact={route.exact}
-          component={route.component}
-          render={render}
-        />
-      );
-    })}
+    {routes.map(route => (
+      <Route
+        key={route}
+        path={route.path}
+        exact={route.exact}
+        render={props => {
+          if (route.redirectTo) {
+            return <Redirect to={route.redirectTo} />;
+          }
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          return <route.component {...props} {...otherProps} />;
+        }}
+      />
+    ))}
   </Switch>
 );
 SwitchRouterRoutes.propTypes = {

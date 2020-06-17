@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SwitchRouterRoutes from '../../../../utils/components/SwitchRouterRoutes';
 import NotFound from '../../../../utils/components/NotFound';
-import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
 import CashFlowsListPage from '../CashFlowsListPage';
 import CashFlowsReport from '../CashFlowsReport';
 import CashFlowIncomeForm from '../CashFlowIncomeForm';
@@ -12,9 +11,9 @@ import useSubscribePeopleFirestore from '../../../../utils/hooks/useSubscribePeo
 import useSubscribeCashFlowDescriptionsFirestore from '../../../../utils/hooks/useSubscribeCashFlowDescriptionsFirestore';
 import useSubscribeAccountsFirestore from '../../../../utils/hooks/useSubscribeAccountsFirestore';
 import useSubscribeCashFlowsFirestore from '../../hooks/useSubscribeCashFlowsFirestore';
+import AppContentWithMenuButton from '../../../../common/AppContentWithMenuButton';
 
-const CashFlowsRouterController = ({ match }) => {
-  useSetPageTitle('Cash Flows');
+const CashFlowsRouterController = ({ match, ...otherProps }) => {
   useSubscribePeopleFirestore();
   useSubscribeAccountsFirestore();
   useSubscribeCashFlowDescriptionsFirestore();
@@ -28,7 +27,10 @@ const CashFlowsRouterController = ({ match }) => {
     { component: NotFound }
   ];
   return (
-    <SwitchRouterRoutes routes={routes} />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <AppContentWithMenuButton {...otherProps} title="Cash Flows">
+      <SwitchRouterRoutes routes={routes} />
+    </AppContentWithMenuButton>
   );
 };
 

@@ -4,11 +4,11 @@ import SwitchRouterRoutes from '../../../../utils/components/SwitchRouterRoutes'
 import NotFound from '../../../../utils/components/NotFound';
 import PeopleList from '../list';
 import PersonForm from '../form';
-import useSetPageTitle from '../../../../appCover/hooks/useSetPageTitle';
 import useSubscribePeopleFirestore from '../../hooks/useSubscribePeopleFirestore';
+import AppContentWithMenuButton from '../../../../common/AppContentWithMenuButton';
 
-const PeopleRouterController = ({ match }) => {
-  useSetPageTitle('People');
+// eslint-disable-next-line react/prop-types
+const PeopleRouterController = ({ match, ...otherProps }) => {
   useSubscribePeopleFirestore();
   const routes = [
     { path: match.path, exact: true, component: PeopleList },
@@ -17,7 +17,10 @@ const PeopleRouterController = ({ match }) => {
     { component: NotFound }
   ];
   return (
-    <SwitchRouterRoutes routes={routes} />
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <AppContentWithMenuButton {...otherProps} title="People">
+      <SwitchRouterRoutes routes={routes} />
+    </AppContentWithMenuButton>
   );
 };
 
