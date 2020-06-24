@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  docker-server:
+    #direct call example
+    #docker run --privileged -p 12375:2375 -e DOCKER_TLS_CERTDIR="" docker:dind
+    image: docker:dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    networks:
+      - jenkins-network
+  jenkins:
+    build:
+      context: ./
+      dockerfile: DockerfileJenkins
+    ports:
+      - "50000:50000"
+      #- "8081:8080"
+      - "8083:8083"
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+    networks:
+      - jenkins-network
+
+networks: 
+  jenkins-network:
+    driver: bridge
