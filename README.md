@@ -35,3 +35,4 @@ License
 ----
 
 GPL
+test
