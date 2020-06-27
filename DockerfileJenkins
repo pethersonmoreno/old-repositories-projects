@@ -23,12 +23,12 @@ RUN curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-co
 # give jenkins docker rights
 RUN usermod -aG docker jenkins
 
-#Configure Jenkins to HTTPS internal certificate
-RUN mkdir /jenkins-certificate \
-	&& keytool -genkey -keyalg RSA -alias selfsigned -keystore /jenkins-certificate/jenkins_keystore.jks -storepass cert-jenkins-password -keysize 4096 \
-	-dname "c=BR, st=SP, l=Campinas, o=My Jenkins Server, ou=DevOps, cn=local.server.jenkins.br, emailAddress=br@local.server.jenkins.br" \
-	&& keytool -importkeystore -srckeystore /jenkins-certificate/jenkins_keystore.jks -srcstorepass cert-jenkins-password -deststorepass cert-jenkins-password -destkeystore /jenkins-certificate/jenkins_keystore.jks -deststoretype pkcs12
-ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/jenkins-certificate/jenkins_keystore.jks --httpsKeyStorePassword=cert-jenkins-password
+# #Configure Jenkins to HTTPS internal certificate
+# RUN mkdir /jenkins-certificate \
+# 	&& keytool -genkey -keyalg RSA -alias selfsigned -keystore /jenkins-certificate/jenkins_keystore.jks -storepass cert-jenkins-password -keysize 4096 \
+# 	-dname "c=BR, st=SP, l=Campinas, o=My Jenkins Server, ou=DevOps, cn=local.server.jenkins.br, emailAddress=br@local.server.jenkins.br" \
+# 	&& keytool -importkeystore -srckeystore /jenkins-certificate/jenkins_keystore.jks -srcstorepass cert-jenkins-password -deststorepass cert-jenkins-password -destkeystore /jenkins-certificate/jenkins_keystore.jks -deststoretype pkcs12
+# ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/jenkins-certificate/jenkins_keystore.jks --httpsKeyStorePassword=cert-jenkins-password
+# EXPOSE 8083
 
 USER jenkins
-EXPOSE 8083
