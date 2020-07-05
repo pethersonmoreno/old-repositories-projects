@@ -1,5 +1,11 @@
 ---
 - hosts: database
+  handlers:
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted
+      become: yes
   tasks: 
     - name: 'Instala pacotes de dependencia do sistema operacional'
       apt:
@@ -24,6 +30,34 @@
         priv: 'wordpress_db.*:ALL'
         state: present
         update_password: always
+        host: "{{ item }}"
+      with_items:
+        - "localhost"
+        - '127.0.0.1'
+        - '172.17.177.40'
+
+    - name: 'Configura MySQL para aceitar conexões remotas'
+      replace:
+        path: '/etc/mysql/my.cnf'
+        after: 'bind-address\s+=\s+'
+        before: "\n"
+        regexp: "^127\\.0\\.0\\.1$"
+        replace: "0.0.0.0"
+        backup: yes
+      become: yes
+      notify:
+        - restart mysql
+    
+    # - name: Allow all access to tcp port 3306 from local and 172.17.177.40
+    #   ufw:
+    #     rule: allow
+    #     port: '3306'
+    #     proto: tcp
+    #     from_ip: '{{ item }}'
+    #   become: yes
+    #   loop:
+    #     - 127.0.0.1/32
+    #     - 172.17.177.40/32
 
 - hosts: wordpress
   handlers:
@@ -42,27 +76,9 @@
           - php5-gd
           - libssh2-php
           - php5-mcrypt
-          - mysql-server-5.6
-          - python-mysqldb
           - php5-mysql
         state: latest
       become: yes
-
-    - name: 'Cria o banco do MySQL'
-      mysql_db: 
-        name: wordpress_db
-        login_user: root
-        state: present
-
-    - name: 'Cria o usuário do MySQL'
-      no_log: true
-      mysql_user:
-        login_user: root
-        name: wordpress_user
-        password: '12345'
-        priv: 'wordpress_db.*:ALL'
-        state: present
-        update_password: always
 
     - name: 'Baixa o arquivo de instalacao do Wordpress'
       get_url:
@@ -95,6 +111,7 @@
         - { regex: 'database_name_here', value: 'wordpress_db'}
         - { regex: 'username_here', value: 'wordpress_user'}
         - { regex: 'password_here', value: '12345'}
+        - { regex: 'localhost', value: '172.17.177.42'}
       become: yes
 
     - name: 'Configura Apache para servir o Wordpress'
