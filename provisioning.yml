@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks: 
+   - name: 'Instala o PHP5'
+     apt:
+       name: php5
+       state: latest
+     become: yes
