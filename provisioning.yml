@@ -1,5 +1,11 @@
 ---
 - hosts: all
+  handlers:
+    - name: restart apache
+      service:
+        name: apache2
+        state: restarted
+      become: yes
   tasks: 
     - name: 'Instala pacotes de dependencia do sistema operacional'
       apt:
@@ -34,7 +40,9 @@
 
     - name: 'Baixa o arquivo de instalacao do Wordpress'
       get_url:
-        url: 'https://wordpress.org/latest.tar.gz'
+        # url: 'https://wordpress.org/latest.tar.gz'
+        # changed to match current PHP latest Version in virtual machine
+        url: 'https://wordpress.org/wordpress-5.1.6.tar.gz'
         dest: '/tmp/wordpress.tar.gz'
 
     - name: 'Descompacta o wordpress'
@@ -62,3 +70,24 @@
         - { regex: 'username_here', value: 'wordpress_user'}
         - { regex: 'password_here', value: '12345'}
       become: yes
+
+    - name: 'Configura Apache para servir o Wordpress'
+      copy:
+        src: 'files/000-default.conf'
+        dest: '/etc/apache2/sites-available/000-default.conf'
+      become: yes
+      notify:
+        - restart apache
+
+    # # Other way to configure apache using regex
+    # - name: 'Configura Apache para servir o Wordpress'
+    #   replace:
+    #     path: '/etc/apache2/sites-available/000-default.conf'
+    #     after: 'DocumentRoot '
+    #     before: "\n"
+    #     regexp: "^.+$"
+    #     replace: "/var/www/wordpress"
+    #     backup: yes
+    #   become: yes
+    #   notify:
+    #     - restart apache
