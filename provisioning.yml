@@ -1,5 +1,31 @@
 ---
-- hosts: all
+- hosts: database
+  tasks: 
+    - name: 'Instala pacotes de dependencia do sistema operacional'
+      apt:
+        name:
+          - mysql-server-5.6
+          - python-mysqldb
+        state: latest
+      become: yes
+
+    - name: 'Cria o banco do MySQL'
+      mysql_db: 
+        name: wordpress_db
+        login_user: root
+        state: present
+
+    - name: 'Cria o usuário do MySQL'
+      no_log: true
+      mysql_user:
+        login_user: root
+        name: wordpress_user
+        password: '12345'
+        priv: 'wordpress_db.*:ALL'
+        state: present
+        update_password: always
+
+- hosts: wordpress
   handlers:
     - name: restart apache
       service:
