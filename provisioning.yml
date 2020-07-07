@@ -114,9 +114,19 @@
         - { regex: 'localhost', value: "{{ wp_db_ip }}"}
       become: yes
 
-    - name: 'Configura Apache para servir o Wordpress'
-      copy:
-        src: 'files/000-default.conf'
+    # # Old version using only copy
+    # - name: 'Configura Apache para servir o Wordpress'
+    #   copy:
+    #     src: 'files/000-default.conf'
+    #     dest: "{{ wp_apache_sites_available }}/000-default.conf"
+    #   become: yes
+    #   notify:
+    #     - restart apache
+
+    # Changed copy to use template
+    - name: ' Configura Apache para servir o Wordpress'
+      template:
+        src: 'templates/000-default.conf.j2'
         dest: "{{ wp_apache_sites_available }}/000-default.conf"
       become: yes
       notify:
