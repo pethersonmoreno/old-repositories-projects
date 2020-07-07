@@ -26,7 +26,7 @@
       mysql_user:
         login_user: root
         name: "{{ wp_username }}"
-        password: '12345'
+        password: "{{ wp_user_password }}"
         priv: "{{ wp_db_name }}.*:ALL"
         state: present
         update_password: always
@@ -34,7 +34,7 @@
       with_items:
         - "localhost"
         - '127.0.0.1'
-        - '172.17.177.40'
+        - "{{ wp_host_ip }}"
 
     - name: 'Configura MySQL para aceitar conexões remotas'
       replace:
@@ -48,7 +48,7 @@
       notify:
         - restart mysql
     
-    # - name: Allow all access to tcp port 3306 from local and 172.17.177.40
+    # - name: Allow all access to tcp port 3306 from local and wp_host_ip
     #   ufw:
     #     rule: allow
     #     port: '3306'
@@ -57,7 +57,7 @@
     #   become: yes
     #   loop:
     #     - 127.0.0.1/32
-    #     - 172.17.177.40/32
+    #     - "{{ wp_host_ip }}"/32
 
 - hosts: wordpress
   handlers:
@@ -95,29 +95,29 @@
       become: yes
 
     - copy:
-        src: '/var/www/wordpress/wp-config-sample.php'
-        dest: '/var/www/wordpress/wp-config.php'
+        src: "{{ wp_installation_dir }}/wp-config-sample.php"
+        dest: "{{ wp_installation_dir }}/wp-config.php"
         remote_src: yes
         force: no
       become: yes
 
     - name: 'Configura o wp-config com as entradas do banco de dados'     
       replace:
-        path: '/var/www/wordpress/wp-config.php'
+        path: "{{ wp_installation_dir }}/wp-config.php"
         regexp: "{{ item.regex }}"
         replace: "{{ item.value }}"
         backup: yes
       with_items:
         - { regex: 'database_name_here', value: "{{ wp_db_name }}"}
         - { regex: 'username_here', value: "{{ wp_username }}"}
-        - { regex: 'password_here', value: '12345'}
-        - { regex: 'localhost', value: '172.17.177.42'}
+        - { regex: 'password_here', value: "{{ wp_user_password }}"}
+        - { regex: 'localhost', value: "{{ wp_db_ip }}"}
       become: yes
 
     - name: 'Configura Apache para servir o Wordpress'
       copy:
         src: 'files/000-default.conf'
-        dest: '/etc/apache2/sites-available/000-default.conf'
+        dest: "{{ wp_apache_sites_available }}/000-default.conf"
       become: yes
       notify:
         - restart apache
@@ -125,11 +125,11 @@
     # # Other way to configure apache using regex
     # - name: 'Configura Apache para servir o Wordpress'
     #   replace:
-    #     path: '/etc/apache2/sites-available/000-default.conf'
+    #     path: "{{ wp_apache_sites_available }}/000-default.conf"
     #     after: 'DocumentRoot '
     #     before: "\n"
     #     regexp: "^.+$"
-    #     replace: "/var/www/wordpress"
+    #     replace: "{{ wp_installation_dir }}"
     #     backup: yes
     #   become: yes
     #   notify:
