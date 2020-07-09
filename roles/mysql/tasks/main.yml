@@ -24,8 +24,6 @@
     update_password: always
     host: "{{ item }}"
   with_items:
-    - "localhost"
-    - '127.0.0.1'
     - "{{ wp_host_ip }}"
 
 - name: 'Configura MySQL para aceitar conexões remotas'
