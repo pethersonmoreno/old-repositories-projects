@@ -21,12 +21,12 @@ const SelectField = ({
     }
   }, [setState, value]);
   const dropDownList = (
-    <select id={id} onChange={handleChange} placeholder={placeholder}>
+    <select id={id} onChange={handleChange} placeholder={placeholder} value={state}>
       {!data.find(item => state === item[dataValue]) && (
         <option value="">-- Select an option --</option>
       )}
       {data.map(item => (
-        <option key={item[dataValue]} value={item[dataValue]} selected={state === item[dataValue]}>
+        <option key={item[dataValue]} value={item[dataValue]}>
           {item[dataLabel]}
         </option>
       ))}
