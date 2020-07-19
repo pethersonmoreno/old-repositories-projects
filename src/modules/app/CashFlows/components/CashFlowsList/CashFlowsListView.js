@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   ListGroup, ListGroupItem, List, ListDivider,
@@ -14,16 +14,15 @@ const CashFlowsListView = ({ listsByDates, edit, remove }) => (
         <List twoLine withSelection>
           <ListDivider />
           {group.items.map(cashFlow => (
-            <>
+            <Fragment key={cashFlow.id}>
               <CashFlowItem
-                key={cashFlow.id}
                 className="item"
                 cashFlow={cashFlow}
                 edit={edit}
                 remove={remove}
               />
               <ListDivider />
-            </>
+            </Fragment>
           ))}
         </List>
       </ListGroupItem>
