@@ -11,7 +11,7 @@ const useSubscribePeopleFirestore = () => {
   const dispatch = useDispatch();
   const currentMonth = useCashFlowsCurrentMonth();
   const monthDateStart = moment(`${currentMonth}-01T00:00:00`);
-  const monthDateEndLimit = moment(monthDateStart).add('month', 1);
+  const monthDateEndLimit = moment(monthDateStart).add(1, 'month');
   useEffect(() => {
     const unsubscribeFirestore = firestore
       .collection(COLLECTION_NAME)
