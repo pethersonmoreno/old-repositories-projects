@@ -1,6 +1,6 @@
 #page-landing {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 
   display: flex;
   justify-content: center;
@@ -8,6 +8,10 @@
 
   color: var(--color-text-in-primary);
   background: var(--color-primary);
+}
+
+#page-landing-content {
+  margin-bottom: 1rem;
 }
 
 .logo-container img {
@@ -104,10 +108,11 @@
     grid-template-areas:
       "logo hero hero"
       "buttons buttons total";
+    margin-bottom: 0;
   }
 
   .logo-container {
-    grid-area: "logo";
+    grid-area: logo;
     align-self: center;
     text-align: left;
     margin: 0;
@@ -123,12 +128,12 @@
   }
 
   .hero-image {
-    grid-area: "hero";
+    grid-area: hero;
     justify-self: end;
   }
 
   .buttons-container {
-    grid-area: "buttons";
+    grid-area: buttons;
     justify-content: flex-start;
   }
 
@@ -137,7 +142,7 @@
   }
 
   .total-connections {
-    grid-area: "total";
+    grid-area: total;
     justify-self: end;
   }
 }
