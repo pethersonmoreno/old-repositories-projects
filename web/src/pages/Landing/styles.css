@@ -7,7 +7,7 @@
   align-items: center;
 
   color: var(--color-text-in-primary);
-  background: : var(--color-primary);
+  background: var(--color-primary);
 }
 
 .logo-container img {

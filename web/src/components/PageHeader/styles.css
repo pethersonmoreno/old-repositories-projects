@@ -20,7 +20,7 @@
 }
 
 .page-header .top-bar-container a:hover {
-  opacity 0.6;
+  opacity: 0.6;
 }
 
 .page-header .top-bar-container > img {
