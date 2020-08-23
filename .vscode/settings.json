@@ -4,6 +4,7 @@
         "cash-flow-api": true,
         "newschool-backend": true,
         "newschool-frontend": true,
+        "newschool-terraform": true,
         "nodeschool-campinas": true,
         "nodeschool-campinas-gatsby": true,
         "svelte-study": true,
