@@ -1,0 +1,17 @@
+{
+  "name": "shopping-cart",
+  "version": "1.0.0",
+  "description": "Shopping Cart coding problem",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine"
+  },
+  "author": "Petherson Moreno",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.5.3"
+  },
+  "engines": {
+    "node": ">=10.17 <=12.13"
+  }
+}
