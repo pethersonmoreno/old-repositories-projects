@@ -1,0 +1,6 @@
+# Codepipeline Settings
+s3_codepipeline_artifacts  = ""
+github_oauthtoken = ""
+github_owner = ""
+github_repo = ""
+github_branch = ""
