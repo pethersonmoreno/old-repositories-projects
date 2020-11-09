@@ -32,9 +32,13 @@ fn list_duplicate_files() {
             let digest = hash_file(entry.path()).unwrap();
             if dict.contains_key(digest.as_str()) {
                 let mut old_vector: Vec<String> = dict.get(digest.as_str()).unwrap().to_vec();
+                println!("F: {} - Q: {}", path_file, old_vector.len()+1);
                 old_vector.push(path_file);
+                dict.remove_key(digest.as_str());
+                dict.add(digest, old_vector);
             } else {
                 let mut new_vector: Vec<String> = Vec::<String>::new();
+                println!("F: {} - Q: {}", path_file, 1);
                 new_vector.push(path_file);
                 dict.add(digest, new_vector);
             }
