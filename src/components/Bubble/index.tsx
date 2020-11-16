@@ -1,19 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import './Bubble.css';
 
 function Bubble() {
-  const [on, setOn] = useState(false);
-  const onItem = useCallback(() => {
-    setOn(true);
-  }, []);
-  const onOutItem = useCallback(() => {
-    setOn(false);
-  }, []);
-
   return (
-    <div className="bubble" onMouseOver={onItem} onMouseOut={onOutItem} onFocus={onItem} onBlur={onOutItem}>
-      {!on && <span className="--default">Hello</span>}
-      {on && <span className="--mouse-over">Github</span>}
+    <div className="bubble">
+      <span className="__text __default">Hello</span>
+      <span className="__text __mouse-over">Github</span>
     </div>
   );
 }

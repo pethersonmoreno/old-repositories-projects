@@ -32,3 +32,4 @@ rules:
     - ignorePackages
     - ts: never
       tsx: never
+  jsx-a11y/control-has-associated-label: off
