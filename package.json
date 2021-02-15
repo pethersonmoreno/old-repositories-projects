@@ -1,0 +1,20 @@
+{
+  "name": "jdomingos-google-scripts",
+  "version": "0.0.1",
+  "description": "J Domingos Google Scripts",
+  "main": "src/index.ts",
+  "author": "Petherson Moreno (https://github.com/pethersonmoreno)",
+  "license": "MIT",
+  "scripts": {
+    "configure": "node createClaspJson.js && echo \"{\\\"scriptId\\\":\\\"$SCRIPT_ID\\\"}\" > .clasp.json && clasp setting rootDir dist/",
+    "watch": "watch 'npm run build && npm run push' src/",
+    "push": "HOME=`pwd` clasp push -f",
+    "build": "rm -rf dist && tsc && cp appsscript.json dist/"
+  },
+  "devDependencies": {
+    "@google/clasp": "^2.3.0",
+    "@types/google-apps-script": "^1.0.24",
+    "typescript": "^4.1.5",
+    "watch": "^1.0.2"
+  }
+}
