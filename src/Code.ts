@@ -3,7 +3,7 @@ var workerSpreadsheetId = "";
 var formId = "";
 
 function getChoicesLength(form: GoogleAppsScript.Forms.Form, item: GoogleAppsScript.Forms.MultipleChoiceItem){
-  Utilities.sleep(501);
+  Utilities.sleep(502);
   var formAgain = FormApp.openById(form.getId());
   var foundItem = formAgain.getItemById(item.getId());
   if (foundItem === null) {
