@@ -1,3 +1,12 @@
+type ParametersType = {
+  sheets: {
+      parameters: string;
+      collaborators: string;
+      workers: string;
+      collaboratorsDairy: string;
+  };
+  formId: string;
+};
 type Collaborator = {
   code: string;
   name: string;
@@ -14,7 +23,6 @@ type WorkerData = {
 const sheets = {
   collaborators: 'Colaboradores',
   workers: 'Obras',
-  data: 'Dados',
   collaboratorsDairy: 'Diárias dos Colaboradores',
   parameters: 'Parâmetros',
 };
@@ -28,12 +36,25 @@ const formCollaboratorsDairy = {
   }
 };
 const namedCells = {
+  sheetCollaborators: 'SHEET_COLLABORATORS',
+  sheetWorkers: 'SHEET_WORKERS',
+  sheetCollaboratorsDairy: 'SHEET_COLLABORATORS_DAIRY',
   formCollaboratorsDairyId: 'FORM_COLLABORATORS_DAIRY_ID',
 }
-function getParameters(){
-  const sheetParameters = UtilitiesSpreadsheet.getSheetByName(sheets.parameters);
-  const formId = sheetParameters.getRange(namedCells.formCollaboratorsDairyId).getValue() as string;
+function getParameters(): ParametersType{
+  const sheetsParameters = 'Parâmetros';
+  const sheetParametersObj = UtilitiesSpreadsheet.getSheetByName(sheetsParameters);
+  const sheetCollaborators = sheetParametersObj.getRange(namedCells.sheetCollaborators).getValue() as string;
+  const sheetWorkers = sheetParametersObj.getRange(namedCells.sheetWorkers).getValue() as string;
+  const sheetCollaboratorsDairy = sheetParametersObj.getRange(namedCells.sheetCollaboratorsDairy).getValue() as string;
+  const formId = sheetParametersObj.getRange(namedCells.formCollaboratorsDairyId).getValue() as string;
   return {
+    sheets: {
+      parameters: sheetsParameters,
+      collaborators: sheetCollaborators,
+      workers: sheetWorkers,
+      collaboratorsDairy: sheetCollaboratorsDairy,
+    },
     formId,
   };
 }
@@ -61,11 +82,19 @@ const localData = {
   collaborators: undefined as undefined | Collaborator[],
   workers: undefined as undefined | WorkerData[],
 };
-const data = {
-  collaborators: function(){
-    if(!localData.collaborators){
-      localData.collaborators =
-      UtilitiesSpreadsheet.getDataBySheetName(sheets.collaborators)
+class SheetData{
+  private parameters: ParametersType;
+  private _collaborators: undefined | Collaborator[];
+  private _workers: undefined | WorkerData[];
+  constructor(parameters: ParametersType){
+    this.parameters = parameters;
+    this._collaborators = undefined;
+    this._workers = undefined;
+  }
+  get collaborators(){
+    if(!this._collaborators){
+      this._collaborators =
+      UtilitiesSpreadsheet.getDataBySheetName(this.parameters.sheets.collaborators)
         .filter((value, index) => index > 0)
         .map(item => ({
           code: item[0],
@@ -74,12 +103,12 @@ const data = {
           status: item[3],
         } as Collaborator));
     }
-    return localData.collaborators;
-  },
-  workers: function() {
-    if(!localData.workers){
-      localData.workers =
-      UtilitiesSpreadsheet.getDataBySheetName(sheets.workers)
+    return this._collaborators;
+  }
+  get workers() {
+    if(!this._workers){
+      this._workers =
+      UtilitiesSpreadsheet.getDataBySheetName(this.parameters.sheets.workers)
         .filter((value, index) => index > 0)
         .map(item => ({
           code: item[0],
@@ -89,23 +118,23 @@ const data = {
           status: item[4]
         } as WorkerData));
     }
-    return localData.workers;
-  },
-  getCollaboratorByCode: function(code: string){
-    var found = data.collaborators().find(collaborator => collaborator.code === code);
+    return this._workers;
+  }
+  getCollaboratorByCode(code: string) {
+    var found = this.collaborators.find(collaborator => collaborator.code === code);
     if(!found){
       throw new Error('Not found collaborator with code '+code+'!')
     }
     return found;
-  },
-  getWorkerByCode: function(code: string){
-    var found = data.workers().find(worker => worker.code === code);
+  }
+  getWorkerByCode(code: string) {
+    var found = this.workers.find(worker => worker.code === code);
     if(!found){
       throw new Error('Not found worker with code '+code+'!')
     }
     return found;
-  },
-};
+  }
+}
 const FormUtilities = {
   hasSameChoices: function(
     form: GoogleAppsScript.Forms.Form,
@@ -187,8 +216,10 @@ const FormUtilities = {
   },
 };
 class FormCollaboratorsDairy{
+  private data: SheetData;
   private form: GoogleAppsScript.Forms.Form;
-  constructor(){
+  constructor(parameters: ParametersType){
+    this.data = new SheetData(parameters)
     this.form = null as unknown as GoogleAppsScript.Forms.Form;
   }
 
@@ -238,7 +269,7 @@ class FormCollaboratorsDairy{
   private addOrUpdateQuestionCollaborator() {
     const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.collaborator)
     item.setRequired(true);
-    var collaboratorsActive = data.collaborators().filter(item => item.status == 'Ativo');
+    var collaboratorsActive = this.data.collaborators.filter(item => item.status == 'Ativo');
     var choices = collaboratorsActive.map(function (collaborator){
       return item.createChoice(collaborator.code + ' - ' + collaborator.name);
     });
@@ -248,7 +279,7 @@ class FormCollaboratorsDairy{
   private addOrUpdateQuestionWorker() {
     const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.worker)
     item.setRequired(true);
-    var workersActive = data.workers().filter(item => item.status == 'Ativo');
+    var workersActive = this.data.workers.filter(item => item.status == 'Ativo');
     var choices = workersActive.map(function (worker) {
       return item.createChoice(worker.code + ' - ' + worker.title + ' - ' + worker.client);
     });
@@ -268,7 +299,8 @@ class FormCollaboratorsDairy{
 }
 
 function updateForm() {
-  const form = new FormCollaboratorsDairy();
+  const parameters = getParameters();
+  const form = new FormCollaboratorsDairy(parameters);
   form.updateForm();
 }
 
@@ -294,6 +326,8 @@ function createTriggers() {
 
 
 function onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
+  const parameters = getParameters();
+  const data = new SheetData(parameters)
   var formResponse = event.response;
   var itemResponses = formResponse.getItemResponses();
   var collaboratorCode = (itemResponses[0].getResponse() as string).split(' - ')[0];
@@ -315,7 +349,7 @@ function onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
   Logger.log(dataRange.getRowIndex() + dataRange.getNumRows() + 1);
   Logger.log(dataRange.getColumn());
   Logger.log(dataRange.getNumColumns());
-  const sheetData = UtilitiesSpreadsheet.getSheetByName(sheets.data);
+  const sheetData = UtilitiesSpreadsheet.getSheetByName(sheets.collaboratorsDairy);
   var rangeNewData = sheetData.getRange(
     dataRange.getRowIndex() + dataRange.getNumRows(),
     dataRange.getColumn(),
