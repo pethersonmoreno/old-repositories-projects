@@ -1,3 +1,16 @@
+type Collaborator = {
+  code: string;
+  name: string;
+  dailyRate: number;
+  status: 'Ativo' | 'Inativo';
+};
+type WorkerData = {
+  code: string;
+  title: string;
+  client: string;
+  location: string;
+  status: 'Ativo' | 'Inativo';
+};
 const sheets = {
   collaborators: 'Colaboradores',
   workers: 'Obras',
@@ -14,46 +27,36 @@ const formCollaboratorsDairy = {
     annotation: 'Anotação:',
   }
 };
-const spreadsheetId = "";
-var collaboratorSpreadsheetId = "";
-var workerSpreadsheetId = "";
-var formId = "";
-
-function getSheetByName(sheetName: string){
-  const sheetcollaborator = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-  if (sheetcollaborator === null){
-    throw new Error('Sheet "'+sheetName+'" not found');
-  }
-  return sheetcollaborator;
+const namedCells = {
+  formCollaboratorsDairyId: 'FORM_COLLABORATORS_DAIRY_ID',
 }
-
-function getDataBySheetName(sheetName: string) {
-  const sheet = getSheetByName(sheetName);
-  const dataRange = sheet.getDataRange();
-  
-  const data = sheet.getSheetValues(
-    dataRange.getRow(),
-    dataRange.getColumn(),
-    dataRange.getNumRows(),
-    dataRange.getNumColumns(),
-  );
-  return data;
+function getParameters(){
+  const sheetParameters = UtilitiesSpreadsheet.getSheetByName(sheets.parameters);
+  const formId = sheetParameters.getRange(namedCells.formCollaboratorsDairyId).getValue() as string;
+  return {
+    formId,
+  };
 }
-
-type Collaborator = {
-  code: string;
-  name: string;
-  dailyRate: number;
-  status: 'Ativo' | 'Inativo';
-};
-type WorkerData = {
-  code: string;
-  title: string;
-  client: string;
-  location: string;
-  status: string;
-};
-
+const UtilitiesSpreadsheet = {
+  getSheetByName: function(sheetName: string){
+    const sheetcollaborator = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+    if (sheetcollaborator === null){
+      throw new Error('Sheet "'+sheetName+'" not found');
+    }
+    return sheetcollaborator;
+  },
+  getDataBySheetName: function(sheetName: string) {
+    const sheet = this.getSheetByName(sheetName);
+    const dataRange = sheet.getDataRange();
+    
+    return sheet.getSheetValues(
+      dataRange.getRow(),
+      dataRange.getColumn(),
+      dataRange.getNumRows(),
+      dataRange.getNumColumns(),
+    );
+  },
+}
 const localData = {
   collaborators: undefined as undefined | Collaborator[],
   workers: undefined as undefined | WorkerData[],
@@ -62,7 +65,7 @@ const data = {
   collaborators: function(){
     if(!localData.collaborators){
       localData.collaborators =
-        getDataBySheetName(sheets.collaborators)
+      UtilitiesSpreadsheet.getDataBySheetName(sheets.collaborators)
         .filter((value, index) => index > 0)
         .map(item => ({
           code: item[0],
@@ -76,7 +79,7 @@ const data = {
   workers: function() {
     if(!localData.workers){
       localData.workers =
-        getDataBySheetName(sheets.workers)
+      UtilitiesSpreadsheet.getDataBySheetName(sheets.workers)
         .filter((value, index) => index > 0)
         .map(item => ({
           code: item[0],
@@ -103,145 +106,178 @@ const data = {
     return found;
   },
 };
-
-function getChoicesLength(form: GoogleAppsScript.Forms.Form, item: GoogleAppsScript.Forms.MultipleChoiceItem){
-  Utilities.sleep(502);
-  var formAgain = FormApp.openById(form.getId());
-  var foundItem = formAgain.getItemById(item.getId());
-  if (foundItem === null) {
-    return 0;
+const FormUtilities = {
+  hasSameChoices: function(
+    form: GoogleAppsScript.Forms.Form,
+    item: GoogleAppsScript.Forms.MultipleChoiceItem,
+    newChoices: GoogleAppsScript.Forms.Choice[]
+  ){
+    var formAgain = FormApp.openById(form.getId());
+    var foundItem = formAgain.getItemById(item.getId());
+    if (foundItem === null) {
+      return false;
+    }
+    var choices = foundItem.asMultipleChoiceItem().getChoices();
+    if(choices.length !== newChoices.length){
+      return false;
+    }
+    const isEqualNewChoices = choices.reduce((acc, choice, index) => {
+      if(!acc){
+        return false;
+      }
+      const newChoice = newChoices[index];
+      return (
+        choice.getValue() === newChoice.getValue()
+        && choice.getGotoPage() === newChoice.getGotoPage()
+        && choice.getPageNavigationType() === newChoice.getPageNavigationType()
+        && choice.isCorrectAnswer() === newChoice.isCorrectAnswer()
+      )
+    }, true);
+    return isEqualNewChoices;
+  },
+  setChoicesOnFormItem: function(
+    form: GoogleAppsScript.Forms.Form,
+    item: GoogleAppsScript.Forms.MultipleChoiceItem,
+    newChoices: GoogleAppsScript.Forms.Choice[],
+  ){
+    while(!this.hasSameChoices(form, item, newChoices)){
+      item.setChoices(newChoices);
+      Utilities.sleep(500);
+    }
+  },
+  removeQuestionsByCondition: function(form: GoogleAppsScript.Forms.Form, conditionFn: (item: GoogleAppsScript.Forms.Item) => boolean){
+    const items = form.getItems();
+    const itemsToRemove = items.
+      filter(item => conditionFn(item));
+    itemsToRemove.forEach(item => form.deleteItem(item));
+  },
+  getItemByQuestionTitle: function(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+    return form.getItems()
+    .find(item => questionTitle == item.getTitle())
+  },
+  getOrCreateMultipleChoiceItem: function(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+    const itemFound = this.getItemByQuestionTitle(form, questionTitle);
+    if (itemFound){
+      return itemFound.asMultipleChoiceItem();
+    } else {
+      const item = form.addMultipleChoiceItem();
+      item.setTitle(questionTitle);
+      return item;
+    }
+  },
+  getOrCreateDateItem: function(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+    const itemFound = this.getItemByQuestionTitle(form, questionTitle);
+    if (itemFound){
+      return itemFound.asDateItem();
+    } else {
+      const item = form.addDateItem();
+      item.setTitle(questionTitle);
+      return item;
+    }
+  },
+  getOrCreateTextItem: function(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+    const itemFound = this.getItemByQuestionTitle(form, questionTitle);
+    if (itemFound){
+      return itemFound.asTextItem();
+    } else {
+      const item = form.addTextItem();
+      item.setTitle(questionTitle);
+      return item;
+    }
+  },
+};
+class FormCollaboratorsDairy{
+  private form: GoogleAppsScript.Forms.Form;
+  constructor(){
+    this.form = null as unknown as GoogleAppsScript.Forms.Form;
   }
-  var choices = foundItem.asMultipleChoiceItem().getChoices()
-  return choices.length;
-}
-function setChoicesOnFormItem(
-	form: GoogleAppsScript.Forms.Form,
-	item: GoogleAppsScript.Forms.MultipleChoiceItem,
-	newChoices: GoogleAppsScript.Forms.Choice[],
-){
-  while(getChoicesLength(form, item) !== newChoices.length){
-    item.setChoices(newChoices);
+
+  updateForm() {
+    this.form = this.getOrCreateForm();
+    this.updateFormSettings();
+    this.removeUnusedQuestions();
+    this.addOrUpdateQuestionCollaborator();
+    this.addOrUpdateQuestionWorker();
+    this.addOrUpdateQuestionDate();
+    this.addOrUpdateQuestionAnnotation();
   }
-}
 
-function cleanForm(form: GoogleAppsScript.Forms.Form){
-  const items = form.getItems();
-  while(items.length > 0){
-  	const item = items.pop();
-  	if(item){
-    	form.deleteItem(item);	
-  	}
+  private getOrCreateForm() {
+    const parameters = getParameters();
+    if(parameters.formId){
+      const formFound = FormApp.openById(parameters.formId);
+      if(formFound){
+        return formFound;
+      }
+    }
+    const newForm = FormApp.create(formCollaboratorsDairy.title);
+
+    const sheetParameters = UtilitiesSpreadsheet.getSheetByName(sheets.parameters);
+    sheetParameters.getRange(namedCells.formCollaboratorsDairyId).setValue(newForm.getId());
+    return newForm;
   }
-}
-function removeUnusedQuestions(form: GoogleAppsScript.Forms.Form){
-  const items = form.getItems();
-  const formQuestionsTitles = Object
-    .keys(formCollaboratorsDairy.questions)
-    .map(key => (formCollaboratorsDairy.questions as any)[key] as string)
-  const itemsToRemove = items.
-    filter(item => formQuestionsTitles.indexOf(item.getTitle()) === -1);
-  itemsToRemove.forEach(item => form.deleteItem(item));
-}
 
-function getItemByQuestionTitle(form: GoogleAppsScript.Forms.Form, questionTitle: string){
-  return form.getItems()
-  .find(item => questionTitle == item.getTitle())
-}
-
-function getOrCreateMultipleChoiceItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
-  const itemFound = getItemByQuestionTitle(form, questionTitle);
-  if (itemFound){
-    return itemFound.asMultipleChoiceItem();
-  } else {
-    const item = form.addMultipleChoiceItem();
-    item.setTitle(questionTitle);
-    return item;
+  private updateFormSettings(){
+    // form.setRequireLogin(true);
+    this.form.setAllowResponseEdits(false);
+    this.form.setLimitOneResponsePerUser(false);
+    this.form.setShowLinkToRespondAgain(true);
+    this.form.setCollectEmail(false);
+    this.form.setTitle(formCollaboratorsDairy.title);
   }
-}
 
-function getOrCreateDateItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
-  const itemFound = getItemByQuestionTitle(form, questionTitle);
-  if (itemFound){
-    return itemFound.asDateItem();
-  } else {
-    const item = form.addDateItem();
-    item.setTitle(questionTitle);
-    return item;
+  private removeUnusedQuestions() {
+    const formQuestionsTitles = Object
+      .keys(formCollaboratorsDairy.questions)
+      .map(key => (formCollaboratorsDairy.questions as any)[key] as string);
+    return FormUtilities.removeQuestionsByCondition(this.form, item => 
+      formQuestionsTitles.indexOf(item.getTitle()) === -1
+    ); 
   }
-}
 
-function getOrCreateTextItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
-  const itemFound = getItemByQuestionTitle(form, questionTitle);
-  if (itemFound){
-    return itemFound.asTextItem();
-  } else {
-    const item = form.addTextItem();
-    item.setTitle(questionTitle);
-    return item;
+  private addOrUpdateQuestionCollaborator() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.collaborator)
+    item.setRequired(true);
+    var collaboratorsActive = data.collaborators().filter(item => item.status == 'Ativo');
+    var choices = collaboratorsActive.map(function (collaborator){
+      return item.createChoice(collaborator.code + ' - ' + collaborator.name);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
   }
-}
 
-function addOrUpdateQuestionCollaborator(form: GoogleAppsScript.Forms.Form){
-  const item = getOrCreateMultipleChoiceItem(form, formCollaboratorsDairy.questions.collaborator)
-  item.setRequired(true);
-  var collaboratorsActive = data.collaborators().filter(item => item.status == 'Ativo');
-  var choices = collaboratorsActive.map(function (collaborator){
-    return item.createChoice(collaborator.code + ' - ' + collaborator.name);
-  });
-  setChoicesOnFormItem(form, item, choices)
-}
+  private addOrUpdateQuestionWorker() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.worker)
+    item.setRequired(true);
+    var workersActive = data.workers().filter(item => item.status == 'Ativo');
+    var choices = workersActive.map(function (worker) {
+      return item.createChoice(worker.code + ' - ' + worker.title + ' - ' + worker.client);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
+  }
 
-function addOrUpdateQuestionWorker(form: GoogleAppsScript.Forms.Form){
-  const item = getOrCreateMultipleChoiceItem(form, formCollaboratorsDairy.questions.worker)
-  item.setRequired(true);
-  var workersActive = data.workers().filter(item => item.status == 'Ativo');
-  var choices = workersActive.map(function (worker) {
-    return item.createChoice(worker.code + ' - ' + worker.title + ' - ' + worker.client);
-  });
-  setChoicesOnFormItem(form, item, choices)
-}
+  private addOrUpdateQuestionDate() {
+    var item = FormUtilities.getOrCreateDateItem(this.form, formCollaboratorsDairy.questions.date);
+    item.setRequired(false);
+    item.setIncludesYear(true);
+  }
 
-function addOrUpdateQuestionDate(form: GoogleAppsScript.Forms.Form){
-  var item = getOrCreateDateItem(form, formCollaboratorsDairy.questions.date);
-  item.setRequired(false);
-  item.setIncludesYear(true);
-}
-function addOrUpdateQuestionAnnotation(form: GoogleAppsScript.Forms.Form){
-  var item = getOrCreateTextItem(form, formCollaboratorsDairy.questions.annotation)
-  form.addTextItem();
-  item.setRequired(false);
+  private addOrUpdateQuestionAnnotation() {
+    var item = FormUtilities.getOrCreateTextItem(this.form, formCollaboratorsDairy.questions.annotation)
+    item.setRequired(false);
+  }
 }
 
 function updateForm() {
-  const sheetParameters = getSheetByName(sheets.parameters);
-  let formId = sheetParameters.getRange('FORM_ID').getValue();
-  let form;
-  if(formId){
-    form = FormApp.openById(formId);
-  }
-  if (!form) {
-    form = FormApp.create(formCollaboratorsDairy.title);
-    sheetParameters.getRange('FORM_ID').setValue(form.getId());
-  }
-  // form.setRequireLogin(true);
-  form.setAllowResponseEdits(false);
-  form.setLimitOneResponsePerUser(false);
-  form.setShowLinkToRespondAgain(true);
-  form.setCollectEmail(false);
-  form.setTitle(formCollaboratorsDairy.title);
-  removeUnusedQuestions(form);
-  addOrUpdateQuestionCollaborator(form);
-  addOrUpdateQuestionWorker(form);
-  addOrUpdateQuestionDate(form);
-  addOrUpdateQuestionAnnotation(form);
+  const form = new FormCollaboratorsDairy();
+  form.updateForm();
 }
+
 
 function createTriggers() {
   var arraySpreadsheetIdsUpdatForm = [
-    collaboratorSpreadsheetId,
-    workerSpreadsheetId
+    SpreadsheetApp.getActiveSpreadsheet().getId(),
   ];
-  ScriptApp.getScriptTriggers().forEach(function (trigger){
+  ScriptApp.getProjectTriggers().forEach(function (trigger){
     if (trigger.getTriggerSource() === ScriptApp.TriggerSource.SPREADSHEETS){
       arraySpreadsheetIdsUpdatForm = arraySpreadsheetIdsUpdatForm.filter(function (id){
         return (id !== trigger.getTriggerSourceId())
@@ -274,12 +310,12 @@ function onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
 
   const collaborator = data.getCollaboratorByCode(collaboratorCode);
   const worker = data.getWorkerByCode(workerCode);
-  const dairySheet = getSheetByName(sheets.collaboratorsDairy);
+  const dairySheet = UtilitiesSpreadsheet.getSheetByName(sheets.collaboratorsDairy);
   var dataRange = dairySheet.getDataRange();
   Logger.log(dataRange.getRowIndex() + dataRange.getNumRows() + 1);
   Logger.log(dataRange.getColumn());
   Logger.log(dataRange.getNumColumns());
-  const sheetData = getSheetByName(sheets.data);
+  const sheetData = UtilitiesSpreadsheet.getSheetByName(sheets.data);
   var rangeNewData = sheetData.getRange(
     dataRange.getRowIndex() + dataRange.getNumRows(),
     dataRange.getColumn(),
