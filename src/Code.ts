@@ -1,6 +1,108 @@
+const sheets = {
+  collaborators: 'Colaboradores',
+  workers: 'Obras',
+  data: 'Dados',
+  collaboratorsDairy: 'Diárias dos Colaboradores',
+  parameters: 'Parâmetros',
+};
+const formCollaboratorsDairy = {
+  title: "Registro de Diária JDomingos",
+  questions: {
+    collaborator: 'Colaborador?',
+    worker: 'Obra?',
+    date: 'Data? (Não preencha para usar a data de hoje)',
+    annotation: 'Anotação:',
+  }
+};
+const spreadsheetId = "";
 var collaboratorSpreadsheetId = "";
 var workerSpreadsheetId = "";
 var formId = "";
+
+function getSheetByName(sheetName: string){
+  const sheetcollaborator = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  if (sheetcollaborator === null){
+    throw new Error('Sheet "'+sheetName+'" not found');
+  }
+  return sheetcollaborator;
+}
+
+function getDataBySheetName(sheetName: string) {
+  const sheet = getSheetByName(sheetName);
+  const dataRange = sheet.getDataRange();
+  
+  const data = sheet.getSheetValues(
+    dataRange.getRow(),
+    dataRange.getColumn(),
+    dataRange.getNumRows(),
+    dataRange.getNumColumns(),
+  );
+  return data;
+}
+
+type Collaborator = {
+  code: string;
+  name: string;
+  dailyRate: number;
+  status: 'Ativo' | 'Inativo';
+};
+type WorkerData = {
+  code: string;
+  title: string;
+  client: string;
+  location: string;
+  status: string;
+};
+
+const localData = {
+  collaborators: undefined as undefined | Collaborator[],
+  workers: undefined as undefined | WorkerData[],
+};
+const data = {
+  collaborators: function(){
+    if(!localData.collaborators){
+      localData.collaborators =
+        getDataBySheetName(sheets.collaborators)
+        .filter((value, index) => index > 0)
+        .map(item => ({
+          code: item[0],
+          name: item[1],
+          dailyRate: item[2],
+          status: item[3],
+        } as Collaborator));
+    }
+    return localData.collaborators;
+  },
+  workers: function() {
+    if(!localData.workers){
+      localData.workers =
+        getDataBySheetName(sheets.workers)
+        .filter((value, index) => index > 0)
+        .map(item => ({
+          code: item[0],
+          title: item[1],
+          client: item[2],
+          location: item[3],
+          status: item[4]
+        } as WorkerData));
+    }
+    return localData.workers;
+  },
+  getCollaboratorByCode: function(code: string){
+    var found = data.collaborators().find(collaborator => collaborator.code === code);
+    if(!found){
+      throw new Error('Not found collaborator with code '+code+'!')
+    }
+    return found;
+  },
+  getWorkerByCode: function(code: string){
+    var found = data.workers().find(worker => worker.code === code);
+    if(!found){
+      throw new Error('Not found worker with code '+code+'!')
+    }
+    return found;
+  },
+};
 
 function getChoicesLength(form: GoogleAppsScript.Forms.Form, item: GoogleAppsScript.Forms.MultipleChoiceItem){
   Utilities.sleep(502);
@@ -22,47 +124,8 @@ function setChoicesOnFormItem(
   }
 }
 
-function getCollaboratorData(){
-  var collaboratorSpreadsheet = SpreadsheetApp.openById(collaboratorSpreadsheetId);
-  var dataRange = collaboratorSpreadsheet.getDataRange();
-  
-  var data = collaboratorSpreadsheet.getSheetValues(
-    dataRange.getRow(),
-    dataRange.getColumn(),
-    dataRange.getNumRows(),
-    dataRange.getNumColumns(),
-  );
-  return data
-    .filter((value, index) => index > 0)
-    .map(item => ({
-      code: item[0],
-      name: item[1],
-      status: item[3],
-    }));
-}
-function getWorkerData(){
-  var workerSpreadsheet = SpreadsheetApp.openById(workerSpreadsheetId);
-  var dataRange = workerSpreadsheet.getDataRange();
-  
-  var data = workerSpreadsheet.getSheetValues(
-    dataRange.getRow(),
-    dataRange.getColumn(),
-    dataRange.getNumRows(),
-    dataRange.getNumColumns(),
-  );
-  return data
-    .filter((value, index) => index > 0)
-    .map(item => ({
-      code: item[0],
-      title: item[1],
-      client: item[2],
-      location: item[3],
-      status: item[4]
-    }));
-}
-
 function cleanForm(form: GoogleAppsScript.Forms.Form){
-  var items = form.getItems();
+  const items = form.getItems();
   while(items.length > 0){
   	const item = items.pop();
   	if(item){
@@ -70,54 +133,107 @@ function cleanForm(form: GoogleAppsScript.Forms.Form){
   	}
   }
 }
+function removeUnusedQuestions(form: GoogleAppsScript.Forms.Form){
+  const items = form.getItems();
+  const formQuestionsTitles = Object
+    .keys(formCollaboratorsDairy.questions)
+    .map(key => (formCollaboratorsDairy.questions as any)[key] as string)
+  const itemsToRemove = items.
+    filter(item => formQuestionsTitles.indexOf(item.getTitle()) === -1);
+  itemsToRemove.forEach(item => form.deleteItem(item));
+}
 
-function addQuestionCollaborator(form: GoogleAppsScript.Forms.Form){
-  var item = form.addMultipleChoiceItem();
+function getItemByQuestionTitle(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+  return form.getItems()
+  .find(item => questionTitle == item.getTitle())
+}
+
+function getOrCreateMultipleChoiceItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+  const itemFound = getItemByQuestionTitle(form, questionTitle);
+  if (itemFound){
+    return itemFound.asMultipleChoiceItem();
+  } else {
+    const item = form.addMultipleChoiceItem();
+    item.setTitle(questionTitle);
+    return item;
+  }
+}
+
+function getOrCreateDateItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+  const itemFound = getItemByQuestionTitle(form, questionTitle);
+  if (itemFound){
+    return itemFound.asDateItem();
+  } else {
+    const item = form.addDateItem();
+    item.setTitle(questionTitle);
+    return item;
+  }
+}
+
+function getOrCreateTextItem(form: GoogleAppsScript.Forms.Form, questionTitle: string){
+  const itemFound = getItemByQuestionTitle(form, questionTitle);
+  if (itemFound){
+    return itemFound.asTextItem();
+  } else {
+    const item = form.addTextItem();
+    item.setTitle(questionTitle);
+    return item;
+  }
+}
+
+function addOrUpdateQuestionCollaborator(form: GoogleAppsScript.Forms.Form){
+  const item = getOrCreateMultipleChoiceItem(form, formCollaboratorsDairy.questions.collaborator)
   item.setRequired(true);
-  item.setTitle('Colaborador?');
-  var collaboratorsActive = getCollaboratorData().filter(item => item.status == 'Ativo');
+  var collaboratorsActive = data.collaborators().filter(item => item.status == 'Ativo');
   var choices = collaboratorsActive.map(function (collaborator){
     return item.createChoice(collaborator.code + ' - ' + collaborator.name);
   });
   setChoicesOnFormItem(form, item, choices)
 }
 
-function addQuestionWorker(form: GoogleAppsScript.Forms.Form){
-  var item = form.addMultipleChoiceItem();
+function addOrUpdateQuestionWorker(form: GoogleAppsScript.Forms.Form){
+  const item = getOrCreateMultipleChoiceItem(form, formCollaboratorsDairy.questions.worker)
   item.setRequired(true);
-  item.setTitle('Obra?');
-  var workersActive = getWorkerData().filter(item => item.status == 'Ativo');
+  var workersActive = data.workers().filter(item => item.status == 'Ativo');
   var choices = workersActive.map(function (worker) {
     return item.createChoice(worker.code + ' - ' + worker.title + ' - ' + worker.client);
   });
   setChoicesOnFormItem(form, item, choices)
 }
 
-function addQuestionDate(form: GoogleAppsScript.Forms.Form){
-  var item = form.addDateItem();
+function addOrUpdateQuestionDate(form: GoogleAppsScript.Forms.Form){
+  var item = getOrCreateDateItem(form, formCollaboratorsDairy.questions.date);
   item.setRequired(false);
-  item.setTitle('Data? (Não preencha para usar a data de hoje)');
   item.setIncludesYear(true);
 }
-function addQuestionAnnotation(form: GoogleAppsScript.Forms.Form){
-  var item = form.addTextItem();
+function addOrUpdateQuestionAnnotation(form: GoogleAppsScript.Forms.Form){
+  var item = getOrCreateTextItem(form, formCollaboratorsDairy.questions.annotation)
+  form.addTextItem();
   item.setRequired(false);
-  item.setTitle('Anotação:');
 }
 
 function updateForm() {
-  var form = FormApp.openById(formId);
+  const sheetParameters = getSheetByName(sheets.parameters);
+  let formId = sheetParameters.getRange('FORM_ID').getValue();
+  let form;
+  if(formId){
+    form = FormApp.openById(formId);
+  }
+  if (!form) {
+    form = FormApp.create(formCollaboratorsDairy.title);
+    sheetParameters.getRange('FORM_ID').setValue(form.getId());
+  }
   // form.setRequireLogin(true);
   form.setAllowResponseEdits(false);
   form.setLimitOneResponsePerUser(false);
   form.setShowLinkToRespondAgain(true);
   form.setCollectEmail(false);
-  form.setTitle("Registro de Diária JDomingos");
-  cleanForm(form);
-  addQuestionCollaborator(form);
-  addQuestionWorker(form);
-  addQuestionDate(form);
-  addQuestionAnnotation(form);
+  form.setTitle(formCollaboratorsDairy.title);
+  removeUnusedQuestions(form);
+  addOrUpdateQuestionCollaborator(form);
+  addOrUpdateQuestionWorker(form);
+  addOrUpdateQuestionDate(form);
+  addOrUpdateQuestionAnnotation(form);
 }
 
 function createTriggers() {
@@ -138,4 +254,48 @@ function createTriggers() {
       .onEdit()
       .create();
   });
+}
+
+
+function onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
+  var formResponse = event.response;
+  var itemResponses = formResponse.getItemResponses();
+  var collaboratorCode = (itemResponses[0].getResponse() as string).split(' - ')[0];
+  var workerCode = (itemResponses[1].getResponse() as string).split(' - ')[0];
+  const dateString = itemResponses[2].getResponse() as string;
+  let date;
+  if (!dateString){
+    date = new Date();
+  } else {
+    var dateParts = dateString.split('-').map(part => parseInt(part));
+    date = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+  }
+  var annotation = itemResponses[3].getResponse();
+
+  const collaborator = data.getCollaboratorByCode(collaboratorCode);
+  const worker = data.getWorkerByCode(workerCode);
+  const dairySheet = getSheetByName(sheets.collaboratorsDairy);
+  var dataRange = dairySheet.getDataRange();
+  Logger.log(dataRange.getRowIndex() + dataRange.getNumRows() + 1);
+  Logger.log(dataRange.getColumn());
+  Logger.log(dataRange.getNumColumns());
+  const sheetData = getSheetByName(sheets.data);
+  var rangeNewData = sheetData.getRange(
+    dataRange.getRowIndex() + dataRange.getNumRows(),
+    dataRange.getColumn(),
+    1,
+    dataRange.getNumColumns()
+  );
+  rangeNewData.setValues([
+    [
+      Utilities.formatDate(date, "America/Sao_Paulo", "dd/MM/yyyy"),
+      collaborator.code,
+      collaborator.name,
+      collaborator.dailyRate,
+      worker.code,
+      worker.title,
+      worker.client,
+      annotation
+    ]
+  ]);
 }
