@@ -4,8 +4,30 @@ type ParametersType = {
       collaborators: string;
       workers: string;
       collaboratorsDairy: string;
+      collaboratorsPayments: string;
   };
-  formId: string;
+  formCollaboratorDairy: {
+    id: string;
+    title: string;
+    questions: {
+      collaborator: string;
+      worker: string;
+      date: string;
+      annotation: string;
+    };
+  };
+  formCollaboratorPayment: {
+    id: string;
+    title: string;
+    questions: {
+      date: string;
+      collaborator: string;
+      type: string;
+      typeOptions: string[];
+      value: string;
+      annotation: string;
+    };
+  };
 };
 type Collaborator = {
   code: string;
@@ -20,42 +42,48 @@ type WorkerData = {
   location: string;
   status: 'Ativo' | 'Inativo';
 };
-const sheets = {
-  collaborators: 'Colaboradores',
-  workers: 'Obras',
-  collaboratorsDairy: 'Diárias dos Colaboradores',
-  parameters: 'Parâmetros',
+type Trigger = {
+  triggerSourceId: string;
+  triggerSource: GoogleAppsScript.Script.TriggerSource;
+  functionName: string;
+  eventName: string;
 };
-const formCollaboratorsDairy = {
-  title: "Registro de Diária JDomingos",
-  questions: {
-    collaborator: 'Colaborador?',
-    worker: 'Obra?',
-    date: 'Data? (Não preencha para usar a data de hoje)',
-    annotation: 'Anotação:',
-  }
-};
-const namedCells = {
-  sheetCollaborators: 'SHEET_COLLABORATORS',
-  sheetWorkers: 'SHEET_WORKERS',
-  sheetCollaboratorsDairy: 'SHEET_COLLABORATORS_DAIRY',
-  formCollaboratorsDairyId: 'FORM_COLLABORATORS_DAIRY_ID',
-}
+const namedCellFormCollaboratorDairyId = 'FORM_COLLABORATOR_DAIRY_ID';
+const namedCellFormCollaboratorPaymentId = 'FORM_COLLABORATOR_PAYMENT_ID';
 function getParameters(): ParametersType{
   const sheetsParameters = 'Parâmetros';
   const sheetParametersObj = UtilitiesSpreadsheet.getSheetByName(sheetsParameters);
-  const sheetCollaborators = sheetParametersObj.getRange(namedCells.sheetCollaborators).getValue() as string;
-  const sheetWorkers = sheetParametersObj.getRange(namedCells.sheetWorkers).getValue() as string;
-  const sheetCollaboratorsDairy = sheetParametersObj.getRange(namedCells.sheetCollaboratorsDairy).getValue() as string;
-  const formId = sheetParametersObj.getRange(namedCells.formCollaboratorsDairyId).getValue() as string;
+  const getValue = (namedCell: string) => sheetParametersObj.getRange(namedCell).getValue() as string
   return {
     sheets: {
       parameters: sheetsParameters,
-      collaborators: sheetCollaborators,
-      workers: sheetWorkers,
-      collaboratorsDairy: sheetCollaboratorsDairy,
+      collaborators: getValue('SHEET_COLLABORATORS'),
+      workers: getValue('SHEET_WORKERS'),
+      collaboratorsDairy: getValue('SHEET_COLLABORATORS_DAIRY'),
+      collaboratorsPayments: getValue('SHEET_COLLABORATORS_PAYMENTS'),
     },
-    formId,
+    formCollaboratorDairy: {
+      id: getValue(namedCellFormCollaboratorDairyId),
+      title: getValue('FORM_COLLABORATOR_DAIRY_TITLE'),
+      questions: {
+        collaborator: getValue('FORM_COLLABORATOR_DAIRY_QUESTION_COLLABORATOR'),
+        worker: getValue('FORM_COLLABORATOR_DAIRY_QUESTION_WORKER'),
+        date: getValue('FORM_COLLABORATOR_DAIRY_QUESTION_DATE'),
+        annotation: getValue('FORM_COLLABORATOR_DAIRY_QUESTION_ANNOTATION'),
+      },
+    },
+    formCollaboratorPayment: {
+      id: getValue(namedCellFormCollaboratorPaymentId),
+      title: getValue('FORM_COLLABORATOR_PAYMENT_TITLE'),
+      questions: {
+        date: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_DATE'),
+        collaborator: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_COLLABORATOR'),
+        type: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_TYPE'),
+        typeOptions: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_TYPE_OPTIONS').split('|'),
+        value: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_VALUE'),
+        annotation: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_ANNOTATION'),
+      },
+    },
   };
 }
 const UtilitiesSpreadsheet = {
@@ -77,10 +105,6 @@ const UtilitiesSpreadsheet = {
       dataRange.getNumColumns(),
     );
   },
-}
-const localData = {
-  collaborators: undefined as undefined | Collaborator[],
-  workers: undefined as undefined | WorkerData[],
 };
 class SheetData{
   private parameters: ParametersType;
@@ -214,16 +238,53 @@ const FormUtilities = {
       return item;
     }
   },
+  getDateResponse: function(dateString: string){
+    if (!dateString){
+      return new Date();
+    } else {
+      const dateParts = dateString.split('-').map(part => parseInt(part));
+      return new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+    }
+  }
 };
-class FormCollaboratorsDairy{
+const UtilitiesScript = {
+  createTriggers: function(triggersToSet: Trigger[]){
+    const currentTriggers = ScriptApp.getProjectTriggers();
+    const newTriggers = triggersToSet
+      .filter(item => !currentTriggers.find(current => (
+        current.getTriggerSourceId() == item.triggerSourceId
+        && current.getTriggerSource() == item.triggerSource
+      )));
+    newTriggers.forEach(trigger => {
+      const triggerBuilder = ScriptApp.newTrigger(trigger.functionName);
+      if(trigger.triggerSource === ScriptApp.TriggerSource.SPREADSHEETS){
+        const spreadsheetTriggerBuilder = triggerBuilder.forSpreadsheet(trigger.triggerSourceId);
+        if(trigger.eventName === 'edit'){
+          spreadsheetTriggerBuilder.onEdit();
+        }
+        spreadsheetTriggerBuilder.create();
+      } else if(trigger.triggerSource === ScriptApp.TriggerSource.FORMS){
+        const spreadsheetTriggerBuilder = triggerBuilder.forForm(trigger.triggerSourceId);
+        if(trigger.eventName === 'formSubmit'){
+          spreadsheetTriggerBuilder.onFormSubmit();
+        }
+        spreadsheetTriggerBuilder.create();
+      }
+    });
+  }
+};
+
+class FormCollaboratorDairy{
+  private parameters: ParametersType;
   private data: SheetData;
   private form: GoogleAppsScript.Forms.Form;
   constructor(parameters: ParametersType){
+    this.parameters = parameters;
     this.data = new SheetData(parameters)
     this.form = null as unknown as GoogleAppsScript.Forms.Form;
   }
 
-  updateForm() {
+  createOrUpdateForm() {
     this.form = this.getOrCreateForm();
     this.updateFormSettings();
     this.removeUnusedQuestions();
@@ -234,17 +295,16 @@ class FormCollaboratorsDairy{
   }
 
   private getOrCreateForm() {
-    const parameters = getParameters();
-    if(parameters.formId){
-      const formFound = FormApp.openById(parameters.formId);
+    if(this.parameters.formCollaboratorDairy.id){
+      const formFound = FormApp.openById(this.parameters.formCollaboratorDairy.id);
       if(formFound){
         return formFound;
       }
     }
-    const newForm = FormApp.create(formCollaboratorsDairy.title);
+    const newForm = FormApp.create(this.parameters.formCollaboratorDairy.title);
 
-    const sheetParameters = UtilitiesSpreadsheet.getSheetByName(sheets.parameters);
-    sheetParameters.getRange(namedCells.formCollaboratorsDairyId).setValue(newForm.getId());
+    const sheetParameters = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.parameters);
+    sheetParameters.getRange(namedCellFormCollaboratorDairyId).setValue(newForm.getId());
     return newForm;
   }
 
@@ -254,20 +314,20 @@ class FormCollaboratorsDairy{
     this.form.setLimitOneResponsePerUser(false);
     this.form.setShowLinkToRespondAgain(true);
     this.form.setCollectEmail(false);
-    this.form.setTitle(formCollaboratorsDairy.title);
+    this.form.setTitle(this.parameters.formCollaboratorDairy.title);
   }
 
   private removeUnusedQuestions() {
     const formQuestionsTitles = Object
-      .keys(formCollaboratorsDairy.questions)
-      .map(key => (formCollaboratorsDairy.questions as any)[key] as string);
+      .keys(this.parameters.formCollaboratorDairy.questions)
+      .map(key => (this.parameters.formCollaboratorDairy.questions as any)[key] as string);
     return FormUtilities.removeQuestionsByCondition(this.form, item => 
       formQuestionsTitles.indexOf(item.getTitle()) === -1
     ); 
   }
 
   private addOrUpdateQuestionCollaborator() {
-    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.collaborator)
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formCollaboratorDairy.questions.collaborator)
     item.setRequired(true);
     var collaboratorsActive = this.data.collaborators.filter(item => item.status == 'Ativo');
     var choices = collaboratorsActive.map(function (collaborator){
@@ -277,7 +337,7 @@ class FormCollaboratorsDairy{
   }
 
   private addOrUpdateQuestionWorker() {
-    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, formCollaboratorsDairy.questions.worker)
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formCollaboratorDairy.questions.worker)
     item.setRequired(true);
     var workersActive = this.data.workers.filter(item => item.status == 'Ativo');
     var choices = workersActive.map(function (worker) {
@@ -287,85 +347,237 @@ class FormCollaboratorsDairy{
   }
 
   private addOrUpdateQuestionDate() {
-    var item = FormUtilities.getOrCreateDateItem(this.form, formCollaboratorsDairy.questions.date);
+    var item = FormUtilities.getOrCreateDateItem(this.form, this.parameters.formCollaboratorDairy.questions.date);
     item.setRequired(false);
     item.setIncludesYear(true);
   }
 
   private addOrUpdateQuestionAnnotation() {
-    var item = FormUtilities.getOrCreateTextItem(this.form, formCollaboratorsDairy.questions.annotation)
+    var item = FormUtilities.getOrCreateTextItem(this.form, this.parameters.formCollaboratorDairy.questions.annotation)
     item.setRequired(false);
   }
+
+  public onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const infoResponse = this.getInfoResponse(event)
+    this.getRangeToNewLine().setValues([
+      [
+        Utilities.formatDate(infoResponse.date, "America/Sao_Paulo", "dd/MM/yyyy"),
+        infoResponse.collaborator.code,
+        infoResponse.collaborator.name,
+        infoResponse.collaborator.dailyRate,
+        infoResponse.worker.code,
+        infoResponse.worker.title,
+        infoResponse.worker.client,
+        infoResponse.annotation
+      ]
+    ]);
+  }
+  private getRangeToNewLine(){
+    const sheet = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.collaboratorsDairy);
+    const dataRange = sheet.getDataRange();
+    return sheet.getRange(
+      dataRange.getRowIndex() + dataRange.getNumRows(),
+      dataRange.getColumn(),
+      1,
+      dataRange.getNumColumns()
+    );
+  }
+  private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const itemResponses = event.response.getItemResponses();
+    const collaboratorCode = (itemResponses[0].getResponse() as string).split(' - ')[0];
+    const workerCode = (itemResponses[1].getResponse() as string).split(' - ')[0];
+    const dateString = itemResponses[2].getResponse() as string;
+    const date = FormUtilities.getDateResponse(dateString);
+    const annotation = itemResponses[3].getResponse();
+
+    const collaborator = this.data.getCollaboratorByCode(collaboratorCode);
+    const worker = this.data.getWorkerByCode(workerCode);
+    return {
+      collaborator,
+      worker,
+      date,
+      annotation,
+    }
+  }
 }
 
-function updateForm() {
+class FormCollaboratorPayment{
+  private parameters: ParametersType;
+  private data: SheetData;
+  private form: GoogleAppsScript.Forms.Form;
+  constructor(parameters: ParametersType){
+    this.parameters = parameters;
+    this.data = new SheetData(parameters)
+    this.form = null as unknown as GoogleAppsScript.Forms.Form;
+  }
+
+  createOrUpdateForm() {
+    this.form = this.getOrCreateForm();
+    this.updateFormSettings();
+    this.removeUnusedQuestions();
+    this.addOrUpdateQuestionDate();
+    this.addOrUpdateQuestionCollaborator();
+    this.addOrUpdateQuestionType();
+    this.addOrUpdateQuestionValue();
+    this.addOrUpdateQuestionAnnotation();
+  }
+
+  private getOrCreateForm() {
+    if(this.parameters.formCollaboratorPayment.id){
+      const formFound = FormApp.openById(this.parameters.formCollaboratorPayment.id);
+      if(formFound){
+        return formFound;
+      }
+    }
+    const newForm = FormApp.create(this.parameters.formCollaboratorPayment.title);
+
+    const sheetParameters = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.parameters);
+    sheetParameters.getRange(namedCellFormCollaboratorPaymentId).setValue(newForm.getId());
+    return newForm;
+  }
+
+  private updateFormSettings(){
+    this.form.setAllowResponseEdits(false);
+    this.form.setLimitOneResponsePerUser(false);
+    this.form.setShowLinkToRespondAgain(true);
+    this.form.setCollectEmail(false);
+    this.form.setTitle(this.parameters.formCollaboratorPayment.title);
+  }
+
+  private removeUnusedQuestions() {
+    const formQuestionsTitles = Object
+      .keys(this.parameters.formCollaboratorPayment.questions)
+      .filter(key => key !== 'typeOptions')
+      .map(key => (this.parameters.formCollaboratorPayment.questions as any)[key] as string);
+    return FormUtilities.removeQuestionsByCondition(this.form, item => 
+      formQuestionsTitles.indexOf(item.getTitle()) === -1
+    ); 
+  }
+
+  private addOrUpdateQuestionDate() {
+    var item = FormUtilities.getOrCreateDateItem(this.form, this.parameters.formCollaboratorPayment.questions.date);
+    item.setRequired(false);
+    item.setIncludesYear(true);
+  }
+
+  private addOrUpdateQuestionCollaborator() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formCollaboratorPayment.questions.collaborator)
+    item.setRequired(true);
+    var collaboratorsActive = this.data.collaborators.filter(item => item.status == 'Ativo');
+    var choices = collaboratorsActive.map(function (collaborator){
+      return item.createChoice(collaborator.code + ' - ' + collaborator.name);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
+  }
+
+  private addOrUpdateQuestionType() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formCollaboratorPayment.questions.type)
+    item.setRequired(true);
+    var choices = this.parameters.formCollaboratorPayment.questions.typeOptions.map(function (typeOption) {
+      return item.createChoice(typeOption);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
+  }
+
+  private addOrUpdateQuestionValue() {
+    var item = FormUtilities.getOrCreateTextItem(this.form, this.parameters.formCollaboratorPayment.questions.value)
+    item.setValidation(
+      (FormApp.createTextValidation()
+        .requireNumberGreaterThan(0) as any)
+      .setHelpText('Informe um valor maior que zero')
+      .build()
+    )
+    item.setRequired(true);
+  }
+
+  private addOrUpdateQuestionAnnotation() {
+    var item = FormUtilities.getOrCreateTextItem(this.form, this.parameters.formCollaboratorPayment.questions.annotation)
+    item.setRequired(false);
+  }
+
+  public onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const infoResponse = this.getInfoResponse(event)
+    this.getRangeToNewLine().setValues([
+      [
+        Utilities.formatDate(infoResponse.date, "America/Sao_Paulo", "dd/MM/yyyy"),
+        infoResponse.collaborator.code,
+        infoResponse.collaborator.name,
+        infoResponse.type,
+        infoResponse.value,
+        infoResponse.annotation
+      ]
+    ]);
+  }
+  private getRangeToNewLine(){
+    const sheet = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.collaboratorsPayments);
+    const dataRange = sheet.getDataRange();
+    return sheet.getRange(
+      dataRange.getRowIndex() + dataRange.getNumRows(),
+      dataRange.getColumn(),
+      1,
+      dataRange.getNumColumns()
+    );
+  }
+  private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const itemResponses = event.response.getItemResponses();
+    const dateString = itemResponses[0].getResponse() as string;
+    const date = FormUtilities.getDateResponse(dateString);
+    const collaboratorCode = (itemResponses[1].getResponse() as string).split(' - ')[0];
+    const type = itemResponses[2].getResponse() as string;
+    const value = parseFloat(itemResponses[3].getResponse() as string);
+    const annotation = itemResponses[4].getResponse();
+
+    const collaborator = this.data.getCollaboratorByCode(collaboratorCode);
+    return {
+      date,
+      collaborator,
+      type,
+      value,
+      annotation,
+    }
+  }
+}
+
+function onEditSpreadsheet() {
   const parameters = getParameters();
-  const form = new FormCollaboratorsDairy(parameters);
-  form.updateForm();
+  const formCollaboratorDairy = new FormCollaboratorDairy(parameters);
+  const formCollaboratorPayment = new FormCollaboratorPayment(parameters);
+  formCollaboratorDairy.createOrUpdateForm();
+  formCollaboratorPayment.createOrUpdateForm();
 }
 
+function onSubmitFormCollaboratorDairy(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
+  const parameters = getParameters();
+  const form = new FormCollaboratorDairy(parameters);
+  form.onFormSubmit(event);
+}
+function onSubmitFormCollaboratorPayment(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
+  const parameters = getParameters();
+  const form = new FormCollaboratorPayment(parameters);
+  form.onFormSubmit(event);
+}
 
 function createTriggers() {
-  var arraySpreadsheetIdsUpdatForm = [
-    SpreadsheetApp.getActiveSpreadsheet().getId(),
-  ];
-  ScriptApp.getProjectTriggers().forEach(function (trigger){
-    if (trigger.getTriggerSource() === ScriptApp.TriggerSource.SPREADSHEETS){
-      arraySpreadsheetIdsUpdatForm = arraySpreadsheetIdsUpdatForm.filter(function (id){
-        return (id !== trigger.getTriggerSourceId())
-      });
-    }
-  });
-  arraySpreadsheetIdsUpdatForm.forEach(function (spreadsheetId){
-    ScriptApp.newTrigger('updateForm')
-      .forSpreadsheet(spreadsheetId)
-      .onEdit()
-      .create();
-  });
-}
-
-
-function onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
   const parameters = getParameters();
-  const data = new SheetData(parameters)
-  var formResponse = event.response;
-  var itemResponses = formResponse.getItemResponses();
-  var collaboratorCode = (itemResponses[0].getResponse() as string).split(' - ')[0];
-  var workerCode = (itemResponses[1].getResponse() as string).split(' - ')[0];
-  const dateString = itemResponses[2].getResponse() as string;
-  let date;
-  if (!dateString){
-    date = new Date();
-  } else {
-    var dateParts = dateString.split('-').map(part => parseInt(part));
-    date = new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
-  }
-  var annotation = itemResponses[3].getResponse();
-
-  const collaborator = data.getCollaboratorByCode(collaboratorCode);
-  const worker = data.getWorkerByCode(workerCode);
-  const dairySheet = UtilitiesSpreadsheet.getSheetByName(sheets.collaboratorsDairy);
-  var dataRange = dairySheet.getDataRange();
-  Logger.log(dataRange.getRowIndex() + dataRange.getNumRows() + 1);
-  Logger.log(dataRange.getColumn());
-  Logger.log(dataRange.getNumColumns());
-  const sheetData = UtilitiesSpreadsheet.getSheetByName(sheets.collaboratorsDairy);
-  var rangeNewData = sheetData.getRange(
-    dataRange.getRowIndex() + dataRange.getNumRows(),
-    dataRange.getColumn(),
-    1,
-    dataRange.getNumColumns()
-  );
-  rangeNewData.setValues([
-    [
-      Utilities.formatDate(date, "America/Sao_Paulo", "dd/MM/yyyy"),
-      collaborator.code,
-      collaborator.name,
-      collaborator.dailyRate,
-      worker.code,
-      worker.title,
-      worker.client,
-      annotation
-    ]
-  ]);
+  const triggersToSet = [
+    {
+      triggerSourceId: SpreadsheetApp.getActiveSpreadsheet().getId(),
+      triggerSource: ScriptApp.TriggerSource.SPREADSHEETS,
+      functionName: 'onEditSpreadsheet',
+      eventName: 'edit',
+    },
+    {
+      triggerSourceId: parameters.formCollaboratorDairy.id,
+      triggerSource: ScriptApp.TriggerSource.FORMS,
+      functionName: 'onSubmitFormCollaboratorDairy',
+      eventName: 'formSubmit',
+    },
+    {
+      triggerSourceId: parameters.formCollaboratorPayment.id,
+      triggerSource: ScriptApp.TriggerSource.FORMS,
+      functionName: 'onSubmitFormCollaboratorPayment',
+      eventName: 'formSubmit',
+    },
+  ];
+  UtilitiesScript.createTriggers(triggersToSet);
 }
