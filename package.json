@@ -6,7 +6,7 @@
   "author": "Petherson Moreno (https://github.com/pethersonmoreno)",
   "license": "MIT",
   "scripts": {
-    "configure": "node createClaspJson.js && echo \"{\\\"scriptId\\\":\\\"$SCRIPT_ID\\\"}\" > .clasp.json && clasp setting rootDir dist/",
+    "configure": "node createClaspRcJson.js && echo \"{\\\"scriptId\\\":\\\"$SCRIPT_ID\\\"}\" > .clasp.json && clasp setting rootDir dist/",
     "watch": "watch 'npm run build && npm run push' src/",
     "push": "HOME=`pwd` clasp push -f",
     "build": "rm -rf dist && tsc && cp appsscript.json dist/"
