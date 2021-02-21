@@ -5,6 +5,7 @@ type ParametersType = {
       workers: string;
       collaboratorsDairy: string;
       collaboratorsPayments: string;
+      workersExpensives: string;
   };
   formCollaboratorDairy: {
     id: string;
@@ -26,6 +27,17 @@ type ParametersType = {
       typeOptions: string[];
       value: string;
       annotation: string;
+    };
+  };
+  formWorkExpense: {
+    id: string;
+    title: string;
+    questions: {
+      date: string;
+      value: string;
+      annotation: string;
+      paidByCollaborator: string;
+      collaborator: string;
     };
   };
 };
@@ -50,6 +62,7 @@ type Trigger = {
 };
 const namedCellFormCollaboratorDairyId = 'FORM_COLLABORATOR_DAIRY_ID';
 const namedCellFormCollaboratorPaymentId = 'FORM_COLLABORATOR_PAYMENT_ID';
+const namedCellFormWorkExpenseId = 'FORM_WORK_EXPENSE_ID';
 function getParameters(): ParametersType{
   const sheetsParameters = 'Parâmetros';
   const sheetParametersObj = UtilitiesSpreadsheet.getSheetByName(sheetsParameters);
@@ -61,6 +74,7 @@ function getParameters(): ParametersType{
       workers: getValue('SHEET_WORKERS'),
       collaboratorsDairy: getValue('SHEET_COLLABORATORS_DAIRY'),
       collaboratorsPayments: getValue('SHEET_COLLABORATORS_PAYMENTS'),
+      workersExpensives: getValue('SHEET_WORKERS_EXPENSIVES'),
     },
     formCollaboratorDairy: {
       id: getValue(namedCellFormCollaboratorDairyId),
@@ -82,6 +96,17 @@ function getParameters(): ParametersType{
         typeOptions: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_TYPE_OPTIONS').split('|'),
         value: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_VALUE'),
         annotation: getValue('FORM_COLLABORATOR_PAYMENT_QUESTION_ANNOTATION'),
+      },
+    },
+    formWorkExpense: {
+      id: getValue(namedCellFormWorkExpenseId),
+      title: getValue('FORM_WORK_EXPENSE_TITLE'),
+      questions: {
+        date: getValue('FORM_WORK_EXPENSE_QUESTION_DATE'),
+        value: getValue('FORM_WORK_EXPENSE_QUESTION_VALUE'),
+        annotation: getValue('FORM_WORK_EXPENSE_QUESTION_ANNOTATION'),
+        paidByCollaborator: getValue('FORM_WORK_EXPENSE_QUESTION_PAID_BY_COLLABORATOR'),
+        collaborator: getValue('FORM_WORK_EXPENSE_QUESTION_COLLABORATOR'),
       },
     },
   };
@@ -538,12 +563,158 @@ class FormCollaboratorPayment{
   }
 }
 
+class FormWorkExpense{
+  private parameters: ParametersType;
+  private data: SheetData;
+  private form: GoogleAppsScript.Forms.Form;
+  constructor(parameters: ParametersType){
+    this.parameters = parameters;
+    this.data = new SheetData(parameters)
+    this.form = null as unknown as GoogleAppsScript.Forms.Form;
+  }
+
+  createOrUpdateForm() {
+    this.form = this.getOrCreateForm();
+    this.updateFormSettings();
+    this.removeUnusedQuestions();
+    this.addOrUpdateQuestionDate();
+    this.addOrUpdateQuestionValue();
+    this.addOrUpdateQuestionAnnotation();
+    this.addOrUpdateQuestionPaidByCollaborator();
+    this.addOrUpdateQuestionCollaborator();
+  }
+
+  private getOrCreateForm() {
+    if(this.parameters.formWorkExpense.id){
+      const formFound = FormApp.openById(this.parameters.formWorkExpense.id);
+      if(formFound){
+        return formFound;
+      }
+    }
+    const newForm = FormApp.create(this.parameters.formWorkExpense.title);
+
+    const sheetParameters = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.parameters);
+    sheetParameters.getRange(namedCellFormWorkExpenseId).setValue(newForm.getId());
+    return newForm;
+  }
+
+  private updateFormSettings(){
+    this.form.setAllowResponseEdits(false);
+    this.form.setLimitOneResponsePerUser(false);
+    this.form.setShowLinkToRespondAgain(true);
+    this.form.setCollectEmail(false);
+    this.form.setTitle(this.parameters.formWorkExpense.title);
+  }
+
+  private removeUnusedQuestions() {
+    const formQuestionsTitles = Object
+      .keys(this.parameters.formWorkExpense.questions)
+      .map(key => (this.parameters.formWorkExpense.questions as any)[key] as string);
+    return FormUtilities.removeQuestionsByCondition(this.form, item => 
+      formQuestionsTitles.indexOf(item.getTitle()) === -1
+    ); 
+  }
+
+  private addOrUpdateQuestionDate() {
+    var item = FormUtilities.getOrCreateDateItem(this.form, this.parameters.formWorkExpense.questions.date);
+    item.setRequired(false);
+    item.setIncludesYear(true);
+  }
+
+  private addOrUpdateQuestionValue() {
+    var item = FormUtilities.getOrCreateTextItem(this.form, this.parameters.formWorkExpense.questions.value)
+    item.setValidation(
+      (FormApp.createTextValidation()
+        .requireNumberGreaterThan(0) as any)
+      .setHelpText('Informe um valor maior que zero')
+      .build()
+    )
+    item.setRequired(true);
+  }
+
+  private addOrUpdateQuestionAnnotation() {
+    var item = FormUtilities.getOrCreateTextItem(this.form, this.parameters.formWorkExpense.questions.annotation)
+    item.setRequired(false);
+  }
+
+  private addOrUpdateQuestionPaidByCollaborator() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formWorkExpense.questions.paidByCollaborator)
+    item.setRequired(true);
+    const options = ['Sim', 'Não'];
+    var choices = options.map(function (option) {
+      return item.createChoice(option);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
+  }
+
+  private addOrUpdateQuestionCollaborator() {
+    const item = FormUtilities.getOrCreateMultipleChoiceItem(this.form, this.parameters.formWorkExpense.questions.collaborator)
+    item.setRequired(false);
+    var collaboratorsActive = this.data.collaborators.filter(item => item.status == 'Ativo');
+    var choices = collaboratorsActive.map(function (collaborator){
+      return item.createChoice(collaborator.code + ' - ' + collaborator.name);
+    });
+    FormUtilities.setChoicesOnFormItem(this.form, item, choices)
+  }
+
+  public onFormSubmit(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const infoResponse = this.getInfoResponse(event)
+    const addCollaboratorInfo = (
+      infoResponse.paidByCollaborator === 'Sim'
+      && !!infoResponse.collaborator
+    );
+    this.getRangeToNewLine().setValues([
+      [
+        Utilities.formatDate(infoResponse.date, "America/Sao_Paulo", "dd/MM/yyyy"),
+        infoResponse.value,
+        infoResponse.annotation,
+        infoResponse.paidByCollaborator,
+        (addCollaboratorInfo?infoResponse.collaborator?.code:''),
+        (addCollaboratorInfo?infoResponse.collaborator?.name:''),
+      ]
+    ]);
+  }
+  private getRangeToNewLine(){
+    const sheet = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.workersExpensives);
+    const dataRange = sheet.getDataRange();
+    return sheet.getRange(
+      dataRange.getRowIndex() + dataRange.getNumRows(),
+      dataRange.getColumn(),
+      1,
+      dataRange.getNumColumns()
+    );
+  }
+  private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
+    const itemResponses = event.response.getItemResponses();
+    const dateString = itemResponses[0].getResponse() as string;
+    const date = FormUtilities.getDateResponse(dateString);
+    const value = parseFloat(itemResponses[1].getResponse() as string);
+    const annotation = itemResponses[2].getResponse();
+    const paidByCollaborator = itemResponses[3].getResponse() as string;
+    let collaborator = null;
+    if (itemResponses[4]){
+      const collaboratorCode = (itemResponses[4].getResponse() as string).split(' - ')[0];
+  
+      collaborator = this.data.getCollaboratorByCode(collaboratorCode);
+    }
+    return {
+      date,
+      value,
+      annotation,
+      paidByCollaborator,
+      collaborator,
+    }
+  }
+}
+
 function onEditSpreadsheet() {
   const parameters = getParameters();
   const formCollaboratorDairy = new FormCollaboratorDairy(parameters);
   const formCollaboratorPayment = new FormCollaboratorPayment(parameters);
+  const formWorkExpense = new FormWorkExpense(parameters);
   formCollaboratorDairy.createOrUpdateForm();
   formCollaboratorPayment.createOrUpdateForm();
+  formWorkExpense.createOrUpdateForm();
 }
 
 function onSubmitFormCollaboratorDairy(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
@@ -554,6 +725,11 @@ function onSubmitFormCollaboratorDairy(event: GoogleAppsScript.Events.FormsOnFor
 function onSubmitFormCollaboratorPayment(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
   const parameters = getParameters();
   const form = new FormCollaboratorPayment(parameters);
+  form.onFormSubmit(event);
+}
+function onSubmitFormWorkExpense(event: GoogleAppsScript.Events.FormsOnFormSubmit) {
+  const parameters = getParameters();
+  const form = new FormWorkExpense(parameters);
   form.onFormSubmit(event);
 }
 
@@ -576,6 +752,12 @@ function createTriggers() {
       triggerSourceId: parameters.formCollaboratorPayment.id,
       triggerSource: ScriptApp.TriggerSource.FORMS,
       functionName: 'onSubmitFormCollaboratorPayment',
+      eventName: 'formSubmit',
+    },
+    {
+      triggerSourceId: parameters.formWorkExpense.id,
+      triggerSource: ScriptApp.TriggerSource.FORMS,
+      functionName: 'onSubmitFormWorkExpense',
       eventName: 'formSubmit',
     },
   ];
