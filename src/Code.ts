@@ -644,26 +644,16 @@ class FormWorkExpense{
       infoResponse.paidByCollaborator === 'Sim'
       && !!infoResponse.collaborator
     );
-    this.getRangeToNewLine().setValues([
-      [
-        Utilities.formatDate(infoResponse.date, "America/Sao_Paulo", "dd/MM/yyyy"),
-        infoResponse.value,
-        infoResponse.annotation,
-        infoResponse.paidByCollaborator,
-        (addCollaboratorInfo?infoResponse.collaborator?.code:''),
-        (addCollaboratorInfo?infoResponse.collaborator?.name:''),
-      ]
-    ]);
-  }
-  private getRangeToNewLine(){
     const sheet = UtilitiesSpreadsheet.getSheetByName(this.parameters.sheets.workersExpensives);
     const dataRange = sheet.getDataRange();
-    return sheet.getRange(
-      dataRange.getRowIndex() + dataRange.getNumRows(),
-      dataRange.getColumn(),
-      1,
-      dataRange.getNumColumns()
-    );
+    const numLine = dataRange.getRowIndex() + dataRange.getNumRows()
+    sheet.getRange(numLine, 1).setValue(Utilities.formatDate(infoResponse.date, "America/Sao_Paulo", "dd/MM/yyyy"));
+    sheet.getRange(numLine, 2).setNumberFormat("[$R$ ]#,##0.00");
+    sheet.getRange(numLine, 2).setValue(infoResponse.value);
+    sheet.getRange(numLine, 3).setValue(infoResponse.annotation);
+    sheet.getRange(numLine, 4).setValue(infoResponse.paidByCollaborator);
+    sheet.getRange(numLine, 5).setValue(addCollaboratorInfo?infoResponse.collaborator?.code:'');
+    sheet.getRange(numLine, 6).setFormula(`=if(E${numLine}<>"";VLOOKUP(E${numLine};TABELA_COLABORADOR;2;True);"")`);
   }
   private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
     const itemResponses = event.response.getItemResponses();
