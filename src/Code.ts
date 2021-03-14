@@ -113,11 +113,11 @@ function getParameters(): ParametersType{
 }
 const UtilitiesSpreadsheet = {
   getSheetByName: function(sheetName: string){
-    const sheetcollaborator = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-    if (sheetcollaborator === null){
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+    if (sheet === null){
       throw new Error('Sheet "'+sheetName+'" not found');
     }
-    return sheetcollaborator;
+    return sheet;
   },
   getDataBySheetName: function(sheetName: string) {
     const sheet = this.getSheetByName(sheetName);
