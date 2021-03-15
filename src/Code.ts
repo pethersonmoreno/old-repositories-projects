@@ -306,7 +306,7 @@ const FormUtilities = {
   }
 };
 const UtilitiesScript = {
-  createTriggers: function(triggersToSet: Trigger[]){
+  createTriggersNotFound: function(triggersToSet: Trigger[]){
     const currentTriggers = ScriptApp.getProjectTriggers();
     const newTriggers = triggersToSet
       .filter(item => !currentTriggers.find(current => (
@@ -824,7 +824,7 @@ function onSubmitFormWorkExpense(event: GoogleAppsScript.Events.FormsOnFormSubmi
   form.onFormSubmit(event);
 }
 
-function createTriggers() {
+function createTriggersNotFound() {
   const parameters = getParameters();
   const triggersToSet = [
     {
@@ -852,5 +852,5 @@ function createTriggers() {
       eventName: 'formSubmit',
     },
   ];
-  UtilitiesScript.createTriggers(triggersToSet);
+  UtilitiesScript.createTriggersNotFound(triggersToSet);
 }
