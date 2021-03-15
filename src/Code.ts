@@ -332,6 +332,31 @@ const UtilitiesScript = {
   }
 };
 
+function updateNamedRanges(sheetNameChanged: string) {
+  const sheetsToNamedRanges = [
+    {sheetName: sheets.collaborators, namedRange: namedRange.tableCollaborator},
+    {sheetName: sheets.workers, namedRange: namedRange.tableWorkers},
+    {sheetName: sheets.collaboratorsDairy, namedRange: namedRange.tableCollaboratorDairy},
+    {sheetName: sheets.collaboratorsPayments, namedRange: namedRange.tableCollaboratorPayment},
+    {sheetName: sheets.workersExpensives, namedRange: namedRange.tableWorkerExpensive},
+    {sheetName: sheets.customersReceipts, namedRange: namedRange.tableCustomerReceipts},
+  ];
+  const itemToUpdate = sheetsToNamedRanges.find(item => item.sheetName === sheetNameChanged);
+  if(itemToUpdate){
+    Logger.log('found itemToUpdate');
+    const namedRanges = getActiveSpreadsheet().getNamedRanges();
+    const namedRange = namedRanges.find(range => range.getName() === itemToUpdate.namedRange);
+    const newRange = UtilitiesSpreadsheet.getSheetByName(itemToUpdate.sheetName).getDataRange();
+    if(namedRange){
+      namedRange.setRange(newRange);
+    } else {
+      getActiveSpreadsheet().setNamedRange(itemToUpdate.namedRange, newRange);
+    }
+  } else {
+    Logger.log('not found itemToUpdate');
+  }
+}
+
 class FormCollaboratorDairy{
   private parameters: ParametersType;
   private data: SheetData;
@@ -441,6 +466,7 @@ class FormCollaboratorDairy{
     sheet.getRange(numLine, 6).setFormula(`=VLOOKUP(E${numLine};TABELA_OBRAS;2;False)`);
     sheet.getRange(numLine, 7).setFormula(`=VLOOKUP(E${numLine};TABELA_OBRAS;3;False)`);
     sheet.getRange(numLine, 8).setValue(infoResponse.annotation);
+    updateNamedRanges(sheet.getName());
   }
   private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
     const itemResponses = event.response.getItemResponses();
@@ -581,6 +607,7 @@ class FormCollaboratorPayment{
     sheet.getRange(numLine, 5).setNumberFormat("[$R$ ]#,##0.00");
     sheet.getRange(numLine, 5).setValue(infoResponse.value);
     sheet.getRange(numLine, 6).setValue(infoResponse.annotation);
+    updateNamedRanges(sheet.getName());
   }
 
   private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
@@ -728,6 +755,7 @@ class FormWorkExpense{
     sheet.getRange(numLine, 4).setValue(infoResponse.paidByCollaborator);
     sheet.getRange(numLine, 5).setValue(addCollaboratorInfo?infoResponse.collaborator?.code:'');
     sheet.getRange(numLine, 6).setFormula(`=if(E${numLine}<>"";VLOOKUP(E${numLine};${namedRange.tableCollaborator};2;False);"")`);
+    updateNamedRanges(sheet.getName());
   }
   private getInfoResponse(event: GoogleAppsScript.Events.FormsOnFormSubmit){
     const itemResponses = event.response.getItemResponses();
@@ -751,30 +779,6 @@ class FormWorkExpense{
       paidByCollaborator,
       collaborator,
     }
-  }
-}
-function updateNamedRanges(sheetNameChanged: string) {
-  const sheetsToNamedRanges = [
-    {sheetName: sheets.collaborators, namedRange: namedRange.tableCollaborator},
-    {sheetName: sheets.workers, namedRange: namedRange.tableWorkers},
-    {sheetName: sheets.collaboratorsDairy, namedRange: namedRange.tableCollaboratorDairy},
-    {sheetName: sheets.collaboratorsPayments, namedRange: namedRange.tableCollaboratorPayment},
-    {sheetName: sheets.workersExpensives, namedRange: namedRange.tableWorkerExpensive},
-    {sheetName: sheets.customersReceipts, namedRange: namedRange.tableCustomerReceipts},
-  ];
-  const itemToUpdate = sheetsToNamedRanges.find(item => item.sheetName === sheetNameChanged);
-  if(itemToUpdate){
-    Logger.log('found itemToUpdate');
-    const namedRanges = getActiveSpreadsheet().getNamedRanges();
-    const namedRange = namedRanges.find(range => range.getName() === itemToUpdate.namedRange);
-    const newRange = UtilitiesSpreadsheet.getSheetByName(itemToUpdate.sheetName).getDataRange();
-    if(namedRange){
-      namedRange.setRange(newRange);
-    } else {
-      getActiveSpreadsheet().setNamedRange(itemToUpdate.namedRange, newRange);
-    }
-  } else {
-    Logger.log('not found itemToUpdate');
   }
 }
 function createOrUpdateForms() {
