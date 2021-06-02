@@ -93,7 +93,7 @@ app.use(express.json());
 
 // Catch error
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status || 500).json({ error: err.message });
+  res.status(err.status || 500).json({ error: err.message });
 });
 
 export default app;
@@ -109,7 +109,104 @@ import app from "./app";
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log(\`Server running at http://localhost:\${port} !\`);
+  console.log(\`Server running at http://localhost:\${port} !\`);
 });
 EOF
+```
+
+Configures `.editorconfig`:
+
+```sh
+cat <<EOF | tee .editorconfig
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = false
+insert_final_newline = true
+EOF
+```
+
+Configures `Prettier`:
+
+```sh
+cat <<EOF | tee .prettierrc
+{
+    "endOfLine": "auto",
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": false,
+    "printWidth": 120,
+    "tabWidth": 2
+}
+EOF
+```
+
+Install eslint and its dependencies:
+
+```sh
+npm i -D eslint prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-airbnb-base eslint-config-prettier eslint-plugin-import eslint-plugin-prettier
+```
+
+Configures eslint:
+
+```sh
+cat <<EOF | tee .eslintrc.json
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "no-console": "off",
+        "no-unused-vars":"off",
+        "no-underscore-dangle": "off",
+        "import/no-cycle":"off",
+        "import/prefer-default-export":"off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "lines-between-class-members": 0,
+        "class-methods-use-this": 0,
+        "max-classes-per-file": 0,
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never"
+            }
+        ]
+    }
+}
+EOF
+```
+
+Add script `lint` and `lint:fix` to `package.json`:
+
+```json
+  "lint": "eslint --ext .ts src/",
+  "lint:fix": "npm run lint -- --fix",
 ```
