@@ -210,3 +210,80 @@ Add script `lint` and `lint:fix` to `package.json`:
   "lint": "eslint --ext .ts src/",
   "lint:fix": "npm run lint -- --fix",
 ```
+
+
+Add packages to Jest
+
+```sh
+npm i -D jest ts-jest eslint-plugin-jest @types/jest
+```
+
+
+Update eslint config with Jest:
+
+```sh
+cat <<EOF | tee .eslintrc.json
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "eslint-plugin-jest",
+        "jest"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "no-console": "off",
+        "no-unused-vars":"off",
+        "no-underscore-dangle": "off",
+        "import/no-cycle":"off",
+        "import/prefer-default-export":"off",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "lines-between-class-members": 0,
+        "class-methods-use-this": 0,
+        "max-classes-per-file": 0,
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error"
+    }
+}
+EOF
+```
+
+Add scripts `test` and `test:coverage` to `package.json`:
+
+```json
+  "test": "jest",
+  "test:coverage": "npm test -- --coverage",
+```
