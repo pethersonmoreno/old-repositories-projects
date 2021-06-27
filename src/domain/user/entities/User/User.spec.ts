@@ -1,4 +1,4 @@
-import { Email, IdentityUuid, Nickname, Password, Role } from '../valueObjects';
+import { Email, IdentityUuid, Nickname, Password, Role } from '../../valueObjects';
 import User from './User';
 
 const testIdentityUuid = IdentityUuid.create();

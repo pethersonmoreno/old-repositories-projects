@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Email, IdentityUuid, Nickname, Password, Role } from '../valueObjects';
+import { Email, IdentityUuid, Nickname, Password, Role } from '../../valueObjects';
 
 const securityValue = uuidv4();
 
