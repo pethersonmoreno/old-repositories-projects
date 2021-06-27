@@ -12,6 +12,9 @@ class MemoryUserRepository implements UserRepository {
     findByUserId(userId: IdentityUuid): User {
         return this.allUsers.find(user => user.userId.equals(userId));
     }
+    findByEmail(email: Email): User {
+        return this.allUsers.find(user => user.email.equals(email));
+    }
     save(user: User) {
         const currentUser = this.findByUserId(user.userId);
         if(currentUser){
