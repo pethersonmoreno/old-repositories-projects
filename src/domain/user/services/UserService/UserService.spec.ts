@@ -86,4 +86,77 @@ describe('UserService', () => {
             await expect(userService.validateLogin('invalidemail', user1Password)).rejects.toThrow();
         });
     });
+
+    describe('register', () => {
+        const userPassword = "x9&Kf4j33fjlsyg8";
+        const user1Email = 'someone3@domain.com';
+        const user1 = User.create({
+            email: Email.create(user1Email),
+            nickname: Nickname.create('Someone'),
+            password: Password.create(userPassword),
+            role: Role.createAdministrator(),
+        });
+        const user2Email = 'someone4@domain.com';
+        const user2 = User.create({
+            email: Email.create(user2Email),
+            nickname: Nickname.create('Someone2'),
+            password: Password.create(userPassword),
+            role: Role.createAdministrator(),
+        });
+        const userRepository = new MemoryUserRepository();
+        let userService: UserService;
+
+        beforeAll(async ()=>{
+            await userRepository.save(user1);
+            await userRepository.save(user2);
+            userService = new UserService(userRepository);
+        });
+
+        it('should throw to invalid email', async () => {
+            await expect(userService.register({
+                email: "invalidemail",
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should throw to invalid nickname', async () => {
+            await expect(userService.register({
+                email: "email@domain.com",
+                nickname: "N4c",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should throw to invalid password', async () => {
+            await expect(userService.register({
+                email: "email@domain.com",
+                nickname: "Nickname",
+                password: "invalidpass",
+            })).rejects.toThrow();
+        });
+
+        it('should throw to email already registered', async () => {
+            await expect(userService.register({
+                email: user1Email,
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+            await expect(userService.register({
+                email: user2Email,
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should create to a new valid user', async () => {
+            const newEmail = 'someone5@domain.com';
+            await expect(userService.register({
+                email: newEmail,
+                nickname: "Nickname",
+                password: userPassword,
+            })).resolves.toBeUndefined();
+            await expect(userRepository.findByEmail(Email.create(newEmail))).resolves.toBeDefined();
+        });
+    });
 });
