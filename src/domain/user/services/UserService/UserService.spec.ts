@@ -9,14 +9,14 @@ class MemoryUserRepository implements UserRepository {
     constructor(){
         this.allUsers = [];
     }
-    findByUserId(userId: IdentityUuid): User {
-        return this.allUsers.find(user => user.userId.equals(userId));
+    findByUserId(userId: IdentityUuid): Promise<User> {
+        return Promise.resolve(this.allUsers.find(user => user.userId.equals(userId)));
     }
-    findByEmail(email: Email): User {
-        return this.allUsers.find(user => user.email.equals(email));
+    findByEmail(email: Email): Promise<User> {
+        return Promise.resolve(this.allUsers.find(user => user.email.equals(email)));
     }
-    save(user: User) {
-        const currentUser = this.findByUserId(user.userId);
+    async save(user: User): Promise<void> {
+        const currentUser = await this.findByUserId(user.userId);
         if(currentUser){
             this.allUsers = this.allUsers.map(itemUser => {
                 if(itemUser.equals(user)){
@@ -54,15 +54,19 @@ describe('UserService', () => {
         const userService = new UserService(userRepository);
 
         it('should be valid if email with password exists', () => {
-            expect(userService.validateLogin(user1Email, user1Password)).toBeTruthy();
+            expect(userService.validateLogin(user1Email, user1Password)).resolves.toBeTruthy();
         });
 
         it('should be invalid if email exists but it is not a valid password', () => {
-            expect(userService.validateLogin(user1Email, "b9&Kf4j33fjlsyg8")).toBeFalsy();
+            expect(userService.validateLogin(user1Email, "b9&Kf4j33fjlsyg8")).resolves.toBeFalsy();
         });
 
         it('should be invalid if password exists but it is not compatible with the user', () => {
-            expect(userService.validateLogin(user1Email, user2Password)).toBeFalsy();
+            expect(userService.validateLogin(user1Email, user2Password)).resolves.toBeFalsy();
+        });
+
+        it('should throw to invalid email', () => {
+            expect(userService.validateLogin('invalidemail', user1Password)).rejects.toThrow();
         });
     });
 });
