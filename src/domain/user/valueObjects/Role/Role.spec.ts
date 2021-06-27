@@ -33,4 +33,12 @@ describe('Role', () => {
             Role.createPokemonTrainer()
         }).not.toThrow();
     });
+
+    it('createAdministrator should create with value Administrator', () => {
+        expect((Role.createAdministrator() as any).value).toBe('Administrator');
+    });
+
+    it('createPokemonTrainer should create with value PokemonTrainer', () => {
+        expect((Role.createPokemonTrainer() as any).value).toBe('PokemonTrainer');
+    });
 });
