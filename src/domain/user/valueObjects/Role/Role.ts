@@ -18,4 +18,8 @@ export default class Role{
     public static createAdministrator() {
         return this.create('Administrator', securityValue);
     }
+
+    public static createPokemonTrainer() {
+        return this.create('PokemonTrainer', securityValue);
+    }
 }
