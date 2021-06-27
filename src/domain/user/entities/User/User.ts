@@ -89,16 +89,16 @@ export default class User {
             throw new Error("Invalid userid");
         }
         if (!(value.email instanceof Email)){
-            throw new Error("Invalid userid");
+            throw new Error("Invalid email");
         }
         if (!(value.nickname instanceof Nickname)){
-            throw new Error("Invalid userid");
+            throw new Error("Invalid nickname");
         }
         if (!(value.password instanceof Password)){
-            throw new Error("Invalid userid");
+            throw new Error("Invalid password");
         }
         if (!(value.role instanceof Role)){
-            throw new Error("Invalid userid");
+            throw new Error("Invalid role");
         }
         return new User(value, securityValue);
     }
