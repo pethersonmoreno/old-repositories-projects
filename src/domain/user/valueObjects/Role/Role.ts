@@ -10,6 +10,8 @@ export default class Role{
             throw new Error("Invalid Instantiation")
         }
     }
-    private static create(){
+    
+    private static create(value: ValidRole, secValue: any){
+        return new Role(value, secValue);
     }
 }
