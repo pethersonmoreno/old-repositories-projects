@@ -1,10 +1,6 @@
 import { Pokemon } from '../../entities';
 import { PokemonRepository } from '../../repositories';
-import {
-  NumberInteger,
-  PokemonName,
-  PokemonType,
-} from '../../valueObjects';
+import { NumberInteger, PokemonName, PokemonType } from '../../valueObjects';
 import PokemonService from './PokemonService';
 
 class MemoryPokemonRepository implements PokemonRepository {
@@ -13,7 +9,9 @@ class MemoryPokemonRepository implements PokemonRepository {
     this.allPokemons = [];
   }
   getAll(): Promise<Pokemon[]> {
-    return Promise.resolve(this.allPokemons.map(item => this.cloneIfDefined(item)));
+    return Promise.resolve(
+      this.allPokemons.map((item) => this.cloneIfDefined(item)),
+    );
   }
   findByPokemonId(pokemonId: NumberInteger): Promise<Pokemon> {
     return Promise.resolve(
@@ -36,7 +34,9 @@ class MemoryPokemonRepository implements PokemonRepository {
     }
   }
   async remove(pokemon: Pokemon): Promise<void> {
-    this.allPokemons = this.allPokemons.filter((pokemon) => !pokemon.pokemonId.equals(pokemon.pokemonId));
+    this.allPokemons = this.allPokemons.filter(
+      (pokemonItem) => !pokemonItem.pokemonId.equals(pokemon.pokemonId),
+    );
   }
 
   private cloneIfDefined(pokemon?: Pokemon) {
@@ -176,7 +176,7 @@ describe('PokemonService', () => {
     });
 
     it('should update the pokemon', async () => {
-      const newType = 'Water'
+      const newType = 'Water';
       await expect(
         pokemonService.update({
           pokemonId: 1,
@@ -187,28 +187,24 @@ describe('PokemonService', () => {
       await expect(
         pokemonRepository.findByPokemonId(pokemon1.pokemonId),
       ).resolves.toBeDefined();
-      const pokemon = await pokemonRepository.findByPokemonId(pokemon1.pokemonId);
+      const pokemon = await pokemonRepository.findByPokemonId(
+        pokemon1.pokemonId,
+      );
       expect(pokemon.type.value).toBe(newType);
     });
   });
 
   describe('remove', () => {
     it('should throw to pokemon not found', async () => {
-      await expect(
-        pokemonService.remove(50),
-      ).rejects.toThrow();
+      await expect(pokemonService.remove(50)).rejects.toThrow();
     });
 
     it('should throw to invalid Pokemon ID', async () => {
-      await expect(
-        pokemonService.remove(0),
-      ).rejects.toThrow();
+      await expect(pokemonService.remove(0)).rejects.toThrow();
     });
 
     it('should remove the pokemon', async () => {
-      await expect(
-        pokemonService.remove(1),
-      ).resolves.toBeUndefined();
+      await expect(pokemonService.remove(1)).resolves.toBeUndefined();
       await expect(
         pokemonRepository.findByPokemonId(pokemon1.pokemonId),
       ).resolves.toBeUndefined();

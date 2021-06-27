@@ -30,7 +30,7 @@ export default class NumberInteger {
     if (typeof value !== 'number') {
       throw new Error('Invalid Number Integer');
     }
-    if (value%1 !== 0) {
+    if (value % 1 !== 0) {
       throw new Error('Number Integer cannot be float or NaN');
     }
     if (value <= 0) {

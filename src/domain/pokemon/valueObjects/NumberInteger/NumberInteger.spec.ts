@@ -58,15 +58,7 @@ describe('NumberInteger', () => {
   });
 
   it('should throw if is used an invalid NumberInteger', () => {
-    const invalidnumberIntegerNames = [
-      -1,
-      0,
-      1.1,
-      3.3,
-      4.9,
-      777.10,
-      5/10,
-    ];
+    const invalidnumberIntegerNames = [-1, 0, 1.1, 3.3, 4.9, 777.1, 5 / 10];
     invalidnumberIntegerNames.forEach((invalidnumberIntegerName) => {
       expect(() => {
         NumberInteger.create(invalidnumberIntegerName);

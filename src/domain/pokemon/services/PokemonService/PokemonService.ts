@@ -1,9 +1,5 @@
 import { PokemonRepository } from '../../repositories';
-import {
-  NumberInteger,
-  PokemonName,
-  PokemonType,
-} from '../../valueObjects';
+import { NumberInteger, PokemonName, PokemonType } from '../../valueObjects';
 import { Pokemon } from '../../entities';
 
 export type PokemonDTO = {
@@ -21,7 +17,9 @@ export default class PokemonService {
     const type = PokemonType.create(newPokemonDto.type as any);
     const pokemonById = await this.pokemonRepository.findByPokemonId(pokemonId);
     if (pokemonById) {
-      throw new Error(`Already exists another pokemon with ID ${pokemonId.value}`);
+      throw new Error(
+        `Already exists another pokemon with ID ${pokemonId.value}`,
+      );
     }
     const newPokemon = Pokemon.create({
       pokemonId,
@@ -35,7 +33,9 @@ export default class PokemonService {
     const pokemonId = NumberInteger.create(updatePokemonDto.pokemonId);
     const pokemon = await this.pokemonRepository.findByPokemonId(pokemonId);
     if (!pokemon) {
-      throw new Error(`Pokemon not found with ID ${updatePokemonDto.pokemonId}`);
+      throw new Error(
+        `Pokemon not found with ID ${updatePokemonDto.pokemonId}`,
+      );
     }
     pokemon.updateName(updatePokemonDto.name);
     pokemon.updateType(updatePokemonDto.type as any);

@@ -27,8 +27,7 @@ export default class PokemonName {
   }
 
   public static create(value: string) {
-    const regexPokemonName =
-      /^[A-Za-z]{3,}( [A-Za-z]{3,})*$/;
+    const regexPokemonName = /^[A-Za-z]{3,}( [A-Za-z]{3,})*$/;
     if (!regexPokemonName.test(value)) {
       throw new Error('Invalid Pokemon Name');
     }

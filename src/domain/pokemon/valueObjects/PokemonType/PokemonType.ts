@@ -2,7 +2,25 @@ import { v4 as uuidv4 } from 'uuid';
 
 const securityValue = uuidv4();
 
-export type ValidPokemonType = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' | 'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Fairy' | 'Dark';
+export type ValidPokemonType =
+  | 'Normal'
+  | 'Fighting'
+  | 'Flying'
+  | 'Poison'
+  | 'Ground'
+  | 'Rock'
+  | 'Bug'
+  | 'Ghost'
+  | 'Steel'
+  | 'Fire'
+  | 'Water'
+  | 'Grass'
+  | 'Electric'
+  | 'Psychic'
+  | 'Ice'
+  | 'Dragon'
+  | 'Fairy'
+  | 'Dark';
 
 const listValidPokemonTypes = [
   'Normal',
@@ -23,9 +41,7 @@ const listValidPokemonTypes = [
   'Dragon',
   'Fairy',
   'Dark',
-]
-
-
+];
 
 export default class PokemonType {
   private constructor(value: ValidPokemonType, secValue: any) {
@@ -52,7 +68,7 @@ export default class PokemonType {
   }
 
   public static create(value: ValidPokemonType) {
-    if(!listValidPokemonTypes.find(item => item === value)){
+    if (!listValidPokemonTypes.find((item) => item === value)) {
       throw new Error('Invalid Pokemon Type');
     }
     return new PokemonType(value, securityValue);

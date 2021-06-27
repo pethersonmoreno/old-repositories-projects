@@ -22,7 +22,6 @@ describe('PokemonType', () => {
     }).toThrow();
   });
 
-
   it('createNormal should create with value Normal', () => {
     expect((PokemonType.create('Normal') as any).value).toBe('Normal');
   });

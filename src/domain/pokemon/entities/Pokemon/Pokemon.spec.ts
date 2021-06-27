@@ -1,8 +1,4 @@
-import {
-  NumberInteger,
-  PokemonName,
-  PokemonType,
-} from '../../valueObjects';
+import { NumberInteger, PokemonName, PokemonType } from '../../valueObjects';
 import Pokemon from './Pokemon';
 
 const testInteger = NumberInteger.create(1);
@@ -111,8 +107,8 @@ describe('Pokemon', () => {
     });
     const pokemon2 = Pokemon.create({
       pokemonId: pokemon1.pokemonId,
-      name: PokemonName.create("Bubassauro"),
-      type: PokemonType.create("Water"),
+      name: PokemonName.create('Bubassauro'),
+      type: PokemonType.create('Water'),
     });
     expect(pokemon1.equals(pokemon2)).toBeTruthy();
   });
@@ -125,8 +121,8 @@ describe('Pokemon', () => {
     });
     const pokemon2 = Pokemon.create({
       pokemonId: NumberInteger.create(pokemon1.pokemonId.value),
-      name: PokemonName.create("Bubassauro"),
-      type: PokemonType.create("Water"),
+      name: PokemonName.create('Bubassauro'),
+      type: PokemonType.create('Water'),
     });
     expect(pokemon1.equals(pokemon2)).toBeTruthy();
   });
