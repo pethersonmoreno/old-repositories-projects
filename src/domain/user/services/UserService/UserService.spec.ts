@@ -159,4 +159,86 @@ describe('UserService', () => {
             await expect(userRepository.findByEmail(Email.create(newEmail))).resolves.toBeDefined();
         });
     });
+
+    describe('update', () => {
+        const userPassword = "x7&Kf4j33fjlsyg8";
+        const user1Email = 'someone6@domain.com';
+        const user1 = User.create({
+            email: Email.create(user1Email),
+            nickname: Nickname.create('Someone'),
+            password: Password.create(userPassword),
+            role: Role.createAdministrator(),
+        });
+        const user2Email = 'someone7@domain.com';
+        const user2 = User.create({
+            email: Email.create(user2Email),
+            nickname: Nickname.create('Someone2'),
+            password: Password.create(userPassword),
+            role: Role.createAdministrator(),
+        });
+        let userRepository: MemoryUserRepository;
+        let userService: UserService;
+
+        beforeEach(async ()=>{
+            userRepository = new MemoryUserRepository();
+            await userRepository.save(user1);
+            await userRepository.save(user2);
+            userService = new UserService(userRepository);
+        });
+
+        it('should throw to invalid email', async () => {
+            await expect(userService.update({
+                userId: user1.userId.value,
+                email: "invalidemail",
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should throw to invalid nickname', async () => {
+            await expect(userService.update({
+                userId: user1.userId.value,
+                email: "email@domain.com",
+                nickname: "N4c",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should throw to invalid password', async () => {
+            await expect(userService.update({
+                userId: user1.userId.value,
+                email: "email@domain.com",
+                nickname: "Nickname",
+                password: "invalidpass",
+            })).rejects.toThrow();
+        });
+
+        it('should throw to email already registered to other user', async () => {
+            await expect(userService.update({
+                userId: user2.userId.value,
+                email: user1Email,
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+            await expect(userService.update({
+                userId: user1.userId.value,
+                email: user2Email,
+                nickname: "Nickname",
+                password: userPassword,
+            })).rejects.toThrow();
+        });
+
+        it('should update the user', async () => {
+            const newEmail = 'someone8@domain.com';
+            await expect(userService.update({
+                userId: user1.userId.value,
+                email: newEmail,
+                nickname: "Nickname",
+                password: userPassword,
+            })).resolves.toBeUndefined();
+            await expect(userRepository.findByUserId(user1.userId)).resolves.toBeDefined();
+            const user = await userRepository.findByUserId(user1.userId);
+            expect(user.email.value).toBe(newEmail);
+        });
+    });
 });
