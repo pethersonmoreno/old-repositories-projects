@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const securityValue = uuidv4();
 
-type ValidPokemonType = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' | 'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Fairy' | 'Dark';
+export type ValidPokemonType = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' | 'Bug' | 'Ghost' | 'Steel' | 'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Fairy' | 'Dark';
 
 const listValidPokemonTypes = [
   'Normal',
