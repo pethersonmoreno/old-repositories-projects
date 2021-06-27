@@ -17,6 +17,16 @@ export default class Role{
     public get value(): ValidRole {
         return (this as any)[securityValue].value;
     }
+
+    public equals(value: Role): boolean {
+        if (value === null || value === undefined) {
+             return false;
+        }
+        if (!(value instanceof Role)){
+            return false;
+        }
+        return this.value === value.value;
+   }
     
     private static create(value: ValidRole, secValue: any){
         return new Role(value, secValue);
