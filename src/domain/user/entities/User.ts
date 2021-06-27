@@ -51,6 +51,18 @@ export default class User {
     public get role(): Role {
         return (this as any)[securityValue].role;
     }
+    
+    public updateEmail(newEmail: string) {
+        (this as any)[securityValue].email = Email.create(newEmail);
+    }
+    
+    public updateNickname(newNickname: string) {
+        (this as any)[securityValue].nickname = Nickname.create(newNickname);
+    }
+
+    public updatePassword(newRawPassword: string) {
+        (this as any)[securityValue].password = Password.create(newRawPassword);
+    }
 
     public equals(value: User): boolean {
         if (value === null || value === undefined) {
