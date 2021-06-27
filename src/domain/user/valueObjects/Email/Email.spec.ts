@@ -56,4 +56,22 @@ describe('Email', () => {
         const email2 = Email.create('someone@domain.com');
         expect(email1.equals(email2)).toBeTruthy();
     });
+
+    it('should throw if is used an invalid email address', () => {
+        const invalidEmails = [
+            'someone',
+            'someone@',
+            'someone@domain',
+            'someone@domain.',
+            'someone@domain.c.',
+            'someone@domain.com.',
+            'someone@domain.com.b',
+            'domain.com.b'
+        ]
+        invalidEmails.forEach(invalidEmail => {
+            expect(() => {
+                Email.create(invalidEmail)
+            }).toThrow();
+        })
+    });
 });
