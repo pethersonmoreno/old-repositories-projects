@@ -59,7 +59,7 @@ describe('Role', () => {
         expect(role.equals(undefined)).toBeFalsy();
     });
 
-    it('should not be equal to a simple object with same vale', () => {
+    it('should not be equal to a simple object with same value', () => {
         const role = Role.createAdministrator();
         const roleSimpleObj = { value: 'Administrator' };
         expect(role.value).toBe('Administrator');
