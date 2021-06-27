@@ -57,7 +57,7 @@ describe('PokemonName', () => {
     expect(pokemonName1.equals(pokemonName2)).toBeTruthy();
   });
 
-  it('should throw if is used an invalid pokemonName address', () => {
+  it('should throw if is used an invalid pokemonName', () => {
     const invalidPokemonNames = [
       'S',
       'V',
