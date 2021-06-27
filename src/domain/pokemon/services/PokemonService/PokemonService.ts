@@ -30,4 +30,15 @@ export default class PokemonService {
     });
     await this.pokemonRepository.save(newPokemon);
   }
+
+  async update(updatePokemonDto: PokemonDTO): Promise<void> {
+    const pokemonId = NumberInteger.create(updatePokemonDto.pokemonId);
+    const pokemon = await this.pokemonRepository.findByPokemonId(pokemonId);
+    if (!pokemon) {
+      throw new Error(`Pokemon not found with ID ${updatePokemonDto.pokemonId}`);
+    }
+    pokemon.updateName(updatePokemonDto.name);
+    pokemon.updateType(updatePokemonDto.type as any);
+    await this.pokemonRepository.save(pokemon);
+  }
 }
