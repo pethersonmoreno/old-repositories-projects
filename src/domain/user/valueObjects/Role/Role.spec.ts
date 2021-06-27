@@ -41,4 +41,11 @@ describe('Role', () => {
     it('createPokemonTrainer should create with value PokemonTrainer', () => {
         expect((Role.createPokemonTrainer() as any).value).toBe('PokemonTrainer');
     });
+
+    it('should not change a value of Role object', () => {
+        const role = Role.createAdministrator();
+        expect(()=>{
+            (role as any).value = 'PokemonTrainer'
+        }).toThrow();
+    });
 });
