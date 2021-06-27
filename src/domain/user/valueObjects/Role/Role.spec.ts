@@ -72,7 +72,7 @@ describe('Role', () => {
         expect(role.equals(Role.createPokemonTrainer())).toBeFalsy();
     });
 
-    it('should not be equal to same Role', () => {
+    it('should be equal to same Role', () => {
         const role = Role.createAdministrator();
         expect(Role.createAdministrator().equals(Role.createAdministrator())).toBeTruthy();
     });

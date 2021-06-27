@@ -51,7 +51,7 @@ describe('Email', () => {
         expect(email1.equals(email2)).toBeFalsy();
     });
 
-    it('should not be equal to same Email', () => {
+    it('should be equal to same Email', () => {
         const email1 = Email.create('someone@domain.com');
         const email2 = Email.create('someone@domain.com');
         expect(email1.equals(email2)).toBeTruthy();
