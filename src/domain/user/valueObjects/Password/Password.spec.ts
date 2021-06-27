@@ -8,7 +8,7 @@ describe('Password', () => {
             new (Password as any)()
         }).toThrow();
         expect(() => {
-            new (Password as any)('some-hash')
+            new (Password as any)(testPassword)
         }).toThrow();
     });
 
