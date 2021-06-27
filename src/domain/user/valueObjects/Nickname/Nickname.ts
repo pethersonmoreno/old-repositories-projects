@@ -27,6 +27,10 @@ export default class Nickname {
     }
 
     public static create(value: string) {
+        const regexNickname = /^[A-Za-z]{2}[A-Za-z0-9]+( [A-Za-z]{2}[A-Za-z0-9]+)*$/
+        if (!regexNickname.test(value)) {
+            throw new Error("Invalid Nickname");
+        }
         return new Nickname(value, securityValue);
     }
 }
