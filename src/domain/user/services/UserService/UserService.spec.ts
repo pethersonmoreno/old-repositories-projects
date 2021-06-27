@@ -220,6 +220,17 @@ describe('UserService', () => {
       userService = new UserService(userRepository);
     });
 
+    it('should throw to user not found', async () => {
+      await expect(
+        userService.update({
+          userId: IdentityUuid.create().value,
+          email: 'invalidemail',
+          nickname: 'Nickname',
+          password: userPassword,
+        }),
+      ).rejects.toThrow();
+    });
+
     it('should throw to invalid email', async () => {
       await expect(
         userService.update({

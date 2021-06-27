@@ -57,7 +57,7 @@ describe('Nickname', () => {
     expect(nickname1.equals(nickname2)).toBeTruthy();
   });
 
-  it('should throw if is used an invalid nickname address', () => {
+  it('should throw if is used an invalid nickname', () => {
     const invalidNicknames = [
       'S',
       'V',

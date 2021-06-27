@@ -1,0 +1,1 @@
+export { PokemonRepository } from './PokemonRepository';
