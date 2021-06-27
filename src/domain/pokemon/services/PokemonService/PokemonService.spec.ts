@@ -52,26 +52,26 @@ class MemoryPokemonRepository implements PokemonRepository {
 }
 
 describe('PokemonService', () => {
+  const pokemon1 = Pokemon.create({
+    pokemonId: NumberInteger.create(1),
+    name: PokemonName.create('Pikachu'),
+    type: PokemonType.create('Electric'),
+  });
+  const pokemon2 = Pokemon.create({
+    pokemonId: NumberInteger.create(2),
+    name: PokemonName.create('Bubassauro'),
+    type: PokemonType.create('Grass'),
+  });
+  const pokemonRepository = new MemoryPokemonRepository();
+  let pokemonService: PokemonService;
+
+  beforeEach(async () => {
+    await pokemonRepository.save(pokemon1);
+    await pokemonRepository.save(pokemon2);
+    pokemonService = new PokemonService(pokemonRepository);
+  });
+
   describe('register', () => {
-    const pokemon1 = Pokemon.create({
-      pokemonId: NumberInteger.create(1),
-      name: PokemonName.create('Pikachu'),
-      type: PokemonType.create('Electric'),
-    });
-    const pokemon2 = Pokemon.create({
-      pokemonId: NumberInteger.create(2),
-      name: PokemonName.create('Bubassauro'),
-      type: PokemonType.create('Grass'),
-    });
-    const pokemonRepository = new MemoryPokemonRepository();
-    let pokemonService: PokemonService;
-
-    beforeAll(async () => {
-      await pokemonRepository.save(pokemon1);
-      await pokemonRepository.save(pokemon2);
-      pokemonService = new PokemonService(pokemonRepository);
-    });
-
     it('should throw to invalid Pokemon ID', async () => {
       await expect(
         pokemonService.register({
@@ -102,7 +102,7 @@ describe('PokemonService', () => {
       ).rejects.toThrow();
     });
 
-    it('should throw to email already registered', async () => {
+    it('should throw to ID already registered', async () => {
       await expect(
         pokemonService.register({
           pokemonId: pokemon1.pokemonId.value,
@@ -131,6 +131,64 @@ describe('PokemonService', () => {
       await expect(
         pokemonRepository.findByPokemonId(NumberInteger.create(newPokemonId)),
       ).resolves.toBeDefined();
+    });
+  });
+
+  describe('update', () => {
+    it('should throw to pokemon not found', async () => {
+      await expect(
+        pokemonService.update({
+          pokemonId: 50,
+          name: 'Squirtle',
+          type: 'Water',
+        }),
+      ).rejects.toThrow();
+    });
+
+    it('should throw to invalid Pokemon ID', async () => {
+      await expect(
+        pokemonService.update({
+          pokemonId: 0,
+          name: 'Squirtle',
+          type: 'Water',
+        }),
+      ).rejects.toThrow();
+    });
+
+    it('should throw to invalid pokemon name', async () => {
+      await expect(
+        pokemonService.update({
+          pokemonId: 1,
+          name: 'Squirtle2',
+          type: 'Water',
+        }),
+      ).rejects.toThrow();
+    });
+
+    it('should throw to invalid pokemon Type', async () => {
+      await expect(
+        pokemonService.update({
+          pokemonId: 1,
+          name: 'Squirtle',
+          type: 'Space',
+        }),
+      ).rejects.toThrow();
+    });
+
+    it('should update the pokemon', async () => {
+      const newType = 'Water'
+      await expect(
+        pokemonService.update({
+          pokemonId: 1,
+          name: 'Squirtle',
+          type: newType,
+        }),
+      ).resolves.toBeUndefined();
+      await expect(
+        pokemonRepository.findByPokemonId(pokemon1.pokemonId),
+      ).resolves.toBeDefined();
+      const pokemon = await pokemonRepository.findByPokemonId(pokemon1.pokemonId);
+      expect(pokemon.type.value).toBe(newType);
     });
   });
 });
