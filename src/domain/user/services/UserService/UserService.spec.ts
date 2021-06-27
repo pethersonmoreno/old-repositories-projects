@@ -1,5 +1,5 @@
 import { User } from '../../entities';
-import { UserRepository } from '../../repositories/UserRepository';
+import { UserRepository } from '../../repositories';
 import { Email, IdentityUuid, Nickname, Password, Role } from '../../valueObjects';
 import UserService from './UserService';
 
