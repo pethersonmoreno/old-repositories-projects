@@ -3,6 +3,7 @@ import {
   NumberInteger,
   PokemonName,
   PokemonType,
+  ValidPokemonType,
 } from '../../valueObjects';
 
 const securityValue = uuidv4();
@@ -36,6 +37,14 @@ export default class Pokemon {
 
   public get type(): PokemonType {
     return (this as any)[securityValue].type;
+  }
+
+  public updateName(newName: string) {
+    (this as any)[securityValue].name = PokemonName.create(newName);
+  }
+
+  public updateType(newType: ValidPokemonType) {
+    (this as any)[securityValue].type = PokemonType.create(newType);
   }
 
   public equals(value: Pokemon): boolean {
