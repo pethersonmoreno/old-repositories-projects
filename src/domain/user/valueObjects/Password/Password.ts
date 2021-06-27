@@ -19,6 +19,13 @@ export default class Password {
         return (this as any)[securityValue].hash;
     }
 
+    public matchRawPassword(rawPassword: string){
+        if (rawPassword === null || rawPassword === undefined) {
+            return false;
+        }
+        return bcrypt.compareSync(rawPassword, this.hash);
+    }
+
     public equals(value: Password): boolean {
         if (value === null || value === undefined) {
             return false;
@@ -29,12 +36,12 @@ export default class Password {
         return this.hash === value.hash;
     }
 
-    public static create(password: string) {
+    public static create(rawPassword: string) {
         const regexStrongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-        if (!regexStrongPassword.test(password)) {
+        if (!regexStrongPassword.test(rawPassword)) {
             throw new Error("Invalid Password, it must have at least 1 lowercase alphabetical character, 1 uppercase alphabetical character, 1 numeric character, 1 special character and 8 characters or longer");
         }
-        const hash = bcrypt.hashSync(password, salt);
+        const hash = bcrypt.hashSync(rawPassword, salt);
         return new Password(hash, securityValue);
     }
 
