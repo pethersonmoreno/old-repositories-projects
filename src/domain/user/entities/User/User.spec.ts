@@ -135,6 +135,23 @@ describe('User', () => {
         expect(user1.equals(user2)).toBeTruthy();
     });
 
+    it('should be equal to same User where userId are different objects', () => {
+        const user1 = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        const user2 = User.createWithUserId({
+            userId: IdentityUuid.createFromUuid(user1.userId.value),
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(user1.equals(user2)).toBeTruthy();
+    });
+
     it('should not update email with invalid email', () => {
         const user = User.create({
             email: testEmail,

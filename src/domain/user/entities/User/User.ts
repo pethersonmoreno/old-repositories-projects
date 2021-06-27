@@ -71,7 +71,7 @@ export default class User {
         if (!(value instanceof User)){
             return false;
         }
-        return this.userId === value.userId;
+        return this.userId.equals(value.userId);
    }
     
     public static create(value: Omit<ValidUser, "userId">){
