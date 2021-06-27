@@ -109,7 +109,7 @@ describe('User', () => {
             password: testPassword,
             role: testRole,
         });
-        const user2 = User.createWithUserId({
+        const user2 = User.create({
             email: testEmail,
             nickname: testNickname,
             password: testPassword,
