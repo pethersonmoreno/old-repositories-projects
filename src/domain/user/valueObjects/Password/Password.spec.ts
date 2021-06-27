@@ -77,4 +77,14 @@ describe('Password', () => {
             }).toThrow();
         })
     });
+
+    it('should match the same raw password', () => {
+        const password = Password.create(testPassword);
+        expect(password.matchRawPassword(testPassword)).toBeTruthy();
+    });
+
+    it('should not match the different raw password', () => {
+        const password = Password.create(testPassword);
+        expect(password.matchRawPassword('9&Kf4j3other')).toBeFalsy();
+    });
 });
