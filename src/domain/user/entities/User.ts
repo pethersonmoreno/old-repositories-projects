@@ -73,6 +73,21 @@ export default class User {
     }
 
     public static createWithUserId(value: ValidUser) {
+        if (!(value.userId instanceof IdentityUuid)){
+            throw new Error("Invalid userid");
+        }
+        if (!(value.email instanceof Email)){
+            throw new Error("Invalid userid");
+        }
+        if (!(value.nickname instanceof Nickname)){
+            throw new Error("Invalid userid");
+        }
+        if (!(value.password instanceof Password)){
+            throw new Error("Invalid userid");
+        }
+        if (!(value.role instanceof Role)){
+            throw new Error("Invalid userid");
+        }
         return new User(value, securityValue);
     }
 }
