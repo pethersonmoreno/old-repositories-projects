@@ -134,4 +134,78 @@ describe('User', () => {
         });
         expect(user1.equals(user2)).toBeTruthy();
     });
+
+    it('should not update email with invalid email', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updateEmail('invalidemail')
+        }).toThrow();
+    });
+
+    it('should update email with valid email', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updateEmail('newemail@domain.com.br')
+        }).not.toThrow();
+        expect(user.email.value).toBe('newemail@domain.com.br');
+    });
+
+    it('should not update nickname with invalid nickname', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updateNickname('9')
+        }).toThrow();
+    });
+
+    it('should update nickname with valid nickname', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updateNickname('BU49')
+        }).not.toThrow();
+    });
+
+
+    it('should not update password with invalid password', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updatePassword('9')
+        }).toThrow();
+    });
+
+    it('should update password with valid password', () => {
+        const user = User.create({
+            email: testEmail,
+            nickname: testNickname,
+            password: testPassword,
+            role: testRole,
+        });
+        expect(()=>{
+            user.updatePassword('akj4&4jij98j4D')
+        }).not.toThrow();
+    });
 });
