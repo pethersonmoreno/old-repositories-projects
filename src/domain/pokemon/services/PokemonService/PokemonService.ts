@@ -41,4 +41,13 @@ export default class PokemonService {
     pokemon.updateType(updatePokemonDto.type as any);
     await this.pokemonRepository.save(pokemon);
   }
+
+  async remove(pokemonId: number): Promise<void> {
+    const pokemonIdObj = NumberInteger.create(pokemonId);
+    const pokemon = await this.pokemonRepository.findByPokemonId(pokemonIdObj);
+    if (!pokemon) {
+      throw new Error(`Pokemon not found with ID ${pokemonId}`);
+    }
+    await this.pokemonRepository.remove(pokemon);
+  }
 }
