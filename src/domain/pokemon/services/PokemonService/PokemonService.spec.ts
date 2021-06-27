@@ -191,4 +191,27 @@ describe('PokemonService', () => {
       expect(pokemon.type.value).toBe(newType);
     });
   });
+
+  describe('remove', () => {
+    it('should throw to pokemon not found', async () => {
+      await expect(
+        pokemonService.remove(50),
+      ).rejects.toThrow();
+    });
+
+    it('should throw to invalid Pokemon ID', async () => {
+      await expect(
+        pokemonService.remove(0),
+      ).rejects.toThrow();
+    });
+
+    it('should remove the pokemon', async () => {
+      await expect(
+        pokemonService.remove(1),
+      ).resolves.toBeUndefined();
+      await expect(
+        pokemonRepository.findByPokemonId(pokemon1.pokemonId),
+      ).resolves.toBeUndefined();
+    });
+  });
 });
