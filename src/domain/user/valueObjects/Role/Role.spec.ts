@@ -48,4 +48,32 @@ describe('Role', () => {
             (role as any).value = 'PokemonTrainer'
         }).toThrow();
     });
+
+    it('should not be equal to null', () => {
+        const role = Role.createAdministrator();
+        expect(role.equals(null)).toBeFalsy();
+    });
+
+    it('should not be equal to undefined', () => {
+        const role = Role.createAdministrator();
+        expect(role.equals(undefined)).toBeFalsy();
+    });
+
+    it('should not be equal to a simple object with same vale', () => {
+        const role = Role.createAdministrator();
+        const roleSimpleObj = { value: 'Administrator' };
+        expect(role.value).toBe('Administrator');
+        expect(roleSimpleObj.value).toBe('Administrator');
+        expect(role.equals(roleSimpleObj as any)).toBeFalsy();
+    });
+
+    it('should not be equal to a different Role', () => {
+        const role = Role.createAdministrator();
+        expect(role.equals(Role.createPokemonTrainer())).toBeFalsy();
+    });
+
+    it('should not be equal to same Role', () => {
+        const role = Role.createAdministrator();
+        expect(Role.createAdministrator().equals(Role.createAdministrator())).toBeTruthy();
+    });
 });
