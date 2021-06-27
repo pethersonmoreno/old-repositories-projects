@@ -62,24 +62,28 @@ describe('UserService', () => {
             role: Role.createAdministrator(),
         });
         const userRepository = new MemoryUserRepository();
-        userRepository.save(user1);
-        userRepository.save(user2);
-        const userService = new UserService(userRepository);
+        let userService: UserService;
 
-        it('should be valid if email with password exists', () => {
-            expect(userService.validateLogin(user1Email, user1Password)).resolves.toBeTruthy();
+        beforeAll(async ()=>{
+            await userRepository.save(user1);
+            await userRepository.save(user2);
+            userService = new UserService(userRepository);
         });
 
-        it('should be invalid if email exists but it is not a valid password', () => {
-            expect(userService.validateLogin(user1Email, "b9&Kf4j33fjlsyg8")).resolves.toBeFalsy();
+        it('should be valid if email with password exists', async () => {
+            await expect(userService.validateLogin(user1Email, user1Password)).resolves.toBeTruthy();
         });
 
-        it('should be invalid if password exists but it is not compatible with the user', () => {
-            expect(userService.validateLogin(user1Email, user2Password)).resolves.toBeFalsy();
+        it('should be invalid if email exists but it is not a valid password', async () => {
+            await expect(userService.validateLogin(user1Email, "b9&Kf4j33fjlsyg8")).resolves.toBeFalsy();
         });
 
-        it('should throw to invalid email', () => {
-            expect(userService.validateLogin('invalidemail', user1Password)).rejects.toThrow();
+        it('should be invalid if password exists but it is not compatible with the user', async () => {
+            await expect(userService.validateLogin(user1Email, user2Password)).resolves.toBeFalsy();
+        });
+
+        it('should throw to invalid email', async () => {
+            await expect(userService.validateLogin('invalidemail', user1Password)).rejects.toThrow();
         });
     });
 });
