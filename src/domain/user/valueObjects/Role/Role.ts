@@ -5,10 +5,12 @@ const securityValue = uuidv4();
 type ValidRole = 'Administrator' | 'PokemonTrainer';
 
 export default class Role{
+    private readonly value;
     private constructor(value: ValidRole, secValue: any){
         if(secValue !== securityValue){
             throw new Error("Invalid Instantiation")
         }
+        this.value = value;
     }
     
     private static create(value: ValidRole, secValue: any){
