@@ -14,4 +14,8 @@ export default class Role{
     private static create(value: ValidRole, secValue: any){
         return new Role(value, secValue);
     }
+
+    public static createAdministrator() {
+        return this.create('Administrator', securityValue);
+    }
 }
