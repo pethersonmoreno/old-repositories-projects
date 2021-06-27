@@ -2,10 +2,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 const securityValue = uuidv4();
 
+type ValidRole = 'Administrator' | 'PokemonTrainer';
+
 export default class Role{
-    private constructor(secValue: any){
+    private constructor(value: ValidRole, secValue: any){
         if(secValue !== securityValue){
             throw new Error("Invalid Instantiation")
         }
+    }
+    private static create(){
     }
 }
