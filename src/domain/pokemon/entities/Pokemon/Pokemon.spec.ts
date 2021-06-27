@@ -130,4 +130,50 @@ describe('Pokemon', () => {
     });
     expect(pokemon1.equals(pokemon2)).toBeTruthy();
   });
+
+  it('should not update name with invalid name', () => {
+    const pokemon = Pokemon.create({
+      pokemonId: testInteger,
+      name: testPokemonName,
+      type: testPokemonType,
+    });
+    expect(() => {
+      pokemon.updateName('Pikachu2');
+    }).toThrow();
+  });
+
+  it('should update name with valid name', () => {
+    const pokemon = Pokemon.create({
+      pokemonId: testInteger,
+      name: testPokemonName,
+      type: testPokemonType,
+    });
+    expect(() => {
+      pokemon.updateName('Bubassauro');
+    }).not.toThrow();
+    expect(pokemon.name.value).toBe('Bubassauro');
+  });
+
+  it('should not update type with invalid type', () => {
+    const pokemon = Pokemon.create({
+      pokemonId: testInteger,
+      name: testPokemonName,
+      type: testPokemonType,
+    });
+    expect(() => {
+      pokemon.updateType('Space' as any);
+    }).toThrow();
+  });
+
+  it('should update type with valid type', () => {
+    const pokemon = Pokemon.create({
+      pokemonId: testInteger,
+      name: testPokemonName,
+      type: testPokemonType,
+    });
+    expect(() => {
+      pokemon.updateType('Water');
+    }).not.toThrow();
+    expect(pokemon.type.value).toBe('Water');
+  });
 });
