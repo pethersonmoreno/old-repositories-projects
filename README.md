@@ -8,7 +8,23 @@ A NestJS project with DDD. The pokemon trainer user can register pokemons, remov
 $ npm install
 ```
 
+## Configure local database
+
+```bash
+# start local mongodb with the command
+$ docker-compose up
+
+# update variable DB_HOST on .env file with your IP in your network
+# run the following command to create collections or tables in your local databse
+$ source .env && npm run createDatabase
+```
+
 ## Running the app
+
+Before run the following scripts on local, remember to load your enviroment variables with the command:
+```bash
+$ source .env
+```
 
 ```bash
 # development
