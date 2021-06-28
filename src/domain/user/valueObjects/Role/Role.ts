@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
@@ -11,7 +12,7 @@ const listValidRoles = [
 export default class Role {
   private constructor(value: ValidRole, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -34,7 +35,7 @@ export default class Role {
 
   public static create(value: ValidRole) {
     if (!listValidRoles.find((item) => item === value)) {
-      throw new Error('Invalid Role');
+      throw new ValidationError('Invalid Role');
     }
     return new Role(value, securityValue);
   }

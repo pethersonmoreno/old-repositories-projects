@@ -7,6 +7,7 @@ import {
   Role,
 } from '../../valueObjects';
 import { User } from '../../entities';
+import { ValidationError, NotFoundError } from '../../../../shared/errors';
 
 export type UpdateUserDTO = {
   userId: string;
@@ -32,7 +33,7 @@ export default class UserService {
     const role = Role.createPokemonTrainer();
     const userByEmail = await this.userRepository.findByEmail(email);
     if (userByEmail) {
-      throw new Error(`Already exists another user with email ${email.value}`);
+      throw new ValidationError(`Already exists another user with email ${email.value}`);
     }
     const newUser = User.create({
       email,
@@ -47,11 +48,11 @@ export default class UserService {
     const userId = IdentityUuid.createFromUuid(updateUserDto.userId);
     const user = await this.userRepository.findByUserId(userId);
     if (!user) {
-      throw new Error(`User not found with ID ${updateUserDto.userId}`);
+      throw new NotFoundError(`User not found with ID ${updateUserDto.userId}`);
     }
     const newEmail = Email.create(updateUserDto.email);
     if (await this.existOtherUserByEmail(user, newEmail)) {
-      throw new Error(
+      throw new ValidationError(
         `Already exists another user with email ${newEmail.value}`,
       );
     }

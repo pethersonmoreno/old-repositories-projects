@@ -1,1 +1,1 @@
-export { default as PokemonService } from './PokemonService/PokemonService';
+export { default as PokemonService, PokemonDTO } from './PokemonService/PokemonService';

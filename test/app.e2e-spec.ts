@@ -1,7 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import * as typeorm from 'typeorm';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from './../src/presentation/app.module';
+
+const spyGetRepository = jest.spyOn(typeorm, 'getRepository');
+beforeAll(()=>{
+  spyGetRepository.mockImplementation(()=>{
+    return {} as any;
+  })
+});
+afterAll(()=>{
+  spyGetRepository.mockRestore();
+});
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
