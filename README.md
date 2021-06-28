@@ -49,3 +49,9 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Postman collection to API
+
+Here is the Postman collection used in the project:
+
+- [pokemon-trainer.postman_collection.json](pokemon-trainer.postman_collection.json)
