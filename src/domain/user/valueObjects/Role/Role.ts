@@ -4,10 +4,7 @@ import { ValidationError } from '../../../../shared/errors';
 const securityValue = uuidv4();
 
 type ValidRole = 'Administrator' | 'PokemonTrainer';
-const listValidRoles = [
-  'Administrator',
-  'PokemonTrainer'
-];
+const listValidRoles = ['Administrator', 'PokemonTrainer'];
 
 export default class Role {
   private constructor(value: ValidRole, secValue: any) {

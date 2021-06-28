@@ -5,16 +5,16 @@ import { PokemonController } from './pokemon/pokemon.controller';
 import { UserController } from './user/user.controller';
 
 @Module({
-    controllers: [UserController, PokemonController],
-    providers: [
-        {
-            provide: 'UserRepository',
-            useClass: TypeormUserRepository,
-        },
-        {
-            provide: 'PokemonRepository',
-            useClass: TypeormPokemonRepository,
-        },
-    ],
+  controllers: [UserController, PokemonController],
+  providers: [
+    {
+      provide: 'UserRepository',
+      useClass: TypeormUserRepository,
+    },
+    {
+      provide: 'PokemonRepository',
+      useClass: TypeormPokemonRepository,
+    },
+  ],
 })
 export class ControllersModule {}

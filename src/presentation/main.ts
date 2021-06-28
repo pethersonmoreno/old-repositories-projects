@@ -12,7 +12,7 @@ async function bootstrap() {
     process.exit(1);
   }
   const app = await NestFactory.create(AppModule);
-  app.useGlobalInterceptors(new ConnectionInterceptor())
+  app.useGlobalInterceptors(new ConnectionInterceptor());
   await app.listen(3000);
 }
 bootstrap();

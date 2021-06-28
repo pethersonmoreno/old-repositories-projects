@@ -1,5 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NumberInteger, Pokemon, PokemonRepository } from '../../../domain/pokemon';
+import {
+  NumberInteger,
+  Pokemon,
+  PokemonRepository,
+} from '../../../domain/pokemon';
 import { PokemonController } from './pokemon.controller';
 
 class MemoryPokemonRepository implements PokemonRepository {
@@ -58,8 +62,8 @@ describe('PokemonController', () => {
       controllers: [PokemonController],
       providers: [
         {
-            provide: 'PokemonRepository',
-            useClass: MemoryPokemonRepository,
+          provide: 'PokemonRepository',
+          useClass: MemoryPokemonRepository,
         },
       ],
     }).compile();

@@ -33,7 +33,9 @@ export default class UserService {
     const role = Role.createPokemonTrainer();
     const userByEmail = await this.userRepository.findByEmail(email);
     if (userByEmail) {
-      throw new ValidationError(`Already exists another user with email ${email.value}`);
+      throw new ValidationError(
+        `Already exists another user with email ${email.value}`,
+      );
     }
     const newUser = User.create({
       email,

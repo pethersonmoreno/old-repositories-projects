@@ -5,12 +5,12 @@ import * as request from 'supertest';
 import { AppModule } from './../src/presentation/app.module';
 
 const spyGetRepository = jest.spyOn(typeorm, 'getRepository');
-beforeAll(()=>{
-  spyGetRepository.mockImplementation(()=>{
+beforeAll(() => {
+  spyGetRepository.mockImplementation(() => {
     return {} as any;
-  })
+  });
 });
-afterAll(()=>{
+afterAll(() => {
   spyGetRepository.mockRestore();
 });
 

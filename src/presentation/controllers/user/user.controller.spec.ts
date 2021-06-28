@@ -1,5 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRepository, User, IdentityUuid, Email } from '../../../domain/user';
+import {
+  UserRepository,
+  User,
+  IdentityUuid,
+  Email,
+} from '../../../domain/user';
 import { UserController } from './user.controller';
 
 class MemoryUserRepository implements UserRepository {
@@ -48,7 +53,6 @@ class MemoryUserRepository implements UserRepository {
   }
 }
 
-
 describe('UserController', () => {
   let controller: UserController;
 
@@ -57,8 +61,8 @@ describe('UserController', () => {
       controllers: [UserController],
       providers: [
         {
-            provide: 'UserRepository',
-            useClass: MemoryUserRepository,
+          provide: 'UserRepository',
+          useClass: MemoryUserRepository,
         },
       ],
     }).compile();
