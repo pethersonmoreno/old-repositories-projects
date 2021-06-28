@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 import {
   NumberInteger,
   Pokemon,
@@ -60,6 +62,13 @@ describe('PokemonController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PokemonController],
+      imports: [
+        PassportModule,
+        JwtModule.register({
+          secret: process.env.JWT_SECRET,
+          signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
+        }),
+      ],
       providers: [
         {
           provide: 'PokemonRepository',
