@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "48a35b7e-6034-4dea-8a5a-54107686c35d",
+		"name": "pokemon-trainer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Login user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin@domain.com\",\n    \"password\": \"a1B&abcd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0OTAwOSwiZXhwIjoxNjI0ODUyNjA5fQ.qveLw5srHT7I5lkE7lRyNTqO2H-gq37sqJV_OgEiO4E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fulano@email.com\",\n    \"nickname\": \"Fulano\",\n    \"password\": \"a1B&1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0ODg0NywiZXhwIjoxNjI0ODQ4OTA3fQ.woPDw5giAUg0kOMkeKppeftFqQtJFbsFpV-8BbqY1r4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"fulano.beltrano@email.com\",\n    \"nickname\": \"Fulano Beltrano\",\n    \"password\": \"a1B&1235\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/:userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "136e80d6-3b6f-4c36-bf69-a079c11c7682"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pokemon",
+			"item": [
+				{
+					"name": "list pokemons",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0ODg0NywiZXhwIjoxNjI0ODQ4OTA3fQ.woPDw5giAUg0kOMkeKppeftFqQtJFbsFpV-8BbqY1r4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pokemon",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pokemon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create pokemon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0ODg0NywiZXhwIjoxNjI0ODQ4OTA3fQ.woPDw5giAUg0kOMkeKppeftFqQtJFbsFpV-8BbqY1r4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pokemonId\": 1,\n    \"name\": \"Pikachu\",\n    \"type\": \"Electric\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pokemon",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pokemon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail pokemon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0ODg0NywiZXhwIjoxNjI0ODQ4OTA3fQ.woPDw5giAUg0kOMkeKppeftFqQtJFbsFpV-8BbqY1r4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pokemon/:pokemonId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pokemon",
+								":pokemonId"
+							],
+							"variable": [
+								{
+									"key": "pokemonId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update pokemon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0ODg0NywiZXhwIjoxNjI0ODQ4OTA3fQ.woPDw5giAUg0kOMkeKppeftFqQtJFbsFpV-8BbqY1r4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Bubassauro\",\n    \"type\": \"Water\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pokemon/:pokemonId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pokemon",
+								":pokemonId"
+							],
+							"variable": [
+								{
+									"key": "pokemonId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove pokemon",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluQGRvbWFpbi5jb20iLCJzdWIiOiJhMDliYTViNi00ZTUxLTRlYzQtYjkzYi0xYzE3NDc2ZmRiOTEiLCJyb2xlIjoiQWRtaW5pc3RyYXRvciIsImlhdCI6MTYyNDg0OTAwOSwiZXhwIjoxNjI0ODUyNjA5fQ.qveLw5srHT7I5lkE7lRyNTqO2H-gq37sqJV_OgEiO4E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/pokemon/:pokemonId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pokemon",
+								":pokemonId"
+							],
+							"variable": [
+								{
+									"key": "pokemonId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
