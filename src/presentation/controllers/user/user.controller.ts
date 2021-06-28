@@ -26,13 +26,16 @@ type TokenPayload = {
   username: string;
   sub: string;
   role: string;
-}
+};
 
 @Controller()
 export class UserController {
   private readonly userService: UserService;
   private readonly jwtService: JwtService;
-  constructor(@Inject('UserRepository') userRepository: UserRepository, jwtService: JwtService) {
+  constructor(
+    @Inject('UserRepository') userRepository: UserRepository,
+    jwtService: JwtService,
+  ) {
     this.userService = new UserService(userRepository);
     this.jwtService = jwtService;
   }
@@ -47,13 +50,17 @@ export class UserController {
         credentials.username,
         credentials.password,
       );
-      if(!userValid){
+      if (!userValid) {
         res.status(HttpStatus.UNAUTHORIZED).send({
-            error: "Invalid username or password",
+          error: 'Invalid username or password',
         });
         return;
       }
-      const payload: TokenPayload = { username: userValid.email.value, sub: userValid.userId.value, role: userValid.role.value };
+      const payload: TokenPayload = {
+        username: userValid.email.value,
+        sub: userValid.userId.value,
+        role: userValid.role.value,
+      };
       res.send({
         access_token: this.jwtService.sign(payload),
       });
@@ -64,11 +71,17 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Post('user')
-  async registerUser(@Body() newUserDto: NewUserDTO, @Res() res: Response, @Req() req: Request) {
-    const tokenData: TokenPayload = this.jwtService.decode(req.headers.authorization.replace('Bearer ', '')) as any;
-    if(tokenData.role !== Role.createAdministrator().value){
-        res.status(HttpStatus.UNAUTHORIZED).send();
-        return;
+  async registerUser(
+    @Body() newUserDto: NewUserDTO,
+    @Res() res: Response,
+    @Req() req: Request,
+  ) {
+    const tokenData: TokenPayload = this.jwtService.decode(
+      req.headers.authorization.replace('Bearer ', ''),
+    ) as any;
+    if (tokenData.role !== Role.createAdministrator().value) {
+      res.status(HttpStatus.UNAUTHORIZED).send();
+      return;
     }
     try {
       await this.userService.register(newUserDto);
@@ -86,10 +99,12 @@ export class UserController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    const tokenData: TokenPayload = this.jwtService.decode(req.headers.authorization.replace('Bearer ', '')) as any;
-    if(tokenData.role !== Role.createAdministrator().value){
-        res.status(HttpStatus.UNAUTHORIZED).send();
-        return;
+    const tokenData: TokenPayload = this.jwtService.decode(
+      req.headers.authorization.replace('Bearer ', ''),
+    ) as any;
+    if (tokenData.role !== Role.createAdministrator().value) {
+      res.status(HttpStatus.UNAUTHORIZED).send();
+      return;
     }
     try {
       await this.userService.update({
