@@ -5,17 +5,19 @@ import TypeormUserRepository from '../../infra/repositories/TypeormUserRepositor
 import { PokemonController } from './pokemon/pokemon.controller';
 import { PassportModule } from '@nestjs/passport';
 import { UserController } from './user/user.controller';
+import { JwtStrategy } from '../auth/jwt.strategy';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
     }),
   ],
   controllers: [UserController, PokemonController],
   providers: [
+    JwtStrategy,
     {
       provide: 'UserRepository',
       useClass: TypeormUserRepository,

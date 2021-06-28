@@ -9,8 +9,10 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/presentation/auth/jwt-auth.guard';
 import {
   NumberInteger,
   Pokemon,
@@ -20,6 +22,7 @@ import {
 } from '../../../domain/pokemon';
 import { NotFoundError, ValidationError } from '../../../shared/errors';
 
+@UseGuards(JwtAuthGuard)
 @Controller('pokemon')
 export class PokemonController {
   private readonly pokemonRepository: PokemonRepository;

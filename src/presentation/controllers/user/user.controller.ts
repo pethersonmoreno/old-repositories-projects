@@ -7,16 +7,26 @@ import {
   Post,
   Put,
   Res,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { JwtAuthGuard } from 'src/presentation/auth/jwt-auth.guard';
 import {
   NewUserDTO,
+  Role,
   UpdateUserDTO,
   UserRepository,
   UserService,
 } from '../../../domain/user';
 import { NotFoundError, ValidationError } from '../../../shared/errors';
+
+type TokenPayload = {
+  username: string;
+  sub: string;
+  role: string;
+}
 
 @Controller()
 export class UserController {
@@ -43,7 +53,7 @@ export class UserController {
         });
         return;
       }
-      const payload = { username: userValid.email.value, sub: userValid.userId.value, role: userValid.role.value };
+      const payload: TokenPayload = { username: userValid.email.value, sub: userValid.userId.value, role: userValid.role.value };
       res.send({
         access_token: this.jwtService.sign(payload),
       });
@@ -52,8 +62,14 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('user')
-  async registerUser(@Body() newUserDto: NewUserDTO, @Res() res: Response) {
+  async registerUser(@Body() newUserDto: NewUserDTO, @Res() res: Response, @Req() req: Request) {
+    const tokenData: TokenPayload = this.jwtService.decode(req.headers.authorization.replace('Bearer ', '')) as any;
+    if(tokenData.role !== Role.createAdministrator().value){
+        res.status(HttpStatus.UNAUTHORIZED).send();
+        return;
+    }
     try {
       await this.userService.register(newUserDto);
       res.status(HttpStatus.CREATED).send();
@@ -62,12 +78,19 @@ export class UserController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('user/:id')
   async updateUser(
     @Body() updateUserDtoWithoutId: Omit<UpdateUserDTO, 'userId'>,
     @Param() params: { id: string },
     @Res() res: Response,
+    @Req() req: Request,
   ) {
+    const tokenData: TokenPayload = this.jwtService.decode(req.headers.authorization.replace('Bearer ', '')) as any;
+    if(tokenData.role !== Role.createAdministrator().value){
+        res.status(HttpStatus.UNAUTHORIZED).send();
+        return;
+    }
     try {
       await this.userService.update({
         ...updateUserDtoWithoutId,
