@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 import {
   UserRepository,
   User,
@@ -59,6 +61,13 @@ describe('UserController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
+      imports: [
+        PassportModule,
+        JwtModule.register({
+          secret: process.env.JWT_SECRET,
+          signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
+        }),
+      ],
       providers: [
         {
           provide: 'UserRepository',
