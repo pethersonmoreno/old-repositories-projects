@@ -8,6 +8,7 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import {
   NewUserDTO,
@@ -20,8 +21,10 @@ import { NotFoundError, ValidationError } from '../../../shared/errors';
 @Controller()
 export class UserController {
   private readonly userService: UserService;
-  constructor(@Inject('UserRepository') userRepository: UserRepository) {
+  private readonly jwtService: JwtService;
+  constructor(@Inject('UserRepository') userRepository: UserRepository, jwtService: JwtService) {
     this.userService = new UserService(userRepository);
+    this.jwtService = jwtService;
   }
 
   @Post('login')
@@ -30,11 +33,20 @@ export class UserController {
     @Res() res: Response,
   ) {
     try {
-      const isValidCredential = await this.userService.validateLogin(
+      const userValid = await this.userService.validateLogin(
         credentials.username,
         credentials.password,
       );
-      res.send({ OK: isValidCredential });
+      if(!userValid){
+        res.status(HttpStatus.UNAUTHORIZED).send({
+            error: "Invalid username or password",
+        });
+        return;
+      }
+      const payload = { username: userValid.email.value, sub: userValid.userId.value, role: userValid.role.value };
+      res.send({
+        access_token: this.jwtService.sign(payload),
+      });
     } catch (error) {
       this.sendErrorResponse(error, res);
     }

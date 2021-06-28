@@ -20,10 +20,13 @@ export type NewUserDTO = Omit<UpdateUserDTO, 'userId'>;
 export default class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async validateLogin(email: string, password: string): Promise<boolean> {
+  async validateLogin(email: string, password: string): Promise<User|User> {
     const emailObj = Email.create(email);
     const userByEmail = await this.userRepository.findByEmail(emailObj);
-    return userByEmail.password.matchRawPassword(password);
+    if(userByEmail.password.matchRawPassword(password)){
+      return userByEmail;
+    }
+    return undefined;
   }
 
   async register(newUserDto: NewUserDTO): Promise<void> {
