@@ -17,7 +17,7 @@ import {
   PokemonDTO,
   PokemonRepository,
   PokemonService,
-} from 'src/domain/pokemon';
+} from '../../../domain/pokemon';
 import { NotFoundError, ValidationError } from '../../../shared/errors';
 
 @Controller('pokemon')
