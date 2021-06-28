@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
@@ -46,7 +47,7 @@ const listValidPokemonTypes = [
 export default class PokemonType {
   private constructor(value: ValidPokemonType, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -69,7 +70,7 @@ export default class PokemonType {
 
   public static create(value: ValidPokemonType) {
     if (!listValidPokemonTypes.find((item) => item === value)) {
-      throw new Error('Invalid Pokemon Type');
+      throw new ValidationError('Invalid Pokemon Type');
     }
     return new PokemonType(value, securityValue);
   }

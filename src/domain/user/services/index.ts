@@ -1,1 +1,5 @@
-export { default as UserService } from './UserService/UserService';
+export {
+  default as UserService,
+  NewUserDTO,
+  UpdateUserDTO,
+} from './UserService/UserService';

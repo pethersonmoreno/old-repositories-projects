@@ -6,6 +6,7 @@ import {
   Password,
   Role,
 } from '../../valueObjects';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
@@ -20,7 +21,7 @@ type ValidUser = {
 export default class User {
   private constructor(value: ValidUser, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     const { userId, email, nickname, password, role } = value;
     (this as any)[securityValue] = {
@@ -86,19 +87,19 @@ export default class User {
 
   public static createWithUserId(value: ValidUser) {
     if (!(value.userId instanceof IdentityUuid)) {
-      throw new Error('Invalid userid');
+      throw new ValidationError('Invalid userid');
     }
     if (!(value.email instanceof Email)) {
-      throw new Error('Invalid email');
+      throw new ValidationError('Invalid email');
     }
     if (!(value.nickname instanceof Nickname)) {
-      throw new Error('Invalid nickname');
+      throw new ValidationError('Invalid nickname');
     }
     if (!(value.password instanceof Password)) {
-      throw new Error('Invalid password');
+      throw new ValidationError('Invalid password');
     }
     if (!(value.role instanceof Role)) {
-      throw new Error('Invalid role');
+      throw new ValidationError('Invalid role');
     }
     return new User(value, securityValue);
   }

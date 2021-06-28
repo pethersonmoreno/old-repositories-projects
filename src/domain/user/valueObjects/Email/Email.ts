@@ -1,12 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import isEmail from 'validator/lib/isEmail';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
 export default class Email {
   private constructor(value: string, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -38,7 +39,7 @@ export default class Email {
       domain_specific_validation: true,
     };
     if (!isEmail(value, options)) {
-      throw new Error('Invalid Email addresss');
+      throw new ValidationError('Invalid Email addresss');
     }
     return new Email(value, securityValue);
   }

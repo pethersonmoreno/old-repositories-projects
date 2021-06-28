@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
 export default class NumberInteger {
   private constructor(value: number, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -28,13 +29,13 @@ export default class NumberInteger {
 
   public static create(value: number) {
     if (typeof value !== 'number') {
-      throw new Error('Invalid Number Integer');
+      throw new ValidationError('Invalid Number Integer');
     }
     if (value % 1 !== 0) {
-      throw new Error('Number Integer cannot be float or NaN');
+      throw new ValidationError('Number Integer cannot be float or NaN');
     }
     if (value <= 0) {
-      throw new Error('Number Integer cannot be less than 1');
+      throw new ValidationError('Number Integer cannot be less than 1');
     }
     return new NumberInteger(value, securityValue);
   }

@@ -1,11 +1,12 @@
 import { v4 as uuidv4, validate } from 'uuid';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
 export default class IdentityUuid {
   private constructor(value: string, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -32,7 +33,7 @@ export default class IdentityUuid {
 
   public static createFromUuid(uuid: string) {
     if (!validate(uuid)) {
-      throw new Error('Invalid UUID to IdentityUUID');
+      throw new ValidationError('Invalid UUID to IdentityUUID');
     }
     return new IdentityUuid(uuid, securityValue);
   }

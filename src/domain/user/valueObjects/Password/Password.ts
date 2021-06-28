@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 const salt = bcrypt.genSaltSync();
@@ -7,7 +8,7 @@ const salt = bcrypt.genSaltSync();
 export default class Password {
   private constructor(hash: string, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       hash,
@@ -39,7 +40,7 @@ export default class Password {
     const regexStrongPassword =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
     if (!regexStrongPassword.test(rawPassword)) {
-      throw new Error(
+      throw new ValidationError(
         'Invalid Password, it must have at least 1 lowercase alphabetical character, 1 uppercase alphabetical character, 1 numeric character, 1 special character and 8 characters or longer',
       );
     }

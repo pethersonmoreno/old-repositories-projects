@@ -5,6 +5,7 @@ import {
   PokemonType,
   ValidPokemonType,
 } from '../../valueObjects';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
@@ -17,7 +18,7 @@ type ValidPokemon = {
 export default class Pokemon {
   private constructor(value: ValidPokemon, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     const { pokemonId, name, type } = value;
     (this as any)[securityValue] = {
@@ -58,13 +59,13 @@ export default class Pokemon {
   }
   public static create(value: ValidPokemon) {
     if (!(value.pokemonId instanceof NumberInteger)) {
-      throw new Error('Invalid pokemonId');
+      throw new ValidationError('Invalid pokemonId');
     }
     if (!(value.name instanceof PokemonName)) {
-      throw new Error('Invalid pokemon name');
+      throw new ValidationError('Invalid pokemon name');
     }
     if (!(value.type instanceof PokemonType)) {
-      throw new Error('Invalid pokemon type');
+      throw new ValidationError('Invalid pokemon type');
     }
     return new Pokemon(value, securityValue);
   }

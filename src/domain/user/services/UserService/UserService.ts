@@ -7,6 +7,7 @@ import {
   Role,
 } from '../../valueObjects';
 import { User } from '../../entities';
+import { ValidationError, NotFoundError } from '../../../../shared/errors';
 
 export type UpdateUserDTO = {
   userId: string;
@@ -19,10 +20,13 @@ export type NewUserDTO = Omit<UpdateUserDTO, 'userId'>;
 export default class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async validateLogin(email: string, password: string): Promise<boolean> {
+  async validateLogin(email: string, password: string): Promise<User|User> {
     const emailObj = Email.create(email);
     const userByEmail = await this.userRepository.findByEmail(emailObj);
-    return userByEmail.password.matchRawPassword(password);
+    if(userByEmail.password.matchRawPassword(password)){
+      return userByEmail;
+    }
+    return undefined;
   }
 
   async register(newUserDto: NewUserDTO): Promise<void> {
@@ -32,7 +36,9 @@ export default class UserService {
     const role = Role.createPokemonTrainer();
     const userByEmail = await this.userRepository.findByEmail(email);
     if (userByEmail) {
-      throw new Error(`Already exists another user with email ${email.value}`);
+      throw new ValidationError(
+        `Already exists another user with email ${email.value}`,
+      );
     }
     const newUser = User.create({
       email,
@@ -47,11 +53,11 @@ export default class UserService {
     const userId = IdentityUuid.createFromUuid(updateUserDto.userId);
     const user = await this.userRepository.findByUserId(userId);
     if (!user) {
-      throw new Error(`User not found with ID ${updateUserDto.userId}`);
+      throw new NotFoundError(`User not found with ID ${updateUserDto.userId}`);
     }
     const newEmail = Email.create(updateUserDto.email);
     if (await this.existOtherUserByEmail(user, newEmail)) {
-      throw new Error(
+      throw new ValidationError(
         `Already exists another user with email ${newEmail.value}`,
       );
     }

@@ -10,15 +10,21 @@ describe('Role', () => {
     }).toThrow();
   });
 
-  it('should not create Role Administrator with create static method', () => {
+  it('should create Role Administrator with create static method', () => {
     expect(() => {
       (Role as any).create('Administrator');
-    }).toThrow();
+    }).not.toThrow();
   });
 
-  it('should not create Role Pokemon Trainer with create static method', () => {
+  it('should create Role Pokemon Trainer with create static method', () => {
     expect(() => {
       (Role as any).create('PokemonTrainer');
+    }).not.toThrow();
+  });
+
+  it('should not create Role with create static method using invalid value', () => {
+    expect(() => {
+      (Role as any).create('NewRole');
     }).toThrow();
   });
 

@@ -1,6 +1,7 @@
 import { PokemonRepository } from '../../repositories';
 import { NumberInteger, PokemonName, PokemonType } from '../../valueObjects';
 import { Pokemon } from '../../entities';
+import { ValidationError, NotFoundError } from '../../../../shared/errors';
 
 export type PokemonDTO = {
   pokemonId: number;
@@ -17,7 +18,7 @@ export default class PokemonService {
     const type = PokemonType.create(newPokemonDto.type as any);
     const pokemonById = await this.pokemonRepository.findByPokemonId(pokemonId);
     if (pokemonById) {
-      throw new Error(
+      throw new ValidationError(
         `Already exists another pokemon with ID ${pokemonId.value}`,
       );
     }
@@ -33,7 +34,7 @@ export default class PokemonService {
     const pokemonId = NumberInteger.create(updatePokemonDto.pokemonId);
     const pokemon = await this.pokemonRepository.findByPokemonId(pokemonId);
     if (!pokemon) {
-      throw new Error(
+      throw new NotFoundError(
         `Pokemon not found with ID ${updatePokemonDto.pokemonId}`,
       );
     }
@@ -46,7 +47,7 @@ export default class PokemonService {
     const pokemonIdObj = NumberInteger.create(pokemonId);
     const pokemon = await this.pokemonRepository.findByPokemonId(pokemonIdObj);
     if (!pokemon) {
-      throw new Error(`Pokemon not found with ID ${pokemonId}`);
+      throw new NotFoundError(`Pokemon not found with ID ${pokemonId}`);
     }
     await this.pokemonRepository.remove(pokemon);
   }

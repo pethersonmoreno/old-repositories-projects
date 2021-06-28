@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
+import { ValidationError } from '../../../../shared/errors';
 
 const securityValue = uuidv4();
 
 export default class Nickname {
   private constructor(value: string, secValue: any) {
     if (secValue !== securityValue) {
-      throw new Error('Invalid Instantiation');
+      throw new ValidationError('Invalid Instantiation');
     }
     (this as any)[securityValue] = {
       value,
@@ -30,7 +31,7 @@ export default class Nickname {
     const regexNickname =
       /^[A-Za-z]{2}[A-Za-z0-9]+( [A-Za-z]{2}[A-Za-z0-9]+)*$/;
     if (!regexNickname.test(value)) {
-      throw new Error('Invalid Nickname');
+      throw new ValidationError('Invalid Nickname');
     }
     return new Nickname(value, securityValue);
   }
