@@ -1,0 +1,237 @@
+swagger: "2.0"
+info:
+  description: "Secret Vault API"
+  version: "1.0.0"
+  title: "Secret Vault"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "pethermoreno@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "secretvault.com"
+basePath: "/v2"
+tags:
+- name: "secret"
+  description: "Everything about your secrets"
+schemes:
+- "https"
+- "http"
+paths:
+  /secret:
+    get:
+      tags:
+      - "secret"
+      summary: "Get the list of secrets"
+      description: "Get all secrets with ID and title"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SecretListItem"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "secret"
+      summary: "Add a new secret"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Opening-Key"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Secret object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateSecret"
+      responses:
+        "204":
+          description: "successful operation"
+        "405":
+          description: "Invalid input"
+  /secret/{secretId}:
+    get:
+      tags:
+      - "secret"
+      summary: "Find secret by ID"
+      description: "Returns a single secret"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "secretId"
+        in: "path"
+        description: "ID of secret to return"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/EncryptedSecret"
+        "404":
+          description: "Secret not found"
+    patch:
+      tags:
+      - "secret"
+      summary: "Update a secret by ID and fields changed"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Opening-Key"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "secretId"
+        in: "path"
+        description: "ID of secret to update"
+        required: true
+        type: "string"
+        format: "uuid"
+      - in: "body"
+        name: "body"
+        description: "Only secret fields to update"
+        required: true
+        schema:
+          $ref: "#/definitions/UpdateSecret"
+      responses:
+        "204":
+          description: "successful operation"
+        "404":
+          description: "Secret not found"
+    delete:
+      tags:
+      - "secret"
+      summary: "Deletes a secret by ID"
+      description: ""
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "Opening-Key"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "secretId"
+        in: "path"
+        description: "Secret id to delete"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "204":
+          description: "successful operation"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Secret not found"
+  /secret/{secretId}/uncrypt:
+    get:
+      tags:
+      - "secret"
+      summary: "Get the list of secrets"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Opening-Key"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "secretId"
+        in: "path"
+        description: "Secret id to delete"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/DecryptedSecret"
+        "400":
+          description: "Invalid status value"
+definitions:
+  CreateSecret:
+    type: "object"
+    required:
+    - "title"
+    - "password"
+    properties:
+      title:
+        type: "string"
+        example: "Leanpub"
+      Url:
+        type: "string"
+        example: "https://www.somesite.com"
+      login:
+        type: "string"
+        example: "some@email.com"
+      password:
+        type: "string"
+  EncryptedSecret:
+    type: "object"
+    required:
+    - "id"
+    - "title"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      title:
+        type: "string"
+        example: "Leanpub"
+      Url:
+        type: "string"
+        example: "https://www.somesite.com"
+      login:
+        type: "string"
+        example: "some@email.com"
+  SecretListItem:
+    type: "object"
+    required:
+    - "id"
+    - "title"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      title:
+        type: "string"
+        example: "Leanpub"
+      Url:
+        type: "string"
+        example: "https://www.somesite.com"
+  UpdateSecret:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+        example: "Leanpub"
+      Url:
+        type: "string"
+        example: "https://www.somesite.com"
+      login:
+        type: "string"
+        example: "some@email.com"
+      password:
+        type: "string"
+  DecryptedSecret:
+    type: "object"
+    required:
+    - "password"
+    properties:
+      password:
+        type: "string"
