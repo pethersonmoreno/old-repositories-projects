@@ -9,10 +9,14 @@ import (
 
 var cipherKey = []byte("j&L!@#?~*>)K")
 
-func createHash(key string) string {
+func createSimpleMd5Hash(key string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(key))
 	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func createHash(key string) string {
+	return createSimpleMd5Hash(key)
 }
 
 func encryptString(key string, plainData string) (*string, error) {
