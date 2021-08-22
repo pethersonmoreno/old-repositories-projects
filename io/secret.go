@@ -117,3 +117,30 @@ func WriteSecretFile(secretGroupId string, intermediateKey string, secretFull mo
 	err = WriteSecretGroupFile(*secretGroup, intermediateKey)
 	return err
 }
+
+func ReadOnlySecretFile(secretGroupId string, secretId string, openingKey string) ([]model.SecretItem, error) {
+	secretFilename := getSecretFilenameById(secretGroupId, secretId)
+	if _, err := os.Stat(secretFilename); os.IsNotExist(err) {
+		return nil, nil
+	}
+	encryptedSecretDataBytes, err := os.ReadFile(secretFilename)
+	if err != nil {
+		return nil, err
+	}
+	encryptedSecretData := string(encryptedSecretDataBytes)
+	secretItems, err := crypto.DecryptSecret(openingKey, encryptedSecretData)
+	if err != nil {
+		return nil, err
+	}
+	return secretItems, nil
+}
+
+func WriteOnlySecretFile(secretGroupId string, secretId string, secretItems []model.SecretItem, openingKey string) error {
+	encryptedSecretData, err := crypto.EncryptSecret(openingKey, secretItems)
+	if err != nil {
+		return err
+	}
+	secretFilename := getSecretFilenameById(secretGroupId, secretId)
+	err = os.WriteFile(secretFilename, []byte(*encryptedSecretData), 0600)
+	return err
+}

@@ -59,7 +59,7 @@ func updateIntermediateKeyHandler(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		io.WriteSecretGroupFile(*secretGroup, json.IntermediateKey)
+		err = io.WriteSecretGroupFile(*secretGroup, json.IntermediateKey)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
