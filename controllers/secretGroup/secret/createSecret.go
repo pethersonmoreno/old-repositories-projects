@@ -11,12 +11,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type CreateSecret struct {
-	Title      string `json:"title" binding:"required"`
-	Url        string `json:"url"`
+type SecretItemToCreate struct {
 	Login      string `json:"login"`
 	Password   string `json:"password" binding:"required"`
 	Annotation string `json:"annotation"`
+}
+
+type CreateSecret struct {
+	Title string               `json:"title" binding:"required"`
+	Url   string               `json:"url"`
+	Items []SecretItemToCreate `json:"items" binding:"required"`
 }
 
 var createSecretSchema string = `
@@ -30,17 +34,26 @@ var createSecretSchema string = `
         "url": {
             "type": "string"
         },
-        "login": {
-            "type": "string"
-        },
-        "password": {
-            "type": "string"
-        },
-        "annotation": {
-            "type": "string"
-        }
+		"items": {
+			"type": "array",
+			"minItems": 1,
+			"contains": {
+				"type": "object",
+				"properties": {
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"annotation": {
+						"type": "string"
+					}
+				}
+			}
+		}
     },
-    "required": ["title", "password"],
+    "required": ["title", "items"],
 	"additionalProperties": false
 }`
 
@@ -62,35 +75,25 @@ func createSecretHandler(ctx *gin.Context) {
 		return
 	}
 	openingKey := ctx.Request.Header.Get("Opening-Key")
-	newSecret := model.Secret{
-		Id:                  uuid.NewString(),
-		Title:               json.Title,
-		Url:                 json.Url,
-		Login:               json.Login,
-		Password:            json.Password,
-		Annotation:          json.Annotation,
-		PasswordUpdatedDate: time.Now(),
-		UpdatedDate:         time.Now(),
+	updatedDate := time.Now()
+	newSecret := model.SecretFull{
+		Id:          uuid.NewString(),
+		Title:       json.Title,
+		Url:         json.Url,
+		Items:       []model.SecretItem{},
+		UpdatedDate: updatedDate,
 	}
-	secretSummary := model.SecretSummary{
-		Id:                  newSecret.Id,
-		Title:               newSecret.Title,
-		Url:                 newSecret.Url,
-		PasswordUpdatedDate: newSecret.PasswordUpdatedDate,
-		UpdatedDate:         newSecret.UpdatedDate,
+	newSecret.Items = []model.SecretItem{}
+	for _, secretItemCreateOrUpdate := range json.Items {
+		secretItem := model.SecretItem{
+			Login:               secretItemCreateOrUpdate.Login,
+			Password:            secretItemCreateOrUpdate.Password,
+			PasswordUpdatedDate: updatedDate,
+			Annotation:          secretItemCreateOrUpdate.Annotation,
+		}
+		newSecret.Items = append(newSecret.Items, secretItem)
 	}
-	secretGroup, err := io.ReadSecretGroupFile(secretGroupId, intermediateKey)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	secretGroup.AllSecretsSummary = append(secretGroup.AllSecretsSummary, secretSummary)
-	err = io.WriteSecretFile(secretGroupId, newSecret, openingKey)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err = io.WriteSecretGroupFile(*secretGroup, intermediateKey)
+	err := io.WriteSecretFile(secretGroupId, intermediateKey, newSecret, openingKey)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

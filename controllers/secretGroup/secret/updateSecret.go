@@ -3,6 +3,7 @@ package secret
 import (
 	"net/http"
 	"secretvault/io"
+	"secretvault/model"
 	"time"
 
 	schema "github.com/Hepri/gin-jsonschema"
@@ -20,26 +21,39 @@ var updateSecretSchema string = `
         "url": {
             "type": "string"
         },
-        "login": {
-            "type": "string"
-        },
-        "password": {
-            "type": "string"
-        },
-        "annotation": {
-            "type": "string"
-        }
+		"items": {
+			"type": "array",
+			"minItems": 1,
+			"contains": {
+				"type": "object",
+				"properties": {
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"annotation": {
+						"type": "string"
+					}
+				}
+			}
+		}
     },
     "required": [],
 	"additionalProperties": false
 }`
 
+type SecretItemToCreateOrUpdate struct {
+	Login      string `json:"login"`
+	Password   string `json:"password" binding:"required"`
+	Annotation string `json:"annotation"`
+}
+
 type UpdateSecret struct {
-	Title      *string `json:"title"`
-	Url        *string `json:"url"`
-	Login      *string `json:"login"`
-	Password   *string `json:"password"`
-	Annotation *string `json:"annotation"`
+	Title *string                      `json:"title"`
+	Url   *string                      `json:"url"`
+	Items []SecretItemToCreateOrUpdate `json:"items"`
 }
 
 func partialUpdateSecretByIdHandler(ctx *gin.Context) {
@@ -61,7 +75,7 @@ func partialUpdateSecretByIdHandler(ctx *gin.Context) {
 		return
 	}
 	openingKey := ctx.Request.Header.Get("Opening-Key")
-	secretToUpdate, err := io.ReadSecretFile(secretGroupId, secretId, openingKey)
+	secretToUpdate, err := io.ReadSecretFile(secretGroupId, intermediateKey, secretId, openingKey)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -80,41 +94,25 @@ func partialUpdateSecretByIdHandler(ctx *gin.Context) {
 		secretUpdated = true
 		secretToUpdate.Url = *json.Url
 	}
-	if json.Login != nil {
+	if json.Items != nil {
 		secretUpdated = true
-		secretToUpdate.Login = *json.Login
-	}
-	if json.Password != nil {
-		secretUpdated = true
-		secretToUpdate.Password = *json.Password
-		secretToUpdate.PasswordUpdatedDate = updatedDate
-	}
-	if json.Annotation != nil {
-		secretUpdated = true
-		secretToUpdate.Annotation = *json.Annotation
+		secretToUpdate.Items = []model.SecretItem{}
+		for _, secretItemCreateOrUpdate := range json.Items {
+			secretItem := model.SecretItem{
+				Login:               secretItemCreateOrUpdate.Login,
+				Password:            secretItemCreateOrUpdate.Password,
+				PasswordUpdatedDate: updatedDate,
+				Annotation:          secretItemCreateOrUpdate.Annotation,
+			}
+			secretToUpdate.Items = append(secretToUpdate.Items, secretItem)
+		}
 	}
 	if !secretUpdated {
 		ctx.JSON(http.StatusOK, gin.H{"status": "Secret unchanged"})
+		return
 	}
 	secretToUpdate.UpdatedDate = time.Now()
-	secretGroup, err := io.ReadSecretGroupFile(secretGroupId, intermediateKey)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	for _, secretSummary := range secretGroup.AllSecretsSummary {
-		secretSummary.Title = secretToUpdate.Title
-		secretSummary.Url = secretToUpdate.Url
-		secretSummary.PasswordUpdatedDate = secretToUpdate.PasswordUpdatedDate
-		secretSummary.UpdatedDate = secretToUpdate.UpdatedDate
-	}
-	err = io.WriteSecretFile(secretGroupId, *secretToUpdate, openingKey)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err = io.WriteSecretGroupFile(*secretGroup, intermediateKey)
+	err = io.WriteSecretFile(secretGroupId, intermediateKey, *secretToUpdate, openingKey)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

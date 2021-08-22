@@ -5,7 +5,7 @@ import (
 	"secretvault/model"
 )
 
-func EncryptSecret(key string, secret model.Secret) (*string, error) {
+func EncryptSecret(key string, secret []model.SecretItem) (*string, error) {
 	jsonBytes, err := json.Marshal(secret)
 	if err != nil {
 		return nil, err
@@ -14,16 +14,16 @@ func EncryptSecret(key string, secret model.Secret) (*string, error) {
 	return encryptString(key, json)
 }
 
-func DecryptSecret(key string, encryptedData string) (*model.Secret, error) {
+func DecryptSecret(key string, encryptedData string) ([]model.SecretItem, error) {
 	bytesEncryptedData := []byte(encryptedData)
 	bytesDecryptedData, err := decryptBytes(key, bytesEncryptedData)
 	if err != nil {
 		return nil, err
 	}
-	decryptedSecret := model.Secret{}
+	decryptedSecret := []model.SecretItem{}
 	err = json.Unmarshal(bytesDecryptedData, &decryptedSecret)
 	if err != nil {
 		return nil, err
 	}
-	return &decryptedSecret, nil
+	return decryptedSecret, nil
 }

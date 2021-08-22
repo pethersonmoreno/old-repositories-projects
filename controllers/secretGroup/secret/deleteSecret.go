@@ -3,7 +3,6 @@ package secret
 import (
 	"net/http"
 	"secretvault/io"
-	"sort"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,7 +22,7 @@ func deleteSecretByIdHandler(ctx *gin.Context) {
 		return
 	}
 	openingKey := ctx.Request.Header.Get("Opening-Key")
-	secretToDelete, err := io.ReadSecretFile(secretGroupId, secretId, openingKey)
+	secretToDelete, err := io.ReadSecretFile(secretGroupId, intermediateKey, secretId, openingKey)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -32,27 +31,7 @@ func deleteSecretByIdHandler(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"status": "Secret not found"})
 		return
 	}
-	secretGroup, err := io.ReadSecretGroupFile(secretGroupId, intermediateKey)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	sizeSecrets := len(secretGroup.AllSecretsSummary)
-	indexSecret := sort.Search(sizeSecrets, func(index int) bool {
-		itemSecret := secretGroup.AllSecretsSummary[index]
-		return itemSecret.Id == secretId
-	})
-	if indexSecret == sizeSecrets {
-		ctx.JSON(http.StatusNotFound, gin.H{"status": "Secret not found"})
-		return
-	}
-	secretGroup.AllSecretsSummary = append(secretGroup.AllSecretsSummary[:indexSecret], secretGroup.AllSecretsSummary[indexSecret+1:]...)
-	err = io.RemoveSecretFile(secretGroupId, secretId)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err = io.WriteSecretGroupFile(*secretGroup, intermediateKey)
+	err = io.RemoveSecretFile(secretGroupId, intermediateKey, secretId)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
