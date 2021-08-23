@@ -11,12 +11,12 @@ func EncryptSecretGroup(key string, secretGroup model.SecretGroup) (*string, err
 		return nil, err
 	}
 	json := string(jsonBytes)
-	return encryptString(key, json)
+	return encryptString(secretGroup.Id, key, json)
 }
 
-func DecryptSecretGroup(key string, encryptedData string) (*model.SecretGroup, error) {
+func DecryptSecretGroup(secretGroupId string, key string, encryptedData string) (*model.SecretGroup, error) {
 	bytesEncryptedData := []byte(encryptedData)
-	bytesDecryptedData, err := decryptBytes(key, bytesEncryptedData)
+	bytesDecryptedData, err := decryptBytes(secretGroupId, key, bytesEncryptedData)
 	if err != nil {
 		return nil, err
 	}

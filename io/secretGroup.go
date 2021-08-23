@@ -26,7 +26,7 @@ func ReadSecretGroupFile(secretGroupId string, intermediateKey string) (*model.S
 	if err != nil {
 		return nil, err
 	}
-	secretGroup, err := crypto.DecryptSecretGroup(intermediateKey, string(jsonSecretGroupBytes))
+	secretGroup, err := crypto.DecryptSecretGroup(secretGroupId, intermediateKey, string(jsonSecretGroupBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func ReadSecretGroupFile(secretGroupId string, intermediateKey string) (*model.S
 }
 
 func WriteSecretGroupFile(secretGroup model.SecretGroup, intermediateKey string) error {
-	jsonSecretGroup, err := crypto.EncryptSecretGroup(intermediateKey, secretGroup)
+	encryptedSecretGroup, err := crypto.EncryptSecretGroup(intermediateKey, secretGroup)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func WriteSecretGroupFile(secretGroup model.SecretGroup, intermediateKey string)
 		}
 	}
 	filenameSecretGroup := getSecretGroupFilenameById(secretGroup.Id)
-	err = os.WriteFile(filenameSecretGroup, []byte(*jsonSecretGroup), 0600)
+	err = os.WriteFile(filenameSecretGroup, []byte(*encryptedSecretGroup), 0600)
 	if err != nil {
 		return err
 	}

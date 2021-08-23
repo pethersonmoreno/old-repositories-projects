@@ -45,7 +45,7 @@ func ReadSecretFile(secretGroupId string, intermediateKey string, secretId strin
 		return nil, err
 	}
 	encryptedSecretData := string(encryptedSecretDataBytes)
-	secretItems, err := crypto.DecryptSecret(openingKey, encryptedSecretData)
+	secretItems, err := crypto.DecryptSecret(secretGroupId, openingKey, encryptedSecretData)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func WriteSecretFile(secretGroupId string, intermediateKey string, secretFull mo
 		}
 		secretGroup.AllSecretsSummary = append(secretGroup.AllSecretsSummary, secretSummary)
 	}
-	encryptedSecretData, err := crypto.EncryptSecret(openingKey, secretFull.Items)
+	encryptedSecretData, err := crypto.EncryptSecret(secretGroup.Id, openingKey, secretFull.Items)
 	if err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func ReadOnlySecretFile(secretGroupId string, secretId string, openingKey string
 		return nil, err
 	}
 	encryptedSecretData := string(encryptedSecretDataBytes)
-	secretItems, err := crypto.DecryptSecret(openingKey, encryptedSecretData)
+	secretItems, err := crypto.DecryptSecret(secretGroupId, openingKey, encryptedSecretData)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func ReadOnlySecretFile(secretGroupId string, secretId string, openingKey string
 }
 
 func WriteOnlySecretFile(secretGroupId string, secretId string, secretItems []model.SecretItem, openingKey string) error {
-	encryptedSecretData, err := crypto.EncryptSecret(openingKey, secretItems)
+	encryptedSecretData, err := crypto.EncryptSecret(secretGroupId, openingKey, secretItems)
 	if err != nil {
 		return err
 	}
