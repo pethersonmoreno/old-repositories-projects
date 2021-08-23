@@ -7,18 +7,18 @@ import (
 	"secretvault/model"
 )
 
-func getSecretGroupDirectoryNameById(secretGroupId string) string {
+func GetSecretGroupDirectoryNameById(secretGroupId string) string {
 	return "secretGroup-" + secretGroupId
 }
 
-func getSecretGroupFilenameById(secretGroupId string) string {
-	secretGroupDirectoryName := getSecretGroupDirectoryNameById(secretGroupId)
+func GetSecretGroupFilenameById(secretGroupId string) string {
+	secretGroupDirectoryName := GetSecretGroupDirectoryNameById(secretGroupId)
 	filenameSecretGroup := path.Join(secretGroupDirectoryName, "secretGroup.data")
 	return filenameSecretGroup
 }
 
 func ReadSecretGroupFile(secretGroupId string, intermediateKey string) (*model.SecretGroup, error) {
-	filenameSecretGroup := getSecretGroupFilenameById(secretGroupId)
+	filenameSecretGroup := GetSecretGroupFilenameById(secretGroupId)
 	if _, err := os.Stat(filenameSecretGroup); os.IsNotExist(err) {
 		return nil, nil
 	}
@@ -38,14 +38,14 @@ func WriteSecretGroupFile(secretGroup model.SecretGroup, intermediateKey string)
 	if err != nil {
 		return err
 	}
-	secretGroupDirectoryName := getSecretGroupDirectoryNameById(secretGroup.Id)
+	secretGroupDirectoryName := GetSecretGroupDirectoryNameById(secretGroup.Id)
 	if _, err := os.Stat(secretGroupDirectoryName); os.IsNotExist(err) {
 		err = os.Mkdir(secretGroupDirectoryName, 0700)
 		if err != nil {
 			return err
 		}
 	}
-	filenameSecretGroup := getSecretGroupFilenameById(secretGroup.Id)
+	filenameSecretGroup := GetSecretGroupFilenameById(secretGroup.Id)
 	err = os.WriteFile(filenameSecretGroup, []byte(*encryptedSecretGroup), 0600)
 	if err != nil {
 		return err

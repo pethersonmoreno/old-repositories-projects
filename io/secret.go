@@ -10,7 +10,7 @@ import (
 )
 
 func getSecretFilenameById(secretGroupId string, secretId string) string {
-	secretGroupDirectoryName := getSecretGroupDirectoryNameById(secretGroupId)
+	secretGroupDirectoryName := GetSecretGroupDirectoryNameById(secretGroupId)
 	filenameSecret := path.Join(secretGroupDirectoryName, "secret-"+secretId+".data")
 	return filenameSecret
 }
