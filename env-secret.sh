@@ -1,7 +1,6 @@
 #!/bin/bash
 scriptDir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 pathGetEnvSecret=""
-echo "$scriptDir/get_env_secret"
 if [ -f "$scriptDir/get_env_secret" ]; then
     pathGetEnvSecret="$scriptDir/get_env_secret"
 else
