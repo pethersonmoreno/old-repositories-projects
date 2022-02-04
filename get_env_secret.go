@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"syscall"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 	"errors"
@@ -154,31 +155,41 @@ func createSecretFrom(key string, data map[string]map[string]interface{}) (Secre
 	return newSecret, true
 }
 
-func getSecret(envSecretBasePath string, passwordParameter string, selectedSecretId string) (error) {
+func decryptData(envSecretBasePath string, passwordParameter string) (map[string]map[string]interface{}, error) {
+	var data map[string]map[string]interface{}
+
 	var encryptedPath = envSecretBasePath+"."+encryptedExtension
 	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
-		return err
+		return data, err
 	}
 	var password = passwordParameter
 	if password == "" {
 		fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
 		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
 		if err != nil {
-			return err
+			return data, err
 		}
 		password = string(bytePassword)
 	}
 	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
 	if err != nil {
-		return err
+		return data, err
 	}
 	jsonDataBytes, err := decryptBytesAesGcm(password, encryptedJsonDataBytes)
 	if err != nil {
-		return err
+		return data, err
 	}
 
-	var data map[string]map[string]interface{}
 	err = json.Unmarshal(jsonDataBytes, &data)
+
+	return data, err
+}
+
+func getSecret(envSecretBasePath string, passwordParameter string, selectedSecretId string) (error) {
+	data, err := decryptData(envSecretBasePath, passwordParameter)
+	if err != nil {
+		return err
+	}
 
 	selectedSecret, credentialFound := createSecretFrom(selectedSecretId, data)
 	if !credentialFound {
@@ -199,27 +210,10 @@ func showSecretHead(secret Secret) {
 }
 
 func listSecrets(envSecretBasePath string) (error) {
-	var encryptedPath = envSecretBasePath+"."+encryptedExtension
-	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
-		return err
-	}
-	fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
-	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	data, err := decryptData(envSecretBasePath, "")
 	if err != nil {
 		return err
 	}
-	var password = string(bytePassword)
-	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
-	if err != nil {
-		return err
-	}
-	jsonDataBytes, err := decryptBytesAesGcm(password, encryptedJsonDataBytes)
-	if err != nil {
-		return err
-	}
-
-	var data map[string]map[string]interface{}
-	err = json.Unmarshal(jsonDataBytes, &data)
 
 	for key := range data {
 		var secret, _ = createSecretFrom(key, data)
@@ -229,39 +223,52 @@ func listSecrets(envSecretBasePath string) (error) {
 	return err
 }
 
-func findSecrets(envSecretBasePath string, findSearchBy string) (error) {
-	var encryptedPath = envSecretBasePath+"."+encryptedExtension
-	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
-		return err
-	}
-	fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
-	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
-	if err != nil {
-		return err
-	}
-	var password = string(bytePassword)
-	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
-	if err != nil {
-		return err
-	}
-	jsonDataBytes, err := decryptBytesAesGcm(password, encryptedJsonDataBytes)
-	if err != nil {
-		return err
-	}
+func secretContains(secret Secret, searchBy string) (bool) {
+	var foundById = strings.Contains(secret.id, searchBy)
+	var foundByUsername = strings.Contains(secret.username, searchBy)
+	var foundByAccountId = strings.Contains(secret.account_id, searchBy)
+	return (foundById || foundByUsername || foundByAccountId)
+}
 
-	var data map[string]map[string]interface{}
-	err = json.Unmarshal(jsonDataBytes, &data)
+func findSecrets(envSecretBasePath string, searchBy string) (error) {
+	data, err := decryptData(envSecretBasePath, "")
 	if err != nil {
 		return err
 	}
 
 	for key := range data {
 		var secret,_ =createSecretFrom(key, data)
-		var foundById = strings.Contains(secret.id, findSearchBy)
-		var foundByUsername = strings.Contains(secret.username, findSearchBy)
-		var foundByAccountId = strings.Contains(secret.account_id, findSearchBy)
-		if foundById || foundByUsername || foundByAccountId {
+		if secretContains(secret, searchBy) {
 			showSecretHead(secret)
+		}
+	}
+
+	return nil
+}
+
+func verifySecrets(envSecretBasePath string, searchBy string) (error) {
+	data, err := decryptData(envSecretBasePath, "")
+	if err != nil {
+		return err
+	}
+
+	for key := range data {
+		var secret,_ =createSecretFrom(key, data)
+		if secretContains(secret, searchBy) {
+			fmt.Print("Secret: " + secret.id + "\t Status: ")
+			cmd := exec.Command("aws", "sts", "get-caller-identity")
+			cmd.Env = append(os.Environ(),
+				"AWS_ACCESS_KEY_ID="+secret.credential.AWS_ACCESS_KEY_ID,
+				"AWS_SECRET_ACCESS_KEY="+secret.credential.AWS_SECRET_ACCESS_KEY,
+				"AWS_DEFAULT_REGION="+secret.credential.AWS_DEFAULT_REGION,
+			)
+			out, err := cmd.Output()
+			if err != nil {
+				fmt.Println("Error")
+			} else {
+				fmt.Println("OK")
+				fmt.Print(string(out))
+			}
 		}
 	}
 
@@ -278,11 +285,12 @@ func main() {
 		envSecretName = "credentials"
 	}
 	var envSecretBasePath = path.Join(envSecretDirectoryPath, envSecretName)
-	var validActions = []string{"get","list","find","encrypt","decrypt"}
+	var validActions = []string{"get","list","find","verify","encrypt","decrypt"}
 	var action = "list"
 	var passwordParameter = ""
 	var selectedSecretId = ""
 	var findSearchBy = ""
+	var verifySearchBy = ""
 	if len(os.Args[1:]) > 0 {
 		if !Contains(validActions, os.Args[1]) {
 			fmt.Print("Invalid action " + os.Args[1])
@@ -299,6 +307,10 @@ func main() {
 			selectedSecretId = otherArgs[0]
 		} else if action == "find" && len(otherArgs) == 1 {
 			findSearchBy = otherArgs[0]
+		} else if action == "verify" && len(otherArgs) <= 1 {
+			if len(otherArgs) == 1 {
+				verifySearchBy = otherArgs[0]
+			}
 		} else if len(otherArgs) > 0 {
 			fmt.Print("Invalid parameters to action " + action)
 			os.Exit(1)
@@ -331,6 +343,14 @@ func main() {
 	}
 	if action == "find" {
 		err := findSecrets(envSecretBasePath, findSearchBy)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		return
+	}
+	if action == "verify" {
+		err := verifySecrets(envSecretBasePath, verifySearchBy)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
