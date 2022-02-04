@@ -7,10 +7,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"bufio"
+	"syscall"
 	"os"
 	"path"
+	"strings"
 	"errors"
+
+	"golang.org/x/term"
 )
 
 var cipherKey = []byte("j&L!@#?~*>)K")
@@ -75,9 +78,11 @@ func encryptJson(envSecretBasePath string, passwordParameter string) (error) {
 	var password = passwordParameter
 	if password == "" {
 		fmt.Println("Enter the password to encrypt from '"+jsonPath+"' to '"+encryptedPath+"':")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		password = scanner.Text()
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			return err
+		}
+		password = string(bytePassword)
 	}
 	jsonDataBytes, err := os.ReadFile(jsonPath)
 	if err != nil {
@@ -101,9 +106,11 @@ func decryptJson(envSecretBasePath string, passwordParameter string) (error) {
 	var password = passwordParameter
 	if password == "" {
 		fmt.Println("Enter the password to decrypt from '"+encryptedPath+"' to '"+jsonPath+"':")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		password = scanner.Text()
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			return err
+		}
+		password = string(bytePassword)
 	}
 	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
 	if err != nil {
@@ -119,13 +126,35 @@ func decryptJson(envSecretBasePath string, passwordParameter string) (error) {
 }
 
 type AwsCredential struct {
-	AWS_ACCESS_KEY_ID string `json: "AWS_ACCESS_KEY_ID"`
-	AWS_SECRET_ACCESS_KEY string `json: "AWS_SECRET_ACCESS_KEY"`
-	AWS_DEFAULT_REGION string `json: "AWS_DEFAULT_REGION"`
+	AWS_ACCESS_KEY_ID string
+	AWS_SECRET_ACCESS_KEY string
+	AWS_DEFAULT_REGION string
 }
 
+type Secret struct {
+	id string
+	username string
+	account_id string
+	credential AwsCredential
+}
 
-func getSecret(envSecretBasePath string, passwordParameter string, preSelectedCredential string) (error) {
+func createSecretFrom(key string, data map[string]map[string]interface{}) (Secret, bool) {
+	var newSecret Secret
+	dataByKey, found := data[key]
+	if !found {
+		return newSecret, false
+	}
+	newSecret.id = key
+	newSecret.username = dataByKey["username"].(string)
+	newSecret.account_id = dataByKey["account_id"].(string)
+	dataCredential := dataByKey["credential"].(map[string]interface{})
+	newSecret.credential.AWS_ACCESS_KEY_ID = dataCredential["AWS_ACCESS_KEY_ID"].(string)
+	newSecret.credential.AWS_SECRET_ACCESS_KEY = dataCredential["AWS_SECRET_ACCESS_KEY"].(string)
+	newSecret.credential.AWS_DEFAULT_REGION = dataCredential["AWS_DEFAULT_REGION"].(string)
+	return newSecret, true
+}
+
+func getSecret(envSecretBasePath string, passwordParameter string, selectedSecretId string) (error) {
 	var encryptedPath = envSecretBasePath+"."+encryptedExtension
 	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
 		return err
@@ -133,9 +162,11 @@ func getSecret(envSecretBasePath string, passwordParameter string, preSelectedCr
 	var password = passwordParameter
 	if password == "" {
 		fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		password = scanner.Text()
+		bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			return err
+		}
+		password = string(bytePassword)
 	}
 	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
 	if err != nil {
@@ -146,19 +177,95 @@ func getSecret(envSecretBasePath string, passwordParameter string, preSelectedCr
 		return err
 	}
 
-	var data map[string]AwsCredential
+	var data map[string]map[string]interface{}
 	err = json.Unmarshal(jsonDataBytes, &data)
 
-	selectedCredential, credentialFound := data[preSelectedCredential]
+	selectedSecret, credentialFound := createSecretFrom(selectedSecretId, data)
 	if !credentialFound {
-		fmt.Print("Credential '"+preSelectedCredential+"' not found")
+		fmt.Print("Credential '"+selectedSecretId+"' not found")
 		os.Exit(1)
 	}
-	fmt.Println("export AWS_ACCESS_KEY_ID="+selectedCredential.AWS_ACCESS_KEY_ID)
-	fmt.Println("export AWS_SECRET_ACCESS_KEY="+selectedCredential.AWS_SECRET_ACCESS_KEY)
-	fmt.Println("export AWS_DEFAULT_REGION="+selectedCredential.AWS_DEFAULT_REGION)
+	fmt.Println("export AWS_ACCESS_KEY_ID="+selectedSecret.credential.AWS_ACCESS_KEY_ID)
+	fmt.Println("export AWS_SECRET_ACCESS_KEY="+selectedSecret.credential.AWS_SECRET_ACCESS_KEY)
+	fmt.Println("export AWS_DEFAULT_REGION="+selectedSecret.credential.AWS_DEFAULT_REGION)
 
 	return err
+}
+
+func showSecretHead(secret Secret) {
+	fmt.Println("Secret: " + secret.id)
+	fmt.Println("   Account: " + secret.account_id)
+	fmt.Println("   Username: " + secret.username)
+}
+
+func listSecrets(envSecretBasePath string) (error) {
+	var encryptedPath = envSecretBasePath+"."+encryptedExtension
+	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		return err
+	}
+	var password = string(bytePassword)
+	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
+	if err != nil {
+		return err
+	}
+	jsonDataBytes, err := decryptBytesAesGcm(password, encryptedJsonDataBytes)
+	if err != nil {
+		return err
+	}
+
+	var data map[string]map[string]interface{}
+	err = json.Unmarshal(jsonDataBytes, &data)
+
+	for key := range data {
+		var secret, _ = createSecretFrom(key, data)
+		showSecretHead(secret)
+	}
+
+	return err
+}
+
+func findSecrets(envSecretBasePath string, findSearchBy string) (error) {
+	var encryptedPath = envSecretBasePath+"."+encryptedExtension
+	if _, err := os.Stat(encryptedPath); errors.Is(err, os.ErrNotExist) {
+		return err
+	}
+	fmt.Println("Enter the password to decrypt '"+encryptedPath+"':")
+	bytePassword, err := term.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		return err
+	}
+	var password = string(bytePassword)
+	encryptedJsonDataBytes, err := os.ReadFile(encryptedPath)
+	if err != nil {
+		return err
+	}
+	jsonDataBytes, err := decryptBytesAesGcm(password, encryptedJsonDataBytes)
+	if err != nil {
+		return err
+	}
+
+	var data map[string]map[string]interface{}
+	err = json.Unmarshal(jsonDataBytes, &data)
+	if err != nil {
+		return err
+	}
+
+	for key := range data {
+		var secret,_ =createSecretFrom(key, data)
+		var foundById = strings.Contains(secret.id, findSearchBy)
+		var foundByUsername = strings.Contains(secret.username, findSearchBy)
+		var foundByAccountId = strings.Contains(secret.account_id, findSearchBy)
+		if foundById || foundByUsername || foundByAccountId {
+			showSecretHead(secret)
+		}
+	}
+
+	return nil
 }
 
 func main() {
@@ -171,10 +278,11 @@ func main() {
 		envSecretName = "credentials"
 	}
 	var envSecretBasePath = path.Join(envSecretDirectoryPath, envSecretName)
-	var validActions = []string{"get","--", "encrypt", "decrypt"}
-	var action = "get"
+	var validActions = []string{"get","list","find","encrypt","decrypt"}
+	var action = "list"
 	var passwordParameter = ""
-	var preSelectedCredential = ""
+	var selectedSecretId = ""
+	var findSearchBy = ""
 	if len(os.Args[1:]) > 0 {
 		if !Contains(validActions, os.Args[1]) {
 			fmt.Print("Invalid action " + os.Args[1])
@@ -182,16 +290,15 @@ func main() {
 			return
 		}
 		action = os.Args[1]
-		if action == "--" {
-			action = "get"
-		}
 		var otherArgs = os.Args[2:]
-		if len(otherArgs) > 0 && otherArgs[0][0:11] == "--password=" {
+		if len(otherArgs) > 0 && len(otherArgs[0]) > 11 && otherArgs[0][0:11] == "--password=" {
 			passwordParameter = otherArgs[0][11:]
 			otherArgs = os.Args[3:]
 		}
 		if action == "get" && len(otherArgs) == 1 {
-			preSelectedCredential = otherArgs[0]
+			selectedSecretId = otherArgs[0]
+		} else if action == "find" && len(otherArgs) == 1 {
+			findSearchBy = otherArgs[0]
 		} else if len(otherArgs) > 0 {
 			fmt.Print("Invalid parameters to action " + action)
 			os.Exit(1)
@@ -214,7 +321,23 @@ func main() {
 		}
 		return
 	}
-	err := getSecret(envSecretBasePath, passwordParameter, preSelectedCredential)
+	if action == "get" {
+		err := getSecret(envSecretBasePath, passwordParameter, selectedSecretId)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		return
+	}
+	if action == "find" {
+		err := findSecrets(envSecretBasePath, findSearchBy)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		return
+	}
+	err := listSecrets(envSecretBasePath)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

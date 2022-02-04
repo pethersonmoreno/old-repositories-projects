@@ -12,7 +12,7 @@ fi
 if [ "$pathGetEnvSecret" != "" ]; then
     read -sp 'Enter the password to decrypt: ' password
     echo ""
-    CREDENTIALS=$($pathGetEnvSecret -- --password=${password} ${@:1})
+    CREDENTIALS=$($pathGetEnvSecret get --password=${password} ${@:1})
     if [ $? -eq 0 ]
     then
         eval "$CREDENTIALS"
