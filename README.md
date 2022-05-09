@@ -17,6 +17,8 @@ const runScript = async (url) => {
     });
   });
 };
+// Configure the number of retries that is tried waiting 500 ms between each trying changing this value 20
+window.defaultRetriesToPreparePageToReadCard = 20;
 // Configure the font-size you want apply changing this value 1.8em
 window.fontSizeAkRendererDocument = "1.8em";
 // Configure the font-size you want apply changing this value 18px

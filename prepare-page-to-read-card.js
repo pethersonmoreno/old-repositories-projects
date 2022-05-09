@@ -59,7 +59,8 @@ const preparePageToReadCard = (retries) => {
     }, 500);
 };
 const preparePageToReadCardDefault = () => {
-    preparePageToReadCard(defaultRetriesToPreparePageToReadCard);
+    const localDefaultRetriesToPreparePageToReadCard = window.defaultRetriesToPreparePageToReadCard ? window.defaultRetriesToPreparePageToReadCard : defaultRetriesToPreparePageToReadCard;
+    preparePageToReadCard(localDefaultRetriesToPreparePageToReadCard);
 };
 const simplePreparePageToReadCard = () => {
     preparePageToReadCard(0);
@@ -76,6 +77,8 @@ console.log("You can configure font size applied to document using this change b
             "window.fontSizeAkRendererDocument = \"1.8em\";\n"+
             "You can also configure font size applied to subtasks and related itens this change before load prepare page to read card function:\n"+
             "window.fontSizeIssueLineCardElementAnchor = \"18px\";\n"+
+            "At initial load, you can also configure the number of retries that is tried waiting 500 ms between each trying:\n"+
+            "window.defaultRetriesToPreparePageToReadCard = 20;\n"+
             "Then to you test it now, you can just run:\n"+
             "simplePreparePageToReadCard();\n"+
             "Now together to be more useful:\n"+
