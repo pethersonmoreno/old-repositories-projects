@@ -1,4 +1,6 @@
 const cssUpdates = document.createElement("style");
+const defaultFontSizeAkRendererDocument = "1.8em"
+const defaultFontSizeIssueLineCardElementAnchor = "18px";
 const preparePageToReadCard = (retries) => {
     if (retries < 0) {
         return;
@@ -16,6 +18,8 @@ const preparePageToReadCard = (retries) => {
         }
         separatorElement = contentElement.nextElementSibling;
     }
+    const issueLineCardElementAnchorID = document.querySelector("[data-testid='issue-line-card.card-container'] > [role='presentation'] > a");
+    const issueLineCardElementAnchorTitle = document.querySelector("[data-testid='issue-line-card.card-container'] > div > [role='presentation'] > a");
     const contentClassNameList = contentElement.className.split(" ");
     const contentClassName = contentClassNameList[contentClassNameList.length - 1];
     cssUpdates.innerHTML = "";
@@ -24,14 +28,25 @@ const preparePageToReadCard = (retries) => {
     cssUpdates.innerHTML += "."+navigationClassName+" > div > div button[data-resize-button]  { opacity: 0; display: none }";
     cssUpdates.innerHTML += "."+headerClassName+" { height:0; overflow: hidden }";
     cssUpdates.innerHTML += "."+contentClassName+" { padding-left:0 }";
+    const localFontSizeAkRendererDocument = window.fontSizeAkRendererDocument ? window.fontSizeAkRendererDocument : defaultFontSizeAkRendererDocument;
+    cssUpdates.innerHTML += ".ak-renderer-document { font-size:"+localFontSizeAkRendererDocument+" }";
+    const localFontSizeIssueLineCardElementAnchor = window.fontSizeIssueLineCardElementAnchor ? window.fontSizeIssueLineCardElementAnchor : defaultFontSizeIssueLineCardElementAnchor;
+    if (issueLineCardElementAnchorID !== null) {
+        const issueLineCardElementAnchorIDClassNameList = issueLineCardElementAnchorID.className.split(" ");
+        const issueLineCardElementAnchorIDClassName = issueLineCardElementAnchorIDClassNameList[issueLineCardElementAnchorIDClassNameList.length - 1];
+        cssUpdates.innerHTML += "."+issueLineCardElementAnchorIDClassName+" { font-size:"+localFontSizeIssueLineCardElementAnchor+" }"
+    }
+    if (issueLineCardElementAnchorTitle !== null) {
+        const issueLineCardElementAnchorTitleClassNameList = issueLineCardElementAnchorTitle.className.split(" ");
+        const issueLineCardElementAnchorTitleClassName = issueLineCardElementAnchorTitleClassNameList[issueLineCardElementAnchorTitleClassNameList.length - 1];
+        cssUpdates.innerHTML += "."+issueLineCardElementAnchorTitleClassName+" { font-size:"+localFontSizeIssueLineCardElementAnchor+" }"
+    }
     if (separatorElement !== null) {
         const separatorClassNameList = separatorElement.className.split(" ");
         const separatorClassName = separatorClassNameList[separatorClassNameList.length - 1];
         cssUpdates.innerHTML += "."+separatorClassName+" { width:0 }"
     }
     cssUpdates.innerHTML += "."+rightColumnClassName+" { width:0; min-width:0; flex:none !important; padding:0 }";
-    const localFontSizeAkRendererDocument = window.fontSizeAkRendererDocument ? window.fontSizeAkRendererDocument : "1.8em";
-    cssUpdates.innerHTML += ".ak-renderer-document { font-size:"+localFontSizeAkRendererDocument+" }";
     if (cssUpdates !== document.head) {
         document.head.appendChild(cssUpdates);
     }
@@ -56,10 +71,13 @@ window.consoleLogStylePreparePageToReadCard = consoleLogStylePreparePageToReadCa
 preparePageToReadCardDefault();
 console.log("You can configure font size applied to document using this change before load prepare page to read card function:\n"+
             "window.fontSizeAkRendererDocument = \"1.8em\";\n"+
+            "You can also configure font size applied to subtasks and related itens this change before load prepare page to read card function:\n"+
+            "window.fontSizeIssueLineCardElementAnchor = \"18px\";\n"+
             "Then to you test it now, you can just run:\n"+
             "simplePreparePageToReadCard();\n"+
-            "Now both together to be more useful:\n"+
+            "Now together to be more useful:\n"+
             "window.fontSizeAkRendererDocument = \"1.8em\";\n"+
+            "window.fontSizeIssueLineCardElementAnchor = \"18px\";\n"+
             "simplePreparePageToReadCard();\n"+
             "If you want see the style changes applied to document, just run:\n"+
             "consoleLogStylePreparePageToReadCard();")
