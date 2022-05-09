@@ -21,7 +21,7 @@ const runScript = async (url) => {
 window.fontSizeAkRendererDocument = "1.8em";
 // Configure the font-size you want apply changing this value 18px
 window.fontSizeIssueLineCardElementAnchor = "18px";
-runScript("https://raw.githubusercontent.com/pethersonmoreno/jira-scripts-to-style-updates/1.0/prepare-page-to-read-card.js")
+runScript("https://raw.githubusercontent.com/pethersonmoreno/jira-scripts-to-style-updates/main/prepare-page-to-read-card.js")
 ```
 
 ## Running directly on Chrome Console
