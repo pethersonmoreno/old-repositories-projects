@@ -39,7 +39,7 @@ Remember that you can customize the font size applied updating the values:
 
 ## Configuring it on JavaScript Injector Chrome extension
 
-You need install the extension, to do it, open the Chrome browser at URL:\
+You need install the extension, to do it, open the Chrome browser at URL:
 
  - [https://chrome.google.com/webstore/detail/javascript-injector/knmnopfmccchnnfdoiddbihbcboeedll](https://chrome.google.com/webstore/detail/javascript-injector/knmnopfmccchnnfdoiddbihbcboeedll)
 
