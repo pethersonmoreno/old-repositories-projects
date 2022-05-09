@@ -70,3 +70,5 @@ And then click at save button, and then you will see injection registered:
 ![Image of JavaScript Injector Chrome extension settings after save injection](images/chrome-javascript-injector-extension-settings-saved-injection.png)
 
 Now you have the Javascript Injection configured, by clicking at "On" green button you can disable the injection, and clicking at "Off" red button you can enable back the injection.
+
+![Image of JavaScript Injector Chrome extension settings injection off](images/chrome-javascript-injector-extension-settings-injection-off.png)
