@@ -1,0 +1,15 @@
+{
+  "name": "Jira Cards to Read",
+  "version": "0.2",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Run JS",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://i-value.atlassian.net/browse/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
