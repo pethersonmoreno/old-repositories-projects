@@ -50,11 +50,4 @@ const addToggleButtonContinousReloadExtensionToAllUnpackedExtensions=()=>{
     shadowRootExtension.shadowRoot.querySelector('#card #main #content').appendChild(toggleContinousReloadExtension);
   },shadowRootsWithReloadExtension);
 };
-
-document.addEventListener('readystatechange', event => {
-  if (event.target.readyState === "complete" || event.target.readyState === "interactive") {
-    if (window.location.href.startsWith('chrome://extensions')) {
-      addToggleButtonContinousReloadExtensionToAllUnpackedExtensions();
-    }
-  }
-});
+addToggleButtonContinousReloadExtensionToAllUnpackedExtensions();
