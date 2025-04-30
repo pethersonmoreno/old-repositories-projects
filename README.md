@@ -204,6 +204,7 @@ gcc -o ../lib-python/_example.so example_wrap.c -I/usr/include/python3.13 -I../i
 cp -a example.py ../lib-python/
 cd ../lib-python/
 LD_LIBRARY_PATH=../lib/ python -c "import example; print(example.fact(5)); print(example.my_mod(7,3)); print(example.get_time())"
+cd ../
 rm -rf module_python
 rm -rf lib-python
 # 
