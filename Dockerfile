@@ -59,7 +59,7 @@ RUN mkdir /tmp/src-build-pjsua2 && \
     curl -sL https://github.com/pjsip/pjproject/archive/refs/tags/${PJSIP_VERSION}.tar.gz | \
         tar --strip-components 1 -xz && \
     cp -a /tmp/pjsip_config_site.h pjlib/include/pj/config_site.h && \
-    sed -E 's/LANG = python java/LANG = python/g' -i pjsip-apps/src/swig/Makefile
+    sed -E 's/LANG = python java/LANG = python/g' -i pjsip-apps/src/swig/Makefile \
     cd pjsip-apps/src/swig/python && \
     sed -i -E '/^include.+\.mak$/d' helper.mak && \
     export PJ_LDXXFLAGS="-L${SIP_ROOT_DIR}/lib" && \
