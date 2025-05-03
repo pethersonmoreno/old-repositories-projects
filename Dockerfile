@@ -71,6 +71,8 @@ RUN apt-get update -qq && \
         libspeexdsp-dev \
         libsrtp2-dev \
         portaudio19-dev \
+        ffmpeg \
+        python3-av \
         && apt-get purge -y --auto-remove \
         && rm -rf /var/lib/apt/lists/*
 
