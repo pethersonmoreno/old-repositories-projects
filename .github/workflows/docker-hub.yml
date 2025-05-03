@@ -9,6 +9,10 @@ env:
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  # 
+  PJSIP_VERSION: 2.15.1
+  DEBIAN_CODE_NAME: bookworm
+  PYTHON_VERSION: 3.11.12
 
 jobs:
   build_push_dockerhub:
@@ -19,14 +23,14 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
       - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -35,10 +39,12 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}"
           push: true
-          # tags: ${{ steps.meta.outputs.tags }}
-          tags: 2.15.1-pjsua2-python3
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ env.IMAGE_NAME }}:latest, ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}
+          build-args: |
+            PJSIP_VERSION=${{ env.PJSIP_VERSION }}
+            DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
+            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
