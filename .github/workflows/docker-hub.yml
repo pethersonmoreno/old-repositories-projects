@@ -110,13 +110,25 @@ jobs:
       #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
       #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
 
-      - name: Testing Dockerfile 7
+      # - name: Testing Dockerfile 7
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: "{{defaultContext}}"
+      #     file: "Dockerfile-testing7"
+      #     push: true
+      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test7
+      #     build-args: |
+      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
+      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
+      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
+
+      - name: Testing Dockerfile 8
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}"
-          file: "Dockerfile-testing7"
+          file: "Dockerfile-testing8"
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test7
+          tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test8
           build-args: |
             PJSIP_VERSION=${{ env.PJSIP_VERSION }}
             DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
