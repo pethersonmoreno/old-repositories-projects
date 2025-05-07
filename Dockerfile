@@ -6,23 +6,9 @@ ARG PJSIP_VERSION
 ENV SIP_ROOT_DIR=/usr
 
 RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends \
-        build-essential \
-        ca-certificates \
         curl \
-        libgsm1-dev \
-        libspeex-dev \
-        libspeexdsp-dev \
-        libssl-dev \
-        libsrtp2-dev \
-        libyuv-dev \
-        portaudio19-dev \
         swig \
-        ffmpeg \
-        python3-av \
-        pulseaudio \
-        alsa-utils \
         && apt-get purge -y --auto-remove \
         && rm -rf /var/lib/apt/lists/*
 
@@ -31,7 +17,7 @@ RUN cat <<EOF | tee /tmp/pjsip_config_site.h
 #define PJ_TIMER_DEBUG  0
 #define PJ_HAS_IPV6 1
 #define PJMEDIA_AUD_DEV_MAX_DEVS 64
-#define PJMEDIA_AUDIO_DEV_HAS_ALSA  1
+#define PJMEDIA_AUDIO_DEV_HAS_ALSA  0
 #define PJMEDIA_AUDIO_DEV_HAS_NULL_AUDIO    1
 #define PJMEDIA_AUDIO_DEV_HAS_PORTAUDIO 0
 #define PJMEDIA_AUDIO_DEV_HAS_COREAUDIO 0
@@ -48,20 +34,22 @@ RUN mkdir /tmp/src-pjsip && \
     export CFLAGS="-fPIC -O2 -DNDEBUG" && \
     ./configure \
         --prefix=$SIP_ROOT_DIR \
-        --with-external-speex \
-        --with-external-srtp \
-        --with-external-gsm \
-        --with-external-yuv \
         --enable-shared \
         --disable-opencore-amr \
         --disable-video && \
     make dep && \
     make && \
     make install && \
-    sed -E 's/LANG = python java/LANG = python/g' -i pjsip-apps/src/swig/Makefile && \
-    cd pjsip-apps/src/swig/python && \
+    make install DESTDIR=/tmp/pjsip_installation && \
+    cd /tmp/pjsip_installation/usr/ && tar -zcf /tmp/pjsip-package.tar.gz * && \
+    cd /tmp && rm -rf /tmp/pjsip_installation && \
+    sed -E 's/LANG = python java/LANG = python/g' -i /tmp/src-pjsip/pjsip-apps/src/swig/Makefile && \
+    cd /tmp/src-pjsip/pjsip-apps/src/swig/python && \
     make && \
     python setup.py install && \
-    rm -rf /tmp/src-pjsip
+    python setup.py install --prefix=/tmp/python-pjsua2 && \
+    cd /tmp/python-pjsua2/lib/python*/site-packages/pjsua2* && tar -zcf /tmp/python-pjsua2-package.tar.gz *pjsua2* && \
+    cd /tmp && rm -rf /tmp/python-pjsua2 && \
+    cd /tmp && rm -rf /tmp/src-pjsip
 
 CMD ["/bin/bash"]

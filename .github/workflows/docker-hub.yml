@@ -38,134 +38,25 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:latest, ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 2
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing2"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test2
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 3
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing3"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test3
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 4
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing4"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test4
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 5
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing5"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test5
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 6
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing6"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test6
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 7
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing7"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test7
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 8
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing8"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test8
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 9
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing9"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test9
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      # - name: Testing Dockerfile 10
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     context: "{{defaultContext}}"
-      #     file: "Dockerfile-testing10"
-      #     push: true
-      #     tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test10
-      #     build-args: |
-      #       PJSIP_VERSION=${{ env.PJSIP_VERSION }}
-      #       DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
-      #       PYTHON_VERSION=${{ env.PYTHON_VERSION }}
-
-      - name: Testing Dockerfile 11
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: "{{defaultContext}}"
-          file: "Dockerfile-testing11"
+          file: "Dockerfile"
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-test11
+          tags: ${{ env.IMAGE_NAME }}:latest, ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}
           build-args: |
             PJSIP_VERSION=${{ env.PJSIP_VERSION }}
             DEBIAN_CODE_NAME=${{ env.DEBIAN_CODE_NAME }}
+            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
+
+      - name: Build and push Docker image - alpine
+        uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}"
+          file: "Dockerfile-alpine"
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}-alpine
+          build-args: |
+            IMAGE_SOURCE_PACKAGES=${{ env.IMAGE_NAME }}:${{ env.PJSIP_VERSION }}-python${{ env.PYTHON_VERSION }}
             PYTHON_VERSION=${{ env.PYTHON_VERSION }}
