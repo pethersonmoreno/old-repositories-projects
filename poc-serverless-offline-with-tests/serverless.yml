@@ -1,0 +1,51 @@
+service: poc-serverless-offline-with-tests
+
+plugins:
+    - serverless-webpack
+    - serverless-offline
+
+provider:
+    name: aws
+    runtime: nodejs6.10
+    profile: sls
+    region: us-east-1
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "sqs:SendMessage"
+              - "sqs:GetQueueUrl"
+          Resource: "arn:aws:sqs:${self:provider.region}:811338114632:MyQueue"
+        - Effect: "Allow"
+          Action:
+              - "sqs:ListQueues"
+          Resource: "arn:aws:sqs:${self:provider.region}:811338114632:*"
+
+package:
+    exclude:
+        - node_modules/**
+
+functions:
+    sender:
+        handler: src/handler.sender
+        events:
+            - http:
+                  path: v1/sender
+                  method: post
+    receiver:
+        handler: src/handler.receiver
+        events:
+            - sqs:
+                  arn:
+                      Fn::GetAtt:
+                          - MyQueue
+                          - Arn
+
+resources:
+    Resources:
+        MyQueue:
+            Type: "AWS::SQS::Queue"
+            Properties:
+                QueueName: "MyQueue"
+
+custom:
+    webpackIncludeModules: true
