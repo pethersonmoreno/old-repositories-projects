@@ -1,0 +1,16 @@
+{
+    "name": "petherson/vscode-basic-example",
+    "type": "project",
+    "description": "project vscode-basic-example",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petherson Moreno",
+            "email": "pethermoreno@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.4"
+    }
+}
