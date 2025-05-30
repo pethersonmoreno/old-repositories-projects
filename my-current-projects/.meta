@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "cash-flow-frontend": "git@github.com:pethersonmoreno/cash-flow-frontend.git",
+    "cash-flow-api": "git@github.com:pethersonmoreno/cash-flow-api.git",
+    "newschool-backend": "git@github.com:pethersonmoreno/newschool-backend.git",
+    "newschool-frontend": "git@github.com:pethersonmoreno/newschool-frontend.git",
+    "newschool-terraform": "git@github.com:pethersonmoreno/newschool-terraform.git",
+    "nodeschool-campinas": "git@github.com:pethersonmoreno/nodeschool-campinas.git",
+    "nodeschool-campinas-gatsby": "git@github.com:pethersonmoreno/nodeschool-campinas-gatsby.git",
+    "svelte-study": "git@github.com:pethersonmoreno/svelte-study.git",
+    "linux-scripts": "git@github.com:pethersonmoreno/linux-scripts.git",
+    "moreno-guideline-react": "git@github.com:morenobr/guideline-react.git"
+  }
+}
