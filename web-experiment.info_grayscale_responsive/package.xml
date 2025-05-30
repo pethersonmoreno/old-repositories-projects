@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package>
+  <name>wp_theme_grayscale2014</name>
+  <version>1.2.2</version>
+  <stability>stable</stability>
+  <license uri="http://web-experiment.info/regular_free_license">Web-Experiment.Info Regular Free License</license>
+  <channel>community</channel>
+  <extends/>
+  <summary>Magento Theme - Grayscale Full-Width (Web-Experiment.Info)</summary>
+  <description>Magento Theme - Grayscale Full-Width (Web-Experiment.Info)</description>
+  <notes>Добавлен блок корзины в левый сайдбар. Обновлены CSS темы. Проверено на совместимость с Магенто 1.9</notes>
+  <authors>
+    <author>
+      <name>WebAndPeople</name>
+      <user>WebAndPeople</user>
+      <email>design@webandpeople.com</email>
+    </author>
+    <author>
+      <name>Yura Gerassimenko</name>
+      <user>ygerassimenko</user>
+      <email>y.gerassimenko@webandpeople.com</email>
+    </author>
+  </authors>
+  <date>2014-06-14</date>
+  <time>03:55:33</time>
+  <contents>
+    <target name="mageweb">
+      <dir name="app">
+        <dir name="code">
+          <dir name="community">
+            <dir name="WP">
+              <dir name="BackToTopButton">
+                <dir name="Block">
+                  <dir name="System">
+                    <dir name="Config">
+                      <dir name="Form">
+                        <dir name="Field">
+                          <dir name="Array">
+                            <file name="Abstract.php" hash="0a1174977ee714fafe13c2f11318016f"/>
+                            <file name="Regexceptions.php" hash="243d998741214fcf9a85c036b43655f3"/>
+                          </dir>
+                        </dir>
+                      </dir>
+                    </dir>
+                  </dir>
+                  <file name="Toggle.php" hash="e2fadbea896f1db82a54169627bae456"/>
+                </dir>
+                <dir name="Helper">
+                  <file name="Data.php" hash="75249650567f900f901a4f80029eb60d"/>
+                </dir>
+                <dir name="etc">
+                  <file name="config.xml" hash="8bd81dedebee1b2d5a44af530b1b2ddc"/>
+                  <file name="system.xml" hash="ad4c5439eb742cad4cc2f46bda642c1b"/>
+                </dir>
+              </dir>
+              <dir name="CustomMenu">
+                <dir name="Block">
+                  <file name="Navigation.php" hash="561bb88d0c92eb585e1a1b34a2218de0"/>
+                  <dir name="System">
+                    <dir name="Config">
+                      <dir name="Renderer">
+                        <file name="Heading.php" hash="24eab1766dc317132ca44564ff26f9a8"/>
+                      </dir>
+                      <dir name="Source">
+                        <file name="Topmenu.php" hash="960ae04b07c8c69b4774b444ca8836df"/>
+                      </dir>
+                    </dir>
+                  </dir>
+                  <file name="Topmenu.php" hash="baf91d07f38b733b3e09957ccab4db4d"/>
+                </dir>
+                <dir name="Helper">
+                  <file name="Data.php" hash="facc8faf614ee7fa7501a8f48a0d504f"/>
+                </dir>
+                <dir name="Model">
+                  <file name="Observer.php" hash="fd7b2bd7b8544e7d769dfee097326a43"/>
+                  <dir name="System">
+                    <dir name="Config">
+                      <dir name="Source">
+                        <file name="Popuptype.php" hash="cae99d4e53952b9edf40f5667a168f02"/>
+                        <file name="Position.php" hash="663a74b9ac82ec696b4317f51348deeb"/>
+                        <file name="Staticblock.php" hash="1ac558e25f8cedefccb4fe93818565a6"/>
+                      </dir>
+                    </dir>
+                  </dir>
+                </dir>
+                <dir name="controllers">
+                  <file name="AjaxmenucontentController.php" hash="8149156483648c590da7d4e977b6829e"/>
+                  <file name="AjaxmobilemenucontentController.php" hash="38ca4e28579d38d697b22e5940c7ecc6"/>
+                </dir>
+                <dir name="etc">
+                  <file name="config.xml" hash="2ff3e0a3ba40334b5f1c257de443b449"/>
+                  <file name="system.xml" hash="3aba15847abf6639d2c26901d58d4cfa"/>
+                </dir>
+              </dir>
+              <dir name="SmartCatalog">
+                <dir name="Block">
+                  <dir name="Product">
+                    <file name="Promo.php" hash="cf7df00bd794709df1ecbd3211ff53a7"/>
+                  </dir>
+                  <file name="Toggle.php" hash="05f421ec9fae609620f24250d5eb591f"/>
+                </dir>
+                <dir name="Helper">
+                  <file name="Data.php" hash="cdd117112a49960955d776a05886b09e"/>
+                </dir>
+                <dir name="Model">
+                  <file name="Observer.php" hash="f2225790b750f4defc7eb631057cf459"/>
+                </dir>
+                <dir name="etc">
+                  <file name="config.xml" hash="ed82d59af7244a7b4ba9435ae2563380"/>
+                  <file name="system.xml" hash="0958f674a918e0dcc0ed5c70b9ec5a87"/>
+                </dir>
+              </dir>
+              <dir name="SmartProductImage">
+                <dir name="Block">
+                  <file name="Js.php" hash="641151bab311a1b87c1d3d24e9ae7fc3"/>
+                  <dir name="System">
+                    <dir name="Config">
+                      <dir name="Form">
+                        <dir name="Field">
+                          <file name="Imagesizes.php" hash="a7c2a880f74ffb780ac58b2f81da3fc1"/>
+                        </dir>
+                      </dir>
+                    </dir>
+                  </dir>
+                </dir>
+                <dir name="Helper">
+                  <file name="Data.php" hash="0d0d1ce70098fc4c2f66612775abf79a"/>
+                </dir>
+                <dir name="etc">
+                  <file name="config.xml" hash="0cb27e949a1276f3fb280879ad670b73"/>
+                  <file name="system.xml" hash="e65232ab1f69be0f823eac505ff94f55"/>
+                </dir>
+              </dir>
+              <dir name="ThemeGrayscale2014">
+                <dir name="Block"/>
+                <dir name="Helper">
+                  <file name="Data.php" hash="9442514d1b5c864a63b1af4c883df06b"/>
+                </dir>
+                <dir name="etc">
+                  <file name="config.xml" hash="f2f48fada6827558878b2e4b7270b2da"/>
+                  <file name="system.xml" hash="f9215090b4719e89943cb57980d33f70"/>
+                </dir>
+              </dir>
+            </dir>
+          </dir>
+        </dir>
+        <dir name="design">
+          <dir name="frontend">
+            <dir name="default">
+              <dir name="default">
+                <dir name="layout">
+                  <dir name="webandpeople">
+                    <file name="backtotopbutton.xml" hash="6b51d83c28fab664b4ae44e02858a3f3"/>
+                    <file name="custommenu.xml" hash="93dc3f19f392b6eb524ddebabf271ad0"/>
+                    <file name="smartcatalog.xml" hash="28cd097f3c9cd8444020f8b8fcf3ba58"/>
+                    <file name="smartproductimage.xml" hash="2b72dcc258c4e440716d7416348682da"/>
+                  </dir>
+                </dir>
+                <dir name="template">
+                  <dir name="webandpeople">
+                    <dir name="backtotopbutton">
+                      <file name="button.phtml" hash="2649afd7988da0af70e36e3b289978a5"/>
+                    </dir>
+                    <dir name="custommenu">
+                      <file name="menucontent.phtml" hash="185449e1085f1aa82dcb30c6731d4348"/>
+                      <file name="sidebar.phtml" hash="761bfda083cfb05e3716d5e2a76f02e0"/>
+                      <file name="top.phtml" hash="8aeca4901afc4115ce3b1b8ba5dc54a0"/>
+                    </dir>
+                    <dir name="smartcatalog">
+                      <file name="list-home.phtml" hash="a73eed68e52d7f4551f161972c7b5040"/>
+                      <file name="list.phtml" hash="136aba81a73791b6fada5b5d0997b5e9"/>
+                    </dir>
+                    <dir name="smartproductimage">
+                      <file name="js.phtml" hash="24a7d08b5de0582380b8b5819f126934"/>
+                    </dir>
+                  </dir>
+                </dir>
+              </dir>
+              <dir name="grayscale2014">
+                <dir name="layout">
+                  <file name="local.xml" hash="35d9806f03a693b2c39f9588c8401967"/>
+                </dir>
+                <dir name="locale">
+                  <dir name="en_US">
+                    <file name="translate.csv" hash="4eb6e600e7c8e310e18dd8711da69a0f"/>
+                  </dir>
+                </dir>
+                <dir name="template">
+                  <dir name="catalog">
+                    <dir name="navigation">
+                      <file name="top.phtml" hash="c52944b2dc37b646dac270e91528611a"/>
+                    </dir>
+                    <dir name="product">
+                      <file name="home.phtml" hash="0ecdc7df9fbc40493926c1ca7e501869"/>
+                      <file name="list.phtml" hash="3e64493101ed659e681d1fe12616aa0f"/>
+                      <file name="popular.phtml" hash="88b4117a226a9a88b4c814a3d377ad4e"/>
+                      <file name="tabs_cat.phtml" hash="7530e7576d62b2cf12c7c7f14347d912"/>
+                      <dir name="view">
+                        <file name="addto.phtml" hash="ab2d1c464f8efb33e80ec2db932365a0"/>
+                        <file name="single_top.phtml" hash="0c31aaf298d7db4a41dc63d78199ffb1"/>
+                        <file name="single_top_btn.phtml" hash="108104858c2aa747e912db6ce87848bc"/>
+                      </dir>
+                      <file name="view.phtml" hash="1cebea532e0a9fbf8ee2389daec9ce24"/>
+                    </dir>
+                  </dir>
+                  <dir name="checkout">
+                    <dir name="cart">
+                      <file name="sidebar_top.phtml" hash="3f8b7e02d691ebf383b420bc62c8fde8"/>
+                    </dir>
+                    <dir name="onepage">
+                      <file name="login.phtml" hash="0e3345d379d0bde5f626300022075b03"/>
+                    </dir>
+                  </dir>
+                  <dir name="customer">
+                    <dir name="form">
+                      <file name="login.phtml" hash="1a59f02bd7b48f954f36116f2bf1829d"/>
+                    </dir>
+                  </dir>
+                  <dir name="directory">
+                    <file name="currency.phtml" hash="244e6ba578044f032e6ec6cf827c410b"/>
+                  </dir>
+                  <dir name="easytabs">
+                    <file name="catalogproductrelated.phtml" hash="19bc76ebbc0b5ff985dd9bf1dad9c571"/>
+                    <file name="catalogproductview.phtml" hash="e6be2c2f2fbd172aa5fdc067e92c8695"/>
+                  </dir>
+                  <dir name="page">
+                    <dir name="html">
+                      <file name="designby.phtml" hash="3842c8a75cafc2d0d4dd6df71bac523d"/>
+                      <file name="footer.phtml" hash="6ccb72cbdba2963f648bac50b05afc91"/>
+                      <file name="head.phtml" hash="d3a14e5a11a117485b8c303b9884650e"/>
+                      <file name="header.phtml" hash="de7f7dbb3fbe4eb1321c0c5881d32978"/>
+                    </dir>
+                    <dir name="template">
+                      <file name="alinks.phtml" hash="0906d7fb1a981a5c74935b232430d654"/>
+                      <file name="clinks.phtml" hash="b29796c17eb54200a4abf8abdb05562c"/>
+                    </dir>
+                  </dir>
+                  <dir name="persistent">
+                    <dir name="checkout">
+                      <dir name="onepage">
+                        <file name="login.phtml" hash="1c05f28c4dba72402f58ba2ae7bdba58"/>
+                      </dir>
+                    </dir>
+                    <dir name="customer">
+                      <dir name="form">
+                        <file name="login.phtml" hash="3cb986ff3b29dfaaf501be60fa7667b8"/>
+                      </dir>
+                    </dir>
+                  </dir>
+                  <dir name="webandpeople">
+                    <dir name="smartcatalog">
+                      <file name="list-new.phtml" hash="81e1c7e25687edff506a8fdc2235a366"/>
+                      <file name="list-rate.phtml" hash="5f6fbd9273ee0723637f83868ed771ad"/>
+                      <file name="list-short.phtml" hash="e270ce35eb3034ccd1ea08aae185587f"/>
+                    </dir>
+                  </dir>
+                </dir>
+              </dir>
+            </dir>
+          </dir>
+        </dir>
+        <dir name="etc">
+          <dir name="modules">
+            <file name="WP_BackToTopButton.xml" hash="663133d914db5bfd43ebb5b9d7a97761"/>
+            <file name="WP_CustomMenu.xml" hash="c367e72a4fd849f0eb777634ca2d422c"/>
+            <file name="WP_SmartCatalog.xml" hash="20736117beaebce512604feb64c09c1a"/>
+            <file name="WP_SmartProductImage.xml" hash="eb9a93ba59bf69e2ccde917b91c62c19"/>
+            <file name="WP_ThemeGrayscale2014.xml" hash="03b5efff80e51ce7f26d701f637c5da0"/>
+          </dir>
+        </dir>
+      </dir>
+      <dir name="js">
+        <dir name="webandpeople">
+          <dir name="jquery">
+            <dir name="backtotopbutton">
+              <file name="jquery-noconflict.js" hash="167ed0ec9ea28da4f233f2248b7aff17"/>
+              <file name="jquery.min.js" hash="24bd97b1de158c4f1a162336eeca4aa6"/>
+            </dir>
+            <dir name="smartcatalog">
+              <file name="jquery-noconflict.js" hash="0f8ad28295c8b6bf0511e6d10aab4c8f"/>
+              <file name="jquery.min.js" hash="24bd97b1de158c4f1a162336eeca4aa6"/>
+            </dir>
+          </dir>
+          <dir name="jquery_plugins">
+            <dir name="backtotopbutton">
+              <file name="jquery-noconflict.js" hash="167ed0ec9ea28da4f233f2248b7aff17"/>
+              <file name="waypoints.js" hash="9e6c9bbc1ca6edc6411259da3fc44cf5"/>
+            </dir>
+            <dir name="smartcatalog">
+              <file name="jquery-noconflict.js" hash="0f8ad28295c8b6bf0511e6d10aab4c8f"/>
+              <file name="jquery.actual.js" hash="cca132e86ff4e01c4566f291571cbac3"/>
+              <file name="jquery.debouncedresize.js" hash="778a58c66c51222275c3a814b60fa045"/>
+            </dir>
+          </dir>
+        </dir>
+      </dir>
+      <dir name="media">
+        <dir name="template">
+          <file name="free_responsive_magento_template_grayscale_2014.jpg" hash="d901e6eca9bcbdf60dffa9d01ab9fc6a"/>
+          <file name="free_responsive_magento_template_grayscale_full_width.jpg" hash="64e256c07e148f9b0dbc3b002facce05"/>
+          <file name="grayscale_full_width_free_magento_theme.jpg" hash="4f12b27216af3f52f137fa2bc86e759e"/>
+          <file name="magento_template.jpg" hash="c859df941238addb37c2e5210c09c739"/>
+          <file name="magento_template_custom_menu.jpg" hash="310a8e7afc393944b0d82534a78b290c"/>
+          <file name="magento_theme.jpg" hash="5cc34fdc415ddf3e5ed1db79b1c3b6d9"/>
+          <file name="web_experiment_magento_templates.jpg" hash="c33198f130a76e95b2dd96e212eb6363"/>
+          <file name="web_experiment_premium_magento_templates.jpg" hash="8903fdb96a6f0ea4eec9c7fa214dcf61"/>
+        </dir>
+      </dir>
+      <dir name="skin">
+        <dir name="frontend">
+          <dir name="default">
+            <dir name="default">
+              <dir name="css">
+                <dir name="webandpeople">
+                  <dir name="backtotopbutton">
+                    <file name="backtotopbutton.css" hash="fcea466a33cad71f5bf221bc375ae09b"/>
+                  </dir>
+                  <dir name="custommenu">
+                    <file name="custommenu.css" hash="2fe55d59d10e6cc04a522b4db79ce815"/>
+                  </dir>
+                  <dir name="smartcatalog">
+                    <file name="smartcatalog.css" hash="9d8800e0a7328fdcee66917c5d0bc3e2"/>
+                  </dir>
+                </dir>
+              </dir>
+              <dir name="images">
+                <dir name="webandpeople">
+                  <dir name="smartcatalog">
+                    <file name="loader.gif" hash="e6b779c5ee1dcc9ef822ccc6813963bd"/>
+                  </dir>
+                </dir>
+              </dir>
+              <dir name="js">
+                <dir name="webandpeople">
+                  <dir name="custommenu">
+                    <file name="custommenu.js" hash="3c6821215eef7afa77a73d16e0e890a2"/>
+                    <file name="webtoolkit.base64.js" hash="d464b20d386bdc75f1eb05ff4963f446"/>
+                  </dir>
+                  <dir name="smartcatalog">
+                    <file name="jquery.smartCatalog.js" hash="20d97df3d75f663ef794cc7d7b735041"/>
+                  </dir>
+                </dir>
+              </dir>
+            </dir>
+            <dir name="grayscale2014">
+              <dir name="css">
+                <file name="color.css" hash="499b6563db95f701e5ed26c52e5f3a35"/>
+                <file name="media-480.css" hash="a0b576595260af4e09ad2bcaeefcdd59"/>
+                <file name="media-800.css" hash="9beb800a61dc55daaff1e049e7afe350"/>
+                <file name="media-small.css" hash="779710cfff826520025f4d5d30cc487c"/>
+                <file name="skin.css" hash="e0631baf591ee2137d3be773c222d17b"/>
+                <file name="slider.css" hash="139ea28fe40e33192cfc55914a9a60d3"/>
+                <file name="styles-ie.css" hash="b2ffea761c097212d19ff620eebfab39"/>
+                <file name="styles.css" hash="b39c2eafd6a712d101156cbc9850f6cc"/>
+                <dir name="webandpeople">
+                  <dir name="backtotopbutton">
+                    <file name="backtotopbutton.css" hash="42e7dc7aac02e82e990084d67a35605e"/>
+                  </dir>
+                  <dir name="custommenu">
+                    <file name="custommenu.css" hash="24d0e45ec846bec920991d1c01d6b861"/>
+                  </dir>
+                  <dir name="smartcatalog">
+                    <file name="smartcatalog.css" hash="f9a4839a2fb6d08e7179754d67ff3ce9"/>
+                  </dir>
+                </dir>
+              </dir>
+              <file name="favicon.ico" hash="6e3f6e97b96ea2e33b3f76e40ad34a28"/>
+              <dir name="images">
+                <file name="btn.png" hash="17495d06da7ce1e5ba8da0876afb2eff"/>
+                <file name="btn_cart.png" hash="2584f437c575c6c2608bd8126be1b28e"/>
+                <file name="gift-message-collapse.gif" hash="6beeaaeac039f5e3e92c728b5c996bf8"/>
+                <file name="gift-message-expand.gif" hash="9eca47fc9be3127601cc2a4d1c0319db"/>
+                <file name="i_asc_arrow.gif" hash="9b5c00ca0cfdbcbfe80871e5a049d9bd"/>
+                <file name="i_desc_arrow.gif" hash="150537d0e715203e27c6b6af9040194f"/>
+                <file name="i_pager-next.gif" hash="fdf06c3092c5f894ac47ea9cc1f8e685"/>
+                <file name="i_pager-prev.gif" hash="70326c4ded8109d87a7c48b3c6832bd5"/>
+                <file name="i_print.gif" hash="d1b60266c89d36e11f8806b7e48de3ba"/>
+                <file name="i_rss-big.png" hash="b3398be21d0bc03194c032e769f71ab0"/>
+                <file name="i_rss.gif" hash="66011e9f2014f9d65778f6d008569613"/>
+                <file name="icon_big_rss.png" hash="b3398be21d0bc03194c032e769f71ab0"/>
+                <file name="icon_feed.png" hash="08e9af6b5f942f57cf8cd6aa72aa3400"/>
+                <file name="icon_layer.gif" hash="f8cafecc15e2cb777f0e7363ffe4230c"/>
+                <file name="icon_news.gif" hash="0314c5c4b2f74fa46445632f1a784228"/>
+                <file name="icon_rss.gif" hash="66011e9f2014f9d65778f6d008569613"/>
+                <file name="logo.gif" hash="fc07f714f782dcc1e5faf5e810ae4338"/>
+                <file name="magnifier_handle.gif" hash="9b47d3300daf5a769fa89ff7d6f84f79"/>
+                <file name="more.png" hash="e9712b0a11c0ff535b99d63fd0d010d0"/>
+                <file name="nav_arrow.gif" hash="12d9f37e03d5ca8185ec07aa02ce3982"/>
+                <file name="new.png" hash="114e88196592a499dc41cb1bfc30df4e"/>
+                <file name="pager_arrow_left.gif" hash="e6c761e0c59dcba68bb82cec09c3379e"/>
+                <file name="pager_arrow_right.gif" hash="c685fe86e39beb8f0e486a0797458b3d"/>
+                <file name="slider_btn_zoom_in.gif" hash="e2935a3e8405b0efbf40be08c470bc82"/>
+                <file name="slider_btn_zoom_out.gif" hash="9eda2b7a81943944cf5708d73e898ebf"/>
+                <file name="sort_asc_arrow.gif" hash="115a6d020846a2fdba8d8b532d1d8ba9"/>
+                <file name="sort_desc_arrow.gif" hash="df6491fab35d36b9fa680e331c3ef767"/>
+                <file name="sprite.png" hash="fcdd83e19aff58b8a5882d43014212fa"/>
+              </dir>
+              <dir name="js">
+                <file name="cycle-fade-effect.js" hash="d0d635ce559d39d49d225d9f6e328539"/>
+                <file name="jquery-1.5.2.min.js" hash="6537ced622c627df8b3b9bf8b228b009"/>
+                <file name="jquery.standardSlider.js" hash="1f54fe92eca55613c8e1a3d01af4e811"/>
+                <file name="noconflict.js" hash="3179f2255b046d5f2e9a71e365287bef"/>
+                <file name="respond.js" hash="b6e09c31c86f6bd55935e0097604d927"/>
+              </dir>
+            </dir>
+          </dir>
+        </dir>
+      </dir>
+    </target>
+  </contents>
+  <compatible/>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.0</min>
+        <max>6.0.0</max>
+      </php>
+    </required>
+  </dependencies>
+</package>

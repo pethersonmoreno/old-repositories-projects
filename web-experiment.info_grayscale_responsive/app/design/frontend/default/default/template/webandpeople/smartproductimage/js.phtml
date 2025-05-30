@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    var wpImageObj          = null;
+    var wpWidths            = <?php echo $this->getViewportWidthArray(); ?>;
+    var wpImageHashMain     = new Array();
+    <?php echo $this->getImagesArray(); ?>
+
+    function wpGetSizeIndex(availableWidth)
+    {
+        var sz = 0; for(; sz < wpWidths.length && availableWidth >= wpWidths[sz]; sz++); sz--;
+        if (sz < 0) sz = 0; if (sz >= wpWidths.length) sz = wpWidths.length - 1;
+        return sz;
+    }
+
+    function wpGetAvailableWidth()
+    {
+        //var availableWidth = ((window.innerWidth || document.body.offsetWidth) - 0);
+        var availableWidth = 0; var viewport = $$('div.product-img-box')[0];
+        if (typeof viewport != 'undefined') availableWidth = viewport.getWidth();
+        return availableWidth;
+    }
+
+    function wpSmartProductImage()
+    {
+        if (wpImageObj === null || !wpWidths.length) return;
+        var availableWidth = wpGetAvailableWidth();
+        var sz = wpGetSizeIndex(availableWidth);
+        //console.log(availableWidth); console.log(sz);
+        if (typeof wpImageHashMain[0] != 'undefined' && typeof wpImageHashMain[0][sz] != 'undefined') {
+            wpImageObj.src = wpImageHashMain[0][sz];
+        }
+
+        // --- CloudZoom small Images ---
+        var firstImage = '';
+        $$('a.cloud-zoom-gallery').each(function(item, i) {
+            if (!firstImage) firstImage = item.href;
+            var re = /smallImage: '(.*)'/
+            item.rel = item.rel.replace(re, function (str, p1, p2, offset, s) {
+                var src = p1;
+                var sz = wpGetSizeIndex(availableWidth);
+                if (typeof wpImageHashMain[i+1] != 'undefined' && typeof wpImageHashMain[i+1][sz] != 'undefined') {
+                    src = wpImageHashMain[i+1][sz];
+                }
+                //console.log(p1);
+                return 'smallImage: \'' + src + '\'';
+            });
+        });
+        // --- set Anchor for Big Image ---
+        var ahr = $$('a.cloud-zoom')[0];
+        if (typeof ahr != 'undefined' && firstImage) ahr.href = firstImage;
+    }
+
+    function wpInitImageObject()
+    {
+        wpImageObj = $('image');
+        if (wpImageObj === null) {
+            wpImageObj = $$('div.product-img-box img')[0]; // --- Easy Lightbox extension
+        }
+    }
+
+    wpInitImageObject();
+    wpSmartProductImage();
+
+    Event.observe(window, 'resize', function() {
+        wpSmartProductImage();
+    });
+</script>

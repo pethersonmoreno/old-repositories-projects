@@ -1,0 +1,16 @@
+<script type="text/javascript">
+//<![CDATA[
+jqBackToTop(function($) {
+    // --- scroll to top ---
+    var $body = $('body');
+    $body.append('<a class="go-to-top hidden" href="javascript:;" onclick="jQuery(\'html, body\').animate({ scrollTop: 0 }, \'slow\');" title="<?php echo $this->__('Scroll to top'); ?>"><?php echo $this->__('Back to top'); ?></a>');
+    if (typeof $.fn.waypoint != 'undefined') {
+        $body.waypoint(function(direction) {
+            $('.go-to-top').toggleClass('hidden', direction === "up");
+        }, {
+            offset: '-50%'
+        });
+    }
+});
+//]]>
+</script>

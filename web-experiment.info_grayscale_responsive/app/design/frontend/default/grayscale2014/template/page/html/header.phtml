@@ -1,0 +1,50 @@
+<div class="header-container">
+    <div class="header">
+
+        <div class="search">
+            <?php echo $this->getChildHtml('topSearch') ?>
+            <div class="sp"></div>
+        </div>
+
+        <p class="welcome-msg"><?php echo $this->getWelcome()?></p>
+
+        <?php if ($this->getIsHomePage()):?>
+        <h2 class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h2>
+        <?php else:?>
+        <a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><strong><?php echo $this->getLogoAlt() ?></strong><img src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a>
+        <?php endif?>
+
+        <div class="upper-header">
+            <?php echo $this->getChildHtml('header_cart') ?>
+            <?php echo $this->getChildHtml('head_phone_block')?>
+            <div class="sp"></div>
+        </div>
+
+        <?php if ($this->getChildHtml('currency_header') || $this->getChildHtml('store_switcher') || $this->getChildHtml('store_language')) : ?>
+        <div class="switchers">
+            <div class="sw_bg_l">
+                <div class="sw_bg_r">
+                    <?php echo $this->getChildHtml('store_switcher') ?>
+                    <?php echo $this->getChildHtml('store_language') ?>
+                    <?php echo $this->getChildHtml('currency_header') ?>
+                    <div class="sp"></div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="quick-access">
+            <?php echo $this->getChildHtml('topLinksCustom') ?>
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+
+    </div>
+</div>
+
+<?php echo $this->getChildHtml('topMenu') ?>
+
+<?php if ($homePageHeaderBlock = $this->getChildHtml('home_page_header_block')) : ?>
+<div class="home_page_header_block">
+    <?php echo $homePageHeaderBlock ?>
+</div>
+<?php endif; ?>
