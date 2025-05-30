@@ -1,0 +1,43 @@
+FROM jenkins/jenkins:lts
+USER root
+
+# prerequisites for docker
+RUN apt-get update \
+    && apt-get -y install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common
+
+# docker repos
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
+    && echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" >> /etc/apt/sources.list.d/docker-repositories.list \
+    && apt-get update
+# docker
+RUN apt-get install -y docker-ce=17.03.2~ce-0~ubuntu-xenial
+
+# docker-compose
+RUN curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose \
+    && chmod +x /usr/local/bin/docker-compose
+# give jenkins docker rights
+RUN usermod -aG docker jenkins
+
+# #Configure Jenkins to HTTPS internal certificate
+# RUN mkdir /jenkins-certificate \
+# 	&& keytool -genkey -keyalg RSA -alias selfsigned -keystore /jenkins-certificate/jenkins_keystore.jks -storepass cert-jenkins-password -keysize 4096 \
+# 	-dname "c=BR, st=SP, l=Campinas, o=My Jenkins Server, ou=DevOps, cn=local.server.jenkins.br, emailAddress=br@local.server.jenkins.br" \
+# 	&& keytool -importkeystore -srckeystore /jenkins-certificate/jenkins_keystore.jks -srcstorepass cert-jenkins-password -deststorepass cert-jenkins-password -destkeystore /jenkins-certificate/jenkins_keystore.jks -deststoretype pkcs12
+# ENV JENKINS_OPTS --httpPort=-1 --httpsPort=8083 --httpsKeyStore=/jenkins-certificate/jenkins_keystore.jks --httpsKeyStorePassword=cert-jenkins-password
+# EXPOSE 8083
+
+USER jenkins
+
+# Auto configure jenkins
+
+ENV JENKINS_USER admin
+ENV JENKINS_PASS admin
+# Skip initial setup
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+COPY plugins.txt /usr/share/jenkins/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/plugins.txt
