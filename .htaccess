@@ -1,0 +1,3 @@
+# BEGIN FRedirect_ErrorDocument
+ErrorDocument 404 /index.php?error=404
+# END FRedirect_ErrorDocument
