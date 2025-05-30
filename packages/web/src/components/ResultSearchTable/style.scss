@@ -1,0 +1,35 @@
+.result-search-table {
+  >.__row-header, >.__row {
+    display: grid;
+    grid-template-columns: minmax(15px, 30px) minmax(100px, 100%) minmax(70px, 80px) minmax(70px, 80px) minmax(70px, 80px);
+    border-bottom: 1px solid #E8E8E8;
+    >.__cell{
+      display: flex;
+      padding: 0 5px;
+      align-items: center;
+      justify-content: flex-end;
+      font-family: Roboto;
+      font-style: normal;
+      font-size: 16px;
+      line-height: 30px;
+      &.--index {
+        justify-content: center;
+      }
+      &.--name {
+        justify-content: flex-start;
+      }
+    }
+  }
+  >.__row-header {
+    >.__cell{
+      color: #353535;
+      font-weight: bold;
+    }
+  }
+  >.__row {
+    >.__cell{
+      color: #4F4F4F;
+      font-weight: normal;
+    }
+  }
+}

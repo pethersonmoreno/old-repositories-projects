@@ -1,0 +1,13 @@
+@import '../../assets/styles/vars';
+
+.not-found-page{
+  > h2 {
+    margin: 0;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 3.5rem;
+    line-height: 4.0rem;
+    color: #444444;
+  }
+}

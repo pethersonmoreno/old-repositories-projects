@@ -1,0 +1,26 @@
+{
+  "name": "@open-source-quality-app/initial-swagger",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/pethersonmoreno/open-source-quality-app.git"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "author": "Petherson Moreno <pethermoreno@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/open-source-quality-app/issues"
+  },
+  "homepage": "https://github.com/pethersonmoreno/open-source-quality-app#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "swagger-ui-express": "^4.1.4",
+    "yamljs": "^0.3.0"
+  }
+}

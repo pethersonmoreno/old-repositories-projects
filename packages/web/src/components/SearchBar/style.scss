@@ -1,0 +1,10 @@
+.search-bar{
+  display: flex;
+  align-items: center;
+  > .input{
+    flex: 1;
+  }
+  > button {
+    margin-left: 1.8rem;
+  }
+}

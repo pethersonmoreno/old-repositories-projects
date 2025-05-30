@@ -1,0 +1,34 @@
+@import '../../../assets/styles/vars';
+
+header.app-header {
+  > .__content{
+    max-width: $max-width-page;
+    padding: $padding-mobile;
+    @media (min-width: $min-width-desktop) {
+      padding: $padding-desktop;
+    }
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    > .__app-name {
+      margin: 0;
+      > a {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 4.3rem;
+        line-height: 5.0rem;
+        color: #000000;
+      }
+    }
+    > .__app-description{
+      margin: 0.2rem 0 2.2rem;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 1.4rem;
+      line-height: 1.6rem;
+      color: #000000;
+    }
+  }
+}

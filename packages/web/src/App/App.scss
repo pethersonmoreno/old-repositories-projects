@@ -1,0 +1,24 @@
+@import '../assets/styles/vars';
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  > .app-content{
+    display: flex;
+    > .__content{
+      flex-grow: 1;
+      max-width: $max-width-page;
+      margin: 0 auto;
+      display: flex;
+      background: #FFFFFF;
+      border: 2px solid rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+      border-radius: 10px;
+      padding: $padding-mobile;
+      @media (min-width: $min-width-desktop) {
+        padding: $padding-desktop;
+      }
+    }
+  }
+}
