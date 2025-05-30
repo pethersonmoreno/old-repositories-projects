@@ -1,0 +1,20 @@
+{
+  "name": "cjl-template-typescript",
+  "version": "0.0.3",
+  "keywords": [
+    "react",
+    "create-libjs",
+    "template",
+    "typescript"
+  ],
+  "description": "The base TypeScript template for Create JS Library.",
+  "main": "template.json",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.10"
+  },
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
