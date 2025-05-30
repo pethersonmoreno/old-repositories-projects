@@ -1,0 +1,5 @@
+{
+    "files.exclude": {
+        "jenkins_home": true
+    }
+}
