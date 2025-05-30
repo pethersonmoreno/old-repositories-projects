@@ -1,0 +1,11 @@
+@import '~react-datepicker/dist/react-datepicker.css';
+
+.react-datepicker__input-time-container {
+  text-align: center;
+  margin: 5px 0 10px 0;
+
+  & .react-datepicker-time__input-container .react-datepicker-time__input input {
+    width: fit-content;
+    padding: 0 5px;
+  }
+}

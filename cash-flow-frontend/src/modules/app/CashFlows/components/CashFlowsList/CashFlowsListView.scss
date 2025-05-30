@@ -1,0 +1,16 @@
+.cashFlowsList {
+  padding-bottom: 50px;
+
+  &>.group {
+    margin: 5px;
+    box-shadow: 0px 1px #777777;
+    // border: 1px solid #777777;
+
+    &>.date {
+      padding: 5px;
+      color: #777777;
+      box-shadow: 0px 1px #dddddd;
+      // background-color: #f0f0f0;
+    }
+  }
+}
