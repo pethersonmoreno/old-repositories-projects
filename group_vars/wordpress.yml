@@ -1,0 +1,4 @@
+---
+wp_db_ip: '172.17.177.42'
+wp_installation_dir: '/var/www/wordpress'
+wp_apache_sites_available: '/etc/apache2/sites-available'
