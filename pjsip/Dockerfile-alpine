@@ -1,0 +1,24 @@
+ARG IMAGE_SOURCE_PACKAGES
+ARG PYTHON_VERSION
+
+FROM ${IMAGE_SOURCE_PACKAGES} as source_packages
+
+
+FROM python:${PYTHON_VERSION}-alpine
+LABEL org.opencontainers.image.authors="Petherson Moreno <pethermoreno@gmail.com>"
+
+
+# COPY --from=pethersonmoreno/pjsip:2.15.1-python3.11.12 /tmp/*-package.tar.gz /tmp/
+# COPY --from=testing12:latest /tmp/*-package.tar.gz /tmp/
+COPY --from=source_packages /tmp/*-package.tar.gz /tmp/
+RUN cd /usr && tar -zxf /tmp/pjsip-package.tar.gz
+RUN SITE_PACKAGES_DIR=$(python -c 'import site; print(site.getsitepackages()[0])') && cd "$SITE_PACKAGES_DIR" && tar -zxf /tmp/python-pjsua2-package.tar.gz
+RUN rm -rf /tmp/*-package.tar.gz
+
+RUN apk add libsrtp-dev
+
+RUN apk add speex speexdsp
+
+RUN apk add gsm
+
+RUN apk add ffmpeg
