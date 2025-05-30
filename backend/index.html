@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Teste Socket</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script type="text/javascript">
+    var socket = io('http://localhost:3000');
+    socket.on('tweet', function(data){
+      console.log(data);
+    });
+    socket.on('like', function(data){
+      console.log(data);
+    });
+  </script>
+</body>
+</html>
