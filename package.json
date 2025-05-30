@@ -1,0 +1,14 @@
+{
+  "name": "example-done",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Project created with cjl-template-mono-repo",
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "start:app": "lerna run --scope @example-done/app start",
+    "start": "yarn start:app"
+  },
+  "dependencies": {
+    "lerna": "^3.20.2"
+  }
+}
