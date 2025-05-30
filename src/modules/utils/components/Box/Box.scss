@@ -1,0 +1,16 @@
+.box {
+  &.box-fill {
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  &.box-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &>.box_container {
+    display: contents;
+  }
+}

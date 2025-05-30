@@ -1,0 +1,13 @@
+.cash-flow-form {
+  margin: 30px;
+
+  .datepicker__date-input-container>button,
+  .datepicker__time-input-container>button,
+  &>input,
+  &>select,
+  .datepicker__custom-input {
+    font-size: 18px;
+  }
+
+  button {}
+}
