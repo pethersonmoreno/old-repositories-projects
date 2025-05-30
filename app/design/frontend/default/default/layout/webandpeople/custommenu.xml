@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+    <wp_custommenu_main>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/webandpeople/custommenu/webtoolkit.base64.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/webandpeople/custommenu/custommenu.js</name></action>
+            <action method="addCss"><stylesheet>css/webandpeople/custommenu/custommenu.css</stylesheet></action>
+        </reference>
+        <reference name="catalog.topnav">
+            <action method="setTemplate"><template>webandpeople/custommenu/top.phtml</template></action>
+        </reference>
+    </wp_custommenu_main>
+
+    <wp_custommenu_content>
+        <reference name="before_body_end">
+            <block type="core/template" name="custommenu-content" template="webandpeople/custommenu/menucontent.phtml" />
+        </reference>
+    </wp_custommenu_content>
+
+    <wp_custommenu_sidebar_left>
+        <reference name="left">
+            <block type="core/template" name="custommenu-sidebar-left" before="-" template="webandpeople/custommenu/sidebar.phtml" />
+            <action method="unsetChild"><name>currency</name></action>
+            <action method="insert"><child>currency</child><after>0</after></action>
+        </reference>
+    </wp_custommenu_sidebar_left>
+
+    <wp_custommenu_sidebar_right>
+        <reference name="right">
+            <block type="core/template" name="custommenu-sidebar-right" before="-" template="webandpeople/custommenu/sidebar.phtml" />
+        </reference>
+    </wp_custommenu_sidebar_right>
+
+    <wp_custommenu_sidebar_remove_category_filter>
+        <reference name="catalog.leftnav">
+            <action method="unsetChild"><alias>category_filter</alias></action>
+        </reference>
+        <reference name="catalogsearch.leftnav">
+            <action method="unsetChild"><alias>category_filter</alias></action>
+        </reference>
+    </wp_custommenu_sidebar_remove_category_filter>
+
+    <wp_custommenu_sidebar_left_remove_category_nav>
+        <reference name="left">
+            <action method="unsetChild"><alias>catalog.leftnav</alias></action>
+        </reference>
+    </wp_custommenu_sidebar_left_remove_category_nav>
+
+</layout>

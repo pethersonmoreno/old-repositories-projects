@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <block type="smartcatalog/toggle"></block>
+    </default>
+
+    <wp_smartcatalog_product_list>
+        <reference name="product_list">
+            <action method="setTemplate">
+                <template>webandpeople/smartcatalog/list.phtml</template>
+            </action>
+        </reference>
+    </wp_smartcatalog_product_list>
+
+    <wp_smartcatalog_search_result_list>
+        <reference name="search_result_list">
+            <action method="setTemplate">
+                <template>webandpeople/smartcatalog/list.phtml</template>
+            </action>
+        </reference>
+    </wp_smartcatalog_search_result_list>
+</layout>

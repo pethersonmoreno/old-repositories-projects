@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <catalog_product_view>
+        <reference name="before_body_end">
+            <block type="smartproductimage/js"></block>
+        </reference>
+    </catalog_product_view>
+
+    <review_product_list>
+        <reference name="before_body_end">
+            <block type="smartproductimage/js"></block>
+        </reference>
+    </review_product_list>
+</layout>

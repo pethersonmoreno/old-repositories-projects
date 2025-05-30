@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Copiar para Magento Teste
+Comment=
+Exec=gksu /home/petherson/git/estudos-magento/copiarParaMagentoTeste.sh
+Icon=utilities-terminal
+Terminal=false
+StartupNotify=true
+Name[pt_BR]=Copiar para Magento Teste2

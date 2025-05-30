@@ -1,0 +1,45 @@
+<?php
+    $menuData = Mage::helper('custommenu')->getMenuData();
+    extract($menuData);
+    // ---
+    $txtLoading = '';
+    $txtMenu = $this->__('Menu');
+    $xRtl = $_rtl ? ' rtl' : '';
+    $wpInitContent = <<<HTML
+    <div class="block-title">
+        <strong><span>{$txtMenu}</span></strong>
+    </div>
+    <div id="custommenu-sidebar-loading" class="block-content{$xRtl}">
+        <div class="menu">
+            <div class="parentMenu menu0 loading">
+                <a href="javascript:;">
+                    <span>$txtLoading</span>
+                </a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
+    <div id="wp-sidebar-nav-container-content" class="wp-custommenu-sidebar block-content{$xRtl}" style="display:none;">
+        <div class="menu">
+            <div class="parentMenu menu0 loading">
+                <a href="javascript:;">
+                    <span>$txtLoading</span>
+                </a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
+HTML;
+?>
+<div id="wp-sidebar-nav-container" class="block wp-sidebar-nav-container"></div>
+<script type="text/javascript">
+//<![CDATA[
+$('wp-sidebar-nav-container').update(Base64.decode('<?php echo base64_encode($wpInitContent); ?>'));
+<?php if ($_menuAjaxUrl) : ?>
+wpCustomMenuMobileToggle();
+Event.observe(window, 'resize', function() {
+    wpCustomMenuMobileToggle();
+});
+<?php endif; ?>
+//]]>
+</script>

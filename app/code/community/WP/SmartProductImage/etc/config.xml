@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <WP_SmartProductImage>
+            <version>1.0.0</version>
+        </WP_SmartProductImage>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <smartproductimage>
+                    <file>webandpeople/smartproductimage.xml</file>
+                </smartproductimage>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <smart_product_image translate="title" module="smartproductimage">
+                                            <title><![CDATA[Web & People: Smart Product Image]]></title>
+                                            <sort_order>2000</sort_order>
+                                        </smart_product_image>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <global>
+        <models>
+            <smartproductimage>
+                <class>WP_SmartProductImage_Model</class>
+            </smartproductimage>
+        </models>
+        <blocks>
+            <smartproductimage>
+                <class>WP_SmartProductImage_Block</class>
+            </smartproductimage>
+        </blocks>
+        <helpers>
+            <smartproductimage>
+                <class>WP_SmartProductImage_Helper</class>
+            </smartproductimage>
+        </helpers>
+    </global>
+    <default>
+        <smart_product_image>
+            <general>
+                <enabled>0</enabled>
+                <version>1.0.0</version>
+            </general>
+        </smart_product_image>
+    </default>
+</config>

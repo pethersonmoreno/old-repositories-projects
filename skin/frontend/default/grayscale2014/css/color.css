@@ -1,0 +1,64 @@
+/*COLOR*/
+/*headings*/
+h1, h2, h3, h4, h5, h6, .col-main dl dt {
+	color: #555;
+}
+/*border-color*/
+.checkout-progress li.active {
+	border-color: #dadada;
+}
+/*background - color*/
+.nav-container{
+	background-color: #333333;
+}
+.product-options {background-color: #f5f5f5;}
+.tier-prices, .tier-prices .price, .price-box-bundle, .price-box-bundle .price, .error-msg, .success-msg, .note-msg, .notice-msg  {background-color: #d14937; color: #ffffff; }
+/*text color*/
+a:link, a:visited {
+	color: #000;
+	text-decoration:none;
+}
+.price, #checkout-review-table tfoot tr.last .price, #product_comparison .price, #shopping-cart-totals-table .price, #shopping-cart-totals-table tfoot .price, .product-view .product-shop .full-product-price .price, .product-essential .price-as-configured .price, .block .regular-price .price, .block .regular-price, .data-table td.last .price,  label.required em, a.more:hover,  .form-search .search-autocomplete li:hover,  h2.desc_head, #checkout-review-table td.last .price, a.level1:link, a.level1:visited, .menu-mobile a:active, div.tabs_block h5 a:link, div.tabs_block h5 a:active, div.tabs_block h5 a:visited, div.tabs_info a:link, div.tabs_info a:active, div.tabs_info a:visited {
+	color: #000;
+}
+a:hover, div.menu a:hover, a.level1:hover,
+a.level2:hover, a.level3:hover  {
+	text-decoration:none;
+	color: #666;
+}
+/*orange*/
+.validation-advice  {
+	color: #ff7200;
+	z-index: 999;
+}
+.error-msg {
+	color: #ff7200;
+}
+/*standard navigation*/
+#nav li a:hover {
+	color:#555;
+}
+#nav ul li a:hover, .over {
+	background:#999 !important;
+}
+#nav ul ul li a:hover {
+	background:#999 !important;
+}
+/* slider active button*/
+.stripNav a.activeSlide, .stripNav a.activeSlide:hover, .stripNav a.activeSlide {
+	background-color:#555;
+	border:1px solid #555;
+	color: #555;
+}
+/*any button*/
+button.button span span {
+	color: #ffffff;
+}
+/*product page button, checkout button*/
+.product-shop .add-to-cart button.button span, .checkout-types button.button span, #review-buttons-container button.button span, .product-options-bottom button.button span {
+	color: #ffffff;
+}
+/*product page button, checkout button - hover*/
+.product-shop .add-to-cart button.button:hover span, #review-buttons-container button.button:hover span, .product-options-bottom button.button:hover span, .checkout-types button.button:hover span {
+    color: #fff;
+}
