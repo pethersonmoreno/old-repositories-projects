@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "ConsoleDotnetCore"
+    },
+    {
+      "path": "DirectoryWatcher"
+    },
+    {
+      "path": "DirectoryProcess"
+    },
+    {
+      "path": "CompleteExample"
+    }
+  ],
+  "settings": {}
+}
