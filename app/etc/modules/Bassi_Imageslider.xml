@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Bassi_Imageslider>
+		    <active>true</active>
+		    <codePool>community</codePool>		   
+		</Bassi_Imageslider>
+	</modules>
+</config>
