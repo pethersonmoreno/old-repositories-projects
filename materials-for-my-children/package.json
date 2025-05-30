@@ -1,0 +1,23 @@
+{
+  "name": "materials-for-my-children",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pethersonmoreno/materials-for-my-children.git"
+  },
+  "author": "Petherson Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/materials-for-my-children/issues"
+  },
+  "homepage": "https://github.com/pethersonmoreno/materials-for-my-children#readme",
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  },
+  "dependencies": {}
+}
