@@ -1,0 +1,16 @@
+[package]
+name = "search-for-duplicate-files"
+version = "0.1.0"
+authors = ["Petherson Moreno <pethermoreno@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sha2 = "^0.8"
+walkdir = "2.3.1"
+dict = "0.1.5"
+
+[[bin]]
+name = "search-for-duplicate-files"
+path = "src/main.rs"
