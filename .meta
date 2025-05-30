@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "validator-task": "git@github.com:pethersonmoreno/multirepo-example-validator-task.git",
+    "api": "git@github.com:pethersonmoreno/multirepo-example-api.git",
+    "frontend": "git@github.com:pethersonmoreno/multirepo-example-frontend.git"
+  }
+}
