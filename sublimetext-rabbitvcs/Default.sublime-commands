@@ -1,0 +1,18 @@
+[
+    {
+        "caption": "RabbitVcs: (File) Commit",
+        "command": "rabbit_vcs_file_commit"
+    },
+    {
+        "caption": "RabbitVcs: (Project) Commit",
+        "command": "rabbit_vcs_project_commit"
+    },
+    {
+        "caption": "RabbitVcs: (File) Log",
+        "command": "rabbit_vcs_file_log"
+    },
+    {
+        "caption": "RabbitVcs: (Project) Log",
+        "command": "rabbit_vcs_project_log"
+    }
+]
