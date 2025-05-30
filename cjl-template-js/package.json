@@ -1,0 +1,18 @@
+{
+  "name": "cjl-template-js",
+  "version": "0.0.2",
+  "keywords": [
+    "create-libjs",
+    "template"
+  ],
+  "description": "The base template for Create JS Library.",
+  "main": "template.json",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
