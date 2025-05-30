@@ -1,0 +1,31 @@
+{
+    "name": "pethersonmoreno/phppm-code-standard",
+    "description": "Code Standard used by Petherson Moreno to code PHP",
+    "keywords": [
+        "phppm",
+        "code",
+        "standard",
+        "phpcs",
+        "phpcbf",
+        "fixer"
+    ],
+    "type": "phpcodesniffer-standard",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pethersonmoreno",
+            "email": "pethermoreno@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Petherson Moreno",
+            "email": "pethermoreno@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "squizlabs/php_codesniffer": "^3.4.0"
+    }
+}
