@@ -1,0 +1,34 @@
+.button-learn-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding:0px;
+  height: 30px;
+  max-width: 88px;
+  border: 1px solid #4883AF;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background: #3D8CCE;
+  > .label {
+    color: #ffffff;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+  &:disabled {
+    background: #cccccc;
+    border-color: #888888;
+    > .label {
+      color: #666666;
+    }
+  }
+  &:hover {
+    background: #5DACEE;
+    &:disabled {
+      background: #eeeeee;
+    }
+  }
+}

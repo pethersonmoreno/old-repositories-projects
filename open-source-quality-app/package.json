@@ -1,0 +1,37 @@
+{
+  "name": "@open-source-quality-app/monorepo",
+  "version": "0.0.1",
+  "repository": "git@github.com:pethersonmoreno/open-source-quality-app.git",
+  "author": "Petherson Moreno <pethermoreno@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "postinstall": "lerna run prepare",
+    "lerna-projects": "lerna --scope=@open-source-quality-app/{api,web}",
+    "start:initial-swagger": "lerna run --scope=@open-source-quality-app/initial-swagger --stream start",
+    "start:web": "cd packages/web && yarn start",
+    "start:api": "cd packages/api && yarn start",
+    "lint": "yarn lerna-projects exec yarn lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:watch-coverage": "jest --coverage --watch-all"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": []
+  },
+  "dependencies": {
+    "lerna": "^3.22.1"
+  },
+  "devDependencies": {
+    "husky": "^4.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint && yarn test:coverage"
+    }
+  }
+}
