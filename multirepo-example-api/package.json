@@ -1,0 +1,32 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Petherson Moreno <pethermoreno@gmail.com>",
+  "homepage": "https://github.com/pethersonmoreno/multirepo-example-api#readme",
+  "license": "MIT",
+  "main": "src/api.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pethersonmoreno/multirepo-example-api.git"
+  },
+  "scripts": {
+    "start": "node src/api.js",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/multirepo-example-api/issues"
+  },
+  "dependencies": {
+    "@koa/cors": "2",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-route": "^3.2.0",
+    "validator-task": "git+ssh://git@github.com/pethersonmoreno/multirepo-example-validator-task.git"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-koa": "^2.0.2",
+    "eslint-config-standard": "^14.1.0"
+  }
+}
