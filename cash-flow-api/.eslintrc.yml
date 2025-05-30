@@ -1,0 +1,24 @@
+env:
+  browser: true
+  es6: true
+extends:
+  - airbnb-base
+  - eslint:recommended
+  - prettier
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+rules:
+  comma-dangle:
+    - error
+    - only-multiline
+  arrow-parens:
+    - error
+    - as-needed
+  implicit-arrow-linebreak:
+    - error
+    - beside
+  require-atomic-updates: off

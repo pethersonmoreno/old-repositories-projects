@@ -1,0 +1,63 @@
+{
+  "name": "cash-flow-api",
+  "version": "0.0.4",
+  "description": "Cash Flow API for personal use",
+  "main": "src/firebaseFunctions.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "lint": "eslint .",
+    "test": "jest",
+    "deploy": "npm run deploy:functions",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "predeploy": "npm run lint",
+    "deploy:all": "firebase deploy",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:functions": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pethersonmoreno/cash-flow-api.git"
+  },
+  "keywords": [
+    "cash",
+    "flow",
+    "cost",
+    "money"
+  ],
+  "author": "Petherson Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pethersonmoreno/cash-flow-api/issues"
+  },
+  "homepage": "https://github.com/pethersonmoreno/cash-flow-api#readme",
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "@hapi/joi": "^16.1.7",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-validation": "^1.0.3",
+    "firebase-admin": "^8.7.0",
+    "firebase-functions": "^3.3.0",
+    "http-status": "^1.4.1",
+    "module-alias": "^2.2.2",
+    "moment": "^2.24.0"
+  },
+  "_moduleAliases": {
+    "joi": "joi"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "firebase-functions-test": "^0.1.7",
+    "nodemon": "^1.19.4"
+  }
+}
