@@ -1,0 +1,35 @@
+env:
+  browser: true
+  es2021: true
+  jest: true
+extends:
+  - 'plugin:react/recommended'
+  - airbnb
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 12
+  sourceType: module
+plugins:
+  - react
+  - import
+  - '@typescript-eslint'
+  - prettier
+rules:
+  react/jsx-filename-extension:
+    - error
+    - extensions:
+        - .ts
+        - .tsx
+  no-use-before-define: off
+  import/prefer-default-export: off
+  import/extensions:
+    - error
+    - ignorePackages
+    - ts: never
+      tsx: never
+  jsx-a11y/control-has-associated-label: off
