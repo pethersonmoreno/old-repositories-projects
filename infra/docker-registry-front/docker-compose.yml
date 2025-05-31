@@ -1,0 +1,45 @@
+version: "3"
+services:
+    nginx_frontend:
+        image: "nginx:1.9"
+        container_name: nginx_frontend
+        ports:
+            - "5543:443"
+        links:
+            - registry_frontend
+        volumes:
+            - ./frontend/nginx/:/etc/nginx/conf.d:ro
+            - ./certs/:/certs:ro
+            - ./auth/:/auth:ro
+    registry_frontend:
+        image: konradkleine/docker-registry-frontend:v2
+        container_name: registry_frontend
+        environment:
+            - ENV_DOCKER_REGISTRY_HOST=registry
+            - ENV_DOCKER_REGISTRY_PORT=5000
+        links:
+            - registry
+    nginx:
+        image: "nginx:1.9"
+        container_name: nginx
+        ports:
+            - "5443:443"
+        links:
+            - registry
+        volumes:
+            - ./registry/nginx/:/etc/nginx/conf.d:ro
+            - ./certs/:/certs:ro
+            - ./auth/:/auth:ro
+    registry:
+        image: registry:2.2.0
+        container_name: registry
+        environment:
+            REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+        volumes:
+            # Mount the config directory
+            - ./registry/config:/etc/docker/registry:ro
+            #Make the registry storage persistent (see ./config/config.yml for the path)
+            - ./registry-storage:/var/lib/registry
+        restart: unless-stopped
+volumes:
+    registry-storage:
